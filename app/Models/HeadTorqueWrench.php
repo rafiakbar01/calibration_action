@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class HeadTorqueWrench extends Model
+{
+    protected $table = 'head_torque_wrench';
+    protected $primaryKey = 'id'; 
+    public $incrementing = true;  
+    protected $keyType = 'int';
+
+    protected $fillable = [
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+    ];
+
+    public function calibration()
+    {
+        return $this->belongsTo(Calibration::class, 'calibration_id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(DetailTorqueWrench::class, 'head_torque_wrench_id'); // ✅ UBAH
+    }
+}

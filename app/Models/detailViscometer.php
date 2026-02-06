@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class DetailViscometer extends Model
+{
+    use HasFactory;
+
+   /**
+     * Kolom yang dapat diisi (mass assignable)
+     */
+    protected $fillable = [
+        'calibration_id',
+        'titikUkur',
+        'spindle',
+        'RPM',
+        'ulangan01',
+        'ulangan02',
+        'ulangan03',
+        'ulangan04',
+        'ulangan05',
+        'resolusion',
+        'T_awal',
+        'T_akhir',
+    ];
+
+    protected $casts = [
+        'titikUkur'  => 'decimal:5',
+        'ulangan01'  => 'decimal:5',
+        'ulangan02'  => 'decimal:5',
+        'ulangan03'  => 'decimal:5',
+        'ulangan04'  => 'decimal:5',
+        'ulangan05'  => 'decimal:5',
+        'resolusion' => 'decimal:5',
+        'T_awal'     => 'decimal:5',
+        'T_akhir'    => 'decimal:5',
+    ];
+
+
+    // ✅ Relation langsung ke Calibration
+    public function calibration()
+    {
+        return $this->belongsTo(Calibration::class);
+    }
+
+   
+}

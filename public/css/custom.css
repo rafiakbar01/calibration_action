@@ -1,0 +1,42 @@
+/* custom.css */
+
+/* Background sidebar */
+#accordionSidebar {
+    background-color: #7ca7e7 !important;
+}
+
+/* Teks menu default */
+#accordionSidebar .nav-link {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+    padding: 0.75rem 1rem;
+}
+
+/* Hover: hanya teks jadi lebih terang (tidak ada background) */
+#accordionSidebar .nav-link:hover {
+    color: #ccffff !important;
+    background-color: transparent !important;
+}
+
+/* Active menu: background biru terang */
+#accordionSidebar .nav-item.active .nav-link,
+#accordionSidebar .nav-link.active-menu {
+  
+    color: #ffffff !important;
+    font-weight: 600;
+    border-radius: 6px;
+    margin: 0 8px;
+}
+
+/* Divider tipis */
+#accordionSidebar .sidebar-divider {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Tombol toggle */
+#sidebarToggle {
+    transition: all 0.3s;
+}
+#sidebarToggle:hover {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+}
