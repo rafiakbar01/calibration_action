@@ -1,25 +1,78 @@
 <IfModule mod_rewrite.c>
+<IfModule mod_php.c>
+    php_value max_input_vars 100000
+</IfModule>
+
+<IfModule mod_php8.c>
+    php_value max_input_vars 100000
+</IfModule>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-
     RewriteEngine On
-
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
     # Handle X-XSRF-Token Header
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
-
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
-
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+AddType application/vnd.ms-excel.sheet.macroEnabled.12 xlsm
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/pascalib/paperless.pascalibration.com"
+PassengerBaseURI "/"
+PassengerPython "/home/pascalib/virtualenv/paperless.pascalibration.com/3.11/bin/python"
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/pascalib/niimbot-test"
+PassengerBaseURI "/"
+PassengerNodejs "/home/pascalib/nodevenv/niimbot-test/20/bin/node"
+PassengerAppType node
+PassengerStartupFile server.js
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
+<IfModule Litespeed>
+</IfModule>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END
+
+# BEGIN cPanel-generated php ini directives, do not edit
+# Manual editing of this file may result in unexpected behavior.
+# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
+# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
+<IfModule php8_module>
+   php_flag display_errors Off
+   php_value error_log "error_log"
+   php_flag log_errors On
+   php_value max_execution_time 120
+   php_value max_input_time 60
+   php_value max_input_vars 100000
+   php_value memory_limit 256M
+   php_value post_max_size 60M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php81"
+   php_value upload_max_filesize 50M
+   php_flag zlib.output_compression Off
+</IfModule>
+<IfModule lsapi_module>
+   php_flag display_errors Off
+   php_value error_log "error_log"
+   php_flag log_errors On
+   php_value max_execution_time 120
+   php_value max_input_time 60
+   php_value max_input_vars 100000
+   php_value memory_limit 256M
+   php_value post_max_size 60M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php81"
+   php_value upload_max_filesize 50M
+   php_flag zlib.output_compression Off
+</IfModule>
+# END cPanel-generated php ini directives, do not edit

@@ -16,7 +16,9 @@
     },
     "dependencies": {
         "@handsontable/react": "^16.1.1",
+        "@mmote/niimblue-node": "^0.0.12",
         "admin-lte": "^4.0.0-rc6",
         "handsontable": "^16.1.1"
+        
     }
 }
