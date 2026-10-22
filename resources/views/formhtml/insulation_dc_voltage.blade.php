@@ -1090,6 +1090,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
 // JavaScript form validation
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('kalibrasiForm');

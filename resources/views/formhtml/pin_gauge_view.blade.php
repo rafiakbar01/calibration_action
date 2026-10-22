@@ -374,34 +374,34 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
+<!--                <tr>-->
+<!--    <td>-->
+<!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+<!--    </td>-->
+<!--    <td colspan="3">-->
+<!--        <div class="d-flex align-items-center">-->
             <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
+<!--            <div class="me-3" style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
             
-            <span class="me-3" style="color: #000000;">-</span>
+<!--            <span class="me-3" style="color: #000000;">-</span>-->
             
             <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+<!--            <div style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </td>-->
+<!--</tr>-->
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -603,7 +603,7 @@
                         <td rowspan="2" style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 12pt; color: #000000;">
                                 @if($detail && $detail->titikUkur !== null)
-                                    {{ number_format($detail->titikUkur, 5) }}
+                                    {{ $detail->titikUkur }}
                                 @else
                                     -
                                 @endif
@@ -612,7 +612,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan1 !== null)
-                                    {{ number_format($detail->ulangan1, 5) }}
+                                    {{ $detail->ulangan1 }}
                                 @else
                                     -
                                 @endif
@@ -621,7 +621,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan2 !== null)
-                                    {{ number_format($detail->ulangan2, 5) }}
+                                    {{ $detail->ulangan2 }}
                                 @else
                                     -
                                 @endif
@@ -630,7 +630,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan3 !== null)
-                                    {{ number_format($detail->ulangan3, 5) }}
+                                    {{ $detail->ulangan3 }}
                                 @else
                                     -
                                 @endif
@@ -641,7 +641,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan4 !== null)
-                                    {{ number_format($detail->ulangan4, 5) }}
+                                    {{ $detail->ulangan4 }}
                                 @else
                                     -
                                 @endif
@@ -650,7 +650,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan5 !== null)
-                                    {{ number_format($detail->ulangan5, 5) }}
+                                    {{ $detail->ulangan5 }}
                                 @else
                                     -
                                 @endif
@@ -659,7 +659,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan6 !== null)
-                                    {{ number_format($detail->ulangan6, 5) }}
+                                    {{ $detail->ulangan6 }}
                                 @else
                                     -
                                 @endif
@@ -726,7 +726,7 @@
                         <td rowspan="2" style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 12pt; color: #000000;">
                                 @if($detail && $detail->titikUkur !== null)
-                                    {{ number_format($detail->titikUkur, 5) }}
+                                    {{ $detail->titikUkur }}
                                 @else
                                     -
                                 @endif
@@ -735,7 +735,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan1 !== null)
-                                    {{ number_format($detail->ulangan1, 5) }}
+                                    {{ $detail->ulangan1 }}
                                 @else
                                     -
                                 @endif
@@ -744,7 +744,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan2 !== null)
-                                    {{ number_format($detail->ulangan2, 5) }}
+                                    {{ $detail->ulangan2 }}
                                 @else
                                     -
                                 @endif
@@ -753,7 +753,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan3 !== null)
-                                    {{ number_format($detail->ulangan3, 5) }}
+                                    {{ $detail->ulangan3 }}
                                 @else
                                     -
                                 @endif
@@ -764,7 +764,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan4 !== null)
-                                    {{ number_format($detail->ulangan4, 5) }}
+                                    {{ $detail->ulangan4 }}
                                 @else
                                     -
                                 @endif
@@ -773,7 +773,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan5 !== null)
-                                    {{ number_format($detail->ulangan5, 5) }}
+                                    {{ $detail->ulangan5 }}
                                 @else
                                     -
                                 @endif
@@ -782,7 +782,7 @@
                         <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
                             <span style="font-size: 11pt; color: #000000;">
                                 @if($detail && $detail->ulangan6 !== null)
-                                    {{ number_format($detail->ulangan6, 5) }}
+                                    {{ $detail->ulangan6 }}
                                 @else
                                     -
                                 @endif
@@ -839,7 +839,30 @@
         user-select: none;
         margin-left: 3px;
     }
+    
+    /* Styling untuk form-check-input */
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        cursor: default;
+        accent-color: #000000;
+        transform: scale(1.2);
+    }
+    
+    .form-check-input:disabled {
+        opacity: 1;
+    }
+    
+    .form-check-label {
+        cursor: default;
+        user-select: none;
+        margin-left: 5px;
+        font-size: 9pt;
+        color: #000000;
+        font-weight: 500;
+    }
 </style>
+
 <table cellspacing="0" cellpadding="0" style="width: 100%; border: 1px solid #000000; border-collapse: collapse; font-family: Arial; margin: 20px auto 0;">
     <!-- Baris 1: Judul -->
     <tr style="height: 30px;">
@@ -861,12 +884,13 @@
                 $alatStandar = $calibration->headPinGauge->standard ?? '';
                 $alatStandarArray = explode(", ", $alatStandar);
             @endphp
-            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px;">
+            <div class="form-check" style="display: flex; align-items: center; justify-content: flex-start; gap: 10px;">
                 <input type="checkbox" 
-                       style="width: 18px; height: 18px; cursor: default; accent-color: #000000; transform: scale(1.2);" 
+                       class="form-check-input"
+                       id="digital_micrometer"
                        @if(in_array('Digital Micrometer 0~25mm', $alatStandarArray) || strpos($alatStandar, 'Digital Micrometer') !== false) checked @endif
                        disabled>
-                <label style="font-size: 9pt; color: #000000; cursor: default; font-weight: 500;">
+                <label class="form-check-label" for="digital_micrometer">
                     Digital Micrometer 0~25mm
                 </label>
             </div>
@@ -882,12 +906,13 @@
     <!-- Baris 3: Lanjutan data dan input nama -->
     <tr style="height: 40px;">
         <td style="border: 1px solid #000000; text-align: left; vertical-align: middle; padding: 5px;">
-            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px;">
+            <div class="form-check" style="display: flex; align-items: center; justify-content: flex-start; gap: 10px;">
                 <input type="checkbox" 
-                       style="width: 18px; height: 18px; cursor: default; accent-color: #000000; transform: scale(1.2);" 
+                       class="form-check-input"
+                       id="mesin_ulm"
                        @if(in_array('Mesin ULM 01-600D', $alatStandarArray) || strpos($alatStandar, 'Mesin ULM') !== false) checked @endif
                        disabled>
-                <label style="font-size: 9pt; color: #000000; cursor: default; font-weight: 500;">
+                <label class="form-check-label" for="mesin_ulm">
                     Mesin ULM 01-600D
                 </label>
             </div>
@@ -933,9 +958,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

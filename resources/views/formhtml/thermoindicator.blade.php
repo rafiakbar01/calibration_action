@@ -188,21 +188,36 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                    <tr>
-                            <td style="width: 20%;">
+                      <tr>
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Thermoindicator"
-                                    placeholder="Thermoindicator"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Thermoindicator">Thermoindicator</option>
+                                    <option value="MANUAL_INPUT">-- Input Manual Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat secara manual"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
                         </tr>
-
+                   
                     <!-- Merek & Kode Alat -->
                     <tr>
                         <td>
@@ -308,7 +323,7 @@
                             <p style="margin: 0; color: #000000;">Lokasi PT</p>
                         </td>
                         <td colspan="3">
-                            <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT"required>
+                            <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT" >
                         </td>
                     </tr>
                 </table>
@@ -351,15 +366,15 @@
                                 </tr>
                                <tr>
                                     <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
-                                    <td><input type="number" name="suhu_awal" class="kondisi-input" required></td>
-                                    <td><input type="number" name="suhu_tengah" class="kondisi-input" required></td>
-                                    <td><input type="number" name="suhu_akhir" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="suhu_awal" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="suhu_tengah" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="suhu_akhir" class="kondisi-input" required></td>
                                 </tr>
                                 <tr>
                                     <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
-                                    <td><input type="number" name="rh_awal" class="kondisi-input" required></td>
-                                    <td><input type="number" name="rh_tengah" class="kondisi-input" required></td>
-                                    <td><input type="number" name="rh_akhir" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="rh_awal" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="rh_tengah" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="rh_akhir" class="kondisi-input" required></td>
                                 </tr>
                             </table>
                         </div>
@@ -496,17 +511,17 @@
 
         <tr style="height:22pt">
             <td style="width:77.5pt; border:1.2pt solid #000;">
-                <input type="number" name="rep1_col1"
+                <input type="text" name="rep1_col1"
                     style="width:100%; border:none;
                         font-size:8.5pt; background:transparent; outline:none;text-align: center; ">
             </td>
             <td style="width:74.8pt; border:1.2pt solid #000;">
-                <input type="number" name="rep1_col2"
+                <input type="text" name="rep1_col2"
                     style="width:100%; border:none;
                         font-size:8.5pt; background:transparent; outline:none; text-align: center;">
             </td>
             <td style="width:79.6pt; border:1.2pt solid #000;">
-                <input type="number" name="rep1_col3"
+                <input type="text" name="rep1_col3"
                     style="width:100%; border:none;
                         font-size:8.5pt; background:transparent; outline:none;text-align: center;">
             </td>
@@ -514,12 +529,12 @@
 
         <tr style="height:22pt">
             <td style="width:77.5pt; border:1.2pt solid #000;">
-                <input type="number" name="rep2_col1"
+                <input type="text" name="rep2_col1"
                     style="width:100%; border:none;
                         font-size:8.5pt; background:transparent; outline:none;text-align: center;">
             </td>
             <td style="width:74.8pt; border:1.2pt solid #000;">
-                <input type="number" name="rep2_col2"
+                <input type="text" name="rep2_col2"
                     style="width:100%; border:none;
                         font-size:8.5pt; background:transparent; outline:none;text-align: center;">
             </td>
@@ -626,6 +641,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
 // JavaScript form validation
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('kalibrasiForm');

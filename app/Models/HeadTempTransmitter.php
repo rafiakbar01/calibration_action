@@ -12,7 +12,7 @@ class HeadTempTransmitter extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','indicator','media'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','indicator','media','satuan_suhu_kiri','satuan_suhu_kanan','satuan_std_kiri','satuan_std_kanan','satuan_indicator_kiri','satuan_indicator_kanan'
     ];
 
     public function calibration()

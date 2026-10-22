@@ -469,6 +469,14 @@
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
         </td>
     </tr>
+    
+      <tr>
+        <td><p style="margin: 0; color: #000000;">Kode TH</p></td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input"
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
+        </td>
+    </tr>
 </table>
 
 
@@ -549,14 +557,22 @@
         </td>
     </tr>
     <tr style="background: #e8e8e8;">
-        <td>
-            <span style="font-weight: bold; color: #000000;">
-                Unit (
-                <input type="text" name="unit" 
-                       value="{{ old('unit', $calibration->unit ?? '') }}"
-                       style="width:60px; border:none; border-bottom:1px solid #000; text-align:center; font-weight:bold;">
-                )
-            </span>
+        <td style="border: 2px solid #000000; text-align: center; vertical-align: middle; padding: 2px;">
+            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                <span style="font-weight: bold; color: #000000; font-size: 9.5pt; margin-right: 5px;">
+                    Unit (
+                </span>
+                <input 
+                    type="text" 
+                    name="satuan_unit" 
+                    value="{{ $calibration->headPenggaris->satuan_unit ?? 'mm' }}"
+                    style="width: 60px; text-align: center; font-size: 9.5pt; padding: 2px; border: 1px solid #666;"
+                    maxlength="10"
+                />
+                <span style="font-weight: bold; color: #000000; font-size: 9.5pt; margin-left: 5px;">
+                    )
+                </span>
+            </div>
         </td>
         <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">1</span></td>
         <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">2</span></td>
@@ -692,7 +708,7 @@
        name="verifiedBy"
        class="kalibrasi-input"
        value="{{ old('verifiedBy', $calibration->verifiedBy) }}"
-       style="border:none; border-bottom:2px solid #000; border-radius:0; background:transparent; font-weight:bold; color:#000; width:200px;">
+       style="border:none; border-bottom:2px solid #000; border-radius:0; background:transparent; font-weight:bold; color:#000; width:200px;" readonly>
 </div>
             </div>
         </td>
@@ -717,8 +733,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -791,7 +812,7 @@
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data

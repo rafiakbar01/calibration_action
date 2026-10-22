@@ -21,9 +21,6 @@ return new class extends Migration
             $table->string('certificate_id');
             $table->string('standard');
             $table->string('calibrationMethod');
-            $table->string('satuan_titik_ukur');
-            $table->string('satuan_tarik');
-            $table->string('satuan_tekan');
             $table->timestamps();
         });
     }

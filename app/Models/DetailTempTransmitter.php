@@ -23,16 +23,16 @@ class DetailTempTransmitter extends Model
         'T_Indicator3'
     ];
 
-    protected $casts = [
-        'T_setting'     => 'decimal:5',
-        'T_STD1'        => 'decimal:5',
-        'T_STD2'        => 'decimal:5',
-        'T_STD3'        => 'decimal:5',
-        'T_Indicator1'  => 'decimal:5',
-        'T_Indicator2'  => 'decimal:5',
-        'T_Indicator3'  => 'decimal:5',
+    // protected $casts = [
+    //     'T_setting'     => 'decimal:5',
+    //     'T_STD1'        => 'decimal:5',
+    //     'T_STD2'        => 'decimal:5',
+    //     'T_STD3'        => 'decimal:5',
+    //     'T_Indicator1'  => 'decimal:5',
+    //     'T_Indicator2'  => 'decimal:5',
+    //     'T_Indicator3'  => 'decimal:5',
         
-    ];
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

@@ -25,13 +25,13 @@ class DetailIrThermometer extends Model
 
     protected $casts = [
         
-        'titikUkur'     => 'decimal:5',
-        'STD01'         => 'decimal:5',
-        'STD02'         => 'decimal:5',
-        'STD03'         => 'decimal:5',
-        'UUT01'         => 'decimal:5',
-        'UUT02'         => 'decimal:5',
-        'UUT03'         => 'decimal:5',
+        'titikUkur'     => 'string',
+        'STD01'         => 'string',
+        'STD02'         => 'string',
+        'STD03'         => 'string',
+        'UUT01'         => 'string',
+        'UUT02'         => 'string',
+        'UUT03'         => 'string',
     ];
 
 

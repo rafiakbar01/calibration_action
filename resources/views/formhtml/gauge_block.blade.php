@@ -143,7 +143,7 @@
 <body>
     <div class="container my-4">
         <!-- resources/views/formhtml/inside_micrometer.blade.php -->
-        <form method="POST" action="/calibrations" id="kalibrasiForm">
+      <form method="POST" action="/calibrations" id="kalibrasiForm" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="form_type" value="gauge_block">
  
@@ -189,21 +189,36 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                    <tr>
-                            <td style="width: 20%;">
+                      <tr>
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Gauge Block"
-                                    placeholder="Gauge Block"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Gauge Block">Gauge Block</option>
+                                    <option value="MANUAL_INPUT">-- Input Manual Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat secara manual"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
                         </tr>
-
+                    
                     <!-- Merek & Kode Alat -->
                     <tr>
                         <td>
@@ -358,6 +373,14 @@
                             <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT">
                         </td>
                     </tr>
+                     <tr>
+                        <td>
+                            <p style="margin: 0; color: #000000;">Kode TH</p>
+                        </td>
+                        <td colspan="3">
+                            <input type="text" name="kode_th" class="kalibrasi-input" placeholder="Masukkan Kode TH">
+                        </td>
+                    </tr>
 
                   
 
@@ -401,50 +424,50 @@
                                 <td class="table-secondary fw-bold text-center" style="color: #000000;">Akhir</td>
                             </tr>
                             <tr>
-                                <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
-                                <td><input type="number"
+                                <td class="bg-light fw-bold" style="color: #000000;">Suhu (&deg;C)</td>
+                                <td><input type="text"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                    
+                                      
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                       
+                                      
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                      
                                         placeholder="0.0"
                                         required></td>
                             </tr>
                             <tr>
                                 <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                         
+                                      
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                      
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                      
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -469,8 +492,8 @@
                         <!-- Baris 1 -->
                         <tr>
                             <td style="border: 1px solid black; padding: 8px; text-align: center;">
-                                <input type="number" step="any" class="form-control form-control-sm text-center" 
-                                    name="nominal_gauge_1" style="width:65px; display:inline-block; font-size: 0.9rem;"> mm
+                                <input type="text" class="form-control form-control-sm text-center" 
+                                    name="nominal_gauge_1" style="width:65px; display:inline-block; font-size: 0.9rem;">  
                             </td>
                             <td style="border: 1px solid black; padding: 8px; text-align: center;">
                                 ( <input type="radio" name="kiri1" id="kiri1_ber" value="beraturan"> ) 
@@ -493,8 +516,8 @@
                         <!-- Baris 2 -->
                         <tr>
                             <td style="border: 1px solid black; padding: 8px; text-align: center;">
-                                <input type="number" step="any" class="form-control form-control-sm text-center" 
-                                    name="nominal_gauge_2" style="width:65px; display:inline-block; font-size: 0.9rem;"> mm
+                                <input type="text" class="form-control form-control-sm text-center" 
+                                    name="nominal_gauge_2" style="width:65px; display:inline-block; font-size: 0.9rem;">  
                             </td>
                             <td style="border: 1px solid black; padding: 8px; text-align: center;">
                                 ( <input type="radio" name="kiri2" id="kiri2_ber" value="beraturan"> ) 
@@ -517,8 +540,8 @@
                         <!-- Baris 3 -->
                         <tr>
                             <td style="border: 1px solid black; padding: 8px; text-align: center;">
-                                <input type="number" step="any" class="form-control form-control-sm text-center" 
-                                    name="nominal_gauge_3" style="width:65px; display:inline-block; font-size: 0.9rem;"> mm
+                                <input type="text" class="form-control form-control-sm text-center" 
+                                    name="nominal_gauge_3" style="width:65px; display:inline-block; font-size: 0.9rem;">  
                             </td>
                             <td style="border: 1px solid black; padding: 8px; text-align: center;">
                                 ( <input type="radio" name="kiri3" id="kiri3_ber" value="beraturan"> ) 
@@ -544,8 +567,8 @@
                 
                 <div class="table-responsive">
     <div class="table-responsive">
-    <table style="font-size: 0.85rem; border-collapse: collapse; width: 100%;">
-        <thead>
+   <table style="font-size: 0.85rem; border-collapse: collapse; width: 100%;">
+    <thead>
         <tr style="background-color: #f8f9fa;">
             <th colspan="2" class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">Nilai Nominal</th>
             <th rowspan="2" class="fw-bold text-center align-middle" style="border: 2px solid black; padding: 8px; vertical-align: middle;">No. Seri</th>
@@ -555,7 +578,14 @@
         </tr>
         <tr style="background-color: #f8f9fa;">
             <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">No</th>
-            <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">Unit ( )</th>
+            <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">
+                Unit (
+                <input type="text" 
+                       name="satuan_unit" 
+                       value="{{ $calibration->headTimbanganBias->unit ?? '' }}"
+                       style="width: 40px; border: none; border-bottom: 1px solid #999; text-align: center; background: transparent; font-weight: bold; display: inline-block; margin: 0 2px;">
+                )
+            </th>
             <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">1<br>Tengah</th>
             <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">2<br>Kiri Atas</th>
             <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">3<br>Kiri Bawah</th>
@@ -563,75 +593,435 @@
             <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">5<br>Kanan Bawah</th>
             <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">6<br>Tengah</th>
         </tr>
-        </thead>
-        <tbody>
+    </thead>
+    <tbody>
         <?php for ($no = 1; $no <= 15; $no++): ?>
             <tr>
-            <!-- No -->
-            <td style="border: 1px solid black; padding: 8px; text-align: center;"><?= $no ?></td>
-            
-            <!-- Unit ( ) -->
-            <td style="border: 1px solid black; padding: 8px;">
-                <input type="text" name="titikUkur_<?= $no ?>" class="form-control form-control-sm text-center" style="width:100%;">
-            </td>
-            
-            <!-- No. Seri -->
-            <td style="border: 1px solid black; padding: 8px;">
-                <input type="text" name="NoSeri_<?= $no ?>" class="form-control form-control-sm text-center" style="width:100%;">
-            </td>
-            
-            <!-- Standar yang digunakan -->
-            <td style="border: 1px solid black; padding: 8px;">
-                <input type="text" name="STD_<?= $no ?>" class="form-control form-control-sm text-center" style="width:100%;">
-            </td>
-            
-            <!-- Pengukuran: Siklus 1 dan Siklus 2 vertikal (hanya teks) -->
-            <td style="border: 1px solid black; padding: 12px 8px; line-height: 2.2; text-align: center;">
-                Siklus 1<br>
-                Siklus 2
-            </td>
-            
-            <!-- Penunjukan Standard: 2 input vertikal (Siklus 1 atas, Siklus 2 bawah) -->
-            <!-- 1 Tengah -->
-            <td style="border: 1px solid black; padding: 8px;">
-                <input type="text" name="C1M_<?= $no ?>" class="form-control form-control-sm text-center mb-2">
-                <input type="text" name="C2M_<?= $no ?>" class="form-control form-control-sm text-center">
-            </td>
-            
-            <!-- 2 Kiri Atas -->
-            <td style="border: 1px solid black; padding: 8px;">
-                <input type="text" name="C1UL_<?= $no ?>" class="form-control form-control-sm text-center mb-2">
-                <input type="text" name="C2UL_<?= $no ?>" class="form-control form-control-sm text-center">
-            </td>
-            
+                <!-- No -->
+                <td style="border: 1px solid black; padding: 8px; text-align: center;"><?= $no ?></td>
+                
+                <!-- Unit ( ) -->
+                <td style="border: 1px solid black; padding: 0;">
+                    <input type="text" name="titikUkur_<?= $no ?>" class="form-control form-control-sm text-center" 
+                           style="width:100%; border: none; outline: none; padding: 8px;">
+                </td>
+                
+                <!-- No. Seri -->
+                <td style="border: 1px solid black; padding: 0;">
+                    <input type="text" name="NoSeri_<?= $no ?>" class="form-control form-control-sm text-center" 
+                           style="width:100%; border: none; outline: none; padding: 8px;">
+                </td>
+                
+                <!-- Standar yang digunakan -->
+                <td style="border: 1px solid black; padding: 0;">
+                    <input type="text" name="STD_<?= $no ?>" class="form-control form-control-sm text-center" 
+                           style="width:100%; border: none; outline: none; padding: 8px;">
+                </td>
+                
+                <!-- Pengukuran: Siklus 1 dan Siklus 2 vertikal (hanya teks) -->
+                <td style="border: 1px solid black; padding: 12px 8px; line-height: 2.2; text-align: center;">
+                    Siklus 1<br>
+                    Siklus 2
+                </td>
+                
+                <!-- Penunjukan Standard: 2 input vertikal (Siklus 1 atas, Siklus 2 bawah) -->
+                <!-- 1 Tengah -->
+                <td style="border: 1px solid black; padding: 0;">
+                    <div style="border-bottom: 1px solid black;">
+                        <input type="text" name="C1M_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
+                    <div>
+                        <input type="text" name="C2M_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
+                </td>
+                
+                <!-- 2 Kiri Atas -->
+                <td style="border: 1px solid black; padding: 0;">
+                    <div style="border-bottom: 1px solid black;">
+                        <input type="text" name="C1UL_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
+                    <div>
+                        <input type="text" name="C2UL_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
+                </td>
+                
                 <!-- 3 Kiri Bawah (LL) -->
-                <td style="border: 1px solid black; padding: 8px;">
-                    <input type="text" name="C1LL_<?= $no ?>" class="form-control form-control-sm text-center mb-2">
-                    <input type="text" name="C2LL_<?= $no ?>" class="form-control form-control-sm text-center">
+                <td style="border: 1px solid black; padding: 0;">
+                    <div style="border-bottom: 1px solid black;">
+                        <input type="text" name="C1LL_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
+                    <div>
+                        <input type="text" name="C2LL_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
                 </td>
                 
                 <!-- 4 Kanan Atas (UR) -->
-                <td style="border: 1px solid black; padding: 8px;">
-                    <input type="text" name="C1UR_<?= $no ?>" class="form-control form-control-sm text-center mb-2">
-                    <input type="text" name="C2UR_<?= $no ?>" class="form-control form-control-sm text-center">
+                <td style="border: 1px solid black; padding: 0;">
+                    <div style="border-bottom: 1px solid black;">
+                        <input type="text" name="C1UR_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
+                    <div>
+                        <input type="text" name="C2UR_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
                 </td>
                 
                 <!-- 5 Kanan Bawah (LR) -->
-                <td style="border: 1px solid black; padding: 8px;">
-                    <input type="text" name="C1LR_<?= $no ?>" class="form-control form-control-sm text-center mb-2">
-                    <input type="text" name="C2LR_<?= $no ?>" class="form-control form-control-sm text-center">
+                <td style="border: 1px solid black; padding: 0;">
+                    <div style="border-bottom: 1px solid black;">
+                        <input type="text" name="C1LR_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
+                    <div>
+                        <input type="text" name="C2LR_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
                 </td>
                 
                 <!-- 6 Tengah (C) -->
-                <td style="border: 1px solid black; padding: 8px;">
-                    <input type="text" name="C1C_<?= $no ?>" class="form-control form-control-sm text-center mb-2">
-                    <input type="text" name="C2C_<?= $no ?>" class="form-control form-control-sm text-center">
+                <td style="border: 1px solid black; padding: 0;">
+                    <div style="border-bottom: 1px solid black;">
+                        <input type="text" name="C1C_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
+                    <div>
+                        <input type="text" name="C2C_<?= $no ?>" class="form-control form-control-sm text-center" 
+                               style="width:100%; border: none; outline: none; padding: 8px;">
+                    </div>
                 </td>
             </tr>
         <?php endfor; ?>
-        </tbody>
-    </table>
+    </tbody>
+</table>
     </div>
+<!-- Tambahkan ini di bagian form, sebelum submit button -->
+<!-- Bagian Upload File - GANTI DENGAN KODE INI -->
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-paperclip me-2"></i> Lampiran Dokumen (Maksimal 25MB per file)
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="attachments" class="form-label fw-bold">Pilih File Attachment</label>
+                <input type="file" 
+                       name="attachments[]" 
+                       id="attachments" 
+                       class="form-control"
+                       multiple
+                       accept=".pdf,.jpg,.jpeg,.png">
+                <div class="form-text text-muted mt-2">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Maksimal ukuran per file: <strong>25MB</strong>. 
+                    Format yang didukung: PDF, JPG, JPEG, PNG.
+                </div>
+            </div>
+            
+            <!-- TEMPAT UNTUK MENAMPILKAN DAFTAR FILE -->
+                       <!-- TEMPAT UNTUK MENAMPILKAN DAFTAR FILE -->
+            <div id="daftarFileContainer" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SCRIPT UPLOAD FILE + MODAL PREVIEW (MULTI-TAB SAFE) ==================== -->
+<script>
+    console.log('🚀 Script Upload + Modal Preview (Multi-Tab) loaded');
+
+    // =====================================================================
+    // HELPER: ambil tabId dari container form terdekat
+    // =====================================================================
+    function getTabIdFromElement(el) {
+        const container = el ? el.closest('.lk-form-container') : null;
+        return container ? container.getAttribute('data-lk-id') : null;
+    }
+
+    // =====================================================================
+    // HELPER: ambil / inisialisasi array file per-tab
+    // =====================================================================
+    function getFileArray(tabId) {
+        const key = 'fileGaugeBlock_tab_' + tabId;
+        if (!window[key]) window[key] = [];
+        return window[key];
+    }
+
+    function setFileArray(tabId, arr) {
+        window['fileGaugeBlock_tab_' + tabId] = arr;
+    }
+
+    // =====================================================================
+    // HELPER: ambil container & input yang scoped ke tabId tertentu
+    // =====================================================================
+    function getContainerByTabId(tabId) {
+        return document.querySelector('.lk-form-container[data-lk-id="' + tabId + '"]');
+    }
+
+    function getFileInputByTabId(tabId) {
+        // 1. Coba scoped ke container tab yang tepat
+        const container = getContainerByTabId(tabId);
+        if (container) {
+            const inp = container.querySelector('input[type="file"][id="attachments"], input[type="file"][name="attachments[]"]');
+            if (inp) return inp;
+        }
+        // 2. Fallback: cari di seluruh dokumen
+        return document.getElementById('attachments')
+            || document.querySelector('input[type="file"][name="attachments[]"]');
+    }
+
+    function getPreviewContainerByTabId(tabId) {
+        // 1. Coba scoped ke container tab yang tepat
+        const container = getContainerByTabId(tabId);
+        if (container) {
+            const pc = container.querySelector('#daftarFileContainer');
+            if (pc) return pc;
+        }
+        // 2. Fallback: cari di seluruh dokumen
+        return document.getElementById('daftarFileContainer');
+    }
+
+    // =====================================================================
+    // FORMAT FILE SIZE
+    // =====================================================================
+    function formatFileSize(bytes) {
+        if (!bytes) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // =====================================================================
+    // TAMPILKAN PREVIEW — scoped ke tabId
+    // =====================================================================
+    function tampilkanFilePreview(tabId) {
+        // Jika tabId tidak diberikan, cari dari active tab
+        if (!tabId) tabId = (typeof getActiveTabId === 'function') ? getActiveTabId() : '1';
+
+        const previewContainer = getPreviewContainerByTabId(tabId);
+        if (!previewContainer) return;
+
+        const files = getFileArray(tabId);
+
+        if (files.length === 0) {
+            previewContainer.innerHTML = `
+                <div class="alert alert-info py-3 text-center">
+                    <i class="fas fa-info-circle me-2"></i> Belum ada file yang dipilih.
+                </div>`;
+            return;
+        }
+
+        let totalUkuran = files.reduce((sum, f) => sum + f.size, 0);
+
+        let html = `
+            <div class="border border-primary rounded-3 p-3 bg-light">
+                <h6 class="fw-bold text-primary mb-3">
+                    <i class="fas fa-paperclip me-2"></i>
+                    File Attachment (${files.length} file)
+                </h6>
+                <div style="max-height: 450px; overflow-y: auto;">`;
+
+        files.forEach((file, index) => {
+            const ukuran = formatFileSize(file.size);
+            const mb = (file.size / 1048576).toFixed(2);
+            const isImage = file.type.includes('image');
+            const icon = isImage ? '🖼️' : file.type.includes('pdf') ? '📑' : '📄';
+
+            html += `
+                <div class="d-flex align-items-center justify-content-between p-3 mb-2 bg-white border rounded shadow-sm">
+    <div class="d-flex align-items-center gap-3 flex-grow-1">
+        <span style="font-size: 28px;">${icon}</span>
+        <div class="flex-grow-1 min-width-0">
+            <div class="fw-medium text-break small">${file.name}</div>
+            <div class="text-muted small">${ukuran} (${mb} MB)</div>
+        </div>
+    </div>
+    <div class="d-flex" style="gap: 12px;">
+        <button type="button" onclick="lihatFile(${index}, '${tabId}')" 
+                class="btn btn-sm btn-primary">
+            <i class="fas fa-eye"></i> Lihat
+        </button>
+        <button type="button" onclick="hapusFile(${index}, '${tabId}')" 
+                class="btn btn-sm btn-danger">
+            <i class="fas fa-trash"></i> Hapus
+        </button>
+    </div>
+</div>`;
+        });
+
+        html += `
+                </div>
+                <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                    <strong>Total Ukuran:</strong>
+                    <div class="text-end">
+                        <strong class="text-primary">${formatFileSize(totalUkuran)}</strong>
+                        <small class="text-muted"> (${(totalUkuran/1048576).toFixed(2)} MB)</small>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <button type="button" onclick="hapusSemuaFile('${tabId}')" 
+                            class="btn btn-sm btn-secondary">
+                        <i class="fas fa-trash me-1"></i> Hapus Semua File
+                    </button>
+                </div>
+            </div>`;
+
+        previewContainer.innerHTML = html;
+    }
+
+    // =====================================================================
+    // LIHAT FILE DI MODAL — scoped ke tabId
+    // =====================================================================
+    window.lihatFile = function(index, tabId) {
+        if (!tabId) tabId = (typeof getActiveTabId === 'function') ? getActiveTabId() : '1';
+        const file = getFileArray(tabId)[index];
+        if (!file) return;
+
+        const isImage = file.type.includes('image');
+        let modalContent = '';
+
+        if (isImage) {
+            const url = URL.createObjectURL(file);
+            modalContent = `<img src="${url}" class="img-fluid rounded" style="max-height: 75vh;" alt="${file.name}">`;
+        } else if (file.type === 'application/pdf') {
+            const url = URL.createObjectURL(file);
+            modalContent = `<iframe src="${url}" style="width:100%; height:75vh; border:none;" allowfullscreen></iframe>`;
+        } else {
+            modalContent = `<p class="text-center p-5">Preview tidak tersedia untuk tipe file ini.</p>`;
+        }
+
+        const modalHTML = `
+            <div class="modal fade" id="filePreviewModal" tabindex="-1">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-truncate">${file.name}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body p-3">
+                            ${modalContent}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+        const oldModal = document.getElementById('filePreviewModal');
+        if (oldModal) oldModal.remove();
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        const modal = new bootstrap.Modal(document.getElementById('filePreviewModal'));
+        modal.show();
+    };
+
+    // =====================================================================
+    // HAPUS FILE — scoped ke tabId
+    // =====================================================================
+    window.hapusFile = function(index, tabId) {
+        if (!tabId) tabId = (typeof getActiveTabId === 'function') ? getActiveTabId() : '1';
+        const files = getFileArray(tabId);
+        if (confirm(`Hapus file "${files[index].name}"?`)) {
+            files.splice(index, 1);
+            tampilkanFilePreview(tabId);
+            syncFileInput(tabId);
+        }
+    };
+
+    window.hapusSemuaFile = function(tabId) {
+        if (!tabId) tabId = (typeof getActiveTabId === 'function') ? getActiveTabId() : '1';
+        const files = getFileArray(tabId);
+        if (confirm(`Hapus SEMUA ${files.length} file?`)) {
+            setFileArray(tabId, []);
+            tampilkanFilePreview(tabId);
+            syncFileInput(tabId);
+        }
+    };
+
+    // =====================================================================
+    // SYNC FILE INPUT — scoped ke tabId
+    // =====================================================================
+    function syncFileInput(tabId) {
+        if (!tabId) tabId = (typeof getActiveTabId === 'function') ? getActiveTabId() : '1';
+        const input = getFileInputByTabId(tabId);
+        if (!input) return;
+
+        const dt = new DataTransfer();
+        getFileArray(tabId).forEach(file => dt.items.add(file));
+        input.files = dt.files;
+        console.log('🔄 File input synced for tab ' + tabId + ':', input.files.length, 'file');
+    }
+
+    // =====================================================================
+    // PASANG LISTENER — scoped ke container tab tertentu
+    // =====================================================================
+    function pasangListenerUpload(tabId) {
+        if (!tabId) tabId = (typeof getActiveTabId === 'function') ? getActiveTabId() : '1';
+        const input = getFileInputByTabId(tabId);
+        if (input) {
+            // Hindari duplikat listener
+            input.onchange = null;
+            input.onchange = function(e) {
+                const targetTabId = getTabIdFromElement(e.target) || tabId;
+                if (e.target.files && e.target.files.length > 0) {
+                    const files = getFileArray(targetTabId);
+                    Array.from(e.target.files).forEach(file => {
+                        if (!files.some(f => f.name === file.name)) {
+                            files.push(file);
+                        }
+                    });
+                    tampilkanFilePreview(targetTabId);
+                    syncFileInput(targetTabId);
+                }
+            };
+            console.log('✅ Listener upload aktif untuk tab ' + tabId);
+        } else {
+            console.warn('⚠️ Input file tidak ditemukan untuk tab ' + tabId);
+        }
+    }
+
+    // =====================================================================
+    // INISIALISASI — pasang listener untuk semua tab yang ada
+    // =====================================================================
+    function initUploadAllTabs() {
+        const containers = document.querySelectorAll('.lk-form-container');
+        if (containers.length > 0) {
+            containers.forEach(container => {
+                const tid = container.getAttribute('data-lk-id');
+                if (tid) {
+                    pasangListenerUpload(tid);
+                    tampilkanFilePreview(tid);
+                }
+            });
+        } else {
+            // Fallback: belum ada .lk-form-container, coba tab 1
+            pasangListenerUpload('1');
+            tampilkanFilePreview('1');
+        }
+    }
+
+    // Jalankan saat DOM siap
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initUploadAllTabs);
+    } else {
+        initUploadAllTabs();
+    }
+    // Fallback untuk lazy-loaded tab
+    setTimeout(initUploadAllTabs, 1500);
+
+    // Expose untuk dipanggil dari luar (misal saat tab baru ditambahkan)
+    window.initGaugeBlockUpload = initUploadAllTabs;
+    window.pasangListenerUploadGaugeBlock = pasangListenerUpload;
+
+    console.log('✅ Script Upload + Modal Preview (Multi-Tab) siap');
+</script>
 
 
                 <div class="mt-5">
@@ -674,15 +1064,19 @@
       </td>
 
       <!-- Input Nama Dikalibrasi oleh -->
-      <td style="border: 1px solid black; padding: 10px; vertical-align: middle;">
-        <label class="form-label fw-bold small d-block mb-2">Nama :</label>
-        <input type="text" name="calibrated_by" class="form-control form-control-sm text-center" placeholder="Masukkan nama">
-      </td>
+     <td style="border: 1px solid black; padding: 10px; vertical-align: middle;">
+    <label class="form-label fw-bold small d-block mb-2">Nama :</label>
+    <input type="text" 
+           name="calibrated_by" 
+           class="form-control form-control-sm text-center" 
+           value="{{ old('calibrated_by', auth()->user()->nama ?? $calibration->calibratedBy ?? '') }}"
+           placeholder="Masukkan nama" readonly>
+</td>
 
       <!-- Input Nama Diperiksa oleh -->
       <td style="border: 1px solid black; padding: 10px; vertical-align: middle;">
         <label class="form-label fw-bold small d-block mb-2">Nama :</label>
-        <input type="text" name="verified_by" class="form-control form-control-sm text-center" placeholder="Masukkan nama">
+        <input type="text" name="verified_by" class="form-control form-control-sm text-center" placeholder="-" readonly>
       </td>
     </tr>
   </table>
@@ -691,13 +1085,13 @@
                 <!-- Submit Button Section -->
                 <div class="row mt-5">
                     <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
-                        </button>
+                       <button type="button" id="btnSimpanSemua" onclick="submitSemuaForm()" class="btn btn-primary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                                    <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
+                                </button>
                         
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
-                        </button>
+                        <!--<button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-redo me-2"></i>Reset Form-->
+                        <!--</button>-->
                     </div>
                 </div>
 
@@ -706,139 +1100,540 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
 <script>
-// JavaScript form validation
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('kalibrasiForm');
+// ==========================================
+// STORAGE PER TAB - GAUGE BLOCK
+// ==========================================
+if (typeof window.tempFormDataStore === 'undefined') {
+    window.tempFormDataStore = {};
+}
+if (typeof window.isRestoring === 'undefined') {
+    window.isRestoring = false;
+}
+if (typeof window.tabSubmitStatus === 'undefined') {
+    window.tabSubmitStatus = {};
+}
+
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+
+var currentActiveTabId = '1';
+
+// ==========================================
+// FUNGSI GET TAB AKTIF
+// ==========================================
+function getActiveTabId() {
+    const activePane = document.querySelector('.tab-pane.active');
+    if (activePane && activePane.id && activePane.id.startsWith('lk-pane-')) {
+        const tabId = activePane.id.replace('lk-pane-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
     
-    form.addEventListener('submit', function(e) {
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
+    const activeTabButton = document.querySelector('.nav-link.active');
+    if (activeTabButton && activeTabButton.id && activeTabButton.id.startsWith('lk-tab-')) {
+        const tabId = activeTabButton.id.replace('lk-tab-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+    
+    const containers = document.querySelectorAll('.lk-form-container');
+    for (let i = 0; i < containers.length; i++) {
+        const style = window.getComputedStyle(containers[i]);
+        if (style.display !== 'none') {
+            const tabId = containers[i].getAttribute('data-lk-id');
+            if (tabId) return tabId;
+        }
+    }
+    
+    return currentActiveTabId;
+}
+
+function updateActiveTab(tabId) {
+    currentActiveTabId = tabId;
+    console.log(`🔄 Global active tab updated to: ${tabId}`);
+}
+
+// ==========================================
+// FUNGSI UNTUK MENONAKTIFKAN REQUIRED
+// ==========================================
+function disableRequiredOnHiddenForms() {
+    console.log('🔧 disableRequiredOnHiddenForms called for Gauge Block');
+    
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    
+    allForms.forEach((form, index) => {
+        const formIndex = index + 1;
+        const container = form.closest('.lk-form-container');
+        const isVisible = container && window.getComputedStyle(container).display !== 'none';
         
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                isValid = false;
-                field.style.borderColor = '#dc3545';
-            }
-        });
-
-        if (!isValid) {
-            e.preventDefault();
-            alert('Harap isi semua field yang wajib diisi!');
-            return;
+        console.log(`📌 Form ${formIndex}: isVisible=${isVisible}`);
+        
+        const requiredInputs = form.querySelectorAll('[required]');
+        
+        if (!isVisible) {
+            requiredInputs.forEach(input => {
+                console.log(`🔧 Disabling required for: ${input.name}`);
+                input.removeAttribute('required');
+                input.setAttribute('data-required-temp', 'true');
+            });
+        } else {
+            requiredInputs.forEach(input => {
+                if (input.hasAttribute('data-required-temp')) {
+                    console.log(`🔧 Re-enabling required for: ${input.name}`);
+                    input.setAttribute('required', 'required');
+                    input.removeAttribute('data-required-temp');
+                }
+            });
         }
-
-        const alatStandar = form.querySelectorAll('input[name="alat_standar[]"]:checked');
-        if (alatStandar.length === 0) {
-            e.preventDefault();
-            alert('Pilih minimal 1 alat standar!');
-            return;
-        }
-
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
-        submitBtn.disabled = true;
     });
-});
-</script>
+}
 
-<script>
-// Fungsi untuk update kapasitas secara real-time dari range max
-function updateKapasitas() {
-    const maxInput = document.getElementById('rentang_ukur_max');
-    const kapasitasInput = document.getElementById('kapasitas');
+function restoreRequiredOnAllForms() {
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    allForms.forEach(form => {
+        form.querySelectorAll('[data-required-temp]').forEach(input => {
+            input.setAttribute('required', 'required');
+            input.removeAttribute('data-required-temp');
+        });
+    });
+}
+
+// ==========================================
+// UPDATE FORM TYPE UNTUK GAUGE BLOCK
+// ==========================================
+function updateFormType(selectedAlat, formIndex = 1, tabId = null) {
+    const manualInputContainer = document.getElementById(`manualInputContainer_${formIndex}`);
+    const manualInput = document.getElementById(`nama_alat_manual_${formIndex}`);
+    const finalInput = document.getElementById(`nama_alat_final_${formIndex}`);
     
-    // Ambil nilai dari rentang max
-    const maxValue = parseFloat(maxInput.value);
+    if (!manualInputContainer || !manualInput) return;
     
-    // Update kapasitas dengan nilai dari rentang max
-    if (!isNaN(maxValue)) {
-        // Format angka dengan 1 digit desimal
-        kapasitasInput.value = maxValue.toFixed(1);
+    if (selectedAlat === 'MANUAL_INPUT') {
+        manualInputContainer.style.display = 'block';
+        manualInput.required = true;
+        if (finalInput) finalInput.value = '';
     } else {
-        kapasitasInput.value = '';
+        manualInputContainer.style.display = 'none';
+        manualInput.required = false;
+        manualInput.value = '';
+        if (finalInput && selectedAlat) finalInput.value = selectedAlat;
     }
 }
 
-// Event listener saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-    const maxInput = document.getElementById('rentang_ukur_max');
-    
-    // Tambahkan event listener untuk paste event juga
-    maxInput.addEventListener('paste', function(e) {
-        // Biarkan paste terjadi, lalu update kapasitas setelah 10ms
-        setTimeout(updateKapasitas, 10);
-    });
-    
-    // Juga update saat halaman pertama kali dimuat (jika ada nilai default di range max)
-    updateKapasitas();
-});
-</script>
-
-
-
-<script>
-// Fungsi format Type Alat - menerima huruf, angka, titik, koma, dash, slash, spasi
-function formatTypeAlat(input) {
-    // Izinkan: huruf, angka, titik, koma, dash, slash, spasi, kurung, tanda petik
-    // Tidak perlu mengubah value, hanya validasi input
-    const regex = /[^A-Za-z0-9\s.,\-\/()"'&]/g;
-    if (regex.test(input.value)) {
-        input.value = input.value.replace(regex, '');
+function syncNamaAlat(formIndex = 1) {
+    const manualInput = document.getElementById(`nama_alat_manual_${formIndex}`);
+    const finalInput = document.getElementById(`nama_alat_final_${formIndex}`);
+    if (manualInput && finalInput) {
+        finalInput.value = manualInput.value;
     }
 }
 
-// Fungsi format No. Seri - menerima huruf, angka, titik, koma, dash, slash
-function formatNoSeri(input) {
-    // Izinkan: huruf, angka, titik, koma, dash, slash
-    // Tidak perlu mengubah value, hanya validasi input
-    const regex = /[^A-Za-z0-9.,\-\/]/g;
-    if (regex.test(input.value)) {
-        input.value = input.value.replace(regex, '');
-    }
-}
-</script>
-
-
-<script>
-// Fungsi untuk format input number yang bisa menerima koma
-function formatNumberInput(input) {
-    // Ambil nilai input
-    let value = input.value;
-    
-    // Ganti koma dengan titik (untuk browser yang mengizinkan koma)
-    value = value.replace(',', '.');
-    
-    // Jika ada lebih dari satu titik, hapus yang berlebih
-    const dotCount = (value.match(/\./g) || []).length;
-    if (dotCount > 1) {
-        // Simpan bagian sebelum titik pertama dan setelah titik terakhir
-        const firstPart = value.substring(0, value.indexOf('.') + 1);
-        const lastPart = value.substring(value.lastIndexOf('.') + 1);
-        value = firstPart + lastPart.replace(/\./g, '');
-    }
-    
-    // Update nilai input jika ada perubahan
-    if (value !== input.value) {
-        input.value = value;
-    }
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
-// Event listener untuk menangani paste
-document.addEventListener('DOMContentLoaded', function() {
-    const numberInputs = document.querySelectorAll('input[type="number"]');
+// ==========================================
+// HANDLE SAVE SUCCESS UNTUK GAUGE BLOCK
+// ==========================================
+// ==========================================
+// HANDLE SAVE SUCCESS UNTUK GAUGE BLOCK (BUTTON PASTEL - NO HOVER)
+// ==========================================
+window.handleSaveSuccess = function(tabId, data) {
+    console.log('🎉 handleSaveSuccess called for Gauge Block tab:', tabId, data);
     
-    numberInputs.forEach(input => {
-        input.addEventListener('paste', function(e) {
-            // Biarkan paste terjadi dulu
-            setTimeout(() => {
-                formatNumberInput(this);
-            }, 10);
+    const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+    if (!container) {
+        console.error(`Container for tab ${tabId} not found!`);
+        return;
+    }
+
+    const tabButton = document.getElementById(`lk-tab-${tabId}`);
+    if (tabButton) {
+        tabButton.classList.add('tab-saved');
+        const badge = tabButton.querySelector('.badge');
+        if (badge) {
+            badge.className = 'badge badge-success ml-1';
+            badge.innerHTML = '<i class="fas fa-check mr-1"></i>Tersimpan';
+        }
+    }
+
+    const formName = container.getAttribute('data-form-name') || 'Gauge Block';
+    const calibrationId = data.calibration_id || data.id || '-';
+    const printLabelUrl = data.print_label_url || `/calibrations/${calibrationId}/print-label`;
+    
+    tabSubmitStatus[tabId] = {
+        success: true,
+        calibrationId: calibrationId,
+        printLabelUrl: printLabelUrl,
+        formName: formName,
+        timestamp: Date.now()
+    };
+    
+   container.innerHTML = `
+    <div class="save-success-overlay text-center p-5 fade-in" style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+       <div class="mb-4">
+                    <i class="fas fa-check-circle text-success fa-5x"></i>
+                </div>
+                <h3 class="text-success mb-2">Simpan Berhasil!</h3>
+                <p class="mb-3" style="color: black;">Data kalibrasi untuk <strong>${escapeHtml(formName)}</strong> telah berhasil disimpan ke database.</p>
+                
+                <div class="d-inline-block mb-4 p-3" style="border-radius: 12px; text-align: left; background: white; border: 1px solid #ddd;">
+                    <i class="fas fa-info-circle mr-2" style="color: #0d6efd;"></i>
+                    <strong style="color: black;">ID Kalibrasi:</strong> <code style="background: #f5f5f5; color: black; font-weight: bold;">${escapeHtml(calibrationId)}</code>
+                    <br>
+                    <small style="color: black;">Status: <span class="badge bg-success">Draft</span></small>
+                </div>
+        
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+            <!-- Button Cetak Label - Blue -->
+            <button type="button" class="btn btn-primary btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="window.open('${printLabelUrl}', '_blank')">
+                <i class="fas fa-print me-2"></i> Cetak Label
+            </button>
+            
+            <!-- Button Input Lagi - Green -->
+            <button type="button" class="btn btn-success btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="resetTabForNewScan(${tabId})">
+                <i class="fas fa-plus-circle me-2"></i> Input Lagi
+            </button>
+            
+            <!-- Button Tutup Tab - Red -->
+            <button type="button" class="btn btn-danger btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="removeTab(${tabId})">
+                <i class="fas fa-times me-2"></i> Tutup Tab
+            </button>
+        </div>
+        
+        <div class="mt-3 text-muted small">
+            <i class="fas fa-info-circle me-1"></i> Data tersimpan sebagai Draft. 
+            Klik <strong>Cetak Label</strong> untuk mencetak, atau <strong>Input Lagi</strong> untuk melanjutkan kalibrasi berikutnya.
+        </div>
+    </div>
+`;
+
+    const finishContainer = document.getElementById('finish-action-container');
+    if (finishContainer) finishContainer.classList.remove('d-none');
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Data Tersimpan!',
+            html: `<strong>${escapeHtml(formName)}</strong><br>ID: ${calibrationId}`,
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
         });
+    }
+};
+
+window.resetTabForNewScan = function(tabId) {
+    if (confirm('Data yang belum disimpan akan hilang. Lanjutkan?')) {
+        delete tabSubmitStatus[tabId];
+        location.reload();
+    }
+};
+
+window.removeTab = function(tabId) {
+    if (tabId == 1) {
+        alert('Tab utama tidak bisa ditutup!');
+        return;
+    }
+    if (confirm(`Apakah Anda yakin ingin menutup Form ${tabId}?`)) {
+        delete tabSubmitStatus[tabId];
+        delete tempFormDataStore[tabId];
+        const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+        if (container) container.remove();
+        const tabBtn = document.getElementById(`lk-tab-${tabId}`);
+        if (tabBtn) tabBtn.remove();
+        const firstContainer = document.querySelector('.lk-form-container[data-lk-id="1"]');
+        if (firstContainer) firstContainer.style.display = 'block';
+        updateActiveTab('1');
+    }
+};
+
+async function submitSemuaForm() {
+    const activeTabId = getActiveTabId();
+    console.log('📌 Submitting Gauge Block from active tab:', activeTabId);
+
+    const activeContainer = document.querySelector(`.lk-form-container[data-lk-id="${activeTabId}"]`);
+    if (!activeContainer) {
+        alert('Container form tidak ditemukan!');
+        return;
+    }
+
+    let form = activeContainer.querySelector('#kalibrasiForm')
+        || activeContainer.querySelector('form[id^="kalibrasiForm"]')
+        || activeContainer.querySelector('form');
+
+    if (!form) {
+        alert('Form tidak ditemukan!');
+        return;
+    }
+
+    console.log(`✅ Form Gauge Block ditemukan di tab ${activeTabId}`);
+
+    form.setAttribute('novalidate', 'novalidate');
+    form.noValidate = true;
+
+    // =========================================================
+    // VALIDASI ALAT STANDAR
+    // =========================================================
+    let alatStandarValues = [];
+    const checkboxes = form.querySelectorAll('input[name="alat_standar[]"]:checked');
+    if (checkboxes.length > 0) {
+        checkboxes.forEach(cb => {
+            if (cb.value) alatStandarValues.push(cb.value);
+        });
+    } else {
+        const alatStandarHidden = form.querySelector('input[name="alat_standar_text"]');
+        const alatStandarSpan = form.querySelector('.alat-standar-text');
+        let singleValue = '';
+        if (alatStandarHidden && alatStandarHidden.value) {
+            singleValue = alatStandarHidden.value;
+        } else if (alatStandarSpan && alatStandarSpan.innerText) {
+            singleValue = alatStandarSpan.innerText.trim();
+        }
+        if (singleValue) alatStandarValues.push(singleValue);
+    }
+    if (alatStandarValues.length === 0) {
+        alatStandarValues = ['Mesin ULM 01-600D'];
+    }
+
+    // =========================================================
+    // VALIDASI DATA PENGUKURAN
+    // =========================================================
+    let hasMeasurementData = false;
+    for (let i = 1; i <= 15; i++) {
+        const titikUkur = form.querySelector(`input[name="titikUkur_${i}"]`)?.value;
+        const std = form.querySelector(`input[name="STD_${i}"]`)?.value;
+        const noSeri = form.querySelector(`input[name="NoSeri_${i}"]`)?.value;
+        if (titikUkur || std || noSeri) hasMeasurementData = true;
+    }
+
+    const btn = document.getElementById('btnSimpanSemua');
+    if (!btn) {
+        alert('Tombol simpan tidak ditemukan!');
+        return;
+    }
+
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan Data...';
+
+    try {
+    const formData = new FormData(form);
+    formData.append('form_type', 'gauge_block');
+
+    // Alat standar
+    formData.delete('alat_standar_text');
+    formData.delete('alat_standar[]');
+    alatStandarValues.forEach(value => {
+        formData.append('alat_standar[]', value);
     });
+
+    // ====================================================================
+    // ATTACHMENT HANDLING — 3-layer fallback
+    // ====================================================================
+    formData.delete('attachments');
+    formData.delete('attachments[]');
+
+    // Layer 1: per-tab array (paling diutamakan)
+    const tabFileArray = window['fileGaugeBlock_tab_' + activeTabId] || [];
+
+    // Layer 2: file input milik form aktif
+    const fileInputEl = form.querySelector('input[type="file"][name="attachments[]"]')
+        || form.querySelector('input[type="file"][id="attachments"]')
+        || document.getElementById('attachments');
+    const inputFiles = fileInputEl && fileInputEl.files.length > 0
+        ? Array.from(fileInputEl.files)
+        : [];
+
+    const fileSumber = tabFileArray.length > 0
+        ? tabFileArray
+        : inputFiles;
+
+    console.log('📎 [GaugeBlock] Attachment debug:', {
+        activeTabId,
+        tabArrayLen: tabFileArray.length,
+        inputFilesLen: inputFiles.length,
+        fileSumberLen: fileSumber.length,
+        fileInputFound: !!fileInputEl
+    });
+
+    if (fileSumber.length > 0) {
+        console.log(`📎 Menambahkan ${fileSumber.length} file ke FormData (tab ${activeTabId})`);
+        fileSumber.forEach((file, i) => {
+            formData.append('attachments[]', file, file.name);
+            console.log(`   File ${i+1}: ${file.name} (${file.size} bytes)`);
+        });
+    } else {
+        console.warn('⚠️ Tidak ada file — tab array kosong DAN file input kosong untuk tab ' + activeTabId);
+    }
+
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    if (csrfToken) {
+        formData.append('_token', csrfToken);
+    }
+
+    console.log('📤 Mengirim data Gauge Block dari tab:', activeTabId);
+    console.log('📤 Jumlah file di tab ini:', fileSumber.length);
+
+    const response = await fetch('/calibrations', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    });
+
+    const contentType = response.headers.get('content-type');
+    let result;
+    if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
+    } else {
+        const text = await response.text();
+        console.error('Non-JSON response:', text.substring(0, 500));
+        throw new Error('Server mengembalikan response yang tidak valid');
+    }
+
+    if (!response.ok) {
+        throw new Error(result.error || `Gagal menyimpan data: ${response.status}`);
+    }
+
+    let formName = 'Gauge Block';
+    const selectNamaAlat = form.querySelector('select[name="nama_alat"]');
+    if (selectNamaAlat && selectNamaAlat.value && selectNamaAlat.value !== 'MANUAL_INPUT') {
+        formName = selectNamaAlat.value;
+    } else {
+        const manualNamaAlat = form.querySelector('input[name="nama_alat_manual"]');
+        if (manualNamaAlat && manualNamaAlat.value) {
+            formName = manualNamaAlat.value;
+        }
+    }
+    activeContainer.setAttribute('data-form-name', formName);
+
+    // Reset file setelah sukses (hanya untuk tab yang baru saja disimpan)
+    window['fileGaugeBlock_tab_' + activeTabId] = [];
+    const fileInput = form.querySelector('input[type="file"][name="attachments[]"]')
+        || form.querySelector('input[type="file"][id="attachments"]');
+    if (fileInput) fileInput.value = '';
+    tampilkanFilePreview(activeTabId);
+
+    console.log('📌 Save success for Gauge Block tab:', activeTabId);
+
+    if (typeof window.handleSaveSuccess === 'function') {
+        window.handleSaveSuccess(activeTabId, result);
+    } else {
+        alert('Data berhasil disimpan!');
+    }
+
+} catch (err) {
+    console.error('Submit error:', err);
+    alert('Error: ' + err.message);
+} finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+}
+}
+
+// ==========================================
+// SETUP TAB SWITCHING
+// ==========================================
+function setupTabSwitching() {
+    $(document).on('shown.bs.tab', 'button[data-toggle="tab"]', function (e) {
+        const targetId = $(e.target).attr('id');
+        if (targetId && targetId.startsWith('lk-tab-')) {
+            const tabId = targetId.replace('lk-tab-', '');
+            console.log('🎯 Tab switched to:', tabId);
+            updateActiveTab(tabId);
+            
+            document.querySelectorAll('.lk-form-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            
+            const targetContainer = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+            if (targetContainer) {
+                targetContainer.style.display = 'block';
+            }
+
+            // ✅ Re-init listener upload untuk tab yang baru aktif
+            if (typeof pasangListenerUpload === 'function') {
+                pasangListenerUpload(tabId);
+            }
+            if (typeof tampilkanFilePreview === 'function') {
+                tampilkanFilePreview(tabId);
+            }
+        }
+    });
+    
+    const activeButton = document.querySelector('.nav-link.active');
+    if (activeButton && activeButton.id) {
+        const tabId = activeButton.id.replace('lk-tab-', '');
+        updateActiveTab(tabId);
+    }
+}
+
+// ==========================================
+// INISIALISASI
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Content Loaded - Initializing Gauge Block...');
+    
+    setupTabSwitching();
+    
+    // ✅ Init listener upload untuk semua tab yang sudah ada
+    if (typeof initUploadAllTabs === 'function') {
+        initUploadAllTabs();
+    } else if (typeof window.initGaugeBlockUpload === 'function') {
+        window.initGaugeBlockUpload();
+    }
+    
+    const selectAlat = document.getElementById('nama_alat_select_1');
+    if (selectAlat) {
+        updateFormType(selectAlat.value);
+        selectAlat.addEventListener('change', function() {
+            updateFormType(this.value);
+        });
+    }
+    
+    const manualInput = document.getElementById('nama_alat_manual_1');
+    if (manualInput) {
+        manualInput.addEventListener('input', function() {
+            syncNamaAlat(1);
+        });
+    }
+    
+    setTimeout(() => {
+        disableRequiredOnHiddenForms();
+    }, 500);
+    
+    console.log('✅ Gauge Block initialization complete!');
 });
 </script>
+
 
 </body>
 

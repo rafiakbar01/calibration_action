@@ -24,6 +24,7 @@ class AddIrThermometer extends Model
     protected $fillable = [
         'calibration_id',
         'jarakKalibrasi',
+        'emisivitas',
     ];
 
     /**
@@ -32,7 +33,7 @@ class AddIrThermometer extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'jarakKalibrasi' => 'decimal:5',
+        'jarakKalibrasi' => 'string',
     ];
 
     /**

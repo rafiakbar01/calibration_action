@@ -54,6 +54,7 @@
           <option value="teknisi"      {{ old('role') == 'teknisi' ? 'selected' : '' }}>Teknisi</option>
           <option value="checker"      {{ old('role') == 'checker' ? 'selected' : '' }}>Checker</option>
           <option value="approver"     {{ old('role') == 'approver' ? 'selected' : '' }}>Approver</option>
+          <option value="ppic"         {{ old('role') == 'ppic' ? 'selected' : '' }}>PPIC</option>
         </select>
       </div>
 

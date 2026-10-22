@@ -189,20 +189,36 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                    <tr>
-                            <td style="width: 20%;">
+                     <tr>
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Thread Gauge"
-                                    placeholder="Thread Gauge"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Thread Gauge">Thread Gauge</option>
+                                    <option value="MANUAL_INPUT">-- Input Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
                         </tr>
+                  
 
                     <!-- Merek & Kode Alat -->
                     <tr>
@@ -405,22 +421,22 @@
                                 <td><input type="number"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                   
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                   
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                   
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -429,22 +445,22 @@
                                 <td><input type="number"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                   
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                   
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                   
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -774,10 +790,10 @@
           </tr>
           <tr style="background: #fafafa;">
             <th style="border: 1px solid #555; padding: 8px;">
-              <select name="satuan_go" style="width: 100%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; font-size: 14px;">
-                <option value="mm">mm</option>
-                <option value="inch">inch</option>
-              </select>
+                <input type="text" 
+                       name="satuan_go" 
+                       value="mm"
+                       style="width: 100%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; font-size: 14px; text-align: center;">
             </th>
             <th style="border: 1px solid #555; padding: 8px; text-align: center;">Posisi</th>
             <th style="border: 1px solid #555; padding: 8px; text-align: center;">X</th>
@@ -787,14 +803,14 @@
           <!-- ATAS -->
           <tr>
             <td rowspan="4" style="border: 1px solid #555; padding: 10px; vertical-align: middle;">
-              <input type="number" step="any" name="nilai_nominal_go" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;">
+              <input type="text" name="nilai_nominal_go" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;">
             </td>
             <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Atas</td>
             <td style="border: 1px solid #555; padding: 8px; height: 50px;">
-              <input type="number" step="any" name="go_atas_x" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+              <input type="text" name="go_atas_x" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </td>
             <td style="border: 1px solid #555; padding: 8px; height: 50px;">
-              <input type="number" step="any" name="go_atas_y" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+              <input type="text" name="go_atas_y" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </td>
           </tr>
           <tr>
@@ -806,10 +822,10 @@
           <tr>
             <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Bawah</td>
             <td style="border: 1px solid #555; padding: 8px; height: 50px;">
-              <input type="number" step="any" name="go_bawah_x" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+              <input type="text" name="go_bawah_x" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </td>
             <td style="border: 1px solid #555; padding: 8px; height: 50px;">
-              <input type="number" step="any" name="go_bawah_y" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+              <input type="text" name="go_bawah_y" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </td>
           </tr>
           <tr>
@@ -836,11 +852,11 @@
             <th colspan="3" style="border: 1px solid #555; padding: 10px; text-align: center;">Penunjukan Standard</th>
           </tr>
           <tr style="background: #fafafa;">
-            <th style="border: 1px solid #555; padding: 8px;">
-              <select name="satuan_not_go" style="width: 100%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; font-size: 14px;">
-                <option value="mm">mm</option>
-                <option value="inch">inch</option>
-              </select>
+           <th style="border: 1px solid #555; padding: 8px;">
+                <input type="text" 
+                       name="satuan_not_go" 
+                       value="mm"
+                       style="width: 100%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; font-size: 14px; text-align: center;">
             </th>
             <th style="border: 1px solid #555; padding: 8px; text-align: center;">Posisi</th>
             <th style="border: 1px solid #555; padding: 8px; text-align: center;">X</th>
@@ -850,14 +866,14 @@
           <!-- ATAS -->
           <tr>
             <td rowspan="4" style="border: 1px solid #555; padding: 10px; vertical-align: middle;">
-              <input type="number" step="any" name="nilai_nominal_not_go" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;">
+              <input type="text" name="nilai_nominal_not_go" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;">
             </td>
             <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Atas</td>
             <td style="border: 1px solid #555; padding: 8px; height: 50px;">
-              <input type="number" step="any" name="not_go_atas_x" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+              <input type="text" name="not_go_atas_x" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </td>
             <td style="border: 1px solid #555; padding: 8px; height: 50px;">
-              <input type="number" step="any" name="not_go_atas_y" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+              <input type="text" name="not_go_atas_y" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </td>
           </tr>
           <tr>
@@ -869,10 +885,10 @@
           <tr>
             <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Bawah</td>
             <td style="border: 1px solid #555; padding: 8px; height: 50px;">
-              <input type="number" step="any" name="not_go_bawah_x" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+              <input type="text" name="not_go_bawah_x" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </td>
             <td style="border: 1px solid #555; padding: 8px; height: 50px;">
-              <input type="number" step="any" name="not_go_bawah_y" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+              <input type="text" name="not_go_bawah_y" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </td>
           </tr>
           <tr>
@@ -909,16 +925,16 @@
   <!-- Ukuran Pitch & Sudut Ulir -->
   <div style="width:50%;">
     <!-- Ukuran Pitch -->
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
-      <strong style="white-space:nowrap;">Ukuran Pitch :</strong>
-      <input type="number" step="any"
-             name="ukuran_pitch"
-             style="width:90px; border:none; border-bottom:1px solid #000; background:transparent; text-align:center;"
-             placeholder="0.00">
-      <select name="satuan_pitch" style="border:none; border-bottom:1px solid #000; background:transparent; font-size:11pt; padding:2px 4px;">
-        <option value="mm">mm</option>
-        <option value="inch">inch</option>
-      </select>
+   <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+        <strong style="white-space:nowrap;">Ukuran Pitch :</strong>
+        <input type="text"
+               name="ukuran_pitch"
+               style="width:90px; border:none; border-bottom:1px solid #000; background:transparent; text-align:center;"
+               placeholder="0.00">
+        <input type="text"
+               name="satuan_pitch"
+               style="width:60px; border:none; border-bottom:1px solid #000; background:transparent; text-align:center; font-size:11pt; padding:2px 4px;"
+               placeholder="satuan">
     </div>
 
     <!-- Sudut Ulir -->
@@ -939,8 +955,8 @@
           <input type="radio" name="sudut_ulir_type" value="lainnya"> 
           <span style="display:flex; align-items:center; gap:8px;">
             Lainnya :
-            <input type="number"
-                   step="any" 
+            <input type="text"
+                   
                    name="sudut_ulir_lainnya"
                    style="width:60px; border:none; border-bottom:1px solid #000; background:transparent; text-align:center; padding:2px;"
                    placeholder="0">
@@ -1056,7 +1072,7 @@
             <input type="text" name="ring_gauge_manual" 
                    style="width: 100px; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 2px 0; background: transparent; text-align: center;" 
                    placeholder="ketik manual">
-            mm
+             
         </td>
         <!-- Hapus garis atas dan bawah sepenuhnya pada sel TTD -->
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none; padding: 10pt 0; vertical-align: top; font-size: 11pt; text-align: left;">
@@ -1078,7 +1094,7 @@
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
             Nama : 
             <input type="text" name="calibrated_by" 
-                style="width: 100%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;" 
+                style="width: 100%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;"    value="{{ auth()->user()->nama ?? 'System' }}"  readonly
                 >
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
@@ -1097,9 +1113,9 @@
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
                         </button>
                         
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
-                        </button>
+                        <!--<button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-redo me-2"></i>Reset Form-->
+                        <!--</button>-->
                     </div>
                 </div>
 
@@ -1110,6 +1126,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
 // JavaScript form validation
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('kalibrasiForm');

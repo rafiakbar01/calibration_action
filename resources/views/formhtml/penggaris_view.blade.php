@@ -374,7 +374,34 @@
                     </td>
                 </tr>
 
-            
+    <!--                <tr>-->
+    <!--    <td>-->
+    <!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+    <!--    </td>-->
+    <!--    <td colspan="3">-->
+    <!--        <div class="d-flex align-items-center">-->
+                <!-- Tampilkan nilai Min -->
+    <!--            <div class="me-3" style="width: 45%;">-->
+    <!--                <input type="text" -->
+    <!--                       class="kalibrasi-input" -->
+    <!--                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" -->
+    <!--                       readonly -->
+    <!--                       style="width: 100%;">-->
+    <!--            </div>-->
+                
+    <!--            <span class="me-3" style="color: #000000;">-</span>-->
+                
+                <!-- Tampilkan nilai Max -->
+    <!--            <div style="width: 45%;">-->
+    <!--                <input type="text" -->
+    <!--                       class="kalibrasi-input" -->
+    <!--                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" -->
+    <!--                       readonly -->
+    <!--                       style="width: 100%;">-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </td>-->
+    <!--</tr>-->
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -435,8 +462,8 @@
                     <td colspan="3">
                         <div class="d-flex">
                             <div class="form-check me-5">
-                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }} disabled>
+                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab.PT PAS" id="lab" 
+                                       {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
@@ -453,6 +480,15 @@
                     </td>
                     <td colspan="3">
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
+                    </td>
+                </tr>
+                
+                   <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
                     </td>
                 </tr>
             </table>
@@ -523,125 +559,95 @@
                 <span style="font-size: 16px; font-weight: bold; color: #000000;">Uji Skala Nominal</span>
             </div>
             
-            <table class="kalibrasi-data-table">
-    <tr style="background: #d9d9d9;">
-        <td style="width: 20%;">
-            <span style="font-weight: bold; color: #000000;">Nilai Nominal</span>
+           <table class="kalibrasi-data-table" style="width: 100%; border-collapse: collapse; border: 2px solid #000000;">
+    <tr style="background: #d9d9d9; height: 30px;">
+        <td style="width: 20%; border: 2px solid #000000; text-align: center; vertical-align: middle;">
+            <span style="font-weight: bold; color: #000000; font-size: 10pt;">Nilai Nominal</span>
         </td>
-        <td colspan="5">
-            <span style="font-weight: bold; color: #000000;">Penunjukan Alat</span>
+        <td colspan="5" style="border: 2px solid #000000; text-align: center; vertical-align: middle;">
+            <span style="font-weight: bold; color: #000000; font-size: 10pt;">Penunjukan Alat</span>
         </td>
     </tr>
-    <tr style="background: #e8e8e8;">
-        <td>
-            <span style="font-weight: bold; color: #000000;">
-                Unit (
-                <span style="
-                    display: inline-block;
-                    width: 60px;
-                    text-align: center;
-                    font-weight: bold;
-                    color: #000000;
-                    border-bottom: 1px solid #000;
-                ">
-                    {{ $calibration->unit ?? '' }}
-                </span>
-                )
+    <tr style="background: #e8e8e8; height: 30px;">
+        <td style="border: 2px solid #000000; text-align: center; vertical-align: middle;">
+            <span style="font-weight: bold; color: #000000; font-size: 9.5pt;">
+                Unit ({{ $calibration->headPenggaris->satuan_unit ?? '-' }})
             </span>
         </td>
-        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">1</span></td>
-        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">2</span></td>
-        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">3</span></td>
-        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">4</span></td>
-        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">5</span></td>
+        <td style="width: 16%; border: 2px solid #000000; text-align: center; vertical-align: middle;">
+            <span style="font-weight: bold; color: #000000; font-size: 10pt;">1</span>
+        </td>
+        <td style="width: 16%; border: 2px solid #000000; text-align: center; vertical-align: middle;">
+            <span style="font-weight: bold; color: #000000; font-size: 10pt;">2</span>
+        </td>
+        <td style="width: 16%; border: 2px solid #000000; text-align: center; vertical-align: middle;">
+            <span style="font-weight: bold; color: #000000; font-size: 10pt;">3</span>
+        </td>
+        <td style="width: 16%; border: 2px solid #000000; text-align: center; vertical-align: middle;">
+            <span style="font-weight: bold; color: #000000; font-size: 10pt;">4</span>
+        </td>
+        <td style="width: 16%; border: 2px solid #000000; text-align: center; vertical-align: middle;">
+            <span style="font-weight: bold; color: #000000; font-size: 10pt;">5</span>
+        </td>
     </tr>
 
     @php
-        // Jumlah baris yang harus ditampilkan
-        $jumlahBaris = 16; // atau sesuai kebutuhan
+        // Ambil semua data detail yang ada
+        $allDetails = isset($calibration) && $calibration->detailPenggariss 
+            ? $calibration->detailPenggariss 
+            : collect();
         
-        // Ambil data yang ada dari database
-        $existingDetails = $calibration->detailPenggariss ?? collect();
-        
-        // Buat array untuk semua baris
-        $allRows = [];
-        
-        // Isi dengan data yang ada
-        $counter = 0;
-        foreach ($existingDetails as $detail) {
-            if ($counter < $jumlahBaris) {
-                $allRows[] = [
-                    'titikUkur' => $detail->titikUkur ?? '',
-                    'ulangan01' => $detail->ulangan01 ?? '',
-                    'ulangan02' => $detail->ulangan02 ?? '',
-                    'ulangan03' => $detail->ulangan03 ?? '',
-                    'ulangan04' => $detail->ulangan04 ?? '',
-                    'ulangan05' => $detail->ulangan05 ?? '',
-                ];
-                $counter++;
-            }
-        }
-        
-        // Tambahkan baris kosong hingga mencapai jumlah baris yang diinginkan
-        while (count($allRows) < $jumlahBaris) {
-            $allRows[] = [
-                'titikUkur' => '',
-                'ulangan01' => '',
-                'ulangan02' => '',
-                'ulangan03' => '',
-                'ulangan04' => '',
-                'ulangan05' => '',
-            ];
-        }
+        // Tentukan berapa baris yang ingin ditampilkan
+        // Misalnya: minimal 10 baris, atau sesuai jumlah data
+        $minRows = 10; // Minimal tampilkan 10 baris
+        $totalRows = max($minRows, $allDetails->count());
     @endphp
 
-    {{-- Tampilkan SEMUA baris --}}
-    @foreach($allRows as $index => $row)
-        <tr style="height:21.3pt;">
-            <td style="border:2px solid #000; padding:0;">
+    <!-- Tampilkan baris sesuai data yang ada -->
+    @for($i = 0; $i < $totalRows; $i++)
+        @php
+            $detail = $allDetails->get($i) ?? null;
+        @endphp
+        
+        <tr style="height: 30pt;">
+            <td style="border: 2px solid #000000; padding: 0;">
                 <input type="text" 
-                       name="detail[titikUkur][]" 
-                       value="{{ old('detail.titikUkur.' . $index, $row['titikUkur']) }}"
-                       readonly
-                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+                       value="{{ $detail->titikUkur ?? '-' }}" 
+                       readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:6px;box-sizing:border-box;">
             </td>
-            <td style="border:2px solid #000; padding:0;">
+            <td style="border: 2px solid #000000; padding: 0;">
                 <input type="text" 
-                       name="detail[ulangan01][]" 
-                       value="{{ old('detail.ulangan01.' . $index, $row['ulangan01']) }}"
-                       readonly
-                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+                       value="{{ $detail->ulangan01 ?? '-' }}" 
+                       readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:6px;box-sizing:border-box;">
             </td>
-            <td style="border:2px solid #000; padding:0;">
+            <td style="border: 2px solid #000000; padding: 0;">
                 <input type="text" 
-                       name="detail[ulangan02][]" 
-                       value="{{ old('detail.ulangan02.' . $index, $row['ulangan02']) }}"
-                       readonly
-                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+                       value="{{ $detail->ulangan02 ?? '-' }}" 
+                       readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:6px;box-sizing:border-box;">
             </td>
-            <td style="border:2px solid #000; padding:0;">
+            <td style="border: 2px solid #000000; padding: 0;">
                 <input type="text" 
-                       name="detail[ulangan03][]" 
-                       value="{{ old('detail.ulangan03.' . $index, $row['ulangan03']) }}"
-                       readonly
-                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+                       value="{{ $detail->ulangan03 ?? '-' }}" 
+                       readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:6px;box-sizing:border-box;">
             </td>
-            <td style="border:2px solid #000; padding:0;">
+            <td style="border: 2px solid #000000; padding: 0;">
                 <input type="text" 
-                       name="detail[ulangan04][]" 
-                       value="{{ old('detail.ulangan04.' . $index, $row['ulangan04']) }}"
-                       readonly
-                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+                       value="{{ $detail->ulangan04 ?? '-' }}" 
+                       readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:6px;box-sizing:border-box;">
             </td>
-            <td style="border:2px solid #000; padding:0;">
+            <td style="border: 2px solid #000000; padding: 0;">
                 <input type="text" 
-                       name="detail[ulangan05][]" 
-                       value="{{ old('detail.ulangan05.' . $index, $row['ulangan05']) }}"
-                       readonly
-                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+                       value="{{ $detail->ulangan05 ?? '-' }}" 
+                       readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:6px;box-sizing:border-box;">
             </td>
         </tr>
-    @endforeach
+    @endfor
 </table>
 
          
@@ -705,9 +711,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

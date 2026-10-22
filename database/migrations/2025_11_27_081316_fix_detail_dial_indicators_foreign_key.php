@@ -8,14 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Hapus foreign key constraint yang salah
         Schema::table('detail_dial_indicators', function (Blueprint $table) {
-            $table->dropForeign(['calibration_id']);
-        });
+            // Hapus bagian drop foreign key (karena tidak perlu atau bikin error)
 
-        // Tambahkan foreign key constraint yang benar
-        Schema::table('detail_dial_indicators', function (Blueprint $table) {
-            $table->foreign('calibration_id')
+            // Tambahkan foreign key constraint yang benar (dengan nama custom biar aman)
+            $table->foreign('calibration_id', 'fk_detail_dial_indicators_calibration_id')
                   ->references('id')
                   ->on('calibrations')
                   ->onDelete('cascade');
@@ -25,15 +22,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('detail_dial_indicators', function (Blueprint $table) {
-            $table->dropForeign(['calibration_id']);
-        });
+            // Untuk rollback: hapus foreign key yang baru dibuat
+            $table->dropForeign('fk_detail_dial_indicators_calibration_id');
 
-        // Kembalikan ke yang salah (untuk rollback)
-        Schema::table('detail_dial_indicators', function (Blueprint $table) {
-            $table->foreign('calibration_id')
-                  ->references('id')
-                  ->on('head_dial_indicator')
-                  ->onDelete('cascade');
+            // Opsional: kalau mau revert ke foreign key lama (head_dial_indicator)
+            // $table->foreign('calibration_id')
+            //       ->references('id')
+            //       ->on('head_dial_indicator')
+            //       ->onDelete('cascade');
         });
     }
 };

@@ -660,9 +660,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

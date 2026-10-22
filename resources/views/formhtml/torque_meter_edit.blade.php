@@ -293,6 +293,175 @@
         }
     }
 </style>
+    <style>
+        /* ── Standar Picker Widget ── */
+        .sp-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 34px;
+            background: transparent;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        .sp-display {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 3px;
+            padding: 4px 6px;
+            min-height: 34px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .sp-placeholder {
+            color: #aaa;
+            font-size: 11px;
+            font-style: italic;
+            user-select: none;
+        }
+        .sp-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #e0f2fe; /* Background biru muda cerah */
+            color: #0369a1; /* Teks biru cerah */
+            border: 1px solid #bae6fd; /* Border tipis biru muda */
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            user-select: none;
+        }
+        .sp-chip .sp-remove {
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 1;
+            color: #ef4444; /* Warna merah cerah untuk tombol hapus agar terlihat jelas */
+            font-weight: bold;
+            margin-left: 2px;
+        }
+        .sp-chip .sp-remove:hover { color: #b91c1c; }
+        .sp-dropdown {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            background: #fff;
+            border: 2px solid #1e40af;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(30,64,175,0.18);
+            min-width: 220px;
+            max-height: 340px;
+            overflow-y: auto;
+            padding: 6px 0;
+            font-family: 'Inter', sans-serif;
+        }
+        .sp-dropdown.open { display: block; }
+        .sp-search {
+            width: calc(100% - 16px);
+            margin: 6px 8px;
+            padding: 5px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 12px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .sp-search:focus { border-color: #1e40af; }
+        .sp-group-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b7280;
+            padding: 6px 12px 2px;
+        }
+        .sp-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.12s;
+            color: #1f2937;
+        }
+        .sp-option:hover { background: #eff6ff; }
+        .sp-option.selected { background: #dbeafe; font-weight: 600; color: #1e40af; }
+        .sp-option .sp-check {
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            flex-shrink: 0;
+            background: #fff;
+        }
+        .sp-option.selected .sp-check {
+            background: #1e40af;
+            border-color: #1e40af;
+            color: #fff;
+        }
+        .sp-divider { border: none; border-top: 1px solid #f3f4f6; margin: 4px 0; }
+        .sp-count-badge {
+            display: inline-block;
+            background: #1e40af;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 0px 5px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+    </style>
+    <style>
+    /* Tombol Copy Standar Picker */
+    .copy-standar-btn {
+        transition: all 0.2s ease;
+        border-color: #3b82f6;
+        color: #3b82f6;
+        background-color: white;
+        font-weight: bold;
+    }
+    
+    .copy-standar-btn:hover {
+        background-color: #3b82f6;
+        color: white;
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+    
+    .copy-standar-btn:active {
+        transform: scale(0.95);
+    }
+    
+    /* Animasi flash hijau saat copy berhasil */
+    @keyframes flashGreen {
+        0%, 100% { background-color: transparent; }
+        50% { background-color: #d4edda; }
+    }
+    
+    .copy-success-flash {
+        animation: flashGreen 0.6s ease;
+    }
+    
+    /* Toast notification animation */
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>
+
 </head>
 <body>
     <div class="container my-4">
@@ -432,8 +601,8 @@
         <td colspan="3">
             <div class="d-flex">
                 <div class="form-check me-5">
-                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab"
-                        {{ old('tempatKalibrasi', $calibration->tempatKalibrasi) == 'lab' ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab.PT PAS"
+                        {{ old('tempatKalibrasi', $calibration->tempatKalibrasi) == 'lab.PT PAS' ? 'checked' : '' }}>
                     <label class="form-check-label">Lab. PT.PAS</label>
                 </div>
                 <div class="form-check">
@@ -451,6 +620,14 @@
         <td colspan="3">
             <input type="text" name="lokasiPT" class="kalibrasi-input"
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
+        </td>
+    </tr>
+
+<tr>
+        <td><p style="margin:0;color:#000;">Kode TH</p></td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input"
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
         </td>
     </tr>
 
@@ -505,20 +682,20 @@
             </tr>
             <tr>
                 <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
-                <td><input type="text" name="RT_condition1" class="kondisi-input"
+                <td><input  type="number" step="any"  name="RT_condition1" class="kondisi-input"
                            value="{{ old('RT_condition1', $calibration->RT_condition1) }}"></td>
-                <td><input type="text" name="RT_condition2" class="kondisi-input"
+                <td><input  type="number" step="any"  name="RT_condition2" class="kondisi-input"
                            value="{{ old('RT_condition2', $calibration->RT_condition2) }}"></td>
-                <td><input type="text" name="RT_condition3" class="kondisi-input"
+                <td><input  type="number" step="any"  name="RT_condition3" class="kondisi-input"
                            value="{{ old('RT_condition3', $calibration->RT_condition3) }}"></td>
             </tr>
             <tr>
                 <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
-                <td><input type="text" name="RH_condition1" class="kondisi-input"
+                <td><input  type="number" step="any"  name="RH_condition1" class="kondisi-input"
                            value="{{ old('RH_condition1', $calibration->RH_condition1) }}"></td>
-                <td><input type="text" name="RH_condition2" class="kondisi-input"
+                <td><input  type="number" step="any"  name="RH_condition2" class="kondisi-input"
                            value="{{ old('RH_condition2', $calibration->RH_condition2) }}"></td>
-                <td><input type="text" name="RH_condition3" class="kondisi-input"
+                <td><input  type="number" step="any"  name="RH_condition3" class="kondisi-input"
                            value="{{ old('RH_condition3', $calibration->RH_condition3) }}"></td>
             </tr>
         </table>
@@ -558,7 +735,7 @@
             <td style="padding-right: 8px; vertical-align: middle;">
                 
 <input type="text"
-       name="radiusAlatBantuSTD"
+       name="kodeAlatBantuSTD"
        value="{{ old('kodeAlatBantuSTD', $calibration->addTorqueMeter->kodeAlatBantuSTD ?? '') }}"
        style="width: 70px; padding: 6px 4px; font-size: 12pt; text-align: center; border: none; background: transparent;">
 <span style="font-size:12pt;">)</span>
@@ -576,7 +753,7 @@
 <!-- Tabel Utama - EDIT MODE -->
 <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:0.6pt; border:1pt solid #000000; border-collapse:collapse; width:100%; max-width:1500px;">
     
-    <!-- Header Tabel -->
+    <!-- Header Tabel - Baris 1 -->
     <tr style="height:14pt">
         <td colspan="2" style="width:128px; border:1pt solid #000000; vertical-align:middle; text-align:center">
             <p style="margin:0; font-size:10pt;"><strong>Beban Anak Timbang</strong></p>
@@ -584,25 +761,55 @@
         <td colspan="2" rowspan="2" style="width:172px; border:1pt solid #000000; vertical-align:middle; text-align:center">
             <p style="margin:0; font-size:10pt;"><strong>Kode Anak timbangan yang digunakan</strong></p>
         </td>
+        <td colspan="6" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>Penunjukan Standard</strong></p>
+        </td>
+    </tr>
+    
+    <!-- Header Tabel - Baris 2 -->
+    <tr style="height:13pt">
+        <td colspan="2" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <!-- Empty cell - bagian dari rowspan di atas -->
+        </td>
         <td colspan="3" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
-            <p style="margin:0; font-size:10pt;">
+            <p style="margin:0; font-size:10pt; line-height:1.15">
                 <strong>Clockwise (</strong>
                 <input type="text"
-                       name="clockwise_unit"
-                       value="{{ $calibration->headTorqueWrench->clockwise_unit ?? '' }}"
-                       style="width:120px; border:none; border-bottom:1px dotted #000; outline:none; background:transparent; font-size:10pt; text-align:center;"
-                       placeholder="..........">
+                    name="satuan_cw"
+                    value="{{ old('satuan_cw', $calibration->headTorqueMeter->satuan_cw ?? '') }}"
+                    style="
+                        width:120px;
+                        border:none;
+                        outline:none;
+                        background:transparent;
+                        font-size:10pt;
+                        letter-spacing:normal;
+                        text-align:center;
+                        padding:0;
+                        margin:0;
+                    "
+                    placeholder="..........">
                 <strong>)</strong>
             </p>
         </td>
         <td colspan="3" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
-            <p style="margin:0; font-size:10pt;">
+            <p style="margin:0; font-size:10pt; line-height:1.15">
                 <strong>Counter Clockwise (</strong>
                 <input type="text"
-                       name="counter_clockwise_unit"
-                       value="{{ $calibration->headTorqueWrench->counter_clockwise_unit ?? '' }}"
-                       style="width:120px; border:none; border-bottom:1px dotted #000; outline:none; background:transparent; font-size:10pt; text-align:center;"
-                       placeholder="..........">
+                    name="satuan_ccw"
+                    value="{{ old('satuan_ccw', $calibration->headTorqueMeter->satuan_ccw ?? '') }}"
+                    style="
+                        width:120px;
+                        border:none;
+                        outline:none;
+                        background:transparent;
+                        font-size:10pt;
+                        letter-spacing:normal;
+                        text-align:center;
+                        padding:0;
+                        margin:0;
+                    "
+                    placeholder=".........">
                 <strong>)</strong>
             </p>
         </td>
@@ -612,130 +819,184 @@
     <tr style="height:14pt">
         <td colspan="2" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
             <p style="margin:0; font-size:8.5pt;">
-                <span style="font-family:'Lucida Console'; letter-spacing:0.5em">
-                    (
-                    <input type="text"
-                           name="nominal_unit"
-                           value="{{ $calibration->headTorqueWrench->nominal_unit ?? '' }}"
-                           style="width:120px; border:none; border-bottom:1px dotted #000; outline:none; background:transparent; font-family:'Lucida Console'; font-size:7.5pt; letter-spacing:0.5em; text-align:center;"
-                           placeholder="...................">
-                    )
-                </span>
+                (
+                <input type="text"
+                    name="satuan_titikUkur"
+                    value="{{ old('satuan_titikUkur', $calibration->headTorqueMeter->satuan_titikUkur ?? '') }}"
+                    style="
+                        border:none;
+                        outline:none;
+                        background:transparent;
+                        width:120px;
+                        font-size:10pt;
+                        letter-spacing:normal;
+                        text-align:center;
+                        padding:0;
+                        margin:0;
+                    "
+                    placeholder="...................">
+                )
             </p>
         </td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>1</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>2</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>3</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>1</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>2</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>3</strong></td>
+        <td colspan="2" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <!-- Empty cell - satuan untuk Kode Anak Timbang -->
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>1</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>2</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>3</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>1</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>2</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>3</strong></p>
+        </td>
     </tr>
     
-    <!-- Baris 1-13 dengan looping untuk EDIT -->
-    @php
-        // Ambil data dari calibration->detailTorqueMeters
-        $detailData = isset($calibration) && $calibration->detailTorqueMeters ? 
-                     $calibration->detailTorqueMeters->sortBy('id') : 
-                     collect();
-        
-        // SELALU tampilkan 13 baris
-        $dataByRow = [];
-        for ($i = 0; $i < 13; $i++) {
-            $dataByRow[$i] = $detailData->get($i) ?? null;
-        }
-    @endphp
-    
-    @for($i = 0; $i < 13; $i++)
+    <!-- Baris 1-13 dengan input field untuk edit -->
+    @for($i = 1; $i <= 13; $i++)
         @php
-            $rowNumber = $i + 1;
-            $detail = $dataByRow[$i] ?? null;
-            $detailId = $detail->id ?? null;
+            // Cari data untuk baris ini
+            $detail = isset($calibration) && $calibration->detailTorqueMeters && $calibration->detailTorqueMeters->count() > 0 
+                ? ($calibration->detailTorqueMeters->get($i-1) ?? null) 
+                : null;
+            
+            // Tentukan nama input yang konsisten
+            $inputName = "detail[" . ($i-1) . "]";
         @endphp
+        
         <tr style="height:14pt">
-            <!-- Beban Anak Timbang -->
-            <td colspan="2" style="border:1pt solid #000000; vertical-align:top; padding:1px;">
-                <input type="number"
-                       step="any"
-                       name="torque[{{ $i }}][titikUkurBeban]"
-                       value="{{ $detail->titikUkurBeban ?? '' }}"
-                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:4px 2px; font-size:9pt; text-align:center;"
-                       placeholder="-">
-                @if($detailId)
-                    <input type="hidden" name="torque[{{ $i }}][id]" value="{{ $detailId }}">
+            <!-- Beban Anak Timbang — HANYA ANGKA (anti E/e) -->
+            <td colspan="2" style="border:1pt solid #000000; vertical-align:top">
+                @if($detail && $detail->id)
+                    <input type="hidden" name="{{ $inputName }}[id]" value="{{ $detail->id }}">
                 @endif
+                <input type="hidden" name="{{ $inputName }}[row_index]" value="{{ $i-1 }}">
+                <input type="text"
+                    step="any"
+                  
+                    class="number-only"
+                    style="width:100%; height:100%; border:none; padding:4px 2px; font-size:9pt; text-align:center;"
+                    name="{{ $inputName }}[titikUkurBeban]"
+                    value="{{ old($inputName . '.titikUkurBeban', $detail->titikUkurBeban ?? '') }}"
+                    placeholder="-">
             </td>
 
-            <!-- Kode Anak Timbang -->
-            <td colspan="2" style="border:1pt solid #000000; vertical-align:top; padding:1px;">
-                <input type="text"
-                       name="torque[{{ $i }}][kodeStandard]"
-                       value="{{ $detail->kodeStandard ?? '' }}"
-                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:4px 2px; font-size:9pt; text-align:center;"
-                       placeholder="-">
+            <!-- Kode Anak Timbang — BISA HURUF + ANGKA -->
+            <td colspan="2" style="border:1pt solid #000000; vertical-align:top; position: relative;">
+                <div style="display: flex; align-items: center; gap: 4px; padding: 4px 8px;">
+                    <div style="flex: 1; min-width: 0;">
+                        <input type="hidden"
+                               name="{{ $inputName }}[kodeStandard]"
+                               id="sp_hidden_{{ $i }}"
+                               value="{{ old($inputName . '.kodeStandard', $detail->kodeStandard ?? '') }}">
+                        <div class="sp-wrapper"
+                             data-id="{{ $i }}"
+                             data-value="{{ old($inputName . '.kodeStandard', $detail->kodeStandard ?? '') }}"
+                             style="min-height: 28px;">
+                            <div class="sp-display" id="sp_display_{{ $i }}" style="min-height: 28px; padding: 2px 4px;">
+                                <span class="sp-placeholder" id="sp_ph_{{ $i }}" style="font-size: 10px;">Pilih standar...</span>
+                            </div>
+                            <div class="sp-dropdown" id="sp_dd_{{ $i }}">
+                                <input type="text" class="sp-search" placeholder="Cari kode..." id="sp_search_{{ $i }}">
+                                <div class="sp-option-list" id="sp_list_{{ $i }}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @if ($i > 1)
+                    <button type="button" 
+                            class="btn btn-sm btn-outline-secondary" 
+                            onclick="copyStandar({{ $i - 1 }}, {{ $i }})"
+                            title="Copy dari baris sebelumnya"
+                            style="padding: 2px 6px; font-size: 10px;">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    @endif
+                </div>
             </td>
 
             <!-- Clockwise 1 -->
-            <td style="border:1pt solid #000000; vertical-align:top; padding:1px;">
-                <input type="number"
-                       step="any"
-                       name="torque[{{ $i }}][cw1]"
-                       value="{{ $detail->cw1 ?? '' }}"
-                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:4px; font-size:9pt; text-align:center;"
-                       placeholder="-">
+            <td style="border:1pt solid #000000; vertical-align:top">
+                <input type="text"
+                     
+                  
+                    class="number-only"
+                    style="width:100%; height:100%; border:none; padding:4px; font-size:9pt; text-align:center;"
+                    name="{{ $inputName }}[cw1]"
+                    value="{{ old($inputName . '.cw1', $detail->cw1 ?? '') }}"
+                    placeholder="-">
             </td>
             
             <!-- Clockwise 2 -->
-            <td style="border:1pt solid #000000; vertical-align:top; padding:1px;">
-                <input type="number"
-                       step="any"
-                       name="torque[{{ $i }}][cw2]"
-                       value="{{ $detail->cw2 ?? '' }}"
-                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:4px; font-size:9pt; text-align:center;"
-                       placeholder="-">
+            <td style="border:1pt solid #000000; vertical-align:top">
+                <input type="text"
+                     
+                  
+                    class="number-only"
+                    style="width:100%; height:100%; border:none; padding:4px; font-size:9pt; text-align:center;"
+                    name="{{ $inputName }}[cw2]"
+                    value="{{ old($inputName . '.cw2', $detail->cw2 ?? '') }}"
+                    placeholder="-">
             </td>
             
             <!-- Clockwise 3 -->
-            <td style="border:1pt solid #000000; vertical-align:top; padding:1px;">
-                <input type="number"
-                       step="any"
-                       name="torque[{{ $i }}][cw3]"
-                       value="{{ $detail->cw3 ?? '' }}"
-                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:4px; font-size:9pt; text-align:center;"
-                       placeholder="-">
+            <td style="border:1pt solid #000000; vertical-align:top">
+                <input type="text"
+                     
+                  
+                    class="number-only"
+                    style="width:100%; height:100%; border:none; padding:4px; font-size:9pt; text-align:center;"
+                    name="{{ $inputName }}[cw3]"
+                    value="{{ old($inputName . '.cw3', $detail->cw3 ?? '') }}"
+                    placeholder="-">
             </td>
             
             <!-- Counter Clockwise 1 -->
-            <td style="border:1pt solid #000000; vertical-align:top; padding:1px;">
-                <input type="number"
-                       step="any"
-                       name="torque[{{ $i }}][ccw1]"
-                       value="{{ $detail->ccw1 ?? '' }}"
-                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:4px; font-size:9pt; text-align:center;"
-                       placeholder="-">
+            <td style="border:1pt solid #000000; vertical-align:top">
+                <input type="text"
+                     
+                  
+                    class="number-only"
+                    style="width:100%; height:100%; border:none; padding:4px; font-size:9pt; text-align:center;"
+                    name="{{ $inputName }}[ccw1]"
+                    value="{{ old($inputName . '.ccw1', $detail->ccw1 ?? '') }}"
+                    placeholder="-">
             </td>
             
             <!-- Counter Clockwise 2 -->
-            <td style="border:1pt solid #000000; vertical-align:top; padding:1px;">
-                <input type="number"
-                       step="any"
-                       name="torque[{{ $i }}][ccw2]"
-                       value="{{ $detail->ccw2 ?? '' }}"
-                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:4px; font-size:9pt; text-align:center;"
-                       placeholder="-">
+            <td style="border:1pt solid #000000; vertical-align:top">
+                <input type="text"
+                     
+                  
+                    class="number-only"
+                    style="width:100%; height:100%; border:none; padding:4px; font-size:9pt; text-align:center;"
+                    name="{{ $inputName }}[ccw2]"
+                    value="{{ old($inputName . '.ccw2', $detail->ccw2 ?? '') }}"
+                    placeholder="-">
             </td>
             
             <!-- Counter Clockwise 3 -->
-            <td style="border:1pt solid #000000; vertical-align:top; padding:1px;">
-                <input type="number"
-                       step="any"
-                       name="torque[{{ $i }}][ccw3]"
-                       value="{{ $detail->ccw3 ?? '' }}"
-                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:4px; font-size:9pt; text-align:center;"
-                       placeholder="-">
+            <td style="border:1pt solid #000000; vertical-align:top">
+                <input type="text"
+                    "
+                  
+                    class="number-only"
+                    style="width:100%; height:100%; border:none; padding:4px; font-size:9pt; text-align:center;"
+                    name="{{ $inputName }}[ccw3]"
+                    value="{{ old($inputName . '.ccw3', $detail->ccw3 ?? '') }}"
+                    placeholder="-">
             </td>
         </tr>
     @endfor
-    
 </table>
 
 <!-- Repeatability Clockwise - EDIT MODE -->
@@ -750,21 +1011,21 @@
 <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:0.6pt; border:1pt solid #000000; -aw-border-insideh:1pt single #000000; -aw-border-insidev:1pt single #000000; border-collapse:collapse; width: 100%; max-width: 450px;">
     <tr style="height:14pt">
         <td style="width:90pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCw01"
                    value="{{ $addTorqueMeter->repCw01 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCw02"
                    value="{{ $addTorqueMeter->repCw02 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCw03"
                    value="{{ $addTorqueMeter->repCw03 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -778,7 +1039,7 @@
                    placeholder="-">
         </td>
         <td style="width:45pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCw05"
                    value="{{ $addTorqueMeter->repCw05 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -787,21 +1048,21 @@
     </tr>
     <tr style="height:14pt">
         <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCw06"
                    value="{{ $addTorqueMeter->repCw06 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCw07"
                    value="{{ $addTorqueMeter->repCw07 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCw08"
                    value="{{ $addTorqueMeter->repCw08 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -815,7 +1076,7 @@
                    placeholder="-">
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCw10"
                    value="{{ $addTorqueMeter->repCw10 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -831,35 +1092,35 @@
 <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:0.6pt; border:1pt solid #000000; -aw-border-insideh:1pt single #000000; -aw-border-insidev:1pt single #000000; border-collapse:collapse; width: 100%; max-width: 450px;">
     <tr style="height:14pt">
         <td style="width:90pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCcw01"
                    value="{{ $addTorqueMeter->repCcw01 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCcw02"
                    value="{{ $addTorqueMeter->repCcw02 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCcw03"
                    value="{{ $addTorqueMeter->repCcw03 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCcw04"
                    value="{{ $addTorqueMeter->repCcw04 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCcw05"
                    value="{{ $addTorqueMeter->repCcw05 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -868,7 +1129,7 @@
     </tr>
     <tr style="height:14pt">
         <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCcw06"
                    value="{{ $addTorqueMeter->repCcw06 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -882,14 +1143,14 @@
                    placeholder="-">
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCcw08"
                    value="{{ $addTorqueMeter->repCcw08 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
                    placeholder="-">
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" step="any" 
+            <input type="text" 
                    name="repCcw09"
                    value="{{ $addTorqueMeter->repCcw09 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -970,8 +1231,8 @@
         <td style="border: 1pt solid #000; padding: 12px 8px; text-align: center; vertical-align: middle;">
            <div style="width: 92%; border-bottom: 1px solid #000; padding: 6px 4px; font-size: 10pt; text-align: center; min-height: 30px;">
     <input type="text"
-        name="calibratedBy"
-        value="{{ old('calibratedBy', $calibration->calibratedBy ?? '') }}"
+        name="verifiedBy"
+        value="{{ old('verifiedBy', $calibration->verifiedBy ?? '') }}"
         style="
             width:100%;
             border:none;
@@ -979,7 +1240,7 @@
             text-align:center;
             font-size:10pt;
             outline:none;
-        ">
+        " readonly>
 </div>
 
         </td>
@@ -1038,8 +1299,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -1112,7 +1378,7 @@
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data
@@ -1343,6 +1609,412 @@
             }
         });
     });
+</script>
+<script>
+/* ── Standar Picker (Multi-select chip) dengan Fitur Copy ── */
+(function () {
+    'use strict';
+
+    // Bangun list AT secara dinamis
+    var dynamicAtItems = [];
+    for (var i = 1; i <= 5; i++) {
+        dynamicAtItems.push('AT-5-' + (i < 10 ? '0' : '') + i);
+    }
+    for (var i = 1; i <= 6; i++) {
+        dynamicAtItems.push('AT-10-' + (i < 10 ? '0' : '') + i);
+    }
+    for (var i = 1; i <= 115; i++) {
+        dynamicAtItems.push('AT-20-' + (i < 10 ? '0' : '') + i);
+    }
+
+    var SP_OPTIONS = [
+        { group: 'M. Anak Timbangan', items: [
+            'M.001','M.002','M.003','M.004','M.005','M.006','M.007',
+            'M.008','M.009','M.010','M.011','M.012','M.013','M.014','M.015',
+            'M.016','M.017','M.018','M.019','M.020','M.021'
+        ]},
+        { group: 'AT. Anak Timbangan', items: dynamicAtItems }
+    ];
+    var SP_MAX = 5;
+    var activeDropdown = null;
+
+    // Helper untuk mencari elemen terkait sebuah wrapper (mengatasi masalah ID terduplikasi / tab dynamic)
+    function getPickerElements(wrapper) {
+        // Karena dropdown bisa dipindah ke body, kita beri referensi
+        var dd = wrapper._dropdownEl;
+        if (!dd) {
+            dd = wrapper.querySelector('.sp-dropdown');
+            if (dd) wrapper._dropdownEl = dd;
+        }
+        
+        return {
+            display: wrapper.querySelector('.sp-display'),
+            ph: wrapper.querySelector('.sp-placeholder'),
+            hidden: wrapper.parentElement ? wrapper.parentElement.querySelector('input[type="hidden"]') : null,
+            search: dd ? dd.querySelector('.sp-search') : null,
+            listEl: dd ? dd.querySelector('.sp-option-list') : null,
+            dd: dd
+        };
+    }
+
+    // ==========================================
+    // FUNGSI CORE STANDAR PICKER
+    // ==========================================
+    function buildOptionList(listEl, selected, searchVal) {
+        listEl.innerHTML = '';
+        var q = (searchVal || '').toLowerCase();
+        SP_OPTIONS.forEach(function (grp) {
+            var filtered = grp.items.filter(function (item) {
+                return !q || item.toLowerCase().includes(q);
+            });
+            if (!filtered.length) return;
+            var lbl = document.createElement('div');
+            lbl.className = 'sp-group-label';
+            lbl.textContent = grp.group;
+            listEl.appendChild(lbl);
+            filtered.forEach(function (item) {
+                var opt = document.createElement('div');
+                opt.className = 'sp-option' + (selected.includes(item) ? ' selected' : '');
+                opt.dataset.value = item;
+                opt.innerHTML =
+                    '<span class="sp-check">' + (selected.includes(item) ? '✓' : '') + '</span>' +
+                    '<span>' + item + '</span>';
+                listEl.appendChild(opt);
+            });
+            var div = document.createElement('hr');
+            div.className = 'sp-divider';
+            listEl.appendChild(div);
+        });
+    }
+
+    // 🔥 renderChips dengan sync dari hidden
+    window.renderChips = function(wrapper, selected) {
+        var els = getPickerElements(wrapper);
+        var display = els.display;
+        var ph = els.ph;
+        var hidden = els.hidden;
+
+        if (!display || !ph || !hidden) {
+            console.warn('Elements not found for wrapper:', wrapper.dataset.id);
+            return;
+        }
+
+        // 🔥 Sinkronkan selected dengan nilai di hidden
+        if (hidden.value) {
+            var hiddenSelected = hidden.value.split('+').filter(Boolean);
+            if (selected.length === 0 && hiddenSelected.length > 0) {
+                selected = hiddenSelected;
+            }
+        }
+
+        // Hapus chip lama
+        Array.from(display.children).forEach(function (c) {
+            if (c.classList.contains('sp-chip')) c.remove();
+        });
+
+        if (!selected || selected.length === 0) {
+            ph.style.display = '';
+            hidden.value = '';
+            wrapper.dataset.value = '';
+            return;
+        }
+
+        ph.style.display = 'none';
+        selected.forEach(function (val) {
+            var chip = document.createElement('span');
+            chip.className = 'sp-chip';
+            chip.innerHTML = val + '<span class="sp-remove" data-val="' + val + '">×</span>';
+            chip.querySelector('.sp-remove').addEventListener('click', function (e) {
+                e.stopPropagation();
+                var idx = selected.indexOf(val);
+                if (idx !== -1) {
+                    selected.splice(idx, 1);
+                    // 🔥 Update hidden dan wrapper
+                    hidden.value = selected.join('+');
+                    wrapper.dataset.value = selected.join('+');
+                    window.renderChips(wrapper, selected);
+                    refreshDropdown(wrapper, selected);
+                }
+            });
+            display.insertBefore(chip, ph);
+        });
+        hidden.value = selected.join('+');
+        wrapper.dataset.value = selected.join('+');
+    };
+
+    function refreshDropdown(wrapper, selected) {
+        var els = getPickerElements(wrapper);
+        if (!els.listEl) return;
+        buildOptionList(els.listEl, selected, els.search ? els.search.value : '');
+        attachOptionClicks(els.listEl, wrapper, selected);
+    }
+
+    function attachOptionClicks(listEl, wrapper, selected) {
+        listEl.querySelectorAll('.sp-option').forEach(function (opt) {
+            opt.removeEventListener('click', opt._clickHandler);
+            opt._clickHandler = function (e) {
+                e.stopPropagation();
+                var val = opt.dataset.value;
+                
+                // 🔥 Ambil data terbaru dari hidden input
+                var els = getPickerElements(wrapper);
+                var hidden = els.hidden;
+                if (hidden) {
+                    var currentValue = hidden.value;
+                    selected = currentValue ? currentValue.split('+').filter(Boolean) : [];
+                }
+                
+                var idx = selected.indexOf(val);
+                if (idx === -1) {
+                    if (selected.length >= SP_MAX) {
+                        showToast('Maksimal ' + SP_MAX + ' pilihan!');
+                        return;
+                    }
+                    selected.push(val);
+                } else {
+                    selected.splice(idx, 1);
+                }
+                
+                // Update
+                window.renderChips(wrapper, selected);
+                refreshDropdown(wrapper, selected);
+                
+                // 🔥 Update data-value di wrapper
+                wrapper.dataset.value = selected.join('+');
+            };
+            opt.addEventListener('click', opt._clickHandler);
+        });
+    }
+
+    function positionDropdown(wrapper, dd) {
+        if (!wrapper || !dd) return;
+        var rect = wrapper.getBoundingClientRect();
+        var spaceBelow = window.innerHeight - rect.bottom;
+        var spaceAbove = rect.top;
+        dd.style.left = rect.left + 'px';
+        dd.style.width = Math.max(220, rect.width) + 'px';
+        if (spaceBelow >= 200 || spaceBelow >= spaceAbove) {
+            dd.style.top = rect.bottom + 'px';
+            dd.style.bottom = 'auto';
+        } else {
+            dd.style.bottom = (window.innerHeight - rect.top) + 'px';
+            dd.style.top = 'auto';
+        }
+    }
+
+    function openDropdown(wrapper, selected) {
+        if (activeDropdown && activeDropdown !== wrapper) {
+            closeDropdown(activeDropdown);
+        }
+        var els = getPickerElements(wrapper);
+        var dd = els.dd;
+        if (!dd) {
+            console.warn('Dropdown not found for wrapper:', wrapper.dataset.id);
+            return;
+        }
+        if (dd.parentElement !== document.body) {
+            document.body.appendChild(dd);
+        }
+        positionDropdown(wrapper, dd);
+        dd.classList.add('open');
+        activeDropdown = wrapper;
+        if (els.search) { 
+            els.search.value = ''; 
+            setTimeout(function() { els.search.focus(); }, 50);
+        }
+        refreshDropdown(wrapper, selected);
+    }
+
+    function closeDropdown(wrapper) {
+        if (!wrapper) return;
+        var els = getPickerElements(wrapper);
+        if (els.dd) els.dd.classList.remove('open');
+        if (activeDropdown === wrapper) activeDropdown = null;
+    }
+
+    function initPicker(wrapper) {
+        if (wrapper.dataset.initialized) return;
+        wrapper.dataset.initialized = 'true';
+        
+        var rawVal = wrapper.dataset.value || '';
+        var selected = rawVal ? rawVal.split('+').map(function (s) { return s.trim(); }).filter(Boolean) : [];
+
+        var els = getPickerElements(wrapper);
+        var hidden = els.hidden;
+
+        // 🔥 Sinkronkan dengan hidden
+        if (hidden && hidden.value && selected.length === 0) {
+            selected = hidden.value.split('+').filter(Boolean);
+            wrapper.dataset.value = hidden.value;
+        }
+
+        window.renderChips(wrapper, selected);
+
+        if (els.search) {
+            els.search.addEventListener('input', function () {
+                refreshDropdown(wrapper, selected);
+            });
+            els.search.addEventListener('click', function (e) { e.stopPropagation(); });
+            els.search.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeDropdown(wrapper);
+            });
+        }
+
+        wrapper.removeEventListener('click', wrapper._clickHandler);
+        wrapper._clickHandler = function (e) {
+            var myEls = getPickerElements(wrapper);
+            if (myEls.dd && myEls.dd.classList.contains('open')) {
+                closeDropdown(wrapper);
+            } else {
+                openDropdown(wrapper, selected);
+            }
+        };
+        wrapper.addEventListener('click', wrapper._clickHandler);
+    }
+
+    // ==========================================
+    // 🔥 FUNGSI COPY STANDAR PICKER
+    // ==========================================
+    window.copyStandarPicker = function(formIndex, fromRow, toRow) {
+        // Fallback untuk file yang hanya mengoper 2 argumen
+        if (arguments.length === 2) {
+            toRow = fromRow;
+            fromRow = formIndex;
+            formIndex = null;
+        }
+        
+        // Coba pakai DOM relasional (jika button berada dalam satu baris TD yang sama/berdekatan)
+        // Agak tricky untuk copy row ke row. Gunakan class / tag.
+        // Asumsi form tabel statik: kita gunakanquerySelectorAll('.sp-wrapper') lalu kita cari by index
+        var wrappers = Array.from(document.querySelectorAll('.sp-wrapper'));
+        // Find wrapper with data-id == fromRow (menggunakan regex jika ada suffix tab)
+        var sourceWrapper = wrappers.find(w => w.dataset.id == fromRow || String(w.dataset.id).endsWith('_'+fromRow) || String(w.dataset.id).startsWith(fromRow+'_'));
+        var targetWrapper = wrappers.find(w => w.dataset.id == toRow || String(w.dataset.id).endsWith('_'+toRow) || String(w.dataset.id).startsWith(toRow+'_'));
+        
+        // Jika form index dikirim (timbangan asli), prioritaskan strict match
+        if (formIndex !== null) {
+            var firstHidden = document.querySelector('[id^="sp_hidden_"]');
+            var tabSuffix = '';
+            if (firstHidden) {
+                var match = firstHidden.id.match(/sp_hidden_\d+_\d+(_.*)/);
+                if (match) tabSuffix = match[1];
+            }
+            var wrapperIdTarget = formIndex + '_' + toRow + tabSuffix;
+            var wrapperIdSource = formIndex + '_' + fromRow + tabSuffix;
+            var strictTarget = wrappers.find(w => w.dataset.id == wrapperIdTarget);
+            var strictSource = wrappers.find(w => w.dataset.id == wrapperIdSource);
+            if (strictTarget) targetWrapper = strictTarget;
+            if (strictSource) sourceWrapper = strictSource;
+        }
+
+        if (!sourceWrapper) {
+            showToast('❌ Row ' + fromRow + ' tidak ditemukan!');
+            return;
+        }
+        if (!targetWrapper) {
+            showToast('❌ Row ' + toRow + ' tidak ditemukan!');
+            return;
+        }
+
+        var sourceEls = getPickerElements(sourceWrapper);
+        var sourceValue = sourceEls.hidden ? sourceEls.hidden.value : sourceWrapper.dataset.value;
+        var selected = sourceValue ? sourceValue.split('+').filter(Boolean) : [];
+        
+        var targetEls = getPickerElements(targetWrapper);
+        if (targetEls.hidden) {
+            targetEls.hidden.value = selected.join('+');
+        }
+        
+        targetWrapper.dataset.value = selected.join('+');
+        window.renderChips(targetWrapper, selected);
+        refreshDropdown(targetWrapper, selected);
+        
+        if (targetEls.display) {
+            var parentTd = targetEls.display.closest('td');
+            if (parentTd) {
+                parentTd.classList.add('copy-success-flash');
+                setTimeout(function() {
+                    parentTd.classList.remove('copy-success-flash');
+                }, 500);
+            }
+        }
+        
+        if (selected.length > 0) {
+            showToast('✅ Standar berhasil di-copy ke Row ' + toRow);
+        } else {
+            showToast('ℹ️ Row ' + fromRow + ' kosong, tidak ada yang di-copy');
+        }
+    };
+    
+    // Agar tombol copy versi lama (copyStandar) tetap work
+    window.copyStandar = window.copyStandarPicker;
+
+    // ==========================================
+    // FUNGSI NOTIFIKASI
+    // ==========================================
+    function showToast(message) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Informasi',
+                text: message,
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        } else {
+            alert(message);
+        }
+    }
+
+    // ==========================================
+    // INISIALISASI
+    // ==========================================
+    function initAllPickers() {
+        var wrappers = document.querySelectorAll('.sp-wrapper:not([data-initialized="true"])');
+        wrappers.forEach(function(wrapper) {
+            initPicker(wrapper);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAllPickers);
+    } else {
+        initAllPickers();
+    }
+    
+    // Observe DOM changes untuk menangkap tab dinamis (MutationObserver sangat direkomendasikan)
+    var observer = new MutationObserver(function(mutations) {
+        var uninitialized = document.querySelectorAll('.sp-wrapper:not([data-initialized="true"])');
+        if (uninitialized.length > 0) {
+            uninitialized.forEach(initPicker);
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    document.addEventListener('click', function(e) {
+        if (!activeDropdown) return;
+        var dd = getPickerElements(activeDropdown).dd;
+        if (!activeDropdown.contains(e.target) && dd && !dd.contains(e.target)) {
+            closeDropdown(activeDropdown);
+        }
+    });
+
+    window.addEventListener('scroll', function() {
+        if (activeDropdown) {
+            var dd = getPickerElements(activeDropdown).dd;
+            if (dd) positionDropdown(activeDropdown, dd);
+        }
+    }, true);
+    
+    window.addEventListener('resize', function() {
+        if (activeDropdown) {
+            var dd = getPickerElements(activeDropdown).dd;
+            if (dd) positionDropdown(activeDropdown, dd);
+        }
+    });
+})();
 </script>
 </body>
 </html>

@@ -77,6 +77,10 @@
                                     <td>{{ $calibration->pemilikAlat }}</td>
                                 </tr>
                                 <tr>
+                                    <td><strong>No. PO:</strong></td>
+                                    <td>{{ $calibration->no_po ?? '-' }}</td>
+                                </tr>
+                                <tr>
                                     <td><strong>Tanggal Masuk:</strong></td>
                                     <td>{{ \Carbon\Carbon::parse($calibration->tanggalMasuk)->format('d/m/Y') }}</td>
                                 </tr>

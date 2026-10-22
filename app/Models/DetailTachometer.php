@@ -24,13 +24,13 @@ class DetailTachometer extends Model
     ];
 
     protected $casts = [
-        'nilaiStandard' => 'decimal:5',
-        'rep01'         => 'decimal:5',
-        'rep02'         => 'decimal:5',
-        'rep03'         => 'decimal:5',
-        'rep04'         => 'decimal:5',
-        'rep05'         => 'decimal:5',
-        'resolusiAlat'  => 'decimal:5',
+        'nilaiStandard' => 'string',
+        'rep01'         => 'string',
+        'rep02'         => 'string',
+        'rep03'         => 'string',
+        'rep04'         => 'string',
+        'rep05'         => 'string',
+        'resolusiAlat'  => 'string',
         
     ];
 

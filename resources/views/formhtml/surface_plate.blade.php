@@ -283,21 +283,36 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                   <tr>
-                            <td style="width: 20%;">
+                      <tr>
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Meja Rata"
-                                    placeholder="Meja Rata"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Meja Rata">Meja Rata</option>
+                                    <option value="MANUAL_INPUT">-- Input Manual Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat secara manual"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
-                    </tr>
-
+                        </tr>
+                
 
                     <!-- Merek & Kode Alat -->
                     <tr>
@@ -338,33 +353,34 @@
                         </td>
                     </tr>
                     <!-- Rentang Ukur -->
-                    <!-- <tr>
-                        <td><p style="margin:0;color:#000; text-align: left;">Rentang Ukur</p></td>
+                      <tr>
+                        <td><p style="margin:0;color:#000">Rentang Ukur</p></td>
                         <td colspan="3">
                             <div class="d-flex align-items-center">
-                                <input type="number"
+                                <input type="text"
                                     name="rentang_ukur_min"
                                     class="kalibrasi-input me-3"
                                     value="0"
-                                    step="any"
+                                    
                                     style="width:45%;"
                                     placeholder="Masukkan Range Min"
                                     required>
 
                                 <span class="me-3">-</span>
 
-                                <input type="number"
+                                <input type="text"
                                     name="rentang_ukur_max"
                                     id="rentang_ukur_max"
                                     class="kalibrasi-input"
-                                    step="any"
+                                    
                                     style="width:45%;"
                                     placeholder="Masukkan Range Max"
                                     required
-                                    oninput="updateKapasitas()">
+                                    oninput="document.getElementById('kapasitas').value = this.value || ''"
+                                    onpaste="setTimeout(() => document.getElementById('kapasitas').value = this.value || '', 10)">
                             </div>
                         </td>
-                    </tr> -->
+                    </tr> 
 
                     <!-- Kapasitas / Resolusi -->
                     <tr>
@@ -452,7 +468,17 @@
                         </td>
                         <td colspan="3">
                             <div class="d-flex align-items-center">
-                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;" required>
+                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;"  >
+                            </div>
+                        </td>
+                    </tr>
+                        <tr>
+                        <td>
+                            <p style="margin: 0; color: #000000; text-align: left;">Kode TH</p>
+                        </td>
+                        <td colspan="3">
+                            <div class="d-flex align-items-center">
+                                <input type="text" name="kode_th" class="kalibrasi-input me-3" placeholder="Masukkan Kode TH" style="width: 60%;text-align: left;"  >
                             </div>
                         </td>
                     </tr>
@@ -496,49 +522,49 @@
                             </tr>
                             <tr>
                                 <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                       
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                       
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                       
                                         placeholder="0.0"
                                         required></td>
                             </tr>
                             <tr>
                                 <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                       
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                       
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                       
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -547,58 +573,96 @@
                 </div>
                 
                 
-             <style>
-/* Container responsif */
+            <style>
 .responsive-table-container {
     width: 100%;
     overflow-x: auto;
     margin: 20px 0;
     border: 1px solid #ddd;
     border-radius: 4px;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* Styling tabel */
 .setting-suhu-table {
     border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 650px;
     width: 100%;
-    min-width: 600px;
     font-family: Arial, sans-serif;
     font-size: 10pt;
     background: white;
 }
 
+/* ================================
+   CELL — PERKECIL PADDING
+   ================================ */
 .setting-suhu-table td {
     border: 1px solid #000;
-    padding: 6px 4px;
+    padding: 0;              /* <-- dari 6px 4px jadi 0 */
+    height: 26px;            /* <-- tinggi baris dipatok */
+    line-height: 1.2;        /* <-- rapatkan teks */
     text-align: center;
     vertical-align: middle;
 }
 
+/* ================================
+   LABEL BARIS (a1 - a13)
+   ================================ */
+.setting-suhu-table .row-label {
+    width: 16px;
+    min-width: 16px;
+    max-width: 16px;
+    font-weight: bold;
+    background: #f8f9fa;
+    padding: 0 1px;
+    line-height: 1.1;
+    font-size: 9pt;
+    text-align: center;
+}
+
+/* Cell kosong di header */
+.setting-suhu-table tr:first-child td:first-child {
+    width: 16px;
+    min-width: 16px;
+    max-width: 16px;
+    padding: 0;
+}
+
+/* ================================
+   HEADER (1 - 10)
+   ================================ */
 .setting-suhu-table .head {
+    width: 40px;
+    min-width: 40px;
     font-weight: bold;
     background: #f5f5f5;
     position: relative;
-    min-width: 50px;
+    padding: 2px 2px;        /* <-- dari 4px 2px */
+    height: 28px;
+    line-height: 1.1;
 }
 
-/* Styling untuk gambar panah di header */
 .arrow-container {
     position: relative;
     display: inline-block;
-    margin-left: 5px;
+    margin-left: 3px;
 }
 
 .header-arrow {
     vertical-align: middle;
 }
 
-/* Kolom keterangan dengan canvas drawing SIMPLE */
+/* ================================
+   KOLOM KETERANGAN
+   ================================ */
 .keterangan-cell {
-    width: 40%;
-    min-width: 250px;
+    width: 320px;
+    min-width: 320px;
     vertical-align: top;
-    padding: 12px;
+    padding: 8px;
     background: #f9f9f9;
+    text-align: left;
+    height: auto;            /* <-- penting: jangan dipatok */
 }
 
 .drawing-container {
@@ -607,27 +671,55 @@
     margin-top: 8px;
 }
 
+.canvas-wrapper {
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+    background: #fff;
+}
 
+/* ================================
+   INPUT — PERKECIL BIAR RAMPING
+   ================================ */
+.setting-suhu-table input {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;            /* <-- isi penuh cell */
+    text-align: center;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    padding: 2px 2px;        /* <-- dari 4px 2px */
+    box-sizing: border-box;
+    line-height: 1.2;
+}
 
+.setting-suhu-table input:focus {
+    background-color: #fff8e1;
+    border-radius: 2px;
+}
 
-/* Simple tools */
+/* ================================
+   TOOLS
+   ================================ */
 .simple-tools {
     background: #f0f0f0;
-    padding: 8px;
+    padding: 6px;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
 }
 
 .tool-btn {
-    padding: 4px 12px;
-    font-size: 10pt;
+    padding: 3px 10px;
+    font-size: 9pt;
     cursor: pointer;
     border: 1px solid #aaa;
     background: white;
     border-radius: 3px;
-    min-width: 60px;
 }
 
 .tool-btn:hover {
@@ -635,8 +727,8 @@
 }
 
 .color-btn {
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     border: 2px solid #999;
     cursor: pointer;
@@ -650,7 +742,7 @@
 }
 
 .size-btn {
-    padding: 2px 8px;
+    padding: 2px 6px;
     margin: 0 2px;
     border: 1px solid #999;
     cursor: pointer;
@@ -666,34 +758,6 @@
     display: none;
 }
 
-/* Input fields */
-.setting-suhu-table input {
-    width: 90%;
-    max-width: 80px;
-    text-align: center;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-family: Arial, sans-serif;
-    font-size: 10pt;
-    padding: 4px;
-}
-
-/* Row labels */
-.row-label {
-    font-weight: bold;
-    background: #f8f9fa;
-    min-width: 50px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .canvas-wrapper {
-        height: 230px;
-    }
-}
-
-/* Dual Mode Canvas */
 #drawCanvas {
     border: 1px solid #000 !important;
     background: #fff !important;
@@ -701,51 +765,20 @@
     display: block !important;
     width: 100% !important;
     height: 100% !important;
+    touch-action: none;
 }
 
-/* Mode selector buttons */
-#dotModeBtn, #drawModeBtn {
-    transition: all 0.3s !important;
-}
-
-#dotModeBtn:hover, #drawModeBtn:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
-}
-
-/* Notification */
-.notification {
-    position: fixed !important;
-    top: 10px !important;
-    right: 10px !important;
-    background: #333 !important;
-    color: white !important;
-    padding: 10px 15px !important;
-    border-radius: 4px !important;
-    z-index: 10000 !important;
-    font-size: 12px !important;
-    animation: slideIn 0.3s, fadeOut 0.5s 2.5s !important;
-}
-
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes fadeOut {
-    to { opacity: 0; }
-}
-
-/* Disabled buttons */
-.color-btn[disabled], .size-btn[disabled] {
-    opacity: 0.5 !important;
-    cursor: not-allowed !important;
-}
-
-/* Active mode indicator */
-.active-mode {
-    border: 3px solid #007bff !important;
-    box-shadow: 0 0 10px rgba(0,123,255,0.5) !important;
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media (max-width: 768px) {
+    .canvas-wrapper {
+        height: 230px;
+    }
+    .keterangan-cell {
+        width: 260px;
+        min-width: 260px;
+    }
 }
 </style>
 
@@ -760,7 +793,7 @@
     ?>
     <tr>
         <td></td>
-        <?php for($i = 1; $i <= 4; $i++):
+        <?php for($i = 1; $i <= 10; $i++):
             $arrow = ($i % 2 == 1) ? $arrow1 : $arrow2;
             $height = ($i % 2 == 1) ? '16' : '20';
         ?>
@@ -777,7 +810,7 @@
         
         <!-- Kolom keterangan dengan canvas drawing SIMPLE -->
    <!-- HTML ANDA TETAP SAMA - TIDAK PERLU DIUBAH -->
-    <td rowspan="11" class="keterangan-cell">
+    <td rowspan="14" class="keterangan-cell">
     <strong>Keterangan / Visualisasi:</strong><br>
     <div class="drawing-container">
         <div class="canvas-wrapper">
@@ -785,7 +818,8 @@
         </div>
         
         <!-- INPUT HIDDEN UNTUK GAMBAR -->
-        <input type="hidden" name="keterangan" id="keterangan">
+        <input type="hidden" name="keterangan" id="keterangan" class="keterangan-canvas-hidden">
+        <input type="hidden" name="keterangan_gambar" id="keteranganGambar">
         
         <!-- DEBUG BUTTONS DENGAN ID -->
         <div style="margin-top: 10px; font-size: 12px;">
@@ -815,10 +849,10 @@
 
   
     
-    <?php for($row = 1; $row <= 10; $row++): ?>
+    <?php for($row = 1; $row <= 13; $row++): ?>
     <tr>
         <td class="row-label">a<?php echo $row; ?></td>
-        <?php for($col = 1; $col <= 4; $col++): ?>
+        <?php for($col = 1; $col <= 10; $col++): ?>
         <td><input type="text" name="a<?php echo $row; ?>_<?php echo $col; ?>"></td>
         <?php endfor; ?>
     </tr>
@@ -868,27 +902,31 @@
 
 <table class="repeatability-matrix">
     <?php
-    // Gambar panah (Base64 encoded)
+    // Gambar panah (Base64 encoded) - sama seperti sebelumnya
     $arrow1 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAICAYAAABgZQZYAAAABHNCSVQICAgIfAhkiAAAANpJREFUOI3N1D1KA1EUhuEnMPhXaWGtllbaO+UtLF1CdqDc3i0MZgeTHcR+CovbmwVYZAkREX8aLa7FEGSiAZ18cIoDH4eXy8sd6DkhphnuUTdVedvVHfwLUUdCTLu4wBAnmGDUVOV0sds7bDshpkMZ/AofqDFuqnLGL2FDTFvYaM3mH+77OMIBphgVIaY77Cw5sN1ifsJ7a95W3F/xgsdvOgXOcIwHWYu6wPWy401VPv/8/VdPiOkUl7K/Y5y33V0LZ0NMQxlyDzfyzzBf7PUO+6XhXAacdHU/AV7uUis0PhT9AAAAAElFTkSuQmCC";
     $arrow2 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAICAYAAACLUr1bAAAABHNCSVQICAgIfAhkiAAAAOFJREFUOI3FlLsJQjEUQE9AtFIsbOzcQO1TKGSAt4HPCZQMEhxBN7A3hWAGcAO11MZCENTGwijhKZEHfg5cws2HnBuSCCIo7RKgB7StkY3Y3G9RyHYo7VrAAEiADTAC+j/2eiC8VCOQEl5qao1c/0vsjlDaLYEmsAZWwA44A6cgPpZbIw95BAvcTmsA1IEtMAMuQCmIom/LQC3Is+Nvc6VdOdj/ECnqaI3sivtMf/eG3B7FGJhYI+d5qs2L0q4SK8gauRAvFlWB1MvugZE1cvJN0RhPgiH+m0mBqjWy8wuhLFdg5k+38TkR6wAAAABJRU5ErkJggg==";
     
-    // Data kelompok
+    // Data kelompok (TETAP SAMA SEPERTI ASLI)
     $groups = [
-        'A' => ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9'],
-        'B' => ['A1', 'B2', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8'],
-        'C' => ['A1', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8'],
-        'D' => ['A1', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8'],
-        'E' => ['A1', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8'],
-        'F' => ['A1', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8'],
-        'G' => ['A1', 'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8'],
-        'H' => ['A1', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7', 'H8'],
-        'I' => ['A1', 'I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8'],
-        'J' => ['A1', 'J1', 'J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J8']
+        'A' => ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9','A10'],
+        'B' => ['A1', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8','B9','B10'],
+        'C' => ['A1', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8','C9','C10'],
+        'D' => ['A1', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8','D9','D10'],
+        'E' => ['A1', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8','E9','E10'],
+        'F' => ['A1', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8','F9','F10'],
+        'G' => ['A1', 'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8','G9','G10'],
+        'H' => ['A1', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7', 'H8','H9','H10'],
+        'I' => ['A1', 'I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8','I9','I10'],
+        'J' => ['A1', 'J1', 'J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J8','J9','J10'],
+        'K' => ['A1', 'K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7', 'K8','K9','K10'],
+        'L' => ['A1', 'L1', 'L2', 'L3', 'L4', 'L5', 'L6', 'L7', 'L8','L9','L10'],
     ];
     
     // Loop untuk setiap kelompok
     foreach($groups as $groupKey => $headers):
-        // Header row
+        $groupLower = strtolower($groupKey);
+        // Hitung jumlah kolom dari header (untuk menentukan maxCol)
+        $maxCol = count($headers);
     ?>
     <tr>
         <td></td>
@@ -901,16 +939,16 @@
     <tr>
         <td class="rowno">
             1 
-            <?php if($groupKey == 'A'): ?>
             <img width='42' height='8' src="<?php echo $arrow1; ?>" class="arrow-img" alt='→' />
-            <?php else: ?>
-            <img width='42' height='8' src="<?php echo $arrow1; ?>" class="arrow-img" alt='→' />
-            <?php endif; ?>
         </td>
         <?php 
-        // Input untuk row 1
-        for($i=1; $i<=9; $i++): 
-            $name = ($groupKey == 'A') ? "a{$i}_1" : strtolower($groupKey)."_{$i}_1";
+        // Input untuk row 1 - loop sesuai jumlah kolom
+        for($i=1; $i<=$maxCol; $i++): 
+            if ($groupKey == 'A') {
+                $name = "repeat_a{$i}_1";
+            } else {
+                $name = "{$groupLower}_row1_col{$i}";
+            }
         ?>
         <td><input name="<?php echo $name; ?>"></td>
         <?php endfor; ?>
@@ -920,16 +958,16 @@
     <tr>
         <td class="rowno">
             2
-            <?php if($groupKey == 'A'): ?>
             <img width='39' height='8' src="<?php echo $arrow2; ?>" class="arrow-img" alt='→' />
-            <?php else: ?>
-            <img width='39' height='8' src="<?php echo $arrow2; ?>" class="arrow-img" alt='→' />
-            <?php endif; ?>
         </td>
         <?php 
-        // Input untuk row 2
-        for($i=1; $i<=9; $i++): 
-            $name = ($groupKey == 'A') ? "a{$i}_2" : strtolower($groupKey)."_{$i}_2";
+        // Input untuk row 2 - loop sesuai jumlah kolom
+        for($i=1; $i<=$maxCol; $i++): 
+            if ($groupKey == 'A') {
+                $name = "repeat_a{$i}_2";
+            } else {
+                $name = "{$groupLower}_row2_col{$i}";
+            }
         ?>
         <td><input name="<?php echo $name; ?>"></td>
         <?php endfor; ?>
@@ -975,23 +1013,19 @@
                             PAS-IK1102-53
                         </td>
                         <td colspan="3" style="border: 1px solid #000; padding: 12px; text-align: center;">
-                            Nama: <input type="text" name="calibrated_by" placeholder="Masukkan nama" style="width: 70%; border: none; background: transparent; text-align: center;">
+                            Nama: <input type="text" name="calibrated_by" placeholder="Masukkan nama" style="width: 70%; border: none; background: transparent; text-align: center;"   value="{{ auth()->user()->nama ?? 'System' }}"  readonly>
                         </td>
                         <td colspan="3" style="border: 1px solid #000; padding: 12px; text-align: center;">
-                            Nama: <input type="text" name="verified_by" placeholder="Masukkan nama" style="width: 70%; border: none; background: transparent; text-align: center;">
+                            Nama: <input type="text" name="verified_by" placeholder="Masukkan nama" style="width: 70%; border: none; background: transparent; text-align: center;" readonly> 
                         </td>
                     </tr>
                 </table>
-
-                <!-- Submit Button Section -->
-                <div class="row mt-5">
+                   <!-- Submit Button Section -->
+                  <!-- Submit Button Section -->
+                  <div class="row mt-5">
                     <div class="col-12 text-center">
-                        <button type="submit" id="savebutton" class="btn btn-primary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                        <button type="button" id="btnSimpanSemua" class="btn btn-primary btn-lg" onclick="submitSemuaForm()" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
-                        </button>
-                        
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
                         </button>
                     </div>
                 </div>
@@ -1001,7 +1035,832 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-   
+    
+
+ <script>
+// ==========================================
+// STORAGE PER TAB - GLOBAL
+// ==========================================
+if (typeof window.tempFormDataStore === 'undefined') {
+    window.tempFormDataStore = {};
+}
+if (typeof window.isRestoring === 'undefined') {
+    window.isRestoring = false;
+}
+if (typeof window.tabSubmitStatus === 'undefined') {
+    window.tabSubmitStatus = {};
+}
+
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+
+var currentActiveTabId = '1';
+
+// ==========================================
+// FUNGSI GET TAB AKTIF
+// ==========================================
+function getActiveTabId() {
+    const activePane = document.querySelector('.tab-pane.active');
+    if (activePane && activePane.id && activePane.id.startsWith('lk-pane-')) {
+        const tabId = activePane.id.replace('lk-pane-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+
+    const activeTabButton = document.querySelector('.nav-link.active');
+    if (activeTabButton && activeTabButton.id && activeTabButton.id.startsWith('lk-tab-')) {
+        const tabId = activeTabButton.id.replace('lk-tab-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+
+    const containers = document.querySelectorAll('.lk-form-container');
+    for (let i = 0; i < containers.length; i++) {
+        const style = window.getComputedStyle(containers[i]);
+        if (style.display !== 'none') {
+            const tabId = containers[i].getAttribute('data-lk-id');
+            if (tabId) return tabId;
+        }
+    }
+
+    return currentActiveTabId;
+}
+
+function updateActiveTab(tabId) {
+    currentActiveTabId = tabId;
+    console.log(`🔄 Global active tab updated to: ${tabId}`);
+}
+
+// ==========================================
+// FUNGSI UNTUK MENONAKTIFKAN REQUIRED PADA FORM YANG TIDAK VISIBLE
+// ==========================================
+function disableRequiredOnHiddenForms() {
+    console.log('🔧 disableRequiredOnHiddenForms called');
+
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+
+    allForms.forEach((form, index) => {
+        const formIndex = index + 1;
+        const container = form.closest('.lk-form-container');
+        const isVisible = container && window.getComputedStyle(container).display !== 'none';
+
+        console.log(`📌 Form ${formIndex}: isVisible=${isVisible}`);
+
+        const requiredInputs = form.querySelectorAll('[required]');
+
+        if (!isVisible) {
+            requiredInputs.forEach(input => {
+                input.removeAttribute('required');
+                input.setAttribute('data-required-temp', 'true');
+            });
+        } else {
+            requiredInputs.forEach(input => {
+                if (input.hasAttribute('data-required-temp')) {
+                    input.setAttribute('required', 'required');
+                    input.removeAttribute('data-required-temp');
+                }
+            });
+        }
+    });
+}
+
+function restoreRequiredOnAllForms() {
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    allForms.forEach(form => {
+        form.querySelectorAll('[data-required-temp]').forEach(input => {
+            input.setAttribute('required', 'required');
+            input.removeAttribute('data-required-temp');
+        });
+    });
+}
+
+// ==========================================
+// UPDATE FORM TYPE
+// ==========================================
+function updateFormType(selectedAlat) {
+    const manualInputContainer = document.getElementById('manualInputContainer');
+    const manualInput = document.getElementById('nama_alat_manual');
+    const finalInput = document.getElementById('nama_alat_final');
+
+    if (!manualInputContainer || !manualInput) return;
+
+    if (selectedAlat === 'MANUAL_INPUT') {
+        manualInputContainer.style.display = 'block';
+        manualInput.required = true;
+        if (finalInput) finalInput.value = '';
+    } else {
+        manualInputContainer.style.display = 'none';
+        manualInput.required = false;
+        manualInput.value = '';
+        if (finalInput && selectedAlat) finalInput.value = selectedAlat;
+    }
+}
+
+function syncNamaAlat() {
+    const manualInput = document.getElementById('nama_alat_manual');
+    const finalInput = document.getElementById('nama_alat_final');
+    if (manualInput && finalInput) {
+        finalInput.value = manualInput.value;
+    }
+}
+
+function formatNumberInput(input) {
+    if (!input) return;
+    let value = input.value;
+    if (value === '' || value === null) return;
+    value = value.toString().replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        let num = parseFloat(value);
+        if (!isNaN(num)) input.value = num.toString();
+    }
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ==========================================
+// 🔥 CANVAS DRAWING — INIT + SAVE (FIXED MOBILE)
+// ==========================================
+let canvasEl = null;
+let ctxEl = null;
+let drawing = false;
+let lastX = 0, lastY = 0;
+let currentColor = '#000000';
+let currentSize = 2;
+
+// 🔥 Init canvas — SEKALI SAJA
+function initDrawingCanvas() {
+    if (window.__canvasInitialized) {
+        console.log('⏭️ Canvas already initialized, skip');
+        return;
+    }
+
+    canvasEl = document.querySelector('#kalibrasiForm canvas#drawCanvas')
+              || document.querySelector('canvas#drawCanvas');
+
+    if (!canvasEl) {
+        console.warn('⚠️ Canvas #drawCanvas tidak ada');
+        return;
+    }
+
+    ctxEl = canvasEl.getContext('2d');
+
+    // Set ukuran canvas (pakai devicePixelRatio untuk ketajaman di mobile)
+    const wrapper = canvasEl.parentElement;
+    const rect = wrapper.getBoundingClientRect();
+    const targetWidth = Math.max(Math.floor(rect.width) || 559, 300);
+    const targetHeight = Math.max(Math.floor(rect.height) || 280, 200);
+
+    canvasEl.width = targetWidth;
+    canvasEl.height = targetHeight;
+    canvasEl.style.width = targetWidth + 'px';
+    canvasEl.style.height = targetHeight + 'px';
+
+    // Background putih
+    ctxEl.fillStyle = '#ffffff';
+    ctxEl.fillRect(0, 0, canvasEl.width, canvasEl.height);
+
+    // Style default
+    ctxEl.lineCap = 'round';
+    ctxEl.lineJoin = 'round';
+    ctxEl.strokeStyle = currentColor;
+    ctxEl.lineWidth = currentSize;
+
+    // ============================================
+    // 🖱️ MOUSE EVENTS (Desktop)
+    // ============================================
+    canvasEl.addEventListener('mousedown', startDraw);
+    canvasEl.addEventListener('mousemove', drawLine);
+    canvasEl.addEventListener('mouseup', stopDraw);
+    canvasEl.addEventListener('mouseleave', stopDraw);
+
+    // ============================================
+    // 📱 TOUCH EVENTS (Mobile) — INI YANG DIPERBAIKI
+    // ============================================
+    // Gunakan pointer events jika tersedia (lebih reliable)
+    if (window.PointerEvent) {
+        canvasEl.addEventListener('pointerdown', handlePointerDown);
+        canvasEl.addEventListener('pointermove', handlePointerMove);
+        canvasEl.addEventListener('pointerup', stopDraw);
+        canvasEl.addEventListener('pointercancel', stopDraw);
+        canvasEl.addEventListener('pointerleave', stopDraw);
+    } else {
+        // Fallback touch events
+        canvasEl.addEventListener('touchstart', handleTouchStart, { passive: false });
+        canvasEl.addEventListener('touchmove', handleTouchMove, { passive: false });
+        canvasEl.addEventListener('touchend', handleTouchEnd, { passive: false });
+        canvasEl.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+    }
+
+    window.__canvasInitialized = true;
+    console.log('✅ Canvas initialized:', canvasEl.width, 'x', canvasEl.height);
+
+    renderCanvasTools();
+}
+
+// ============================================
+// HELPER: ambil posisi dari event (mouse/touch/pointer)
+// ============================================
+function getCanvasPosFromClient(clientX, clientY) {
+    const rect = canvasEl.getBoundingClientRect();
+    return {
+        x: (clientX - rect.left) * (canvasEl.width / rect.width),
+        y: (clientY - rect.top) * (canvasEl.height / rect.height)
+    };
+}
+
+// ============================================
+// MOUSE
+// ============================================
+function startDraw(e) {
+    drawing = true;
+    const pos = getCanvasPosFromClient(e.clientX, e.clientY);
+    lastX = pos.x;
+    lastY = pos.y;
+
+    // 🔥 Langsung gambar titik awal (biar tap saja = titik)
+    ctxEl.beginPath();
+    ctxEl.arc(pos.x, pos.y, currentSize / 2, 0, Math.PI * 2);
+    ctxEl.fillStyle = currentColor;
+    ctxEl.fill();
+    ctxEl.beginPath();
+    ctxEl.moveTo(pos.x, pos.y);
+    e.preventDefault();
+}
+
+function drawLine(e) {
+    if (!drawing) return;
+    const pos = getCanvasPosFromClient(e.clientX, e.clientY);
+
+    ctxEl.beginPath();
+    ctxEl.moveTo(lastX, lastY);
+    ctxEl.lineTo(pos.x, pos.y);
+    ctxEl.strokeStyle = currentColor;
+    ctxEl.lineWidth = currentSize;
+    ctxEl.lineCap = 'round';
+    ctxEl.lineJoin = 'round';
+    ctxEl.stroke();
+
+    lastX = pos.x;
+    lastY = pos.y;
+    e.preventDefault();
+}
+
+function stopDraw() {
+    drawing = false;
+}
+
+// ============================================
+// POINTER (paling bagus untuk mobile modern)
+// ============================================
+function handlePointerDown(e) {
+    // Hanya respon mouse/touch/pen — skip jika bukan primary
+    if (e.button !== undefined && e.button !== 0 && e.pointerType === 'mouse') return;
+    e.preventDefault();
+    canvasEl.setPointerCapture(e.pointerId);
+    drawing = true;
+    const pos = getCanvasPosFromClient(e.clientX, e.clientY);
+    lastX = pos.x;
+    lastY = pos.y;
+
+    // Titik awal
+    ctxEl.beginPath();
+    ctxEl.arc(pos.x, pos.y, currentSize / 2, 0, Math.PI * 2);
+    ctxEl.fillStyle = currentColor;
+    ctxEl.fill();
+    ctxEl.beginPath();
+    ctxEl.moveTo(pos.x, pos.y);
+}
+
+function handlePointerMove(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const pos = getCanvasPosFromClient(e.clientX, e.clientY);
+
+    ctxEl.beginPath();
+    ctxEl.moveTo(lastX, lastY);
+    ctxEl.lineTo(pos.x, pos.y);
+    ctxEl.strokeStyle = currentColor;
+    ctxEl.lineWidth = currentSize;
+    ctxEl.lineCap = 'round';
+    ctxEl.lineJoin = 'round';
+    ctxEl.stroke();
+
+    lastX = pos.x;
+    lastY = pos.y;
+}
+
+// ============================================
+// TOUCH FALLBACK (untuk browser lama)
+// ============================================
+function handleTouchStart(e) {
+    e.preventDefault(); // penting: cegah scroll & double-tap zoom
+    const t = e.touches[0];
+    const pos = getCanvasPosFromClient(t.clientX, t.clientY);
+    lastX = pos.x;
+    lastY = pos.y;
+    drawing = true;
+
+    // Titik awal
+    ctxEl.beginPath();
+    ctxEl.arc(pos.x, pos.y, currentSize / 2, 0, Math.PI * 2);
+    ctxEl.fillStyle = currentColor;
+    ctxEl.fill();
+    ctxEl.beginPath();
+    ctxEl.moveTo(pos.x, pos.y);
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+    if (!drawing) return;
+    const t = e.touches[0];
+    const pos = getCanvasPosFromClient(t.clientX, t.clientY);
+
+    ctxEl.beginPath();
+    ctxEl.moveTo(lastX, lastY);
+    ctxEl.lineTo(pos.x, pos.y);
+    ctxEl.strokeStyle = currentColor;
+    ctxEl.lineWidth = currentSize;
+    ctxEl.lineCap = 'round';
+    ctxEl.lineJoin = 'round';
+    ctxEl.stroke();
+
+    lastX = pos.x;
+    lastY = pos.y;
+}
+
+function handleTouchEnd(e) {
+    if (e) e.preventDefault();
+    drawing = false;
+}
+
+// ============================================
+// TOOLS: warna, ukuran, clear, save
+// ============================================
+function setCanvasColor(color) {
+    currentColor = color;
+    if (ctxEl) ctxEl.strokeStyle = color;
+    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+    const active = document.querySelector(`.color-btn[data-color="${color}"]`);
+    if (active) active.classList.add('active');
+}
+
+function setCanvasSize(size) {
+    currentSize = size;
+    if (ctxEl) ctxEl.lineWidth = size;
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    const active = document.querySelector(`.size-btn[data-size="${size}"]`);
+    if (active) active.classList.add('active');
+}
+
+function clearCanvas() {
+    if (!canvasEl || !ctxEl) return;
+    if (!confirm('Hapus semua gambar?')) return;
+    ctxEl.fillStyle = '#ffffff';
+    ctxEl.fillRect(0, 0, canvasEl.width, canvasEl.height);
+    console.log('🗑️ Canvas cleared');
+}
+
+function renderCanvasTools() {
+    const container = document.querySelector('.simple-tools');
+    if (!container) return;
+
+    container.innerHTML = `
+        <span style="font-size:11px;color:#333;">Tools:</span>
+        <button type="button" onclick="setCanvasColor('#000000')"
+                style="padding:3px 8px;background:#000;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:11px;">Hitam</button>
+        <button type="button" onclick="setCanvasColor('#dc3545')"
+                style="padding:3px 8px;background:#dc3545;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:11px;">Merah</button>
+        <button type="button" onclick="setCanvasColor('#007bff')"
+                style="padding:3px 8px;background:#007bff;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:11px;">Biru</button>
+        <button type="button" onclick="clearCanvas()"
+                style="padding:3px 8px;background:#6c757d;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:11px;">🗑️ Hapus</button>
+        <button type="button" onclick="testSaveCanvas()"
+                style="padding:3px 8px;background:#198754;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:11px;">💾 Test Save</button>
+    `;
+}
+
+// Fungsi debug untuk test save
+function testSaveCanvas() {
+    const result = saveCanvasToHidden();
+    const hidden = document.querySelector('#kalibrasiForm input[name="keterangan"]')
+                 || document.querySelector('input[name="keterangan"]');
+    const len = hidden ? hidden.value.length : 0;
+    alert('Save result: ' + result + '\nHidden length: ' + len);
+}
+
+// ==========================================
+// 🔥 SAVE CANVAS KE HIDDEN INPUT — FINAL
+// ==========================================
+function saveCanvasToHidden() {
+    // PRIORITAS: cari di dalam form #kalibrasiForm dulu
+    const form = document.querySelector('#kalibrasiForm');
+
+    let canvas = null;
+    let hiddenInput = null;
+
+    if (form) {
+        canvas = form.querySelector('canvas#drawCanvas');
+        hiddenInput = form.querySelector('input[name="keterangan"]');
+    }
+
+    // Fallback global
+    if (!canvas) {
+        canvas = document.querySelector('canvas#drawCanvas');
+    }
+    if (!hiddenInput) {
+        hiddenInput = document.querySelector('input[name="keterangan"]');
+    }
+
+    console.log('🔍 saveCanvasToHidden scope:', {
+        formFound: !!form,
+        canvasFound: !!canvas,
+        hiddenFound: !!hiddenInput,
+    });
+
+    if (!canvas) {
+        console.warn('⚠️ Canvas #drawCanvas tidak ditemukan');
+        return false;
+    }
+    if (!hiddenInput) {
+        console.warn('⚠️ Hidden input #keterangan tidak ditemukan');
+        return false;
+    }
+
+    try {
+        const dataURL = canvas.toDataURL('image/png');
+        hiddenInput.value = dataURL;
+
+        console.log('✅ Canvas saved. DataURL length:', dataURL.length);
+        console.log('✅ Hidden value length:', hiddenInput.value.length);
+
+        if (dataURL.length < 500) {
+            console.warn('⚠️ WARNING: DataURL sangat pendek — canvas mungkin kosong!');
+        }
+
+        return true;
+    } catch (e) {
+        console.error('❌ Error saving canvas:', e);
+        return false;
+    }
+}
+
+// ==========================================
+// HANDLE SAVE SUCCESS
+// ==========================================
+window.handleSaveSuccess = function(tabId, data) {
+    console.log('🎉 handleSaveSuccess called for tab:', tabId, data);
+
+    const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+    if (!container) {
+        console.error(`Container for tab ${tabId} not found!`);
+        return;
+    }
+
+    const tabButton = document.getElementById(`lk-tab-${tabId}`);
+    if (tabButton) {
+        tabButton.classList.add('tab-saved');
+        const badge = tabButton.querySelector('.badge');
+        if (badge) {
+            badge.className = 'badge badge-success ml-1';
+            badge.innerHTML = '<i class="fas fa-check mr-1"></i>Tersimpan';
+        }
+    }
+
+    const formName = container.getAttribute('data-form-name') || 'surface_plate';
+    const calibrationId = data.calibration_id || data.id || '-';
+    const printLabelUrl = data.print_label_url || `/calibrations/${calibrationId}/print-label`;
+
+    tabSubmitStatus[tabId] = {
+        success: true,
+        calibrationId: calibrationId,
+        printLabelUrl: printLabelUrl,
+        formName: formName,
+        timestamp: Date.now()
+    };
+
+    container.innerHTML = `
+      <div class="save-success-overlay text-center p-5 fade-in" style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+       <div class="mb-4">
+                    <i class="fas fa-check-circle text-success fa-5x"></i>
+                </div>
+                <h3 class="text-success mb-2">Simpan Berhasil!</h3>
+                <p class="mb-3" style="color: black;">Data kalibrasi untuk <strong>${escapeHtml(formName)}</strong> telah berhasil disimpan ke database.</p>
+
+                <div class="d-inline-block mb-4 p-3" style="border-radius: 12px; text-align: left; background: white; border: 1px solid #ddd;">
+                    <i class="fas fa-info-circle mr-2" style="color: #0d6efd;"></i>
+                    <strong style="color: black;">ID Kalibrasi:</strong> <code style="background: #f5f5f5; color: black; font-weight: bold;">${escapeHtml(calibrationId)}</code>
+                    <br>
+                    <small style="color: black;">Status: <span class="badge bg-success">Draft</span></small>
+                </div>
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+            <button type="button" class="btn btn-primary btn-lg px-4 py-2"
+                    onclick="window.open('${printLabelUrl}', '_blank')">
+                <i class="fas fa-print me-2"></i> Cetak Label
+            </button>
+
+            <button type="button" class="btn btn-success btn-lg px-4 py-2"
+                    onclick="resetTabForNewScan(${tabId})">
+                <i class="fas fa-plus-circle me-2"></i> Input Lagi
+            </button>
+
+            <button type="button" class="btn btn-danger btn-lg px-4 py-2"
+                    onclick="removeTab(${tabId})">
+                <i class="fas fa-times me-2"></i> Tutup Tab
+            </button>
+        </div>
+
+        <div class="mt-3 text-muted small">
+            <i class="fas fa-info-circle me-1"></i> Data tersimpan sebagai Draft.
+            Klik <strong>Cetak Label</strong> untuk mencetak, atau <strong>Input Lagi</strong> untuk melanjutkan kalibrasi berikutnya.
+        </div>
+    </div>
+    `;
+
+    const finishContainer = document.getElementById('finish-action-container');
+    if (finishContainer) finishContainer.classList.remove('d-none');
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'success',
+            title: '✓ Data Tersimpan!',
+            html: `<strong>${escapeHtml(formName)}</strong><br>ID: ${calibrationId}`,
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
+        });
+    }
+};
+
+window.resetTabForNewScan = function(tabId) {
+    if (confirm('Data yang belum disimpan akan hilang. Lanjutkan?')) {
+        delete tabSubmitStatus[tabId];
+        location.reload();
+    }
+};
+
+window.removeTab = function(tabId) {
+    if (tabId == 1) {
+        alert('Tab utama tidak bisa ditutup!');
+        return;
+    }
+    if (confirm(`Apakah Anda yakin ingin menutup Form ${tabId}?`)) {
+        delete tabSubmitStatus[tabId];
+        delete tempFormDataStore[tabId];
+        const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+        if (container) container.remove();
+        const tabBtn = document.getElementById(`lk-tab-${tabId}`);
+        if (tabBtn) tabBtn.remove();
+        const firstContainer = document.querySelector('.lk-form-container[data-lk-id="1"]');
+        if (firstContainer) firstContainer.style.display = 'block';
+        updateActiveTab('1');
+    }
+};
+
+// ==========================================
+// SUBMIT surface_plate - SINGLE FORM PER TAB
+// ==========================================
+async function submitSemuaForm() {
+    const activeTabId = getActiveTabId();
+    console.log('📌 Submitting from active tab:', activeTabId);
+
+    // ============================================================
+    // STEP 1: CARI FORM
+    // ============================================================
+    let form = null;
+    const activeContainer = document.querySelector(`.lk-form-container[data-lk-id="${activeTabId}"]`);
+
+    if (activeContainer) {
+        form = activeContainer.querySelector('#kalibrasiForm')
+            || activeContainer.querySelector('form[id^="kalibrasiForm"]')
+            || activeContainer.querySelector('form');
+    }
+    if (!form) {
+        form = document.querySelector('#kalibrasiForm')
+            || document.querySelector('form#kalibrasiForm')
+            || document.querySelector('form[id^="kalibrasiForm"]');
+    }
+    if (!form) {
+        alert('Form tidak ditemukan!');
+        return;
+    }
+    console.log('✅ Form ditemukan:', form.id);
+
+        // ============================================================
+    // STEP 2: SAVE CANVAS KE HIDDEN INPUT
+    // Pakai fungsi dari canvas-surface-plate.js (window.saveCanvasToHidden)
+    // ============================================================
+    try {
+        // 🔥 PRIORITAS 1: Panggil fungsi global dari canvas-surface-plate.js
+        if (typeof window.saveCanvasToHidden === 'function') {
+            const saved = window.saveCanvasToHidden();
+            console.log('🎨 window.saveCanvasToHidden() →', saved);
+        } else {
+            console.warn('⚠️ window.saveCanvasToHidden tidak ada, pakai fallback');
+        }
+
+        // 🔥 VERIFIKASI: cek hidden input terisi atau belum
+        const hiddenCheck = form.querySelector('input[name="keterangan"]')
+            || document.querySelector('#keteranganGambar')
+            || document.querySelector('input[name="keterangan"]');
+
+        const len = hiddenCheck ? hiddenCheck.value.length : 0;
+        console.log('🔍 Hidden value length setelah save:', len);
+
+        // 🔥 FALLBACK: kalau masih kosong, pakai cara manual
+        if (!hiddenCheck || len < 100) {
+            console.warn('⚠️ Hidden masih kosong, pakai fallback manual');
+
+            const canvasEl = form.querySelector('canvas#drawCanvas')
+                || form.querySelector('canvas')
+                || document.querySelector('#drawCanvas');
+
+            if (canvasEl && hiddenCheck) {
+                const dataURL = canvasEl.toDataURL('image/png');
+                hiddenCheck.value = dataURL;
+                console.log('✅ Fallback manual save. Length:', dataURL.length);
+            }
+        }
+    } catch (e) {
+        console.error('❌ Error save canvas:', e);
+    }
+
+    // ============================================================
+    // STEP 3: VALIDASI
+    // ============================================================
+    form.setAttribute('novalidate', 'novalidate');
+    form.noValidate = true;
+
+    const alatStandar = form.querySelectorAll('input[name="alat_standar_text"]');
+    if (alatStandar.length === 0) {
+        alert('Pilih minimal 1 alat standar!');
+        return;
+    }
+
+    const btn = document.getElementById('btnSimpanSemua');
+    if (!btn) {
+        alert('Tombol simpan tidak ditemukan!');
+        return;
+    }
+
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan Data...';
+
+    // ============================================================
+    // STEP 4: BUAT FORMDATA & SUBMIT
+    // ============================================================
+    try {
+        const formData = new FormData(form);
+
+        const keteranganVal = formData.get('keterangan');
+        console.log('🔍 FormData keterangan length:', keteranganVal ? keteranganVal.length : 0);
+
+        if (!keteranganVal || keteranganVal.length < 100) {
+            console.warn('⚠️ WARNING: keterangan kosong / terlalu pendek!');
+        }
+
+        formData.append('form_type', 'surface_plate');
+        formData.append('rentang_ukur_min', '0');
+        formData.append('rentang_ukur_max', '0');
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+            || document.querySelector('input[name="_token"]')?.value;
+        if (csrfToken) {
+            formData.append('_token', csrfToken);
+        }
+
+        console.log('📤 Mengirim data dari tab:', activeTabId);
+
+        const response = await fetch('/calibrations', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        });
+
+        const contentType = response.headers.get('content-type');
+
+        let result;
+        if (contentType && contentType.includes('application/json')) {
+            result = await response.json();
+        } else {
+            const text = await response.text();
+            console.error('Non-JSON response:', text.substring(0, 500));
+            throw new Error('Server mengembalikan response yang tidak valid');
+        }
+
+        if (!response.ok) {
+            throw new Error(result.error || `Gagal menyimpan data: ${response.status}`);
+        }
+
+        let formName = 'surface_plate';
+        const selectNamaAlat = form.querySelector('select[name="nama_alat"]');
+        if (selectNamaAlat && selectNamaAlat.value && selectNamaAlat.value !== 'MANUAL_INPUT') {
+            formName = selectNamaAlat.value;
+        } else {
+            const manualNamaAlat = form.querySelector('input[name="nama_alat_manual"]');
+            if (manualNamaAlat && manualNamaAlat.value) {
+                formName = manualNamaAlat.value;
+            }
+        }
+
+        if (activeContainer) {
+            activeContainer.setAttribute('data-form-name', formName);
+        }
+
+        console.log('📌 Saving success for tab:', activeTabId);
+
+        if (typeof window.handleSaveSuccess === 'function') {
+            window.handleSaveSuccess(activeTabId, result);
+        } else {
+            alert('Data berhasil disimpan!');
+        }
+
+    } catch (err) {
+        console.error('Submit error:', err);
+        alert('Error: ' + err.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
+
+// ==========================================
+// SETUP TAB SWITCHING
+// ==========================================
+function setupTabSwitching() {
+    if (typeof $ === 'undefined') return;
+
+    $(document).on('shown.bs.tab', 'button[data-toggle="tab"]', function (e) {
+        const targetId = $(e.target).attr('id');
+        if (targetId && targetId.startsWith('lk-tab-')) {
+            const tabId = targetId.replace('lk-tab-', '');
+            console.log('🎯 Tab switched to:', tabId);
+            updateActiveTab(tabId);
+
+            document.querySelectorAll('.lk-form-container').forEach(container => {
+                container.style.display = 'none';
+            });
+
+            const targetContainer = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+            if (targetContainer) {
+                targetContainer.style.display = 'block';
+            }
+        }
+    });
+
+    const activeButton = document.querySelector('.nav-link.active');
+    if (activeButton && activeButton.id) {
+        const tabId = activeButton.id.replace('lk-tab-', '');
+        updateActiveTab(tabId);
+    }
+}
+
+// ==========================================
+// INISIALISASI
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Content Loaded - Initializing surface_plate...');
+
+    setupTabSwitching();
+
+    // INIT CANVAS — sekali saja
+    setTimeout(() => {
+        initDrawingCanvas();
+    }, 500);
+
+    const selectAlat = document.getElementById('nama_alat_select');
+
+    if (selectAlat) {
+        updateFormType(selectAlat.value);
+        selectAlat.addEventListener('change', function() {
+            updateFormType(this.value);
+        });
+    }
+
+    const manualInput = document.getElementById('nama_alat_manual');
+    if (manualInput) {
+        manualInput.addEventListener('input', syncNamaAlat);
+    }
+
+    setTimeout(() => {
+        disableRequiredOnHiddenForms();
+    }, 500);
+
+    console.log('✅ surface_plate initialization complete!');
+});
+</script>
+
 
 </body>
 </html>

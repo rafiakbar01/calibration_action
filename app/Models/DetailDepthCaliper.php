@@ -9,15 +9,15 @@ class DetailDepthCaliper extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'ulangan01' => 'decimal:5',
-        'ulangan02' => 'decimal:5',
-        'ulangan03' => 'decimal:5',
-        'ulangan04' => 'decimal:5',
-        'ulangan05' => 'decimal:5',
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'ulangan01' => 'decimal:5',
+    //     'ulangan02' => 'decimal:5',
+    //     'ulangan03' => 'decimal:5',
+    //     'ulangan04' => 'decimal:5',
+    //     'ulangan05' => 'decimal:5',
 
-    ];
+    // ];
 
     protected $fillable = [
         'calibration_id',

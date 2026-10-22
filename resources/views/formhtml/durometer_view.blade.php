@@ -545,7 +545,7 @@ $detailDurometer = $calibration->detailDurometers ?? collect();
 
 <table style="width:100%; border-collapse:collapse; font-size:11pt; border:1px solid #000000;">
     <thead>
-        <tr>
+  
             <th rowspan="2" style="border:1px solid #000000; padding:10px; text-align:center; vertical-align:middle; background-color:#f0f0f0; font-weight:bold;">Set Point Skala<br>(0–100)</th>
             <th colspan="3" style="border:1px solid #000000; padding:10px; text-align:center; vertical-align:middle; background-color:#f0f0f0; font-weight:bold;">Pembacaan Standar (kg)</th>
         </tr>
@@ -580,9 +580,9 @@ $detailDurometer = $calibration->detailDurometers ?? collect();
             
             <!-- Kolom Pembacaan x1 -->
             <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
-                <?php if($detail && $detail->x1 !== null): ?>
+                <?php if($detail && $detail->x1 !== null && $detail->x1 !== ''): ?>
                     <span style="font-size:11pt;">
-                        <?php echo number_format($detail->x1, 2); ?>
+                        <?php echo $detail->x1; ?>
                     </span>
                 <?php else: ?>
                     <span style="font-size:11pt; color:#999;">-</span>
@@ -591,9 +591,9 @@ $detailDurometer = $calibration->detailDurometers ?? collect();
             
             <!-- Kolom Pembacaan x2 -->
             <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
-                <?php if($detail && $detail->x2 !== null): ?>
+                <?php if($detail && $detail->x2 !== null && $detail->x2 !== ''): ?>
                     <span style="font-size:11pt;">
-                        <?php echo number_format($detail->x2, 2); ?>
+                        <?php echo $detail->x2; ?>
                     </span>
                 <?php else: ?>
                     <span style="font-size:11pt; color:#999;">-</span>
@@ -602,9 +602,9 @@ $detailDurometer = $calibration->detailDurometers ?? collect();
             
             <!-- Kolom Pembacaan x3 -->
             <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
-                <?php if($detail && $detail->x3 !== null): ?>
+                <?php if($detail && $detail->x3 !== null && $detail->x3 !== ''): ?>
                     <span style="font-size:11pt;">
-                        <?php echo number_format($detail->x3, 2); ?>
+                        <?php echo $detail->x3; ?>
                     </span>
                 <?php else: ?>
                     <span style="font-size:11pt; color:#999;">-</span>
@@ -615,7 +615,7 @@ $detailDurometer = $calibration->detailDurometers ?? collect();
     </tbody>
 </table>
 
-      <?php
+<?php
 // Ambil data add durometer dari relasi
 $addDurometer = $calibration->addDurometer ?? null; // karena satu calibration hanya punya satu addDurometer
 ?>
@@ -629,50 +629,49 @@ $addDurometer = $calibration->addDurometer ?? null; // karena satu calibration h
     <!-- Baris pertama: 5 kolom input -->
     <div style="display: flex; gap: 12px; margin-bottom: 10px; justify-content: left;">
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep01 !== null ? number_format($addDurometer->rep01, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep01 !== null && $addDurometer->rep01 !== '' ? $addDurometer->rep01 : '-'; ?>
         </div>
         
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep02 !== null ? number_format($addDurometer->rep02, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep02 !== null && $addDurometer->rep02 !== '' ? $addDurometer->rep02 : '-'; ?>
         </div>
         
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep03 !== null ? number_format($addDurometer->rep03, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep03 !== null && $addDurometer->rep03 !== '' ? $addDurometer->rep03 : '-'; ?>
         </div>
         
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep04 !== null ? number_format($addDurometer->rep04, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep04 !== null && $addDurometer->rep04 !== '' ? $addDurometer->rep04 : '-'; ?>
         </div>
         
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep05 !== null ? number_format($addDurometer->rep05, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep05 !== null && $addDurometer->rep05 !== '' ? $addDurometer->rep05 : '-'; ?>
         </div>
     </div>
 
     <!-- Baris kedua: 5 kolom input -->
     <div style="display: flex; gap: 12px; justify-content: left;">
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep06 !== null ? number_format($addDurometer->rep06, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep06 !== null && $addDurometer->rep06 !== '' ? $addDurometer->rep06 : '-'; ?>
         </div>
         
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep07 !== null ? number_format($addDurometer->rep07, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep07 !== null && $addDurometer->rep07 !== '' ? $addDurometer->rep07 : '-'; ?>
         </div>
         
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep08 !== null ? number_format($addDurometer->rep08, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep08 !== null && $addDurometer->rep08 !== '' ? $addDurometer->rep08 : '-'; ?>
         </div>
         
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep09 !== null ? number_format($addDurometer->rep09, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep09 !== null && $addDurometer->rep09 !== '' ? $addDurometer->rep09 : '-'; ?>
         </div>
         
         <div style="width: 15%; padding: 8px; border: 1px solid #000; text-align: center; font-size: 10pt; background-color: #f9f9f9;">
-            <?php echo $addDurometer && $addDurometer->rep10 !== null ? number_format($addDurometer->rep10, 2) : '-'; ?>
+            <?php echo $addDurometer && $addDurometer->rep10 !== null && $addDurometer->rep10 !== '' ? $addDurometer->rep10 : '-'; ?>
         </div>
     </div>
 </div>
-
             <!-- Footer Section -->
           <?php
 // Ambil data head durometer dan calibration
@@ -798,9 +797,9 @@ $standardArray = $headDurometer && $headDurometer->standard ? explode(', ', $hea
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

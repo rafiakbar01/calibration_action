@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Kalibrasi - PT. PANANJUNG ANUGRAH SOLUTION</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    /* Pastikan semua text berwarna hitam */
+    .form-kalibrasi-container,
+    .form-kalibrasi-container *:not(input):not(select):not(textarea):not(button) {
+        color: #000000 !important;
+    }
+    
+    /* Input fields readonly styling */
+    .kalibrasi-input {
+        color: #000000 !important;
+        border: 1px solid #ced4da !important;
+        padding: 6px 10px;
+        border-radius: 4px;
+        width: 100%;
+        background-color: #f8f9fa;
+    }
+    
+    .kalibrasi-input:read-only {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    /* Styling khusus untuk input suhu dan RH */
+    .kondisi-input {
+        border: 1px solid #000 !important;
+        text-align: center;
+        width: 100%;
+        padding: 4px;
+        background-color: #f8f9fa;
+    }
+
+    /* CHECKBOX STYLING */
+    .form-check-input[type="checkbox"]:checked,
+    .alat-standar-checkbox[type="checkbox"]:checked,
+    .metode-checkbox[type="checkbox"]:checked {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .form-check-input[type="checkbox"]:checked:disabled,
+    .alat-standar-checkbox[type="checkbox"]:checked:disabled,
+    .metode-checkbox[type="checkbox"]:checked:disabled {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        opacity: 1 !important;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+    }
+
+    .form-check-input[type="checkbox"]:disabled,
+    .alat-standar-checkbox[type="checkbox"]:disabled,
+    .metode-checkbox[type="checkbox"]:disabled {
+        background-color: #f8f9fa !important;
+        border-color: #6c757d !important;
+        opacity: 1 !important;
+    }
+
+    /* Checkmark putih untuk checkbox */
+    .form-check-input[type="checkbox"]:checked,
+    .alat-standar-checkbox[type="checkbox"]:checked,
+    .metode-checkbox[type="checkbox"]:checked {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
+    }
+
+    .form-check-input[type="checkbox"]:checked:disabled,
+    .alat-standar-checkbox[type="checkbox"]:checked:disabled,
+    .metode-checkbox[type="checkbox"]:checked:disabled {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
+    }
+
+    /* Styling khusus untuk checkbox alat standar dan metode */
+    .alat-standar-checkbox,
+    .metode-checkbox {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        cursor: not-allowed;
+    }
+
+    /* Pastikan checkbox dan radio memiliki ukuran yang konsisten */
+    .form-check-input[type="checkbox"],
+    .alat-standar-checkbox[type="checkbox"],
+    .metode-checkbox[type="checkbox"] {
+        border-radius: 0.25em;
+    }
+    /* RADIO BUTTON STYLING - FIXED */
+    .form-check-input[type="radio"]:checked {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e") !important;
+    }
+
+    .form-check-input[type="radio"]:checked:disabled {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        opacity: 1 !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e") !important;
+    }
+
+    .form-check-input[type="radio"]:disabled {
+        background-color: #f8f9fa !important;
+        border-color: #6c757d !important;
+        opacity: 1 !important;
+    }
+
+    /* Custom radio button styling untuk yang tanpa class form-check-input */
+    input[type="radio"]:checked {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+
+    input[type="radio"]:checked:disabled {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        opacity: 1 !important;
+    }
+
+    input[type="radio"]:disabled {
+        background-color: #f8f9fa !important;
+        border-color: #6c757d !important;
+        opacity: 1 !important;
+    }
+
+    /* Styling khusus untuk checkbox alat standar */
+    .alat-standar-checkbox {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        cursor: not-allowed;
+    }
+
+    /* Pastikan checkbox dan radio memiliki ukuran yang konsisten */
+    .form-check-input[type="checkbox"],
+    .alat-standar-checkbox[type="checkbox"] {
+        border-radius: 0.25em;
+    }
+
+    .form-check-input[type="radio"],
+    input[type="radio"] {
+        border-radius: 50%;
+    }
+
+    /* Header styling */
+    .kalibrasi-header-table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+
+    .kalibrasi-header-table td {
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    /* Main form styling */
+    .kalibrasi-main-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .kalibrasi-main-table td {
+        padding: 8px;
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+    }
+
+    /* Data kalibrasi table styling */
+    .kalibrasi-data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .kalibrasi-data-table td {
+        padding: 0;
+        border: 2px solid #000;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .kalibrasi-data-table input {
+        border: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 10pt;
+        color: #000;
+        padding: 2px;
+        background: transparent;
+    }
+
+    /* Section headers */
+    .kalibrasi-section-header {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 15px;
+        text-align: center;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #000;
+    }
+
+    .data-kalibrasi-header {
+        font-weight: bold;
+        font-size: 18px;
+        margin: 25px 0 15px;
+        text-align: center;
+        padding: 8px;
+        background-color: #f0f0f0;
+        border: 1px solid #000;
+    }
+
+    /* Button styling dengan gradien biru */
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        border: none;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #6b7280, #4b5563);
+        border: none;
+        box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+        background: linear-gradient(135deg, #4b5563, #374151);
+        color: white;
+    }
+
+    /* Styling untuk bagian "Data telah diisi dengan lengkap dan jelas!" */
+    .data-complete-section {
+        text-align: center;
+        padding: 20px 0;
+        margin: 20px 0;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+    }
+
+    .data-complete-text {
+        font-weight: bold;
+        font-size: 18px;
+        color: #000;
+    }
+
+    /* Styling untuk tabel alat standar */
+    .alat-standar-section {
+        margin: 20px 0;
+    }
+
+    .alat-standar-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .alat-standar-table td {
+        border: 1px solid #000;
+        padding: 8px;
+        vertical-align: middle;
+    }
+
+    /* Print styling */
+    @media print {
+        .btn {
+            display: none !important;
+        }
+        
+        body {
+            background: white !important;
+        }
+        
+        .container {
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .kalibrasi-main-table td {
+            padding: 4px;
+        }
+        
+        .data-kalibrasi-header {
+            font-size: 16px;
+        }
+        
+        .btn-lg {
+            padding: 10px 20px !important;
+            font-size: 14px !important;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container my-4">
+        <div class="form-kalibrasi-container">
+            <table class="kalibrasi-header-table">
+                <tr>
+                    <td colspan="2">
+                        <p style="margin: 0; font-size: 14px; color: #000000;">PAS-FLK37</p>
+                    </td>
+                    <td rowspan="5" style="text-align: center; vertical-align: middle; padding: 10px 0;">
+                      <div style="display: inline-block; text-align: center;">
+                          <div style="margin-bottom: 15px;">
+                              <img src="/logo/logo_pas_basic.png" alt="Logo PT. PAS" style="width: 107px; height: 54px; display: block; margin: 0 auto;">
+                          </div>
+                          <p style="font-weight: bold; margin: 0; font-size: 15px; color: #000000;">PT. PANANJUNG ANUGRAH SOLUTION</p>
+                      </div>
+                  </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p style="margin: 0; font-size: 14px; color: #000000;">LEMBAR KERJA KALIBRASI</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p style="margin: 0; font-weight: bold; font-size: 14px; color: #000000;">THERMOMETERINDICATOR</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="height: 10px;"></td>
+                </tr>
+                <tr>
+                    <td style="width: 25%;">
+                        <p style="margin: 0; font-size: 14px; color: #000000;">No. Sertifikat</p>
+                    </td>
+                    <td style="width: 45%;">
+                        <p style="margin: 0; font-size: 14px; color: #000000; font-weight: bold;">{{ $calibration->headThermoIndicator->certificate_id ?? 'N/A' }}</p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Main Form Section - Readonly -->
+            <table class="kalibrasi-main-table">
+                <!-- Nama Alat -->
+                <tr>
+                    <td style="width: 20%;">
+                        <p style="margin: 0; color: #000000;">Nama Alat</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->namaAlat }}" readonly>
+                    </td>
+                </tr>
+
+                <!-- Merek & Kode Alat -->
+    <tr>
+        <td>
+            <p style="margin: 0; color: #000000;">Merek</p>
+        </td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <input type="text" name="brandAlat" class="kalibrasi-input me-3"
+                       value="{{ old('brandAlat', $calibration->brandAlat) }}" style="width:60%;">
+                <span class="me-3" style="color:#000000;">Kode Alat :</span>
+                <input type="text" name="kodeAlat" class="kalibrasi-input"
+                       value="{{ old('kodeAlat', $calibration->kodeAlat) }}" style="width:30%;">
+            </div>
+        </td>
+    </tr>
+
+    <!-- Type / No. Seri -->
+    <tr>
+        <td>
+            <p style="margin: 0; color: #000000;">Type / No. Seri</p>
+        </td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <input type="text" name="typeAlat" class="kalibrasi-input me-3"
+                       value="{{ old('typeAlat', $calibration->typeAlat) }}" style="width:45%;">
+                <span class="me-3" style="color:#000000;">/</span>
+                <input type="text" name="NoSeri" class="kalibrasi-input"
+                       value="{{ old('NoSeri', $calibration->NoSeri) }}" style="width:45%;">
+            </div>
+        </td>
+    </tr>
+
+    <!-- Rentang Ukur -->
+    <tr>
+        <td>
+            <p style="margin: 0; color: #000000;">Rentang Ukur</p>
+        </td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <div class="me-3" style="width:45%;">
+                    <input type="text" name="rangeMin" class="kalibrasi-input"
+                           value="{{ old('rangeMin', $calibration->rangeMin ?? 0) }}">
+                </div>
+                <span class="me-3">-</span>
+                <div style="width:45%;">
+                    <input type="text" name="rangeMax" class="kalibrasi-input"
+                           value="{{ old('rangeMax', $calibration->rangeMax ?? 0) }}">
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <!-- Kapasitas / Resolusi -->
+    <tr>
+        <td><p style="margin:0;">Kapasitas / Resolusi</p></td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <input type="text" name="kapasitas" class="kalibrasi-input me-3"
+                       value="{{ old('kapasitas', $calibration->kapasitas) }}" style="width:45%;">
+                <span class="me-3">/</span>
+                <input type="text" name="resolusi" class="kalibrasi-input"
+                       value="{{ old('resolusi', $calibration->resolusi) }}" style="width:45%;">
+            </div>
+        </td>
+    </tr>
+
+    <!-- Nama Pemilik -->
+    <tr>
+        <td><p style="margin:0;">Nama Pemilik</p></td>
+        <td colspan="3">
+            <input type="text" name="pemilikAlat" class="kalibrasi-input"
+                   value="{{ old('pemilikAlat', $calibration->pemilikAlat) }}">
+        </td>
+    </tr>
+
+    <!-- Tanggal -->
+      <tr>
+        <td><p style="margin:0;color:#000;">Tanggal Alat Masuk</p></td>
+        <td colspan="3">
+            <input type="date" name="tanggalMasuk" class="kalibrasi-input"
+                   value="{{ old('tanggalMasuk', \Carbon\Carbon::parse($calibration->tanggalMasuk)->format('Y-m-d')) }}">
+        </td>
+    </tr>
+
+    <tr>
+        <td><p style="margin:0;">Tanggal Kalibrasi</p></td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <input type="date" name="tanggalKalibrasi" class="kalibrasi-input me-3"
+                       value="{{ old('tanggalKalibrasi', $calibration->tanggalKalibrasi) }}" style="width:45%;">
+                <span class="me-3">Jenis Pembacaan:</span>
+                <input type="text" name="jenisPembacaan" class="kalibrasi-input"
+                       value="{{ old('jenisPembacaan', $calibration->jenisPembacaan) }}" style="width:45%;">
+            </div>
+        </td>
+    </tr>
+
+    <!-- Tempat Kalibrasi -->
+    <tr>
+        <td><p style="margin:0;">Tempat Kalibrasi</p></td>
+        <td colspan="3">
+            <div class="d-flex">
+                <div class="form-check me-5">
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab"
+                        {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }}>
+                    <label class="form-check-label">Lab. PT.PAS</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="insitu"
+                        {{ $calibration->tempatKalibrasi == 'insitu' ? 'checked' : '' }}>
+                    <label class="form-check-label">Insitu</label>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <!-- Lokasi -->
+    <tr>
+        <td><p style="margin:0;">Lokasi PT</p></td>
+        <td colspan="3">
+            <input type="text" name="lokasiPT" class="kalibrasi-input"
+                   value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
+        </td>
+    </tr>
+</table>
+
+
+           <div class="row mt-4">
+
+<!-- Fungsi Komponen Lainnya -->
+<div class="col-md-6 mb-4">
+    <div class="kalibrasi-section-header" style="color: #000000;">Fungsi Komponen Lainnya</div>
+    
+    <div class="d-flex justify-content-center align-items-center mb-4" style="gap: 60px;">
+        <div class="text-center">
+            <span class="fw-bold d-block mb-2" style="color: #000000; font-size: 14px;">Ok</span>
+            <input type="radio" name="kondisiAlat" value="ok" class="form-check-input"
+                style="width:18px;height:18px;display:block;margin:0 auto;"
+                {{ old('kondisiAlat', $calibration->kondisiAlat) == 'ok' ? 'checked' : '' }}>
+        </div>
+        <div class="text-center">
+            <span class="fw-bold d-block mb-2" style="color: #000000; font-size: 14px;">Rusak</span>
+            <input type="radio" name="kondisiAlat" value="rusak" class="form-check-input"
+                style="width:18px;height:18px;display:block;margin:0 auto;"
+                {{ old('kondisiAlat', $calibration->kondisiAlat) == 'rusak' ? 'checked' : '' }}>
+        </div>
+    </div>
+    
+    <div class="d-flex align-items-center">
+        <span class="fw-bold me-3" style="color:#000; min-width:100px;">Keterangan :</span>
+        <div style="flex:1;">
+            <input type="text" name="keterangan" class="kalibrasi-input"
+                value="{{ old('keterangan', $calibration->keterangan) }}"
+                style="border:none;border-bottom:2px solid #000;border-radius:0;padding:4px 0;background:transparent;width:100%;">
+        </div>
+    </div>
+</div>
+
+<!-- Kondisi Kalibrasi -->
+<div class="col-md-6 mb-4">
+    <div class="kalibrasi-section-header" style="color: #000000;">Kondisi Kalibrasi</div>
+    
+    <table class="table table-bordered">
+        <tr>
+            <td class="table-secondary fw-bold" style="width:30%;"></td>
+            <td class="table-secondary fw-bold text-center">Awal</td>
+            <td class="table-secondary fw-bold text-center">Tengah</td>
+            <td class="table-secondary fw-bold text-center">Akhir</td>
+        </tr>
+        <tr>
+            <td class="bg-light fw-bold">Suhu (°C)</td>
+            <td><input type="text" name="RT_condition1" class="kondisi-input"
+                value="{{ old('RT_condition1', $calibration->RT_condition1) }}"></td>
+            <td><input type="text" name="RT_condition2" class="kondisi-input"
+                value="{{ old('RT_condition2', $calibration->RT_condition2) }}"></td>
+            <td><input type="text" name="RT_condition3" class="kondisi-input"
+                value="{{ old('RT_condition3', $calibration->RT_condition3) }}"></td>
+        </tr>
+        <tr>
+            <td class="bg-light fw-bold">RH (%)</td>
+            <td><input type="text" name="RH_condition1" class="kondisi-input"
+                value="{{ old('RH_condition1', $calibration->RH_condition1) }}"></td>
+            <td><input type="text" name="RH_condition2" class="kondisi-input"
+                value="{{ old('RH_condition2', $calibration->RH_condition2) }}"></td>
+            <td><input type="text" name="RH_condition3" class="kondisi-input"
+                value="{{ old('RH_condition3', $calibration->RH_condition3) }}"></td>
+        </tr>
+    </table>
+</div>
+
+</div>
+
+           
+       <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
+       @php
+    // Ambil data addThermoIndicator jika belum ada
+    if(!isset($addThermo)) {
+        $addThermo = \App\Models\AddThermoIndicator::where('calibration_id', $calibration->id)->first();
+    }
+@endphp
+<div style="width: 100%; margin-bottom: 20px; display: flex; align-items: center;">
+    <label for="tipe_wire" style="font-weight: bold; color: #000000; margin-bottom: 0; margin-right: 16px; min-width: 100px;">Type Wire :</label>
+    <div style="width: 50%; border: none; border-bottom: 1px solid #000; border-radius: 0; background: transparent; box-shadow: none; padding: 5px 0;">
+       <input type="text" 
+       name="wireType" 
+       value="{{ $addThermo->wireType ?? '' }}" 
+       style="width:100%; border:none; background:transparent; font-size:10pt;">
+    </div>
+</div>
+<div class="setting-suhu-container" style="margin-bottom: 30px;">
+
+    <div style="display: flex; justify-content: space-between; gap: 20px;">
+       
+        <!-- Tabel Kiri (baris 1-10) -->
+        <table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
+                        Penunjukan STD<br>
+                        <span style="font-size: 9pt;">(°C)</span>
+                    </th>
+                    <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
+                        Pembacaan UUT<br>
+                        <span style="font-size: 9pt;">(°C)</span>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
+                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    // Ambil data detail dari database langsung di view
+                    $detailThermo = \App\Models\DetailThermoIndicator::where('calibration_id', $calibration->id)->get();
+                @endphp
+                
+                @if($detailThermo->count() > 0)
+                    @php
+                        $kiriDetails = $detailThermo->take(10);
+                    @endphp
+                    
+                    @foreach($kiriDetails as $detail)
+                    <tr>
+                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px;">
+    <input type="number" step="0.1" 
+           name="PenunjukanSTD"
+           value="{{ $detail->PenunjukanSTD ?? '' }}"
+           style="width:100%; border:none; background:transparent; text-align:center;">
+</td>
+
+<td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle;">
+    <input type="number" step="0.01" 
+           name="UUTnaik"
+           value="{{ $detail->UUTnaik ?? '' }}"
+           style="width:100%; border:none; background:transparent; text-align:center;">
+</td>
+
+<td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle;">
+    <input type="number" step="0.01" 
+           name="UUTturun"
+           value="{{ $detail->UUTturun ?? '' }}"
+           style="width:100%; border:none; background:transparent; text-align:center;">
+</td>
+                    </tr>
+                    @endforeach
+                @else
+                    @for($i = 1; $i <= 10; $i++)
+                    <tr>
+                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px;">-</td>
+                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle;">-</td>
+                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle;">-</td>
+                    </tr>
+                    @endfor
+                @endif
+            </tbody>
+        </table>
+
+        <!-- Tabel Kanan (baris 11-20) -->
+        <table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
+                        Penunjukan STD<br>
+                        <span style="font-size: 9pt;">(°C)</span>
+                    </th>
+                    <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
+                        Pembacaan UUT<br>
+                        <span style="font-size: 9pt;">(°C)</span>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
+                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    // Data sudah diambil di atas, gunakan slice untuk data kanan
+                    $kananDetails = $detailThermo->slice(10, 10);
+                @endphp
+                
+                @if($kananDetails->count() > 0)
+                    @foreach($kananDetails as $detail)
+                    <tr>
+                       <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px;">
+    <input type="number" step="0.1" 
+           name="PenunjukanSTD"
+           value="{{ $detail->PenunjukanSTD ?? '' }}"
+           style="width:100%; border:none; background:transparent; text-align:center;">
+</td>
+
+<td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle;">
+    <input type="number" step="0.01" 
+           name="UUTnaik"
+           value="{{ $detail->UUTnaik ?? '' }}"
+           style="width:100%; border:none; background:transparent; text-align:center;">
+</td>
+
+<td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle;">
+    <input type="number" step="0.01" 
+           name="UUTturun"
+           value="{{ $detail->UUTturun ?? '' }}"
+           style="width:100%; border:none; background:transparent; text-align:center;">
+</td>
+                    </tr>
+                    @endforeach
+                @else
+                    @for($i = 11; $i <= 20; $i++)
+                    <tr>
+                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px;">-</td>
+                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle;">-</td>
+                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle;">-</td>
+                    </tr>
+                    @endfor
+                @endif
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@php
+    // Ambil data addThermoIndicator jika belum ada
+    if(!isset($addThermo)) {
+        $addThermo = \App\Models\AddThermoIndicator::where('calibration_id', $calibration->id)->first();
+    }
+@endphp
+
+@if($addThermo && ($addThermo->rep01 || $addThermo->rep02 || $addThermo->rep03 || $addThermo->rep04 || $addThermo->rep05))
+<table cellspacing="0" cellpadding="0" class="TableNormal"
+    style="margin-left:1.2pt;
+        -aw-border:1.2pt single #000000;
+        -aw-border-insideh:1.2pt single #000000;
+        -aw-border-insidev:1.2pt single #000000;
+        border-collapse:collapse">
+
+    <tr style="height:14pt">
+        <td style="width:78.25pt; border-bottom:1.2pt solid #000; vertical-align:top;">
+            <p class="TableParagraph" style="margin-left:16.05pt; line-height:11pt">
+                <span style="font-family:Arial; font-size:9pt; font-weight:bold;">
+                    Repeatability
+                </span>
+            </p>
+        </td>
+        <td style="width:75.55pt; border-bottom:1.2pt solid #000; vertical-align:top;">
+            <p class="TableParagraph" style="margin-left:3pt; line-height:11pt">
+            </p>
+        </td>
+        <td style="width:79.6pt; border-bottom:1.2pt solid #000; vertical-align:top;">
+            <p class="TableParagraph" style="margin-left:3pt; line-height:11pt">
+            </p>
+        </td>
+    </tr>
+
+   <tr style="height:22pt">
+    <td style="width:77.5pt; border:1.2pt solid #000; text-align: center; vertical-align: middle;">
+        <input type="number" step="0.001" 
+               name="rep01"
+               value="{{ $addThermo->rep01 ?? '' }}"
+               style="width:100%; border:none; background:transparent; text-align:center;">
+    </td>
+    <td style="width:74.8pt; border:1.2pt solid #000; text-align: center; vertical-align: middle;">
+        <input type="number" step="0.001" 
+               name="rep02"
+               value="{{ $addThermo->rep02 ?? '' }}"
+               style="width:100%; border:none; background:transparent; text-align:center;">
+    </td>
+    <td style="width:79.6pt; border:1.2pt solid #000; text-align: center; vertical-align: middle;">
+        <input type="number" step="0.001" 
+               name="rep03"
+               value="{{ $addThermo->rep03 ?? '' }}"
+               style="width:100%; border:none; background:transparent; text-align:center;">
+    </td>
+</tr>
+
+<tr style="height:22pt">
+    <td style="width:77.5pt; border:1.2pt solid #000; text-align: center; vertical-align: middle;">
+        <input type="number" step="0.001" 
+               name="rep04"
+               value="{{ $addThermo->rep04 ?? '' }}"
+               style="width:100%; border:none; background:transparent; text-align:center;">
+    </td>
+    <td style="width:74.8pt; border:1.2pt solid #000; text-align: center; vertical-align: middle;">
+        <input type="number" step="0.001" 
+               name="rep05"
+               value="{{ $addThermo->rep05 ?? '' }}"
+               style="width:100%; border:none; background:transparent; text-align:center;">
+    </td>
+</tr>
+</table>
+@endif
+
+            <!-- Footer Section -->
+       <table cellspacing="0" cellpadding="8" style="width:100%; border-collapse:collapse; font-family: Arial, sans-serif; font-size:12pt; margin-top: 40px;">
+    <tr style="height: 40pt;">
+        <td colspan="5" style="border-bottom: 1pt solid #000; text-align: center; vertical-align: middle; background-color: #f5f5f5;">
+            <span style="font-size: 18pt; font-weight: bold;">
+                Isilah lembar data kalibrasi dengan lengkap dan jelas!
+            </span>
+        </td>
+    </tr>
+@php
+    // Ambil data headThermoIndicator jika belum ada
+    if(!isset($headThermo)) {
+        $headThermo = \App\Models\HeadThermoIndicator::where('calibration_id', $calibration->id)->first();
+    }
+    
+    // Debug: cek data headThermo
+    $standard = $headThermo->standard ?? '';
+    
+    // Cara 1: Gunakan str_contains() - LEBIH AMAN
+    $hasAlat1 = !empty($standard) && str_contains($standard, 'Multifunction Calibrator, SIKA WEM41021-021C');
+    $hasAlat2 = !empty($standard) && str_contains($standard, 'Multifunction Temperature Calibrator (Adittel) ADT221A');
+    
+    // Cara 2: Explode dengan trim - ALTERNATIF
+    // $alatStandar = array_map('trim', explode(',', $standard));
+    
+    // Debug: tampilkan di HTML untuk testing (hapus setelah fix)
+    // <div style="display:none;">
+    //   Standard: {{ $standard }}<br>
+    //   Has alat1: {{ $hasAlat1 ? 'YA' : 'TIDAK' }}<br>
+    //   Has alat2: {{ $hasAlat2 ? 'YA' : 'TIDAK' }}
+    // </div>
+@endphp
+    <!-- Header Kolom -->
+    <tr style="height: 35pt;">
+        <td rowspan="3" style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 12pt; background-color: #f0f0f0;">
+            Standard
+        </td>
+        <td colspan="2" style="width: 40%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; background-color: #f0f0f0;">
+            <!-- Kosong -->
+        </td>
+        <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold; background-color: #f0f0f0;">
+            Dikalibrasi oleh
+        </td>
+        <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold; background-color: #f0f0f0;">
+            Diperiksa oleh
+        </td>
+    </tr>
+
+    <!-- Baris 1: Multifunction Calibrator, SIKA WEM41021-021C -->
+    <tr style="height: 40pt;">
+        <td style="width: 5%; border: 1pt solid #000; text-align: center; vertical-align: middle;">
+    <input type="checkbox" 
+           name="hasAlat1" 
+           @if($hasAlat1) checked @endif
+           style="transform:scale(1.2);">
+</td>
+        <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt; vertical-align: middle;text-align: left;">
+           Multifunction Calibrator, SIKA WEM41021-021C
+        </td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
+    </tr>
+
+    <!-- Baris 2: Multifunction Temperature Calibrator (Adittel) ADT221A + TTD -->
+    <tr style="height: 60pt;">
+        <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
+    <input type="checkbox" 
+           name="hasAlat2" 
+           @if($hasAlat2) checked @endif
+           style="transform:scale(1.2);">
+</td>
+        <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt; vertical-align: middle;text-align: left;">
+            Multifunction Temperature Calibrator (Adittel) ADT221A
+        </td>
+        <!-- Hapus garis atas dan bawah sepenuhnya pada sel TTD -->
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none; padding: 10pt 0; vertical-align: top; font-size: 11pt; text-align: left;">
+            TTD
+        </td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none; padding: 10pt 0; vertical-align: top; font-size: 11pt; text-align: left;">
+            TTD
+        </td>
+    </tr>
+
+    <!-- Baris 3: Metode Kalibrasi + Nama -->
+    <tr style="height: 60pt;">
+        <td style="border: 1pt solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 12pt; background-color: #f0f0f0;">
+            Metode Kalibrasi
+        </td>
+        <td colspan="2" style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt; vertical-align: middle;text-align: left;">
+            {{ $headThermo->calibrationMethod ?? 'PAS-IK1102-37' }}
+        </td>
+        <!-- Hapus border atas pada sel Nama -->
+       <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
+    Nama: 
+    <input type="text" name="dikalibrasi_oleh"
+           value="{{ $headThermo->dikalibrasi_oleh ?? ($calibration->calibratedBy ?? '') }}"
+           style="display:inline-block; width:75%; border:none; border-bottom:2px solid #000; font-size:11pt; padding:5px 0; background:transparent;">
+</td>
+
+<td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
+    Nama: 
+    <input type="text" name="diperiksa_oleh"
+           value="{{ $headThermo->diperiksa_oleh ?? ($calibration->verifiedBy ?? '') }}"
+           style="display:inline-block; width:75%; border:none; border-bottom:2px solid #000; font-size:11pt; padding:5px 0; background:transparent;">
+</td>
+    </tr>
+</table>
+
+            <!-- Action Buttons Section -->
+            <div class="row mt-5">
+                <div class="col-12 text-center">
+                    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                        <i class="fas fa-arrow-left me-2"></i>Kembali
+                    </a>
+                    
+                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                        <i class="fas fa-print me-2"></i>Cetak
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

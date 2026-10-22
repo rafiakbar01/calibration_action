@@ -12,7 +12,7 @@ class HeadIrThermometer extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_suhu_kiri','satuan_suhu_kanan'
     ];
 
     public function calibration()

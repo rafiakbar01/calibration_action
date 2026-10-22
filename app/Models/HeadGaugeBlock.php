@@ -12,7 +12,7 @@ class HeadGaugeBlock extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_unit', 'attachment','attachment_name','attachment_size','attachment_mime', 
     ];
 
     public function calibration()

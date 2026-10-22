@@ -9,23 +9,25 @@ class DetailInsideMicrometer extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'ulangan01' => 'decimal:5',
-        'ulangan02' => 'decimal:5',
-        'ulangan03' => 'decimal:5',
-        'ulangan04' => 'decimal:5',
-        'ulangan05' => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'ulangan01' => 'decimal:5',
+    //     'ulangan02' => 'decimal:5',
+    //     'ulangan03' => 'decimal:5',
+    //     'ulangan04' => 'decimal:5',
+    //     'ulangan05' => 'decimal:5',
+    // ];
 
     protected $fillable = [
+        'id',
         'calibration_id', 
         'titikUkur',
         'ulangan01',
         'ulangan02',
         'ulangan03',
         'ulangan04',
-        'ulangan05'
+        'ulangan05',
+        'form_index'
     ];
 
     // ✅ Relation langsung ke Calibration

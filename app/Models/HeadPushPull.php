@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class HeadPushpull extends Model
+class HeadPushPull extends Model
 {
     protected $table = 'head_push_pull';
     protected $primaryKey = 'id'; 

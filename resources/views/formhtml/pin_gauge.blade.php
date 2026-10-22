@@ -222,20 +222,36 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                   <tr>
-                            <td style="width: 20%;">
+                     <tr>
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Pin Gauge"
-                                    placeholder="Pin Gauge"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Pin Gauge">Pin Gauge</option>
+                                    <option value="MANUAL_INPUT">-- Input Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
-                    </tr>
+                        </tr>
+                   
 
 
                     <!-- Merek & Kode Alat -->
@@ -391,7 +407,7 @@
                         </td>
                         <td colspan="3">
                             <div class="d-flex align-items-center">
-                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;" required>
+                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;"  >
                             </div>
                         </td>
                     </tr>
@@ -438,22 +454,22 @@
                                 <td><input type="number"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -462,22 +478,22 @@
                                 <td><input type="number"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -533,27 +549,27 @@
                         <span style="font-size: 12pt; font-weight: bold;"><?php echo $i; ?></span>
                     </td>
                     <td rowspan="2" style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="nominal_<?php echo $i; ?>" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="nominal_<?php echo $i; ?>" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="atas_<?php echo $i; ?>_1" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="atas_<?php echo $i; ?>_1" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="tengah_<?php echo $i; ?>_2" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="tengah_<?php echo $i; ?>_2" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="bawah_<?php echo $i; ?>_3" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="bawah_<?php echo $i; ?>_3" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                 </tr>
                 <tr style="height: 40px;">
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="atas_<?php echo $i; ?>_4" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="atas_<?php echo $i; ?>_4" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="tengah_<?php echo $i; ?>_5" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="tengah_<?php echo $i; ?>_5" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="bawah_<?php echo $i; ?>_6" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="bawah_<?php echo $i; ?>_6" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                 </tr>
                 <?php endfor; ?>
@@ -611,27 +627,27 @@
                         <span style="font-size: 12pt; font-weight: bold;"><?php echo $i; ?></span>
                     </td>
                     <td rowspan="2" style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="nominal_<?php echo $i; ?>" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="nominal_<?php echo $i; ?>" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="atas_<?php echo $i; ?>_1" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="atas_<?php echo $i; ?>_1" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="tengah_<?php echo $i; ?>_2" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="tengah_<?php echo $i; ?>_2" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="bawah_<?php echo $i; ?>_3" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="bawah_<?php echo $i; ?>_3" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                 </tr>
                 <tr style="height: 40px;">
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="atas_<?php echo $i; ?>_4" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="atas_<?php echo $i; ?>_4" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="tengah_<?php echo $i; ?>_5" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="tengah_<?php echo $i; ?>_5" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                     <td style="width: 80px; border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-                        <input type="number" step="any" name="bawah_<?php echo $i; ?>_6" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
+                        <input type="text" name="bawah_<?php echo $i; ?>_6" style="width: 95%; height: 30px; border: 1px solid #666; font-size: 11pt; text-align: center; padding: 2px;">
                     </td>
                 </tr>
                 <?php endfor; ?>
@@ -834,7 +850,7 @@
             <div style="margin-bottom: 5px;">
                 <span style="font-size: 9pt;">Nama:</span>
             </div>
-            <input type="text" name="calibrated_by" style="width: 95%; height: 25px; border: 1px solid #666; font-size: 9pt; padding: 2px;">
+            <input type="text" name="calibrated_by" style="width: 95%; height: 25px; border: 1px solid #666; font-size: 9pt; padding: 2px;"  value="{{ auth()->user()->nama ?? 'System' }}"  readonly>
         </td>
         <td rowspan="2" style="border: 1px solid #000000; vertical-align: middle; padding: 5px;">
             <div style="margin-bottom: 5px;">
@@ -862,9 +878,9 @@
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
                         </button>
                         
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
-                        </button>
+                        <!--<button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-redo me-2"></i>Reset Form-->
+                        <!--</button>-->
                     </div>
                 </div>
 
@@ -875,6 +891,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
     // JavaScript form validation
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('kalibrasiForm');

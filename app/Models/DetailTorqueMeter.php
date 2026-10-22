@@ -30,15 +30,15 @@ class DetailTorqueMeter extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'titikUkurBeban' => 'decimal:5',
-        'cw1' => 'decimal:5',
-        'cw2' => 'decimal:5',
-        'cw3' => 'decimal:5',
-        'ccw1' => 'decimal:5',
-        'ccw2' => 'decimal:5',
-        'ccw3'  => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkurBeban' => 'decimal:5',
+    //     'cw1' => 'decimal:5',
+    //     'cw2' => 'decimal:5',
+    //     'cw3' => 'decimal:5',
+    //     'ccw1' => 'decimal:5',
+    //     'ccw2' => 'decimal:5',
+    //     'ccw3'  => 'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AddPushpull extends Model
+class AddPushPull extends Model
 {
     use HasFactory;
 
@@ -44,29 +44,29 @@ class AddPushpull extends Model
 
     ];
 
-    protected $casts = [
-        'repeatabilityTarik01'=>'decimal:5',
-        'repeatabilityTarik02'=>'decimal:5',
-        'repeatabilityTarik03'=>'decimal:5',
-        'repeatabilityTarik04'=>'decimal:5',
-        'repeatabilityTarik05'=>'decimal:5',
-        'repeatabilityTarik06'=>'decimal:5',
-        'repeatabilityTarik07'=>'decimal:5',
-        'repeatabilityTarik08'=>'decimal:5',
-        'repeatabilityTarik09'=>'decimal:5',
-        'repeatabilityTarik10'=>'decimal:5',
+    // protected $casts = [
+    //     'repeatabilityTarik01'=>'decimal:5',
+    //     'repeatabilityTarik02'=>'decimal:5',
+    //     'repeatabilityTarik03'=>'decimal:5',
+    //     'repeatabilityTarik04'=>'decimal:5',
+    //     'repeatabilityTarik05'=>'decimal:5',
+    //     'repeatabilityTarik06'=>'decimal:5',
+    //     'repeatabilityTarik07'=>'decimal:5',
+    //     'repeatabilityTarik08'=>'decimal:5',
+    //     'repeatabilityTarik09'=>'decimal:5',
+    //     'repeatabilityTarik10'=>'decimal:5',
 
-        'repeatabilityTekan01'=>'decimal:5',
-        'repeatabilityTekan02'=>'decimal:5',
-        'repeatabilityTekan03'=>'decimal:5',
-        'repeatabilityTekan04'=>'decimal:5',
-        'repeatabilityTekan05'=>'decimal:5',
-        'repeatabilityTekan06'=>'decimal:5',
-        'repeatabilityTekan07'=>'decimal:5',
-        'repeatabilityTekan08'=>'decimal:5',
-        'repeatabilityTekan09'=>'decimal:5',
-        'repeatabilityTekan10'=>'decimal:5',
-    ];
+    //     'repeatabilityTekan01'=>'decimal:5',
+    //     'repeatabilityTekan02'=>'decimal:5',
+    //     'repeatabilityTekan03'=>'decimal:5',
+    //     'repeatabilityTekan04'=>'decimal:5',
+    //     'repeatabilityTekan05'=>'decimal:5',
+    //     'repeatabilityTekan06'=>'decimal:5',
+    //     'repeatabilityTekan07'=>'decimal:5',
+    //     'repeatabilityTekan08'=>'decimal:5',
+    //     'repeatabilityTekan09'=>'decimal:5',
+    //     'repeatabilityTekan10'=>'decimal:5',
+    // ];
   
 
     /**

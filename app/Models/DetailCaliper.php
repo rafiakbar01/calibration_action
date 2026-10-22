@@ -24,32 +24,59 @@ class DetailCaliper extends Model
         'inside02',
         'inside03',
         'inside04',
-        'inside05'
+        'inside05',
+        'depth01',
+        'depth02',
+        'depth03',
+        'depth04',
+        'depth05',
+        'KodeStandarKiri',
+        'KodeStandarKanan',
+        'form_index'
     ];
 
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'outside01' => 'decimal:5',
-        'outside02' => 'decimal:5',
-        'outside03' => 'decimal:5',
-        'outside04' => 'decimal:5',
-        'outside05' => 'decimal:5',
-        'inside01'  => 'decimal:5',
-        'inside02'  => 'decimal:5',
-        'inside03'  => 'decimal:5',
-        'inside04'  => 'decimal:5',
-        'inside05'  => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'outside01' => 'decimal:5',
+    //     'outside02' => 'decimal:5',
+    //     'outside03' => 'decimal:5',
+    //     'outside04' => 'decimal:5',
+    //     'outside05' => 'decimal:5',
+    //     'inside01'  => 'decimal:5',
+    //     'inside02'  => 'decimal:5',
+    //     'inside03'  => 'decimal:5',
+    //     'inside04'  => 'decimal:5',
+    //     'inside05'  => 'decimal:5',
+    // ];
 
+
+    // ✅ Accessors for KodeStandarKiri & KodeStandarKanan (case-insensitive fallback)
+    public function getKodeStandarKiriAttribute()
+    {
+        return $this->attributes['KodeStandarKiri'] ?? $this->attributes['kodeStandarKiri'] ?? $this->attributes['kodeStandardKiri'] ?? null;
+    }
+
+    public function getKodeStandarKananAttribute()
+    {
+        return $this->attributes['KodeStandarKanan'] ?? $this->attributes['kodeStandarKanan'] ?? $this->attributes['kodeStandardKanan'] ?? null;
+    }
+
+    public function getKodeStandardKiriAttribute()
+    {
+        return $this->attributes['KodeStandarKiri'] ?? $this->attributes['kodeStandarKiri'] ?? $this->attributes['kodeStandardKiri'] ?? null;
+    }
+
+    public function getKodeStandardKananAttribute()
+    {
+        return $this->attributes['KodeStandarKanan'] ?? $this->attributes['kodeStandarKanan'] ?? $this->attributes['kodeStandardKanan'] ?? null;
+    }
 
     // ✅ Relation langsung ke Calibration
     public function calibration()
     {
         return $this->belongsTo(Calibration::class);
     }
-
-   
 }

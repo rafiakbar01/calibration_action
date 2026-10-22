@@ -465,9 +465,9 @@
                     <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="insitu" id="insitu" 
-                           {{ old('tempatKalibrasi', $calibration->tempatKalibrasi) == 'insitu' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="insitu" style="color: #000000;">Insitu</label>
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="Insitu" id="Insitu" 
+                           {{ old('tempatKalibrasi', $calibration->tempatKalibrasi) == 'Insitu' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="Insitu" style="color: #000000;">Insitu</label>
                 </div>
             </div>
         </td>
@@ -479,6 +479,16 @@
         <td colspan="3">
             <input type="text" name="lokasiPT" class="kalibrasi-input" 
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
+        </td>
+    </tr>
+    
+     <tr>
+        <td>
+            <p style="margin: 0; color: #000000;">Kode TH</p></p>
+        </td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input" 
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
         </td>
     </tr>
 </table>
@@ -595,9 +605,9 @@
                 <?php for($i = 0; $i < 10; $i++): ?>
                     <?php 
                         $detail = $detailsIndexed->get($i);
-                        $titik = $detail ? number_format($detail->titikUkur, 5) : '';
-                        $naik  = $detail ? number_format($detail->STDNaik, 5) : '';
-                        $turun = $detail ? number_format($detail->STDTurun, 5) : '';
+                        $titik = $detail ? $detail->titikUkur : '';
+                        $naik  = $detail ? $detail->STDNaik : '';
+                        $turun = $detail ? $detail->STDTurun : '';
                     ?>
                      <tr>
     <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
@@ -661,9 +671,9 @@
                 <?php for($i = 10; $i < 20; $i++): ?>
                     <?php 
                         $detail = $detailsIndexed->get($i);
-                        $titik = $detail ? number_format($detail->titikUkur, 5) : '';
-                        $naik  = $detail ? number_format($detail->STDNaik, 5) : '';
-                        $turun = $detail ? number_format($detail->STDTurun, 5) : '';
+                        $titik = $detail ? $detail->titikUkur : '';
+                        $naik  = $detail ? $detail->STDNaik : '';
+                        $turun = $detail ? $detail->STDTurun : '';
                     ?>
                     <tr>
     <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
@@ -745,17 +755,17 @@
     <!-- Baris 1: 3 kolom penuh -->
    <tr style="height:22pt">
     <td style="width:77.5pt; border:1.2pt solid #000; text-align:center;">
-        <input type="number" step="any" name="ulangan01" 
+        <input type="text"   name="row1_col1" 
                value="{{ old('ulangan01', $addPG->ulangan01) }}" 
                style="width:100%; text-align:center; font-size:8.5pt; border:none; border-bottom:none; background:transparent; padding:2px;">
     </td>
     <td style="width:74.8pt; border:1.2pt solid #000; text-align:center;">
-        <input type="number" step="any" name="ulangan02" 
+        <input type="text"   name="row1_col2" 
                value="{{ old('ulangan02', $addPG->ulangan02) }}" 
                style="width:100%; text-align:center; font-size:8.5pt; border:none; border-bottom:none; background:transparent; padding:2px;">
     </td>
     <td style="width:79.6pt; border:1.2pt solid #000; text-align:center;">
-        <input type="number" step="any" name="ulangan03" 
+        <input type="text"   name="row1_col3" 
                value="{{ old('ulangan03', $addPG->ulangan03) }}" 
                style="width:100%; text-align:center; font-size:8.5pt; border:none; border-bottom:none; background:transparent; padding:2px;">
     </td>
@@ -765,12 +775,12 @@
     <!-- Baris 2: Hanya 2 kolom berborder, kolom ke-3 TANPA border dan tanpa isi -->
     <tr style="height:22pt">
        <td style="width:77.5pt; border:1.2pt solid #000; text-align:center;">
-    <input type="number" step="any" name="ulangan04" 
+    <input type="text"   name="row2_col1" 
            value="{{ old('ulangan04', $addPG->ulangan04) }}" 
            style="width:100%; text-align:center; font-size:8.5pt; border:none; border-bottom:none; background:transparent; padding:2px;">
 </td>
 <td style="width:74.8pt; border:1.2pt solid #000; text-align:center;">
-    <input type="number" step="any" name="ulangan05" 
+    <input type="text"   name="row2_col2" 
            value="{{ old('ulangan05', $addPG->ulangan05) }}" 
            style="width:100%; text-align:center; font-size:8.5pt; border:none; border-bottom:none; background:transparent; padding:2px;">
 </td>
@@ -960,8 +970,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -1034,7 +1049,7 @@
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data

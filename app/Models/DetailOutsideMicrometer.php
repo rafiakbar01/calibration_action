@@ -9,14 +9,14 @@ class DetailOutsideMicrometer extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'ulangan01' => 'decimal:5',
-        'ulangan02' => 'decimal:5',
-        'ulangan03' => 'decimal:5',
-        'ulangan04' => 'decimal:5',
-        'ulangan05' => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'string',
+    //     'ulangan01' => 'string',
+    //     'ulangan02' => 'string',
+    //     'ulangan03' => 'string',
+    //     'ulangan04' => 'string',
+    //     'ulangan05' => 'string',
+    // ];
 
     protected $fillable = [
         'calibration_id', 
@@ -25,7 +25,8 @@ class DetailOutsideMicrometer extends Model
         'ulangan02',
         'ulangan03',
         'ulangan04',
-        'ulangan05'
+        'ulangan05',
+        'form_index'
     ];
 
     // ✅ Relation langsung ke Calibration

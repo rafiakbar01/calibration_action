@@ -223,10 +223,10 @@
 <body>
     <div class="container my-4">
         <!-- resources/views/formhtml/dial_test_indicator.blade.php -->
-        <form method="POST" action="/calibrations" id="kalibrasiForm">
+       <form method="POST" action="/calibrations" id="kalibrasiForm">
         @csrf
-        <input type="hidden" name="form_type" value="dial_test_indicator">
-        <input type="hidden" name="resolution" value="{{ $resolution ?? '' }}">
+        <input type="hidden" name="form_type" value="bore_gauge">
+        <!--<input type="hidden" name="resolution" value="{{ $resolution ?? '' }}">-->
             <div class="form-kalibrasi-container">
                 <table class="kalibrasi-header-table">
                     <tr>
@@ -272,20 +272,36 @@
                     <div style="flex: 1;">
                         <table class="kalibrasi-main-table">
                             <!-- Nama Alat -->
-                            <tr>
-                            <td style="width: 20%;">
+                             <tr>
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Bore Gauge"
-                                    placeholder="Bore Gauge"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Bore Gauge">Bore Gauge</option>
+                                    <option value="MANUAL_INPUT">-- Input Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
                         </tr>
+                         
 
                             <!-- Merek & Kode Alat -->
                             <tr>
@@ -383,7 +399,7 @@
                                 <td colspan="3">
                                     <div class="d-flex">
                                         <div class="form-check me-5">
-                                            <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" required>
+                                            <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab.PT PAS" id="lab" required>
                                             <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                                         </div>
                                         <div class="form-check">
@@ -398,17 +414,19 @@
                                     <p style="margin: 0; color: #000000;">Lokasi PT</p>
                                 </td>
                                 <td colspan="3">
-                                    <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT" required>
+                                    <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT"  >
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <p style="margin: 0; color: #000000;">Kode TH</p>
+                                </td>
+                                <td colspan="3">
+                                    <input type="text" name="kode_th" class="kalibrasi-input" placeholder="Masukkan Kode TH"  >
                                 </td>
                             </tr>
                         </table>
-                    </div>
-
-                    <!-- Gambar Dial Indicator -->
-                    
-                        
-                            
-                        </div>
                     </div>
                 </div>
 
@@ -449,7 +467,7 @@
                                     <td class="table-secondary fw-bold text-center" style="color: #000000;">Akhir</td>
                                 </tr>
                                 <tr>
-                                    <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
+                                    <td class="bg-light fw-bold" style="color: #000000;">Suhu (&deg;C)</td>
                                     <td><input type="text" name="suhu_awal" class="kondisi-input" required></td>
                                     <td><input type="text" name="suhu_tengah" class="kondisi-input" required></td>
                                     <td><input type="text" name="suhu_akhir" class="kondisi-input" required></td>
@@ -538,9 +556,7 @@
 }
 </style>
 
-<div class="data-kalibrasi-header" style="color: #000000; font-size: 14pt; font-weight: bold; margin-bottom: 16px;">
-    DATA KALIBRASI
-</div>
+
 
 <!-- HIDDEN INPUT SKALA -->
 <style>
@@ -620,88 +636,95 @@
     DATA KALIBRASI
 </div>
 
-<!-- HIDDEN INPUT SKALA -->
-<input type="hidden" name="skala" value="{{ $resolution ?? '0.01' }}">
-
 <div class="kalibrasi-wrapper">
-    <!-- Tabel Kiri: 20 baris, nilai hanya sampai 1.0 -->
+    <!-- Tabel Kiri: 20 baris -->
     <div>
         <table class="kalibrasi-data-table">
             <thead>
-                <tr>
+                 <tr>
                     <th colspan="3">Uji Skala Nominal (Bagian Bawah)</th>
-                </tr>
+                 </tr>
                 <tr class="sub-header">
-                    <th>Penunjukan Alat (mm)</th>
+                    <th>
+                        Penunjukan Alat
+                        <div style="font-weight: normal; margin-top: 2px;">
+                            ( <input type="text" 
+                                     name="satuan_unit_bawah" 
+                                     value=""
+                                     style="width: 50px; border: none; background: transparent; text-align: center; font-weight: bold; display: inline-block;">
+                            )
+                        </div>
+                    </th>
                     <th>Pembacaan Standard - Naik</th>
                     <th>Pembacaan Standard - Turun</th>
-                </tr>
+                 </tr>
             </thead>
             <tbody>
                 @for($i = 0; $i < 20; $i++)
                     @php
                         $value = ($i <= 10) ? number_format($i * 0.1, 1) : '';
                     @endphp
-                    <tr>
+                     <tr>
                         <td class="penunjukan-input">
                             <input type="text" name="penunjukanAlat[]"
                                    value="{{ $value }}"
-                                   placeholder="{{ $i > 10 ? 'Masukkan nilai' : '' }}"
-                                   onblur="if(this.value.trim()==='' && '{{ $value }}' !== '') this.value='{{ $value }}'"
-                                   oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')"
+                                   placeholder="{{ $i > 10 ? '' : '' }}"
                                    style="font-weight: {{ $i <= 10 ? '500' : 'normal' }};">
-                        </td>
-                        <td>
-                            <input type="text" name="pembacaanNaik[]"
-                                   oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
-                        </td>
-                        <td>
-                            <input type="text" name="pembacaanTurun[]"
-                                   oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
-                        </td>
-                    </tr>
+                         </td>
+                         <td>
+                            <input type="text" name="pembacaanNaik[]">
+                         </td>
+                         <td>
+                            <input type="text" name="pembacaanTurun[]">
+                         </td>
+                     </tr>
                 @endfor
             </tbody>
-        </table>
+         </table>
     </div>
 
-    <!-- Tabel Kanan: 20 baris, kosong / user isi manual -->
+    <!-- Tabel Kanan: 20 baris -->
     <div>
         <table class="kalibrasi-data-table">
             <thead>
-                <tr>
+                 <tr>
                     <th colspan="3">Uji Skala Nominal (Bagian Atas / Lanjutan)</th>
-                </tr>
+                 </tr>
                 <tr class="sub-header">
-                    <th>Penunjukan Alat (mm)</th>
+                    <th>
+                        Penunjukan Alat
+                        <div style="font-weight: normal; margin-top: 2px;">
+                            ( <input type="text" 
+                                     name="satuan_unit_atas" 
+                                     value=""
+                                     style="width: 50px; border: none; background: transparent; text-align: center; font-weight: bold; display: inline-block;">
+                            )
+                        </div>
+                    </th>
                     <th>Pembacaan Standard - Naik</th>
                     <th>Pembacaan Standard - Turun</th>
-                </tr>
+                 </tr>
             </thead>
             <tbody>
                 @for($i = 0; $i < 20; $i++)
-                    <tr>
+                     <tr>
                         <td class="penunjukan-input">
-                            <input type="text" name="penunjukanAlat[]"
-                                   placeholder="Masukkan nilai"
-                                   oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
-                        </td>
-                        <td>
-                            <input type="text" name="pembacaanNaik[]"
-                                   oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
-                        </td>
-                        <td>
-                            <input type="text" name="pembacaanTurun[]"
-                                   oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1')">
-                        </td>
-                    </tr>
+                            <input type="text" name="penunjukanAlat[]" placeholder="Masukkan nilai">
+                         </td>
+                         <td>
+                            <input type="text" name="pembacaanNaik[]">
+                         </td>
+                         <td>
+                            <input type="text" name="pembacaanTurun[]">
+                         </td>
+                     </tr>
                 @endfor
             </tbody>
-        </table>
+         </table>
     </div>
 </div>
-                    <!-- Repeatability Section -->
-            <!-- Tabel Repeatability -->
+
+<!-- Repeatability Section -->
 <style>
 .repeatability-section {
     margin: 12px 0 20px 0;
@@ -715,7 +738,7 @@
 
 .repeatability-table {
     width: 100%;
-    max-width: 380px;           /* membatasi lebar agar tidak melebar terlalu jauh */
+    max-width: 380px;
     border-collapse: collapse;
     font-size: 9pt;
     font-family: Arial, Helvetica, sans-serif;
@@ -729,7 +752,8 @@
     vertical-align: middle;
 }
 
-.repeatability-table input[type="text"] {
+.repeatability-table input[type="text"],
+.repeatability-table input[type="number"] {
     width: 100%;
     height: 100%;
     border: none;
@@ -739,30 +763,26 @@
     padding: 1px;
     box-sizing: border-box;
 }
-
-.repeatability-table input[type="text"]:focus {
-    outline: none;
-    background-color: rgba(74, 144, 226, 0.08);
-}
 </style>
 
 <div class="repeatability-section">
-    <p class="repeatability-title">Repeatability :</p>
+    <p class="repeatability-title" style="display: inline-block; margin-right: 10px;">Repeatability :</p>
+    <input type="text" name="repeatability" style="width: 100px; border: none; border-bottom: 1px solid #000; background: transparent; text-align: center;">
 
-    <table class="repeatability-table">
+    <table class="repeatability-table" style="margin-top: 10px;">
         <tr>
-            <td><input type="text" name="ulangan01"></td>
-            <td><input type="text" name="ulangan02"></td>
-            <td><input type="text" name="ulangan03"></td>
-            <td><input type="text" name="ulangan04"></td>
-            <td><input type="text" name="ulangan05"></td>
+            <td><input type="text" name="rep01"></td>
+            <td><input type="text" name="rep02"></td>
+            <td><input type="text" name="rep03"></td>
+            <td><input type="text" name="rep04"></td>
+            <td><input type="text" name="rep05"></td>
         </tr>
         <tr>
-            <td><input type="text" name="ulangan06"></td>
-            <td><input type="text" name="ulangan07"></td>
-            <td><input type="text" name="ulangan08"></td>
-            <td><input type="text" name="ulangan09"></td>
-            <td><input type="text" name="ulangan10"></td>
+            <td><input type="text" name="rep06"></td>
+            <td><input type="text" name="rep07"></td>
+            <td><input type="text" name="rep08"></td>
+            <td><input type="text" name="rep09"></td>
+            <td><input type="text" name="rep10"></td>
         </tr>
     </table>
 </div>
@@ -784,7 +804,7 @@
 
         <!-- Baris 1: Dial Gauge Tester 0~25mm -->
         <td style="width: 38px; border: 1px solid #000; text-align: center; vertical-align: middle;">
-            <input type="checkbox" name="alat_standar[]" value="dial_gauge_tester_0_25mm" 
+            <input type="checkbox" name="alat_standar[]" value="Dial Gauge Tester 0~25mm" 
                    class="alat-standar-checkbox" 
                    style="width: 16px; height: 16px; accent-color: #0066cc; cursor: pointer;">
         </td>
@@ -804,7 +824,7 @@
                 Nama : 
                 <input type="text" name="calibrated_by" 
                        style="width: 65%; border: none; border-bottom: 1px solid #000; 
-                              font-size: 9.5pt; background: transparent; margin-left: 8px;">
+                              font-size: 9.5pt; background: transparent; margin-left: 8px;"  value="{{ auth()->user()->nama ?? 'System' }}"  readonly>
             </div>
         </td>
 
@@ -819,7 +839,7 @@
                 Nama : 
                 <input type="text" name="verified_by" 
                        style="width: 65%; border: none; border-bottom: 1px solid #000; 
-                              font-size: 9.5pt; background: transparent; margin-left: 8px;">
+                              font-size: 9.5pt; background: transparent; margin-left: 8px;" readonly>
             </div>
         </td>
     </tr>
@@ -827,7 +847,7 @@
     <!-- Baris 2: Dial Indicator 1 mm -->
     <tr style="height: 18pt;">
         <td style="border: 1px solid #000; text-align: center; vertical-align: middle;">
-            <input type="checkbox" name="alat_standar[]" value="dial_indicator_1mm" 
+            <input type="checkbox" name="alat_standar[]" value="Dial Indicator 1 mm" 
                    class="alat-standar-checkbox" 
                    style="width: 16px; height: 16px; accent-color: #0066cc; cursor: pointer;">
         </td>
@@ -850,7 +870,7 @@
                    placeholder="Lainnya :................................................"
                    style="width: 100%; border: none; border-bottom: 1px dotted #666; 
                           font-size: 9.5pt; background: transparent; padding: 2px 0;"
-                   oninput="updateAlatStandarLainnya()">
+                   >
         </td>
     </tr>
 
@@ -869,15 +889,10 @@
     </tr>
 </table>
 
-                <!-- Submit Button Section -->
                 <div class="row mt-5">
                     <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                        <button type="button" id="btnSimpanSemua" class="btn btn-primary btn-lg" onclick="submitSemuaForm()" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
-                        </button>
-                        
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
                         </button>
                     </div>
                 </div>
@@ -889,237 +904,593 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 
-        
-    <script>
-    // Fungsi untuk mengupdate nilai checkbox "Lainnya" berdasarkan input teks
-    function updateAlatStandarLainnya() {
-        const checkbox = document.getElementById('alat_standar_lainnya_checkbox');
-        const inputText = document.getElementById('alat_standar_tambahan_input');
-        
-        if (inputText.value.trim() !== '') {
-            checkbox.value = inputText.value.trim();
-        } else {
-            checkbox.value = '';
+ <script>
+// ==========================================
+// STORAGE PER TAB - GLOBAL
+// ==========================================
+if (typeof window.tempFormDataStore === 'undefined') {
+    window.tempFormDataStore = {};
+}
+if (typeof window.isRestoring === 'undefined') {
+    window.isRestoring = false;
+}
+if (typeof window.tabSubmitStatus === 'undefined') {
+    window.tabSubmitStatus = {};
+}
+
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+
+var currentActiveTabId = '1';
+
+// ==========================================
+// FUNGSI GET TAB AKTIF
+// ==========================================
+function getActiveTabId() {
+    const activePane = document.querySelector('.tab-pane.active');
+    if (activePane && activePane.id && activePane.id.startsWith('lk-pane-')) {
+        const tabId = activePane.id.replace('lk-pane-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+    
+    const activeTabButton = document.querySelector('.nav-link.active');
+    if (activeTabButton && activeTabButton.id && activeTabButton.id.startsWith('lk-tab-')) {
+        const tabId = activeTabButton.id.replace('lk-tab-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+    
+    const containers = document.querySelectorAll('.lk-form-container');
+    for (let i = 0; i < containers.length; i++) {
+        const style = window.getComputedStyle(containers[i]);
+        if (style.display !== 'none') {
+            const tabId = containers[i].getAttribute('data-lk-id');
+            if (tabId) return tabId;
         }
     }
+    
+    return currentActiveTabId;
+}
 
-    // Fungsi untuk toggle input teks ketika checkbox dicentang/dicentang
-    function toggleAlatStandarLainnya() {
-        const checkbox = document.getElementById('alat_standar_lainnya_checkbox');
-        const inputText = document.getElementById('alat_standar_tambahan_input');
+function updateActiveTab(tabId) {
+    currentActiveTabId = tabId;
+    console.log(`ðŸ”„ Global active tab updated to: ${tabId}`);
+}
+
+// ==========================================
+// FUNGSI UNTUK MENONAKTIFKAN REQUIRED PADA FORM YANG TIDAK VISIBLE
+// ==========================================
+function disableRequiredOnHiddenForms() {
+    console.log('ðŸ”§ disableRequiredOnHiddenForms called');
+    
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    
+    allForms.forEach((form, index) => {
+        const formIndex = index + 1;
+        const container = form.closest('.lk-form-container');
+        const isVisible = container && window.getComputedStyle(container).display !== 'none';
         
-        if (checkbox.checked) {
-            inputText.disabled = false;
-            inputText.focus();
-            // Update nilai jika input sudah terisi
-            if (inputText.value.trim() !== '') {
-                checkbox.value = inputText.value.trim();
-            }
+        console.log(`ðŸ“Œ Form ${formIndex}: isVisible=${isVisible}`);
+        
+        const requiredInputs = form.querySelectorAll('[required]');
+        
+        if (!isVisible) {
+            requiredInputs.forEach(input => {
+                console.log(`ðŸ”§ Disabling required for: ${input.name}`);
+                input.removeAttribute('required');
+                input.setAttribute('data-required-temp', 'true');
+            });
         } else {
-            inputText.disabled = true;
-            checkbox.value = '';
-        }
-    }
-
-    // Event listener untuk checkbox "Lainnya"
-    document.addEventListener('DOMContentLoaded', function() {
-        const checkboxLainnya = document.getElementById('alat_standar_lainnya_checkbox');
-        const inputLainnya = document.getElementById('alat_standar_tambahan_input');
-        
-        if (checkboxLainnya) {
-            checkboxLainnya.addEventListener('change', toggleAlatStandarLainnya);
-        }
-        
-        if (inputLainnya) {
-            inputLainnya.addEventListener('input', updateAlatStandarLainnya);
-            
-            // Nonaktifkan input teks awalnya
-            inputLainnya.disabled = true;
-        }
-        
-        // Validasi form untuk memastikan jika checkbox "Lainnya" dicentang, input harus diisi
-        const form = document.getElementById('kalibrasiForm');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                const checkboxLainnya = document.getElementById('alat_standar_lainnya_checkbox');
-                const inputLainnya = document.getElementById('alat_standar_tambahan_input');
-                
-                if (checkboxLainnya.checked && inputLainnya.value.trim() === '') {
-                    e.preventDefault();
-                    alert('Harap isi nama alat standar lainnya!');
-                    inputLainnya.focus();
-                    return;
+            requiredInputs.forEach(input => {
+                if (input.hasAttribute('data-required-temp')) {
+                    console.log(`ðŸ”§ Re-enabling required for: ${input.name}`);
+                    input.setAttribute('required', 'required');
+                    input.removeAttribute('data-required-temp');
                 }
             });
         }
     });
-    </script>
+}
 
-
-    <script>
-    // JavaScript form validation
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('kalibrasiForm');
-        
-        form.addEventListener('submit', function(e) {
-            const requiredFields = form.querySelectorAll('[required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    isValid = false;
-                    field.style.borderColor = '#dc3545';
-                }
-            });
-
-            if (!isValid) {
-                e.preventDefault();
-                alert('Harap isi semua field yang wajib diisi!');
-                return;
-            }
-
-            const alatStandar = form.querySelectorAll('input[name="alat_standar[]"]:checked');
-            if (alatStandar.length === 0) {
-                e.preventDefault();
-                alert('Pilih minimal 1 alat standar!');
-                return;
-            }
-
-            const submitBtn = form.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
-            submitBtn.disabled = true;
+function restoreRequiredOnAllForms() {
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    allForms.forEach(form => {
+        form.querySelectorAll('[data-required-temp]').forEach(input => {
+            input.setAttribute('required', 'required');
+            input.removeAttribute('data-required-temp');
         });
     });
-    </script>
+}
 
-    <script>
-    // FUNGSI UTAMA YANG BEKERJA DENGAN STRUKTUR ANDA
-    function ubahSemuaSetting(jenis) {
-        console.log('Memulai perubahan setting untuk:', jenis);
-        
-        if (!jenis) return;
+// ==========================================
+// UPDATE FORM TYPE
+// ==========================================
+function updateFormType(selectedAlat) {
+    const manualInputContainer = document.getElementById('manualInputContainer');
+    const manualInput = document.getElementById('nama_alat_manual');
+    const finalInput = document.getElementById('nama_alat_final');
+    
+    if (!manualInputContainer || !manualInput) return;
+    
+    if (selectedAlat === 'MANUAL_INPUT') {
+        manualInputContainer.style.display = 'block';
+        manualInput.required = true;
+        if (finalInput) finalInput.value = '';
+    } else {
+        manualInputContainer.style.display = 'none';
+        manualInput.required = false;
+        manualInput.value = '';
+        if (finalInput && selectedAlat) finalInput.value = selectedAlat;
+    }
+}
 
-        // 1. UBAH ALAT STANDAR - MENGGUNAKAN CLASS YANG DITAMBAHKAN
-        const semuaCheckbox = document.querySelectorAll('.alat-standar-checkbox');
-        console.log('Checkbox alat standar ditemukan:', semuaCheckbox.length);
-        
-        // Reset semua checkbox
-        semuaCheckbox.forEach(checkbox => {
-            checkbox.checked = false;
-        });
+function syncNamaAlat() {
+    const manualInput = document.getElementById('nama_alat_manual');
+    const finalInput = document.getElementById('nama_alat_final');
+    if (manualInput && finalInput) {
+        finalInput.value = manualInput.value;
+    }
+}
 
-        // Set checkbox berdasarkan jenis
-        if (jenis === '0.01') {
-            const electronicGauge = document.querySelector('input[value="electronic_gauge_tester_0_50mm"]');
-            if (electronicGauge) {
-                electronicGauge.checked = true;
-                console.log('Electronic gauge tester 0~50mm dicentang');
-            }
-        } else if (jenis === '0.001') {
-            const dialGauge = document.querySelector('input[value="dial_gauge_tester_0_25mm"]');
-            if (dialGauge) {
-                dialGauge.checked = true;
-                console.log('Dial gauge tester 0~25mm dicentang');
-            }
-        }
+function formatNumberInput(input) {
+    if (!input) return;
+    let value = input.value;
+    if (value === '' || value === null) return;
+    value = value.toString().replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        let num = parseFloat(value);
+        if (!isNaN(num)) input.value = num.toString();
+    }
+}
 
-        // 2. UBAH NILAI DEFAULT PENUNJUKAN ALAT
-        // Cari semua input penunjukan alat di kedua tabel
-        const semuaTabel = document.querySelectorAll('.kalibrasi-data-table');
-        let semuaInputPenunjukan = [];
-        
-        semuaTabel.forEach((tabel, index) => {
-            const inputs = tabel.querySelectorAll('input[name="penunjukanAlat[]"]');
-            console.log(`Tabel ${index + 1} memiliki ${inputs.length} input penunjukan`);
-            inputs.forEach(input => {
-                semuaInputPenunjukan.push(input);
-            });
-        });
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
-        console.log('Total input penunjukan ditemukan:', semuaInputPenunjukan.length);
-
-        // Nilai default
-        const nilaiDefault001 = [
-            '0.000', '0.010', '0.020', '0.030', '0.040', '0.050', '0.060', '0.070', '0.080', '0.090',
-            '0.100', '0.110', '0.120', '0.130', '0.140', '0.150', '0.160', '0.170', '0.180', '0.190',
-            '0.200', '0.250', '0.300', '0.350', '0.400', '0.450', '0.500', '0.600', '0.700', '0.800', 
-            '0.900', '1.000', '1.500', '2.000', '2.500', '3.000', '4.000', '5.000', ''
-        ];
-
-        const nilaiDefault01 = [
-            '0.0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9',
-            '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9',
-            '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '6.0', '7.0', '8.0', 
-            '9.0', '10.0', '15.0', '20.0', '25.0', '30.0', '40.0', '50.0', ''
-        ];
-
-        const nilaiYangDigunakan = (jenis === '0.001') ? nilaiDefault001 : nilaiDefault01;
-        
-        // Update setiap input penunjukan
-        semuaInputPenunjukan.forEach((input, index) => {
-            if (nilaiYangDigunakan[index] !== undefined) {
-                console.log(`Mengubah input ${index} menjadi: "${nilaiYangDigunakan[index]}"`);
-                input.value = nilaiYangDigunakan[index];
-                
-                // Update onblur event
-                input.onblur = function() {
-                    if (this.value.trim() === '') {
-                        this.value = nilaiYangDigunakan[index];
-                    }
-                };
-            }
-        });
-
-        // 3. CLEAR INPUT PEMBACAAN NAIK & TURUN
-        const semuaInputNaik = document.querySelectorAll('input[name="pembacaanNaik[]"]');
-        const semuaInputTurun = document.querySelectorAll('input[name="pembacaanTurun[]"]');
-        
-        semuaInputNaik.forEach(input => input.value = '');
-        semuaInputTurun.forEach(input => input.value = '');
-
-        console.log(`✅ Setting berhasil diubah untuk Dial Indicator ${jenis} mm`);
-        alert(`✅ Berhasil diubah ke Dial Indicator ${jenis} mm\n• Alat standar otomatis terpilih\n• Nilai default penunjukan alat telah disesuaikan`);
+// ==========================================
+// HANDLE SAVE SUCCESS
+// ==========================================
+window.handleSaveSuccess = function(tabId, data) {
+    console.log('ðŸŽ‰ handleSaveSuccess called for tab:', tabId, data);
+    
+    const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+    if (!container) {
+        console.error(`Container for tab ${tabId} not found!`);
+        return;
     }
 
-    // Event Listener untuk dropdown
-    document.addEventListener('DOMContentLoaded', function() {
-        const dropdown = document.getElementById('jenis_dial_test_indicator');
-        if (dropdown) {
-            console.log('Dropdown ditemukan, menambahkan event listener');
+    const tabButton = document.getElementById(`lk-tab-${tabId}`);
+    if (tabButton) {
+        tabButton.classList.add('tab-saved');
+        const badge = tabButton.querySelector('.badge');
+        if (badge) {
+            badge.className = 'badge badge-success ml-1';
+            badge.innerHTML = '<i class="fas fa-check mr-1"></i>Tersimpan';
+        }
+    }
+
+    const formName = container.getAttribute('data-form-name') || 'bore_gauge';
+    const calibrationId = data.calibration_id || data.id || '-';
+    const printLabelUrl = data.print_label_url || `/calibrations/${calibrationId}/print-label`;
+    
+    tabSubmitStatus[tabId] = {
+        success: true,
+        calibrationId: calibrationId,
+        printLabelUrl: printLabelUrl,
+        formName: formName,
+        timestamp: Date.now()
+    };
+    
+    container.innerHTML = `
+      <div class="save-success-overlay text-center p-5 fade-in" style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+       <div class="mb-4">
+                    <i class="fas fa-check-circle text-success fa-5x"></i>
+                </div>
+                <h3 class="text-success mb-2">Simpan Berhasil!</h3>
+                <p class="mb-3" style="color: black;">Data kalibrasi untuk <strong>${escapeHtml(formName)}</strong> telah berhasil disimpan ke database.</p>
+                
+                <div class="d-inline-block mb-4 p-3" style="border-radius: 12px; text-align: left; background: white; border: 1px solid #ddd;">
+                    <i class="fas fa-info-circle mr-2" style="color: #0d6efd;"></i>
+                    <strong style="color: black;">ID Kalibrasi:</strong> <code style="background: #f5f5f5; color: black; font-weight: bold;">${escapeHtml(calibrationId)}</code>
+                    <br>
+                    <small style="color: black;">Status: <span class="badge bg-success">Draft</span></small>
+                </div>
+        
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+            <!-- Button Cetak Label - Blue -->
+            <button type="button" class="btn btn-primary btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="window.open('${printLabelUrl}', '_blank')">
+                <i class="fas fa-print me-2"></i> Cetak Label
+            </button>
             
-            dropdown.addEventListener('change', function() {
-                console.log('Dropdown berubah:', this.value);
-                ubahSemuaSetting(this.value);
-            });
+            <!-- Button Input Lagi - Green -->
+            <button type="button" class="btn btn-success btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="resetTabForNewScan(${tabId})">
+                <i class="fas fa-plus-circle me-2"></i> Input Lagi
+            </button>
             
-            // Jika dropdown sudah ada value, langsung apply
-            if (dropdown.value) {
-                console.log('Dropdown sudah ada value:', dropdown.value);
-                ubahSemuaSetting(dropdown.value);
+            <!-- Button Tutup Tab - Red -->
+            <button type="button" class="btn btn-danger btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="removeTab(${tabId})">
+                <i class="fas fa-times me-2"></i> Tutup Tab
+            </button>
+        </div>
+        
+        <div class="mt-3 text-muted small">
+            <i class="fas fa-info-circle me-1"></i> Data tersimpan sebagai Draft. 
+            Klik <strong>Cetak Label</strong> untuk mencetak, atau <strong>Input Lagi</strong> untuk melanjutkan kalibrasi berikutnya.
+        </div>
+    </div>
+    `;
+
+    const finishContainer = document.getElementById('finish-action-container');
+    if (finishContainer) finishContainer.classList.remove('d-none');
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'success',
+            title: 'âœ“ Data Tersimpan!',
+            html: `<strong>${escapeHtml(formName)}</strong><br>ID: ${calibrationId}`,
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
+        });
+    }
+};
+
+window.resetTabForNewScan = function(tabId) {
+    if (confirm('Data yang belum disimpan akan hilang. Lanjutkan?')) {
+        delete tabSubmitStatus[tabId];
+        location.reload();
+    }
+};
+
+window.removeTab = function(tabId) {
+    if (tabId == 1) {
+        alert('Tab utama tidak bisa ditutup!');
+        return;
+    }
+    if (confirm(`Apakah Anda yakin ingin menutup Form ${tabId}?`)) {
+        delete tabSubmitStatus[tabId];
+        delete tempFormDataStore[tabId];
+        const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+        if (container) container.remove();
+        const tabBtn = document.getElementById(`lk-tab-${tabId}`);
+        if (tabBtn) tabBtn.remove();
+        const firstContainer = document.querySelector('.lk-form-container[data-lk-id="1"]');
+        if (firstContainer) firstContainer.style.display = 'block';
+        updateActiveTab('1');
+    }
+};
+
+async function submitSemuaForm() {
+    // Dapatkan tab ID yang aktif
+    const activeTabId = getActiveTabId();
+    console.log('📌 Submitting from active tab:', activeTabId);
+    
+    // Cari container yang aktif
+    const activeContainer = document.querySelector(`.lk-form-container[data-lk-id="${activeTabId}"]`);
+    if (!activeContainer) {
+        alert('Container form tidak ditemukan!');
+        return;
+    }
+    
+    // CARI FORM
+    let form = activeContainer.querySelector('#kalibrasiForm');
+    if (!form) {
+        form = activeContainer.querySelector('form[id^="kalibrasiForm"]');
+    }
+    if (!form) {
+        form = activeContainer.querySelector('form');
+    }
+    
+    if (!form) {
+        alert('Form tidak ditemukan!');
+        return;
+    }
+    
+    console.log(`✅ Form ditemukan di tab ${activeTabId}`);
+    
+    // NONAKTIFKAN VALIDASI BROWSER
+    form.setAttribute('novalidate', 'novalidate');
+    form.noValidate = true;
+    
+    // =========================================================
+    // VALIDASI ALAT STANDAR - UNTUK bore_gauge (VERSI CHECKBOX)
+    // =========================================================
+    let alatStandarValues = [];
+    
+    // 1. Ambil nilai dari checkbox alat_standar[] yang dicentang
+    const selectedCheckboxes = form.querySelectorAll('input[name="alat_standar[]"]:checked');
+    
+    if (selectedCheckboxes.length === 0) {
+        alert('Pilih minimal satu Alat Standar (Dial Gauge Tester 0~25mm, Dial Indicator 1 mm, atau Lainnya)!');
+        return;
+    }
+    
+    // 2. Proses setiap checkbox yang dipilih
+    let hasLainnyaWithValue = false;
+    
+    selectedCheckboxes.forEach(checkbox => {
+        const value = checkbox.value;
+        
+        if (value === 'lainnya') {
+            // Jika "Lainnya" dipilih, ambil dari input text alat_standar_tambahan
+            const lainnyaInput = form.querySelector('input[name="alat_standar_tambahan"]');
+            if (lainnyaInput && lainnyaInput.value.trim() !== '') {
+                const lainnyaValue = lainnyaInput.value.trim();
+                alatStandarValues.push(lainnyaValue);
+                hasLainnyaWithValue = true;
+            } else {
+                // Jika checkbox "Lainnya" dicentang tapi tidak diisi
+                alert('Silakan isi Alat Standar Lainnya terlebih dahulu!');
+                throw new Error('Lainnya input kosong');
             }
         } else {
-            console.error('Dropdown tidak ditemukan!');
+            // Nilai preset: dial_gauge_tester_0_25mm atau dial_indicator_1mm
+            let displayValue = '';
+            if (value === 'dial_gauge_tester_0_25mm') {
+                displayValue = 'Dial Gauge Tester 0~25mm';
+            } else if (value === 'dial_indicator_1mm') {
+                displayValue = 'Dial Indicator 1 mm';
+            } else {
+                displayValue = value;
+            }
+            alatStandarValues.push(displayValue);
         }
     });
-
-    // Fungsi testing manual
-    window.testPerubahan = function(jenis) {
-        ubahSemuaSetting(jenis);
-    };
-
-    // Debug function
-    window.debugAlatStandar = function() {
-        const checkboxes = document.querySelectorAll('.alat-standar-checkbox');
-        console.log('=== DEBUG ALAT STANDAR ===');
-        checkboxes.forEach((cb, i) => {
-            console.log(`Checkbox ${i}:`, {
-                value: cb.value,
-                checked: cb.checked,
-                element: cb
-            });
+    
+    // Validasi khusus untuk checkbox "Lainnya"
+    const lainnyaCheckbox = form.querySelector('input[name="alat_standar[]"][value="lainnya"]');
+    if (lainnyaCheckbox && lainnyaCheckbox.checked && !hasLainnyaWithValue) {
+        return; // alert sudah ditampilkan di atas
+    }
+    
+    if (alatStandarValues.length === 0) {
+        alert('Alat standar belum lengkap! Silakan pilih atau isi alat standar.');
+        return;
+    }
+    
+    console.log('✅ Alat standar valid:', alatStandarValues);
+    
+    // =========================================================
+    // VALIDASI DATA DETAIL - UNTUK bore_gauge
+    // Menggunakan penunjukanAlat[], pembacaanNaik[], pembacaanTurun[]
+    // =========================================================
+    let hasDetailData = false;
+    
+    // Ambil semua nilai dari array inputs
+    const penunjukanAlatInputs = form.querySelectorAll('input[name="penunjukanAlat[]"]');
+    const pembacaanNaikInputs = form.querySelectorAll('input[name="pembacaanNaik[]"]');
+    const pembacaanTurunInputs = form.querySelectorAll('input[name="pembacaanTurun[]"]');
+    
+    // Cek apakah ada data di penunjukanAlat
+    for (let i = 0; i < penunjukanAlatInputs.length; i++) {
+        const value = penunjukanAlatInputs[i]?.value;
+        if (value && value.trim() !== '') {
+            hasDetailData = true;
+            break;
+        }
+    }
+    
+    // Jika belum ada, cek pembacaanNaik
+    if (!hasDetailData) {
+        for (let i = 0; i < pembacaanNaikInputs.length; i++) {
+            const value = pembacaanNaikInputs[i]?.value;
+            if (value && value.trim() !== '') {
+                hasDetailData = true;
+                break;
+            }
+        }
+    }
+    
+    // Jika belum ada, cek pembacaanTurun
+    if (!hasDetailData) {
+        for (let i = 0; i < pembacaanTurunInputs.length; i++) {
+            const value = pembacaanTurunInputs[i]?.value;
+            if (value && value.trim() !== '') {
+                hasDetailData = true;
+                break;
+            }
+        }
+    }
+    
+    if (!hasDetailData) {
+        if (!confirm('Belum ada data pengukuran yang diisi. Lanjutkan menyimpan?')) {
+            return;
+        }
+    }
+    
+    console.log('📊 Detail data valid:', { hasDetailData });
+    
+    const btn = document.getElementById('btnSimpanSemua');
+    if (!btn) {
+        alert('Tombol simpan tidak ditemukan!');
+        return;
+    }
+    
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan Data...';
+    
+    try {
+        const formData = new FormData(form);
+        
+        // Hapus field alat_standar[] yang lama (checkbox values asli)
+        formData.delete('alat_standar[]');
+        
+        // Tambahkan alat standar yang sudah diformat
+        alatStandarValues.forEach(value => {
+            formData.append('alat_standar[]', value);
         });
-    };
-    </script>
+        
+        // Tambahkan field wajib yang mungkin kosong
+        formData.append('form_type', 'bore_gauge');
+        
+        // Set rentang ukur default jika kosong
+        if (!formData.has('rentang_ukur_min') || formData.get('rentang_ukur_min') === '') {
+            formData.append('rentang_ukur_min', '0');
+        }
+        if (!formData.has('rentang_ukur_max') || formData.get('rentang_ukur_max') === '') {
+            formData.append('rentang_ukur_max', '0');
+        }
+        
+        // Pastikan satuan_unit_bawah dan satuan_unit_atas ada (meskipun kosong)
+        if (!formData.has('satuan_unit_bawah')) {
+            formData.append('satuan_unit_bawah', '');
+        }
+        if (!formData.has('satuan_unit_atas')) {
+            formData.append('satuan_unit_atas', '');
+        }
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        if (csrfToken) {
+            formData.append('_token', csrfToken);
+        }
+        
+        // Log data yang akan dikirim (untuk debugging)
+        console.log('📤 Mengirim data dari tab:', activeTabId);
+        console.log('📤 Alat standar yang dikirim:', alatStandarValues);
+        console.log('📤 Jumlah penunjukanAlat:', penunjukanAlatInputs.length);
+        console.log('📤 Jumlah pembacaanNaik:', pembacaanNaikInputs.length);
+        console.log('📤 Jumlah pembacaanTurun:', pembacaanTurunInputs.length);
+        
+        const response = await fetch('/calibrations', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        });
+        
+        const contentType = response.headers.get('content-type');
+        
+        let result;
+        if (contentType && contentType.includes('application/json')) {
+            result = await response.json();
+        } else {
+            const text = await response.text();
+            console.error('Non-JSON response:', text.substring(0, 500));
+            throw new Error('Server mengembalikan response yang tidak valid');
+        }
+        
+        if (!response.ok) {
+            throw new Error(result.error || `Gagal menyimpan data: ${response.status}`);
+        }
+        
+        // Ambil nama form
+        let formName = 'bore_gauge';
+        const selectNamaAlat = form.querySelector('select[name="nama_alat"]');
+        if (selectNamaAlat && selectNamaAlat.value && selectNamaAlat.value !== 'MANUAL_INPUT') {
+            formName = selectNamaAlat.value;
+        } else {
+            const manualNamaAlat = form.querySelector('input[name="nama_alat_manual"]');
+            if (manualNamaAlat && manualNamaAlat.value) {
+                formName = manualNamaAlat.value;
+            }
+        }
+        
+        // Update data-form-name di container
+        activeContainer.setAttribute('data-form-name', formName);
+        
+        console.log('💾 Saving success for tab:', activeTabId);
+        
+        if (typeof window.handleSaveSuccess === 'function') {
+            window.handleSaveSuccess(activeTabId, result);
+        } else {
+            alert('Data berhasil disimpan!');
+        }
+        
+    } catch (err) {
+        console.error('Submit error:', err);
+        if (err.message !== 'Lainnya input kosong') {
+            alert('Error: ' + err.message);
+        }
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
+// ==========================================
+// SETUP TAB SWITCHING
+// ==========================================
+function setupTabSwitching() {
+    $(document).on('shown.bs.tab', 'button[data-toggle="tab"]', function (e) {
+        const targetId = $(e.target).attr('id');
+        if (targetId && targetId.startsWith('lk-tab-')) {
+            const tabId = targetId.replace('lk-tab-', '');
+            console.log('ðŸŽ¯ Tab switched to:', tabId);
+            updateActiveTab(tabId);
+            
+            document.querySelectorAll('.lk-form-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            
+            const targetContainer = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+            if (targetContainer) {
+                targetContainer.style.display = 'block';
+            }
+        }
+    });
+    
+    const activeButton = document.querySelector('.nav-link.active');
+    if (activeButton && activeButton.id) {
+        const tabId = activeButton.id.replace('lk-tab-', '');
+        updateActiveTab(tabId);
+    }
+}
+
+// ==========================================
+// INISIALISASI
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('ðŸš€ DOM Content Loaded - Initializing bore_gauge...');
+    
+    setupTabSwitching();
+    
+    const selectAlat = document.getElementById('nama_alat_select');
+    if (selectAlat) {
+        updateFormType(selectAlat.value);
+        selectAlat.addEventListener('change', function() {
+            updateFormType(this.value);
+        });
+    }
+    
+    const manualInput = document.getElementById('nama_alat_manual');
+    if (manualInput) {
+        manualInput.addEventListener('input', syncNamaAlat);
+    }
+    
+    setTimeout(() => {
+        disableRequiredOnHiddenForms();
+    }, 500);
+    
+    console.log('âœ… bore_gauge initialization complete!');
+});
+</script>
+  
 
 </body>
 </html>

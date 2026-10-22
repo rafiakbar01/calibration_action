@@ -293,6 +293,175 @@
         }
     }
 </style>
+    <style>
+        /* ── Standar Picker Widget ── */
+        .sp-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 34px;
+            background: transparent;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        .sp-display {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 3px;
+            padding: 4px 6px;
+            min-height: 34px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .sp-placeholder {
+            color: #aaa;
+            font-size: 11px;
+            font-style: italic;
+            user-select: none;
+        }
+        .sp-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #e0f2fe; /* Background biru muda cerah */
+            color: #0369a1; /* Teks biru cerah */
+            border: 1px solid #bae6fd; /* Border tipis biru muda */
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            user-select: none;
+        }
+        .sp-chip .sp-remove {
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 1;
+            color: #ef4444; /* Warna merah cerah untuk tombol hapus agar terlihat jelas */
+            font-weight: bold;
+            margin-left: 2px;
+        }
+        .sp-chip .sp-remove:hover { color: #b91c1c; }
+        .sp-dropdown {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            background: #fff;
+            border: 2px solid #1e40af;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(30,64,175,0.18);
+            min-width: 220px;
+            max-height: 340px;
+            overflow-y: auto;
+            padding: 6px 0;
+            font-family: 'Inter', sans-serif;
+        }
+        .sp-dropdown.open { display: block; }
+        .sp-search {
+            width: calc(100% - 16px);
+            margin: 6px 8px;
+            padding: 5px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 12px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .sp-search:focus { border-color: #1e40af; }
+        .sp-group-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b7280;
+            padding: 6px 12px 2px;
+        }
+        .sp-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.12s;
+            color: #1f2937;
+        }
+        .sp-option:hover { background: #eff6ff; }
+        .sp-option.selected { background: #dbeafe; font-weight: 600; color: #1e40af; }
+        .sp-option .sp-check {
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            flex-shrink: 0;
+            background: #fff;
+        }
+        .sp-option.selected .sp-check {
+            background: #1e40af;
+            border-color: #1e40af;
+            color: #fff;
+        }
+        .sp-divider { border: none; border-top: 1px solid #f3f4f6; margin: 4px 0; }
+        .sp-count-badge {
+            display: inline-block;
+            background: #1e40af;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 0px 5px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+    </style>
+    <style>
+    /* Tombol Copy Standar Picker */
+    .copy-standar-btn {
+        transition: all 0.2s ease;
+        border-color: #3b82f6;
+        color: #3b82f6;
+        background-color: white;
+        font-weight: bold;
+    }
+    
+    .copy-standar-btn:hover {
+        background-color: #3b82f6;
+        color: white;
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+    
+    .copy-standar-btn:active {
+        transform: scale(0.95);
+    }
+    
+    /* Animasi flash hijau saat copy berhasil */
+    @keyframes flashGreen {
+        0%, 100% { background-color: transparent; }
+        50% { background-color: #d4edda; }
+    }
+    
+    .copy-success-flash {
+        animation: flashGreen 0.6s ease;
+    }
+    
+    /* Toast notification animation */
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>
+
 </head>
 <body>
     <div class="container my-4">
@@ -342,7 +511,7 @@
                         <p style="margin: 0; color: #000000;">Nama Alat</p>
                     </td>
                     <td colspan="3">
-                        <input type="text" class="kalibrasi-input" value="{{ $calibration->namaAlat }}" readonly>
+                        <input type="text" class="kalibrasi-input" name="namaAlat" value="{{ $calibration->namaAlat }}" >
                     </td>
                 </tr>
 
@@ -411,14 +580,15 @@
     </tr>
 
     <!-- Tanggal -->
-    <tr>
-        <td><p style="margin:0;color:#000;">Tanggal Alat Masuk</p></td>
-        <td colspan="3">
-            <input type="date" class="kalibrasi-input"
-                   name="tanggalMasuk"
-                   value="{{ old('tanggalMasuk', $calibration->tanggalMasuk) }}">
-        </td>
-    </tr>
+     <tr>
+                        <td>
+                            <p style="margin: 0; color: #000000;" class="required-field">Tanggal Alat Masuk</p>
+                        </td>
+                        <td colspan="3">
+                            <input type="date" class="kalibrasi-input" name="tanggalMasuk" 
+                                   value="{{ old('tanggalMasuk', \Carbon\Carbon::parse($calibration->tanggalMasuk)->format('Y-m-d')) }}" >
+                        </td>
+                    </tr>
 
     <tr>
         <td><p style="margin:0;color:#000;">Tanggal Kalibrasi</p></td>
@@ -539,188 +709,242 @@
             <!-- Data Kalibrasi Section -->
             <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
             
-         <!-- resources/views/formhtml/push_pull_view.blade.php -->
+      <!-- resources/views/formhtml/push_pull_view.blade.php -->
 <table cellspacing="0" cellpadding="0" class="TableNormal" 
     style="margin-left:6.12pt; border:1.5pt solid #000000; border-collapse:collapse; width:98%; font-family:Arial, sans-serif;">
     
-    <!-- BARIS 1: HEADER UTAMA -->
     <!-- BARIS 1: HEADER UTAMA - VIEW DATA -->
-<tr style="height:18pt">
-    <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
-        <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
-            Titik Ukur
-        </p>
-    </td>
-    <td rowspan="2" style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
-        <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
-            STD Yang Digunakan
-        </p>
-    </td>
-    <td colspan="3" style="width:300pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
-        <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
-            Pembacaan Tarik 
-           <input type="text"
-       name="satuan_tarik"
-       value="{{ $calibration->headPushPull->satuan_tarik ?? '(N)' }}"
-       style="border:none;
-              border-bottom:1px solid #000;
-              padding:0 10px;
-              min-width:80px;
-              display:inline-block;
-              text-align:center;
-              background:transparent;">
+    <tr style="height:18pt">
+        <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
+            <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
+                Titik Ukur
+            </p>
+        </td>
+        <td rowspan="2" style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
+            <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
+                STD Yang Digunakan
+            </p>
+        </td>
+        <td colspan="3" style="width:300pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
+            <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
+                Pembacaan Tarik 
+                (<input type="text"
+                    name="satuan_tarik"
+                    value="{{ $calibration->headPushPull->satuan_tarik ?? 'N' }}"
+                    style="border:none;  width:60px; text-align:center; background:transparent; font-size:10pt;">)
+            </p>
+        </td>
+        <td colspan="3" style="width:300pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
+            <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
+                Pembacaan Tekan 
+                (<input type="text"
+                    name="satuan_tekan"
+                    value="{{ $calibration->headPushPull->satuan_tekan ?? 'N' }}"
+                    style="border:none;  width:60px; text-align:center; background:transparent; font-size:10pt;">)
+            </p>
+        </td>
+    </tr>
 
-        </p>
-    </td>
-    <td colspan="3" style="width:300pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
-        <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
-            Pembacaan Tekan 
-           <input type="text"
-       name="satuan_tekan"
-       value="{{ $calibration->headPushPull->satuan_tekan ?? '(N)' }}"
-       style="border:none;
-              border-bottom:1px solid #000;
-              padding:0 10px;
-              min-width:80px;
-              display:inline-block;
-              text-align:center;
-              background:transparent;">
-
-        </p>
-    </td>
-</tr>
-
-<!-- BARIS 2: SUB HEADER - VIEW DATA -->
-<tr style="height:18pt">
-    <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle;">
-        <p style="margin:3pt; text-align:center; font-size:10pt;">
-            <input type="text"
-       name="satuan_titik_ukur"
-       value="{{ $calibration->headPushPull->satuan_titik_ukur ?? '(N)' }}"
-       style="border:none;
-              border-bottom:1px solid #000;
-              padding:0 10px;
-              min-width:120px;
-              display:inline-block;
-              text-align:center;
-              background:transparent;">
-
-        </p>
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        1
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        2
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        3
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        1
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        2
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        3
-    </td>
-</tr>
+    <!-- BARIS 2: SUB HEADER - VIEW DATA -->
+    <tr style="height:18pt">
+        <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle;">
+            <p style="margin:3pt; text-align:center; font-size:10pt;">
+                (<input type="text"
+                    name="satuan_titik_ukur"
+                    value="{{ $calibration->headPushPull->satuan_titik_ukur ?? 'N' }}"
+                    style="border:none;  width:80px; text-align:center; background:transparent; font-size:10pt;">)
+            </p>
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            1
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            2
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            3
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            1
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            2
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            3
+        </td>
+    </tr>
     
-    <!-- BARIS 3-12: DATA DETAIL (10 BARIS) -->
-    @if($calibration->detailPushpulls && count($calibration->detailPushpulls) > 0)
-        @foreach($calibration->detailPushpulls as $index => $detail)
+    <!-- BARIS 3-12: DATA DETAIL (10 BARIS) - INPUT BISA DIEDIT -->
+    @if($calibration->detailPushPulls && count($calibration->detailPushPulls) > 0)
+        @foreach($calibration->detailPushPulls as $index => $detail)
         <tr style="height:25pt">
-           <!-- Kolom 1: Titik Ukur -->
-<td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-    <input type="text"
-           name="titikUkur[]"
-           value="{{ $detail->titikUkur ?? '' }}"
-           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
-</td>
+            <!-- Kolom 1: Titik Ukur -->
+            <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text"
+                       name="titikUkur[]"
+                       value="{{ $detail->titikUkur ?? '' }}"
+                       placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
 
-<!-- Kolom 2: STD -->
-<td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-    <input type="text"
-           name="STD[]"
-           value="{{ $detail->STD ?? '' }}"
-           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
-</td>
+            <!-- Kolom 2: STD -->
+            <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; position: relative;">
+                @php $stdVal = $detail->STD ?? ''; $row_id = $index + 1; @endphp
+                <div style="display: flex; align-items: center; gap: 4px; padding: 4px 8px;">
+                    <div style="flex: 1; min-width: 0;">
+                        <input type="hidden"
+                               name="STD[]"
+                               id="sp_hidden_{{ $row_id }}"
+                               value="{{ $stdVal }}">
+                        <div class="sp-wrapper"
+                             data-id="{{ $row_id }}"
+                             data-value="{{ $stdVal }}"
+                             style="min-height: 28px;">
+                            <div class="sp-display" id="sp_display_{{ $row_id }}" style="min-height: 28px; padding: 2px 4px;">
+                                <span class="sp-placeholder" id="sp_ph_{{ $row_id }}" style="font-size: 10px;">Pilih standar...</span>
+                            </div>
+                            <div class="sp-dropdown" id="sp_dd_{{ $row_id }}">
+                                <input type="text" class="sp-search" placeholder="Cari kode..." id="sp_search_{{ $row_id }}">
+                                <div class="sp-option-list" id="sp_list_{{ $row_id }}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @if ($row_id > 1)
+                    <button type="button" 
+                            class="btn btn-sm btn-outline-secondary" 
+                            onclick="copyStandar({{ $row_id - 1 }}, {{ $row_id }})"
+                            title="Copy dari baris sebelumnya"
+                            style="padding: 2px 6px; font-size: 10px;">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    @endif
+                </div>
+            </td>
 
-<!-- Kolom 3–5: Pembacaan Tarik -->
-<td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
-    <input type="text" name="ulanganTarik01[]"
-           value="{{ $detail->ulanganTarik01 ?? '' }}"
-           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
-</td>
+            <!-- Kolom 3–5: Pembacaan Tarik -->
+            <td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
+                <input type="text" name="ulanganTarik01[]"
+                       value="{{ $detail->ulanganTarik01 ?? '' }}"
+                       placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
+                <input type="text" name="ulanganTarik02[]"
+                       value="{{ $detail->ulanganTarik02 ?? '' }}"
+                       placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
+                <input type="text" name="ulanganTarik03[]"
+                       value="{{ $detail->ulanganTarik03 ?? '' }}"
+                       placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
 
-<td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
-    <input type="text" name="ulanganTarik02[]"
-           value="{{ $detail->ulanganTarik02 ?? '' }}"
-           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
-</td>
-
-<td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
-    <input type="text" name="ulanganTarik03[]"
-           value="{{ $detail->ulanganTarik03 ?? '' }}"
-           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
-</td>
-
-<!-- Kolom 6–8: Pembacaan Tekan -->
-<td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
-    <input type="text" name="ulanganTekan01[]"
-           value="{{ $detail->ulanganTekan01 ?? '' }}"
-           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
-</td>
-
-<td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
-    <input type="text" name="ulanganTekan02[]"
-           value="{{ $detail->ulanganTekan02 ?? '' }}"
-           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
-</td>
-
-<td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
-    <input type="text" name="ulanganTekan03[]"
-           value="{{ $detail->ulanganTekan03 ?? '' }}"
-           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
-</td>
-
+            <!-- Kolom 6–8: Pembacaan Tekan -->
+            <td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
+                <input type="text" name="ulanganTekan01[]"
+                       value="{{ $detail->ulanganTekan01 ?? '' }}"
+                       placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
+                <input type="text" name="ulanganTekan02[]"
+                       value="{{ $detail->ulanganTekan02 ?? '' }}"
+                       placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; text-align:center;">
+                <input type="text" name="ulanganTekan03[]"
+                       value="{{ $detail->ulanganTekan03 ?? '' }}"
+                       placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
         </tr>
         @endforeach
         
-        <!-- Jika kurang dari 10 baris, tampilkan baris kosong -->
-        @if(count($calibration->detailPushpulls) < 10)
-            @for($i = count($calibration->detailPushpulls); $i < 10; $i++)
+        <!-- Jika kurang dari 10 baris, tampilkan baris input kosong -->
+        @if(count($calibration->detailPushPulls) < 10)
+            @for($i = count($calibration->detailPushPulls); $i < 10; $i++)
             <tr style="height:25pt">
-                <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
+                <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="titikUkur[]" placeholder="-"
+                           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+                </td>
+                <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="STD[]" placeholder="-"
+                           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+                </td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="ulanganTarik01[]" placeholder="-"
+                           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+                </td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="ulanganTarik02[]" placeholder="-"
+                           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+                </td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="ulanganTarik03[]" placeholder="-"
+                           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+                </td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="ulanganTekan01[]" placeholder="-"
+                           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+                </td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="ulanganTekan02[]" placeholder="-"
+                           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+                </td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="ulanganTekan03[]" placeholder="-"
+                           style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+                </td>
             </tr>
             @endfor
         @endif
     @else
-        <!-- Jika tidak ada data -->
+        <!-- Jika tidak ada data sama sekali, tampilkan 10 baris input kosong -->
         @for($i = 1; $i <= 10; $i++)
         <tr style="height:25pt">
-            <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
+            <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text" name="titikUkur[]" placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text" name="STD[]" placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text" name="ulanganTarik01[]" placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text" name="ulanganTarik02[]" placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text" name="ulanganTarik03[]" placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text" name="ulanganTekan01[]" placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text" name="ulanganTekan02[]" placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+                <input type="text" name="ulanganTekan03[]" placeholder="-"
+                       style="font-size:11pt; border:none; background:transparent; width:100%; text-align:center;">
+            </td>
         </tr>
         @endfor
     @endif
     
 </table>
-
 <!-- REPEATABILITY TARIK -->
 <p class="BodyText" style="margin-top:15pt; margin-left:2pt; margin-bottom:5pt;">
     <span style="font-size:12pt; font-weight:bold;">Repeatability Tarik</span>
@@ -734,21 +958,11 @@
         @for($i = 1; $i <= 5; $i++)
         <td style="width:120px; border-left:1.5pt solid #000; {{ $i < 5 ? 'border-right:1.5pt solid #000;' : '' }} border-bottom:1.5pt solid #000; vertical-align:middle; text-align:center;">
             <span style="font-size:11pt;">
-                @if($calibration->addPushpull)
-                    @if($i == 1) <input type="text"
-       name="repeatabilityTarik01"
-       value="{{ $calibration->addPushpull->repeatabilityTarik01 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-
-                    @elseif($i == 2) <input type="text"
-       name="repeatabilityTarik02"
-       value="{{ $calibration->addPushpull->repeatabilityTarik02 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-
-                    @elseif($i == 3) <input type="number" step="any" name="repeatabilityTarik03" value="{{ $calibration->addPushpull->repeatabilityTarik03 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
-                    @elseif($i == 4) <input type="number" step="any" name="repeatabilityTarik04" value="{{ $calibration->addPushpull->repeatabilityTarik04 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
-                    @elseif($i == 5) <input type="number" step="any" name="repeatabilityTarik05" value="{{ $calibration->addPushpull->repeatabilityTarik05 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
-                    @endif
+                @if($i == 1) <input type="text" name="repeatabilityTarik01" value="{{ optional($calibration->addPushPull)->repeatabilityTarik01 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 2) <input type="text" name="repeatabilityTarik02" value="{{ optional($calibration->addPushPull)->repeatabilityTarik02 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 3) <input type="text" name="repeatabilityTarik03" value="{{ optional($calibration->addPushPull)->repeatabilityTarik03 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 4) <input type="text" name="repeatabilityTarik04" value="{{ optional($calibration->addPushPull)->repeatabilityTarik04 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 5) <input type="text" name="repeatabilityTarik05" value="{{ optional($calibration->addPushPull)->repeatabilityTarik05 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
                 @endif
             </span>
         </td>
@@ -760,28 +974,11 @@
         @for($i = 6; $i <= 10; $i++)
         <td style="width:120px; border-top:1.5pt solid #000; border-left:1.5pt solid #000; {{ $i < 10 ? 'border-right:1.5pt solid #000;' : '' }} vertical-align:middle; text-align:center;">
             <span style="font-size:11pt;">
-                @if($calibration->addPushpull)
-                    @if($i == 6) <input type="text"
-       name="repeatabilityTarik06"
-       value="{{ $calibration->addPushpull->repeatabilityTarik06 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-                    @elseif($i == 7) <input type="text"
-       name="repeatabilityTarik07"
-       value="{{ $calibration->addPushpull->repeatabilityTarik07 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-                    @elseif($i == 8) <input type="text"
-       name="repeatabilityTarik08"
-       value="{{ $calibration->addPushpull->repeatabilityTarik08 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-                    @elseif($i == 9) <input type="text"
-       name="repeatabilityTarik09"
-       value="{{ $calibration->addPushpull->repeatabilityTarik09 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-                    @elseif($i == 10) <input type="text"
-       name="repeatabilityTarik10"
-       value="{{ $calibration->addPushpull->repeatabilityTarik10 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-                    @endif
+                @if($i == 6) <input type="text" name="repeatabilityTarik06" value="{{ optional($calibration->addPushPull)->repeatabilityTarik06 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 7) <input type="text" name="repeatabilityTarik07" value="{{ optional($calibration->addPushPull)->repeatabilityTarik07 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 8) <input type="text" name="repeatabilityTarik08" value="{{ optional($calibration->addPushPull)->repeatabilityTarik08 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 9) <input type="text" name="repeatabilityTarik09" value="{{ optional($calibration->addPushPull)->repeatabilityTarik09 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 10) <input type="text" name="repeatabilityTarik10" value="{{ optional($calibration->addPushPull)->repeatabilityTarik10 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
                 @endif
             </span>
         </td>
@@ -802,34 +999,11 @@
         @for($i = 1; $i <= 5; $i++)
         <td style="width:120px; border-left:1.5pt solid #000; {{ $i < 5 ? 'border-right:1.5pt solid #000;' : '' }} border-bottom:1.5pt solid #000; vertical-align:middle; text-align:center;">
             <span style="font-size:11pt;">
-                @if($calibration->addPushpull)
-                    @if($i == 1)<input type="text"
-       name="repeatabilityTekan01"
-       value="{{ $calibration->addPushpull->repeatabilityTekan01 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-
-                  @elseif($i == 2)
-    <input type="text"
-           name="repeatabilityTekan02"
-           value="{{ $calibration->addPushpull->repeatabilityTekan02 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@elseif($i == 3)
-    <input type="text"
-           name="repeatabilityTekan03"
-           value="{{ $calibration->addPushpull->repeatabilityTekan03 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@elseif($i == 4)
-    <input type="text"
-           name="repeatabilityTekan04"
-           value="{{ $calibration->addPushpull->repeatabilityTekan04 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@elseif($i == 5)
-    <input type="text"
-           name="repeatabilityTekan05"
-           value="{{ $calibration->addPushpull->repeatabilityTekan05 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@endif
-
+                @if($i == 1) <input type="text" name="repeatabilityTekan01" value="{{ optional($calibration->addPushPull)->repeatabilityTekan01 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 2) <input type="text" name="repeatabilityTekan02" value="{{ optional($calibration->addPushPull)->repeatabilityTekan02 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 3) <input type="text" name="repeatabilityTekan03" value="{{ optional($calibration->addPushPull)->repeatabilityTekan03 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 4) <input type="text" name="repeatabilityTekan04" value="{{ optional($calibration->addPushPull)->repeatabilityTekan04 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 5) <input type="text" name="repeatabilityTekan05" value="{{ optional($calibration->addPushPull)->repeatabilityTekan05 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
                 @endif
             </span>
         </td>
@@ -841,34 +1015,11 @@
         @for($i = 6; $i <= 10; $i++)
         <td style="width:120px; border-top:1.5pt solid #000; border-left:1.5pt solid #000; {{ $i < 10 ? 'border-right:1.5pt solid #000;' : '' }} vertical-align:middle; text-align:center;">
             <span style="font-size:11pt;">
-                @if($calibration->addPushpull)
-                   @if($i == 6)
-    <input type="text"
-           name="repeatabilityTekan06"
-           value="{{ $calibration->addPushpull->repeatabilityTekan06 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@elseif($i == 7)
-    <input type="text"
-           name="repeatabilityTekan07"
-           value="{{ $calibration->addPushpull->repeatabilityTekan07 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@elseif($i == 8)
-    <input type="text"
-           name="repeatabilityTekan08"
-           value="{{ $calibration->addPushpull->repeatabilityTekan08 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@elseif($i == 9)
-    <input type="text"
-           name="repeatabilityTekan09"
-           value="{{ $calibration->addPushpull->repeatabilityTekan09 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@elseif($i == 10)
-    <input type="text"
-           name="repeatabilityTekan10"
-           value="{{ $calibration->addPushpull->repeatabilityTekan10 ?? '' }}"
-           style="width:100%; border:0; background:transparent; text-align:center;">
-@endif
-
+                @if($i == 6) <input type="text" name="repeatabilityTekan06" value="{{ optional($calibration->addPushPull)->repeatabilityTekan06 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 7) <input type="text" name="repeatabilityTekan07" value="{{ optional($calibration->addPushPull)->repeatabilityTekan07 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 8) <input type="text" name="repeatabilityTekan08" value="{{ optional($calibration->addPushPull)->repeatabilityTekan08 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 9) <input type="text" name="repeatabilityTekan09" value="{{ optional($calibration->addPushPull)->repeatabilityTekan09 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
+                @elseif($i == 10) <input type="text" name="repeatabilityTekan10" value="{{ optional($calibration->addPushPull)->repeatabilityTekan10 ?? '' }}" style="width:100%; border:0; background:transparent; text-align:center;">
                 @endif
             </span>
         </td>
@@ -928,9 +1079,9 @@
         <td style="border: 1pt solid #000; padding: 12px 8px; text-align: center; vertical-align: middle;">
             <div style="width: 92%; border-bottom: 1px solid #000; padding: 6px 4px; font-size: 10pt; text-align: center; min-height: 30px;">
                 <input type="text"
-       name="calibratedBy"
-       value="{{ $calibration->calibratedBy ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
+       name="verifiedBy"
+       value="{{ $calibration->verifiedBy ?? '' }}"
+       style="width:100%; border:0; background:transparent; text-align:center;" readonly>
 
             </div>
         </td>
@@ -942,8 +1093,8 @@
             <strong>TTD :</strong><br>
             <div style="height: 70px; margin: 10px 15px; display: flex; align-items: center; justify-content: center;">
                 <span style="color: #666; font-style: italic;">
-                    @if(isset($calibration) && $calibration->calibrated_by)
-                        (Tanda tangan {{ $calibration->calibrated_by }})
+                    @if(isset($calibration) && $calibration->calibratedBy)
+                        (Tanda tangan {{ $calibration->calibratedBy }})
                     @else
                         (Tanda tangan)
                     @endif
@@ -954,8 +1105,8 @@
             <strong>TTD :</strong><br>
             <div style="height: 70px; margin: 10px 15px; display: flex; align-items: center; justify-content: center;">
                 <span style="color: #666; font-style: italic;">
-                    @if(isset($calibration) && $calibration->verified_by)
-                        (Tanda tangan {{ $calibration->verified_by }})
+                    @if(isset($calibration) && $calibration->verifiedBy)
+                        (Tanda tangan {{ $calibration->verifiedBy }})
                     @else
                         (Tanda tangan)
                     @endif
@@ -979,21 +1130,740 @@
     </tr>
 </table>
 
-            <!-- Action Buttons Section -->
-            <div class="row mt-5">
-                <div class="col-12 text-center">
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-arrow-left me-2"></i>Kembali
-                    </a>
-                    
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+        <!-- Action Buttons Section -->
+                <div class="row mt-5">
+                    <div class="col-12 text-center">
+                        <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                            <i class="fas fa-times me-2"></i>Batal
+                        </a>
+                        
+                        <button type="submit" class="btn btn-success btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                            <i class="fas fa-save me-2"></i>Simpan Perubahan
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
+        // Form validation
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
+            let isValid = true;
+            let errorMessage = '';
+            
+            // Check required fields
+            const requiredFields = document.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#dc3545';
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            // Check radio buttons for kondisi alat
+            const kondisiAlat = document.querySelector('input[name="kondisiAlat"]:checked');
+            if (!kondisiAlat) {
+                isValid = false;
+                errorMessage += 'Pilih kondisi alat (Ok/Rusak)\n';
+            }
+            
+            // Check tempat kalibrasi
+            const tempatKalibrasi = document.querySelector('input[name="tempatKalibrasi"]:checked');
+            if (!tempatKalibrasi) {
+                isValid = false;
+                errorMessage += 'Pilih tempat kalibrasi\n';
+            }
+            
+            // Validate date order
+            const tanggalMasuk = document.querySelector('input[name="tanggalMasuk"]').value;
+            const tanggalKalibrasi = document.querySelector('input[name="tanggalKalibrasi"]').value;
+            
+            if (tanggalMasuk && tanggalKalibrasi) {
+                if (new Date(tanggalMasuk) > new Date(tanggalKalibrasi)) {
+                    isValid = false;
+                    errorMessage += 'Tanggal alat masuk tidak boleh lebih baru dari tanggal kalibrasi\n';
+                }
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Mohon lengkapi semua data yang diperlukan:\n' + errorMessage);
+            }
+        });
+        
+        // Add input validation for numeric fields
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value < 0 && this.getAttribute('min') === null) {
+                    this.value = Math.abs(this.value);
+                }
+            });
+        });
+        
+        // Auto format date display
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.addEventListener('change', function() {
+                if (this.value) {
+                    // Format untuk display (opsional)
+                    const date = new Date(this.value);
+                    const formattedDate = date.toLocaleDateString('id-ID', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                    // Anda bisa menambahkan display format di sini jika diperlukan
+                }
+            });
+        });
+    </script>
+
+   <script>
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
+        console.log('🎯 Edit form submission started...');
+        
+        // Debug form data
+        const formData = new FormData(this);
+        console.log('📦 Form data collected for update');
+        
+        // Log titikUkur array
+        const titikUkurInputs = document.querySelectorAll('input[name="titikUkur[]"]');
+        console.log('🔢 titikUkur inputs count:', titikUkurInputs.length);
+        titikUkurInputs.forEach((input, index) => {
+            console.log(`📝 titikUkur[${index}]:`, input.value);
+        });
+        
+        // Log alat standar checkboxes
+        const alatStandarCheckboxes = document.querySelectorAll('.alat-standar-checkbox:checked');
+        console.log('✅ Checked alat standar:', alatStandarCheckboxes.length);
+        alatStandarCheckboxes.forEach((checkbox, index) => {
+            console.log(`🔧 Alat standar ${index + 1}:`, checkbox.value);
+        });
+        
+        // Log kondisi alat radio
+        const kondisiAlatSelected = document.querySelector('input[name="kondisiAlat"]:checked');
+        console.log('🎚️ Kondisi alat selected:', kondisiAlatSelected ? kondisiAlatSelected.value : 'none');
+        
+        // Log tempat kalibrasi radio
+        const tempatKalibrasiSelected = document.querySelector('input[name="tempatKalibrasi"]:checked');
+        console.log('📍 Tempat kalibrasi selected:', tempatKalibrasiSelected ? tempatKalibrasiSelected.value : 'none');
+        
+        // HANYA BASIC VALIDATION untuk edit form (tidak ada required)
+        let isValid = true;
+        let warningMessages = [];
+        
+        // 1. Validasi tanggal (jika diisi)
+        const tanggalMasuk = document.querySelector('input[name="tanggalMasuk"]').value;
+        const tanggalKalibrasi = document.querySelector('input[name="tanggalKalibrasi"]').value;
+        
+        if (tanggalMasuk && tanggalKalibrasi) {
+            if (new Date(tanggalMasuk) > new Date(tanggalKalibrasi)) {
+                warningMessages.push('Tanggal alat masuk tidak boleh lebih baru dari tanggal kalibrasi');
+                console.warn('⚠️ Date validation warning: masuk > kalibrasi');
+            }
+        }
+        
+        // 2. Validasi numeric fields (jika diisi)
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            if (input.value && isNaN(parseFloat(input.value))) {
+                input.style.borderColor = '#ffc107';
+                warningMessages.push(`${input.name} harus berupa angka`);
+                console.warn(`⚠️ ${input.name} is not a valid number`);
+            } else {
+                input.style.borderColor = '';
+            }
+        });
+        
+       
+        
+        // 4. Validasi alat standar (minimal satu dipilih)
+        if (alatStandarCheckboxes.length === 0) {
+            const alatStandarSection = document.querySelector('.alat-standar-table');
+            if (alatStandarSection) {
+                alatStandarSection.style.border = '2px solid #ffc107';
+                warningMessages.push('Pilih minimal satu alat standar');
+                console.warn('⚠️ No alat standar selected');
+            }
+        } else {
+            const alatStandarSection = document.querySelector('.alat-standar-table');
+            if (alatStandarSection) alatStandarSection.style.border = '';
+        }
+        
+        // 5. Validasi kondisi alat (harus dipilih)
+        if (!kondisiAlatSelected) {
+            const kondisiSection = document.querySelector('.kalibrasi-section-header');
+            if (kondisiSection) {
+                kondisiSection.style.color = '#ffc107';
+                warningMessages.push('Pilih kondisi alat (Ok/Rusak)');
+                console.warn('⚠️ No kondisi alat selected');
+            }
+        } else {
+            const kondisiSection = document.querySelector('.kalibrasi-section-header');
+            if (kondisiSection) kondisiSection.style.color = '';
+        }
+        
+        // 6. Validasi tempat kalibrasi (harus dipilih)
+        if (!tempatKalibrasiSelected) {
+            const tempatSection = document.querySelector('input[name="tempatKalibrasi"]').closest('tr');
+            if (tempatSection) {
+                tempatSection.style.backgroundColor = '#fff8e1';
+                warningMessages.push('Pilih tempat kalibrasi');
+                console.warn('⚠️ No tempat kalibrasi selected');
+            }
+        }
+        
+        // Tampilkan warning jika ada, tapi masih bisa submit
+        if (warningMessages.length > 0) {
+            const shouldProceed = confirm(
+                '⚠️ Peringatan:\n' + 
+                warningMessages.join('\n') + 
+                '\n\nApakah Anda yakin ingin melanjutkan?'
+            );
+            
+            if (!shouldProceed) {
+                e.preventDefault();
+                console.log('⛔ User cancelled submission due to warnings');
+                return false;
+            }
+        }
+        
+        console.log('🚀 Form validation passed, submitting...');
+        
+        // Add loading indicator
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan Perubahan...';
+            submitBtn.disabled = true;
+            
+            // Reset button setelah 10 detik jika ada error
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 10000);
+        }
+        
+        // Log data yang akan dikirim (optional debugging)
+        console.log('📤 Data to be submitted:');
+        for (let [key, value] of formData.entries()) {
+            // Jangan log password atau sensitive data
+            if (!key.includes('password') && !key.includes('token')) {
+                console.log(`${key}:`, value);
+            }
+        }
+        
+        // Optional: Send analytics/log to server
+        try {
+            fetch('/api/log-form-edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    action: 'edit_form_submit',
+                    calibration_id: {{ $calibration->id }},
+                    form_type: 'inside_micrometer',
+                    timestamp: new Date().toISOString(),
+                    field_count: formData.entries().length
+                })
+            }).catch(err => console.log('Analytics log failed:', err));
+        } catch (analyticsError) {
+            console.log('Analytics error:', analyticsError);
+        }
+        
+        return true;
+    });
+    
+    // Additional debug on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 Edit form loaded for Inside Micrometer ID:', {{ $calibration->id }});
+        console.log('🏷️ Certificate ID:', '{{ $calibration->headInsideMicrometer->certificate_id ?? "N/A" }}');
+        console.log('🔢 Detail records count:', {{ $calibration->detailInsideMicrometers->count() }});
+        
+        // Log current alat standar
+        const currentStandards = '{{ $calibration->headInsideMicrometer->standard ?? "" }}';
+        console.log('📋 Current alat standar:', currentStandards);
+        
+        // Log current form values
+        console.log('📝 Current form values:');
+        document.querySelectorAll('.kalibrasi-input').forEach((input, index) => {
+            if (index < 5) { // Hanya log 5 pertama
+                console.log(`${input.name}:`, input.value);
+            }
+        });
+        
+        // Auto-hide validation messages after 5 seconds
+        setTimeout(() => {
+            document.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+            document.querySelectorAll('.invalid-feedback').forEach(el => {
+                el.style.display = 'none';
+            });
+        }, 5000);
+        
+        // Real-time validation for numeric fields
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value && isNaN(parseFloat(this.value))) {
+                    this.classList.add('is-invalid');
+                    this.title = 'Harus berupa angka';
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.title = '';
+                }
+            });
+        });
+        
+        // Real-time validation for date fields
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const tanggalMasuk = document.querySelector('input[name="tanggalMasuk"]').value;
+                const tanggalKalibrasi = document.querySelector('input[name="tanggalKalibrasi"]').value;
+                
+                if (tanggalMasuk && tanggalKalibrasi && new Date(tanggalMasuk) > new Date(tanggalKalibrasi)) {
+                    this.classList.add('is-invalid');
+                    this.title = 'Tanggal tidak valid';
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.title = '';
+                }
+            });
+        });
+        
+        // Highlight required-ish fields (bukan required tapi penting)
+        const importantFields = [
+            'namaAlat', 'brandAlat', 'NoSeri', 'kapasitas', 'resolusi',
+            'pemilikAlat', 'tanggalMasuk', 'tanggalKalibrasi'
+        ];
+        
+        importantFields.forEach(fieldName => {
+            const field = document.querySelector(`[name="${fieldName}"]`);
+            if (field && !field.value.trim()) {
+                field.style.backgroundColor = '#fff8e1';
+                field.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        this.style.backgroundColor = '';
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script>
+/* ── Standar Picker (Multi-select chip) dengan Fitur Copy ── */
+(function () {
+    'use strict';
+
+    // Bangun list AT secara dinamis
+    var dynamicAtItems = [];
+    for (var i = 1; i <= 5; i++) {
+        dynamicAtItems.push('AT-5-' + (i < 10 ? '0' : '') + i);
+    }
+    for (var i = 1; i <= 6; i++) {
+        dynamicAtItems.push('AT-10-' + (i < 10 ? '0' : '') + i);
+    }
+    for (var i = 1; i <= 115; i++) {
+        dynamicAtItems.push('AT-20-' + (i < 10 ? '0' : '') + i);
+    }
+
+    var SP_OPTIONS = [
+        { group: 'M. Anak Timbangan', items: [
+            'M.001','M.002','M.003','M.004','M.005','M.006','M.007',
+            'M.008','M.009','M.010','M.011','M.012','M.013','M.014','M.015',
+            'M.016','M.017','M.018','M.019','M.020','M.021'
+        ]},
+        { group: 'AT. Anak Timbangan', items: dynamicAtItems }
+    ];
+    var SP_MAX = 5;
+    var activeDropdown = null;
+
+    // Helper untuk mencari elemen terkait sebuah wrapper (mengatasi masalah ID terduplikasi / tab dynamic)
+    function getPickerElements(wrapper) {
+        // Karena dropdown bisa dipindah ke body, kita beri referensi
+        var dd = wrapper._dropdownEl;
+        if (!dd) {
+            dd = wrapper.querySelector('.sp-dropdown');
+            if (dd) wrapper._dropdownEl = dd;
+        }
+        
+        return {
+            display: wrapper.querySelector('.sp-display'),
+            ph: wrapper.querySelector('.sp-placeholder'),
+            hidden: wrapper.parentElement ? wrapper.parentElement.querySelector('input[type="hidden"]') : null,
+            search: dd ? dd.querySelector('.sp-search') : null,
+            listEl: dd ? dd.querySelector('.sp-option-list') : null,
+            dd: dd
+        };
+    }
+
+    // ==========================================
+    // FUNGSI CORE STANDAR PICKER
+    // ==========================================
+    function buildOptionList(listEl, selected, searchVal) {
+        listEl.innerHTML = '';
+        var q = (searchVal || '').toLowerCase();
+        SP_OPTIONS.forEach(function (grp) {
+            var filtered = grp.items.filter(function (item) {
+                return !q || item.toLowerCase().includes(q);
+            });
+            if (!filtered.length) return;
+            var lbl = document.createElement('div');
+            lbl.className = 'sp-group-label';
+            lbl.textContent = grp.group;
+            listEl.appendChild(lbl);
+            filtered.forEach(function (item) {
+                var opt = document.createElement('div');
+                opt.className = 'sp-option' + (selected.includes(item) ? ' selected' : '');
+                opt.dataset.value = item;
+                opt.innerHTML =
+                    '<span class="sp-check">' + (selected.includes(item) ? '✓' : '') + '</span>' +
+                    '<span>' + item + '</span>';
+                listEl.appendChild(opt);
+            });
+            var div = document.createElement('hr');
+            div.className = 'sp-divider';
+            listEl.appendChild(div);
+        });
+    }
+
+    // 🔥 renderChips dengan sync dari hidden
+    window.renderChips = function(wrapper, selected) {
+        var els = getPickerElements(wrapper);
+        var display = els.display;
+        var ph = els.ph;
+        var hidden = els.hidden;
+
+        if (!display || !ph || !hidden) {
+            console.warn('Elements not found for wrapper:', wrapper.dataset.id);
+            return;
+        }
+
+        // 🔥 Sinkronkan selected dengan nilai di hidden
+        if (hidden.value) {
+            var hiddenSelected = hidden.value.split('+').filter(Boolean);
+            if (selected.length === 0 && hiddenSelected.length > 0) {
+                selected = hiddenSelected;
+            }
+        }
+
+        // Hapus chip lama
+        Array.from(display.children).forEach(function (c) {
+            if (c.classList.contains('sp-chip')) c.remove();
+        });
+
+        if (!selected || selected.length === 0) {
+            ph.style.display = '';
+            hidden.value = '';
+            wrapper.dataset.value = '';
+            return;
+        }
+
+        ph.style.display = 'none';
+        selected.forEach(function (val) {
+            var chip = document.createElement('span');
+            chip.className = 'sp-chip';
+            chip.innerHTML = val + '<span class="sp-remove" data-val="' + val + '">×</span>';
+            chip.querySelector('.sp-remove').addEventListener('click', function (e) {
+                e.stopPropagation();
+                var idx = selected.indexOf(val);
+                if (idx !== -1) {
+                    selected.splice(idx, 1);
+                    // 🔥 Update hidden dan wrapper
+                    hidden.value = selected.join('+');
+                    wrapper.dataset.value = selected.join('+');
+                    window.renderChips(wrapper, selected);
+                    refreshDropdown(wrapper, selected);
+                }
+            });
+            display.insertBefore(chip, ph);
+        });
+        hidden.value = selected.join('+');
+        wrapper.dataset.value = selected.join('+');
+    };
+
+    function refreshDropdown(wrapper, selected) {
+        var els = getPickerElements(wrapper);
+        if (!els.listEl) return;
+        buildOptionList(els.listEl, selected, els.search ? els.search.value : '');
+        attachOptionClicks(els.listEl, wrapper, selected);
+    }
+
+    function attachOptionClicks(listEl, wrapper, selected) {
+        listEl.querySelectorAll('.sp-option').forEach(function (opt) {
+            opt.removeEventListener('click', opt._clickHandler);
+            opt._clickHandler = function (e) {
+                e.stopPropagation();
+                var val = opt.dataset.value;
+                
+                // 🔥 Ambil data terbaru dari hidden input
+                var els = getPickerElements(wrapper);
+                var hidden = els.hidden;
+                if (hidden) {
+                    var currentValue = hidden.value;
+                    selected = currentValue ? currentValue.split('+').filter(Boolean) : [];
+                }
+                
+                var idx = selected.indexOf(val);
+                if (idx === -1) {
+                    if (selected.length >= SP_MAX) {
+                        showToast('Maksimal ' + SP_MAX + ' pilihan!');
+                        return;
+                    }
+                    selected.push(val);
+                } else {
+                    selected.splice(idx, 1);
+                }
+                
+                // Update
+                window.renderChips(wrapper, selected);
+                refreshDropdown(wrapper, selected);
+                
+                // 🔥 Update data-value di wrapper
+                wrapper.dataset.value = selected.join('+');
+            };
+            opt.addEventListener('click', opt._clickHandler);
+        });
+    }
+
+    function positionDropdown(wrapper, dd) {
+        if (!wrapper || !dd) return;
+        var rect = wrapper.getBoundingClientRect();
+        var spaceBelow = window.innerHeight - rect.bottom;
+        var spaceAbove = rect.top;
+        dd.style.left = rect.left + 'px';
+        dd.style.width = Math.max(220, rect.width) + 'px';
+        if (spaceBelow >= 200 || spaceBelow >= spaceAbove) {
+            dd.style.top = rect.bottom + 'px';
+            dd.style.bottom = 'auto';
+        } else {
+            dd.style.bottom = (window.innerHeight - rect.top) + 'px';
+            dd.style.top = 'auto';
+        }
+    }
+
+    function openDropdown(wrapper, selected) {
+        if (activeDropdown && activeDropdown !== wrapper) {
+            closeDropdown(activeDropdown);
+        }
+        var els = getPickerElements(wrapper);
+        var dd = els.dd;
+        if (!dd) {
+            console.warn('Dropdown not found for wrapper:', wrapper.dataset.id);
+            return;
+        }
+        if (dd.parentElement !== document.body) {
+            document.body.appendChild(dd);
+        }
+        positionDropdown(wrapper, dd);
+        dd.classList.add('open');
+        activeDropdown = wrapper;
+        if (els.search) { 
+            els.search.value = ''; 
+            setTimeout(function() { els.search.focus(); }, 50);
+        }
+        refreshDropdown(wrapper, selected);
+    }
+
+    function closeDropdown(wrapper) {
+        if (!wrapper) return;
+        var els = getPickerElements(wrapper);
+        if (els.dd) els.dd.classList.remove('open');
+        if (activeDropdown === wrapper) activeDropdown = null;
+    }
+
+    function initPicker(wrapper) {
+        if (wrapper.dataset.initialized) return;
+        wrapper.dataset.initialized = 'true';
+        
+        var rawVal = wrapper.dataset.value || '';
+        var selected = rawVal ? rawVal.split('+').map(function (s) { return s.trim(); }).filter(Boolean) : [];
+
+        var els = getPickerElements(wrapper);
+        var hidden = els.hidden;
+
+        // 🔥 Sinkronkan dengan hidden
+        if (hidden && hidden.value && selected.length === 0) {
+            selected = hidden.value.split('+').filter(Boolean);
+            wrapper.dataset.value = hidden.value;
+        }
+
+        window.renderChips(wrapper, selected);
+
+        if (els.search) {
+            els.search.addEventListener('input', function () {
+                refreshDropdown(wrapper, selected);
+            });
+            els.search.addEventListener('click', function (e) { e.stopPropagation(); });
+            els.search.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeDropdown(wrapper);
+            });
+        }
+
+        wrapper.removeEventListener('click', wrapper._clickHandler);
+        wrapper._clickHandler = function (e) {
+            var myEls = getPickerElements(wrapper);
+            if (myEls.dd && myEls.dd.classList.contains('open')) {
+                closeDropdown(wrapper);
+            } else {
+                openDropdown(wrapper, selected);
+            }
+        };
+        wrapper.addEventListener('click', wrapper._clickHandler);
+    }
+
+    // ==========================================
+    // 🔥 FUNGSI COPY STANDAR PICKER
+    // ==========================================
+    window.copyStandarPicker = function(formIndex, fromRow, toRow) {
+        // Fallback untuk file yang hanya mengoper 2 argumen
+        if (arguments.length === 2) {
+            toRow = fromRow;
+            fromRow = formIndex;
+            formIndex = null;
+        }
+        
+        // Coba pakai DOM relasional (jika button berada dalam satu baris TD yang sama/berdekatan)
+        // Agak tricky untuk copy row ke row. Gunakan class / tag.
+        // Asumsi form tabel statik: kita gunakanquerySelectorAll('.sp-wrapper') lalu kita cari by index
+        var wrappers = Array.from(document.querySelectorAll('.sp-wrapper'));
+        // Find wrapper with data-id == fromRow (menggunakan regex jika ada suffix tab)
+        var sourceWrapper = wrappers.find(w => w.dataset.id == fromRow || String(w.dataset.id).endsWith('_'+fromRow) || String(w.dataset.id).startsWith(fromRow+'_'));
+        var targetWrapper = wrappers.find(w => w.dataset.id == toRow || String(w.dataset.id).endsWith('_'+toRow) || String(w.dataset.id).startsWith(toRow+'_'));
+        
+        // Jika form index dikirim (timbangan asli), prioritaskan strict match
+        if (formIndex !== null) {
+            var firstHidden = document.querySelector('[id^="sp_hidden_"]');
+            var tabSuffix = '';
+            if (firstHidden) {
+                var match = firstHidden.id.match(/sp_hidden_\d+_\d+(_.*)/);
+                if (match) tabSuffix = match[1];
+            }
+            var wrapperIdTarget = formIndex + '_' + toRow + tabSuffix;
+            var wrapperIdSource = formIndex + '_' + fromRow + tabSuffix;
+            var strictTarget = wrappers.find(w => w.dataset.id == wrapperIdTarget);
+            var strictSource = wrappers.find(w => w.dataset.id == wrapperIdSource);
+            if (strictTarget) targetWrapper = strictTarget;
+            if (strictSource) sourceWrapper = strictSource;
+        }
+
+        if (!sourceWrapper) {
+            showToast('❌ Row ' + fromRow + ' tidak ditemukan!');
+            return;
+        }
+        if (!targetWrapper) {
+            showToast('❌ Row ' + toRow + ' tidak ditemukan!');
+            return;
+        }
+
+        var sourceEls = getPickerElements(sourceWrapper);
+        var sourceValue = sourceEls.hidden ? sourceEls.hidden.value : sourceWrapper.dataset.value;
+        var selected = sourceValue ? sourceValue.split('+').filter(Boolean) : [];
+        
+        var targetEls = getPickerElements(targetWrapper);
+        if (targetEls.hidden) {
+            targetEls.hidden.value = selected.join('+');
+        }
+        
+        targetWrapper.dataset.value = selected.join('+');
+        window.renderChips(targetWrapper, selected);
+        refreshDropdown(targetWrapper, selected);
+        
+        if (targetEls.display) {
+            var parentTd = targetEls.display.closest('td');
+            if (parentTd) {
+                parentTd.classList.add('copy-success-flash');
+                setTimeout(function() {
+                    parentTd.classList.remove('copy-success-flash');
+                }, 500);
+            }
+        }
+        
+        if (selected.length > 0) {
+            showToast('✅ Standar berhasil di-copy ke Row ' + toRow);
+        } else {
+            showToast('ℹ️ Row ' + fromRow + ' kosong, tidak ada yang di-copy');
+        }
+    };
+    
+    // Agar tombol copy versi lama (copyStandar) tetap work
+    window.copyStandar = window.copyStandarPicker;
+
+    // ==========================================
+    // FUNGSI NOTIFIKASI
+    // ==========================================
+    function showToast(message) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Informasi',
+                text: message,
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        } else {
+            alert(message);
+        }
+    }
+
+    // ==========================================
+    // INISIALISASI
+    // ==========================================
+    function initAllPickers() {
+        var wrappers = document.querySelectorAll('.sp-wrapper:not([data-initialized="true"])');
+        wrappers.forEach(function(wrapper) {
+            initPicker(wrapper);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAllPickers);
+    } else {
+        initAllPickers();
+    }
+    
+    // Observe DOM changes untuk menangkap tab dinamis (MutationObserver sangat direkomendasikan)
+    var observer = new MutationObserver(function(mutations) {
+        var uninitialized = document.querySelectorAll('.sp-wrapper:not([data-initialized="true"])');
+        if (uninitialized.length > 0) {
+            uninitialized.forEach(initPicker);
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    document.addEventListener('click', function(e) {
+        if (!activeDropdown) return;
+        var dd = getPickerElements(activeDropdown).dd;
+        if (!activeDropdown.contains(e.target) && dd && !dd.contains(e.target)) {
+            closeDropdown(activeDropdown);
+        }
+    });
+
+    window.addEventListener('scroll', function() {
+        if (activeDropdown) {
+            var dd = getPickerElements(activeDropdown).dd;
+            if (dd) positionDropdown(activeDropdown, dd);
+        }
+    }, true);
+    
+    window.addEventListener('resize', function() {
+        if (activeDropdown) {
+            var dd = getPickerElements(activeDropdown).dd;
+            if (dd) positionDropdown(activeDropdown, dd);
+        }
+    });
+})();
+</script>
 </body>
 </html>

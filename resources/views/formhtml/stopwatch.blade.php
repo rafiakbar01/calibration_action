@@ -138,6 +138,12 @@
         input:required:valid {
             border-color: #198754 !important;
         }
+
+        .col-repeat {
+            width: 50px !important;
+            min-width: 50px !important;
+            max-width: 50px !important;
+        }
     </style>
 </head>
 <body>
@@ -189,21 +195,39 @@
 
                 <!-- Main Form Section -->
                <table class="kalibrasi-main-table">
-    <!-- Nama Alat -->
-   <tr>
-                        <td style="width: 20%; text-align: left;">
-                            <p style="margin: 0; color: #000000; text-align: left;">Nama Alat</p>
-                        </td>
-                        <td colspan="3">
-                            <select name="nama_alat" class="kalibrasi-input"   onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
-                                <option value="">-- Pilih Jenis Alat --</option>
-                                <option value="Stopwatch">Stopwatch</option>
-                                <option value="Stopwatch Digital">Stopwatch Digital</option>
-                             
-                            </select>
-                        </td>
-                    </tr>
+                    <!-- Nama Alat -->
+                      <tr>
+                           <td style="width: 20%;">
+                                <p style="margin: 0; color: #000000;">Nama Alat</p>
+                            </td>
+                            <td colspan="3">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                   <option value="Stopwatch">Stopwatch</option>
+                                     <option value="Stopwatch Digital">Stopwatch Digital</option>
+                                    <option value="MANUAL_INPUT">-- Input  Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
+                            </td>
+                        </tr>
 
+   
     <!-- Merek & Kode Alat -->
     <tr>
         <td>
@@ -332,6 +356,14 @@
             <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT" style="width: 100%; text-align: left;">
         </td>
     </tr>
+     <tr>
+        <td>
+            <p style="margin: 0; color: #000000; text-align: left;">Kode TH</p>
+        </td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input" placeholder="Masukkan Kode TH" style="width: 100%; text-align: left;">
+        </td>
+    </tr>
 </table>
 
                 <!-- Fungsi Komponen Lainnya & Kondisi Kalibrasi -->
@@ -371,50 +403,50 @@
                                 <td class="table-secondary fw-bold text-center" style="color: #000000;">Akhir</td>
                             </tr>
                             <tr>
-                                <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
-                                <td><input type="number"
+                                <td class="bg-light fw-bold" style="color: #000000;">Suhu (&deg;C)</td>
+                                <td><input type="text"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                        
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                        
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                        
                                         placeholder="0.0"
                                         required></td>
                             </tr>
                             <tr>
                                 <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                        
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                        
                                         placeholder="0.0"
                                         required></td>
-                                <td><input type="number"
+                                <td><input type="text"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        
+                                        
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -423,317 +455,246 @@
 
                 <!-- Data Kalibrasi Section -->
                 <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
-                
-                
-                
+<div class="table-responsive">
+ <table style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:12px;">
+    <!-- Header -->
+    <thead>
+    <tr style="background-color: #D9D9D9;">
+        <td rowspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; width:80px; vertical-align:middle;">
+            Titik Ukur
+            <div style="margin-top: 3px; font-weight: normal; font-size: 10px;">
+                <span style="font-size: 8pt; color: #333;">(</span>
+                <input type="text" name="satuan_titik_ukur" 
+                       placeholder="satuan" 
+                       style="width: 40px; border: none; padding: 1px 3px; text-align: center; font-size: 8pt; background: transparent; display: inline-block;">
+                <span style="font-size: 8pt; color: #333;">)</span>
+            </div>
+        </td>
+        <td rowspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; width:80px; vertical-align:middle;">Objek</td>
+        <td colspan="15" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Penunjukan Standar dan UUT</td>
+    </tr>
+    <tr style="background-color: #D9D9D9;">
+        <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 1</td>
+        <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 2</td>
+        <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 3</td>
+        <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 4</td>
+        <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 5</td>
+    </tr>
+    <tr style="background-color: #D9D9D9;">
+        <!-- Semua kolom header dengan lebar yang sama -->
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+        <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+    </tr>
+</thead>
 
-<html lang="id">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kalibrasi Gauge Block - ULM Comparison</title>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      padding: 20px;
-      background-color: #f9f9f9;
-    }
-    table {
-      width: 80%;
-      max-width: 1200px;
-      margin: 20px auto;
-      border-collapse: collapse;
-      background-color: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    td, th {
-      border: 1px solid #000;
-      padding: 8px;
-      text-align: center;
-      vertical-align: middle;
-      font-size: 11pt;
-    }
-    th {
-      background-color: #d0d0d0;
-      font-weight: bold;
-    }
-    .section-title {
-      background-color: #a0a0a0;
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-    input[type="text"] {
-      width: 100%;
-      border: none;
-      background: transparent;
-      text-align: center;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-    input[type="text"]:focus {
-      outline: 2px solid #4a90e2;
-      background-color: #f0f8ff;
-    }
-    .unit-note {
-      font-size: 0.9em;
-      color: #555;
-    }
-    .sub-header {
-      background-color: #e6e6e6;
-    }
-    
-    textarea {
-      width: 50%;
-      height:400px;
-      padding: 10px;
-      border: 1px solid #aaa;
-      border-radius: 6px;
-      font-size: 10pt;
-      resize: none;
-      
-    }
-    
-    
-    .x78 {
-        text-align: general;
-        vertical-align: middle;
-        white-space: nowrap;
-        background: #DBEEF4;
-        color: #000000;
-        font-size: 10pt;
-        font-weight: 700;
-        font-style: normal;
-        font-family: Arial, sans-serif;
-        border-top: 1px solid windowtext;
-        border-right: 1px solid windowtext;
-        border-bottom: 1px solid windowtext;
-        border-left: 1px solid windowtext;
-      }
-      
-      .x82 {
-        text-align: general;
-        vertical-align: middle;
-        white-space: nowrap;
-        background: #DBEEF4;
-        color: #000000;
-        font-size: 10pt;
-        font-weight: 700;
-        font-style: normal;
-        font-family: Arial, sans-serif;
-        border-top: 1px solid windowtext;
-        border-right: 1px solid windowtext;
-        border-bottom: 1px solid windowtext;
-        border-left: 1px solid windowtext;
-      }
-      
-      .x128 {
-        text-align: center;
-        vertical-align: middle;
-        white-space: nowrap;
-        background: #D9D9D9;
-        color: #000000;
-        font-size: 10pt;
-        font-weight: 700;
-        font-style: normal;
-        font-family: Arial, sans-serif;
-        border-top: 1px solid windowtext;
-        border-right: none;
-        border-bottom: none;
-        border-left: 1px solid windowtext;
-      }
-      
-      .x99 {
-        text-align: center;
-        vertical-align: middle;
-        white-space: nowrap;
-        background: #D9D9D9;
-        color: #000000;
-        font-size: 10pt;
-        font-weight: 700;
-        font-style: normal;
-        font-family: Arial, sans-serif;
-        border-top: 1px solid windowtext;
-        border-right: none;
-        border-bottom: none;
-        border-left: 1px solid windowtext;
-      }
-      
-      .x100 {
-        text-align: center;
-        vertical-align: middle;
-        white-space: nowrap;
-        background: #D9D9D9;
-        color: #000000;
-        font-size: 10pt;
-        font-weight: 700;
-        font-style: normal;
-        font-family: Arial, sans-serif;
-        border-top: 1px solid windowtext;
-        border-right: none;
-        border-bottom: none;
-        border-left: 1px solid windowtext;
-      }
-      
-      .x63 {
-        text-align: center;
-        vertical-align: middle;
-        white-space: nowrap;
-        background: #D9D9D9;
-        color: #000000;
-        font-size: 10pt;
-        font-weight: 700;
-        font-style: normal;
-        font-family: Arial, sans-serif;
-        border-top: 1px solid windowtext;
-        border-right: none;
-        border-bottom: none;
-        border-left: 1px solid windowtext;
-      }
-      
-      .x131 {
-        text-align: center;
-        vertical-align: middle;
-        white-space: nowrap;
-        background: #D9D9D9;
-        color: #000000;
-        font-size: 10pt;
-        font-weight: 700;
-        font-style: normal;
-        font-family: Arial, sans-serif;
-        border-top: 1px solid windowtext;
-        border-right: none;
-        border-bottom: none;
-        border-left: 1px solid windowtext;
-      }
-  </style>
-  
-  <style>
-/* ===============================
-   KHUSUS TABEL DATA KALIBRASI
-   =============================== */
-
-.kalibrasi-data-table {
-    width: 100%;
-    min-width: 1800px;       /* hanya tabel ini */
-    border-collapse: collapse;
-}
-
-/* semua sel */
-.kalibrasi-data-table th,
-.kalibrasi-data-table td {
-    padding: 6px 8px;
-    font-size: 12px;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid #000;
-}
-
-/* input di tabel kalibrasi saja */
-.kalibrasi-data-table input[type="text"] {
-    width: 95%;
-    min-width: 70px;
-    height: 28px;
-    font-size: 12px;
-    padding: 4px 6px;
-    box-sizing: border-box;
-}
-
-/* efek fokus */
-.kalibrasi-data-table input[type="text"]:focus {
-    outline: none;
-    border-color: #0d6efd;
-    background-color: #f8f9fa;
-}
-
-/* kolom judul kiri */
-.kalibrasi-data-table .x128,
-.kalibrasi-data-table .x121 {
-    min-width: 120px;
-}
-
-/* kolom data kecil */
-.kalibrasi-data-table .x63,
-.kalibrasi-data-table .x53,
-.kalibrasi-data-table .x78 {
-    min-width: 90px;
-}
-</style>
-
-
-<div style="overflow-x:auto;">
-   <table class="kalibrasi-data-table">
-  <tr class='x21' style='height:12.75pt'>
-    <td rowspan='3' class='x128' style='border-bottom:1px solid windowtext;height:41.25pt;'>Titik Ukur</td>
-    <td rowspan='3' class='x128' style='border-bottom:1px solid windowtext;height:41.25pt;'>Objek</td>
-    <td colspan='16' class='x99' style='border-right:1px solid windowtext;border-bottom:1px solid windowtext;'>Penunjukan Standar dan UUT</td>
-  </tr>
-  <tr class='x21' style='height:12.75pt'>
-    <td colspan='3' class='x99' style='border-right:1px solid windowtext;border-bottom:1px solid windowtext;'>Pengulangan 1</td>
-    <td colspan='3' class='x99' style='border-right:1px solid windowtext;border-bottom:1px solid windowtext;'>Pengulangan 2</td>
-    <td colspan='4' class='x100' style='border-right:1px solid windowtext;border-bottom:1px solid windowtext;'>Pengulangan 3</td>
-    <td colspan='3' class='x99' style='border-right:1px solid windowtext;border-bottom:1px solid windowtext;'>Pengulangan 4</td>
-    <td colspan='3' class='x99' style='border-right:1px solid windowtext;border-bottom:1px solid windowtext;'>Pengulangan 5</td>
-  </tr>
-  <tr class='x21' style='height:16.5pt'>
-    <td class='x63'>menit</td>
-    <td class='x63'>second</td>
-    <td class='x63'>milisecond</td>
-    <td class='x63'>menit</td>
-    <td class='x63'>second</td>
-    <td class='x63'>milisecond</td>
-    <td class='x63'>menit</td>
-    <td class='x63'>second</td>
-    <td colspan='2' class='x131' style='border-right:1px solid windowtext;border-bottom:1px solid windowtext;'>milisecond</td>
-    <td class='x63'>menit</td>
-    <td class='x63'>second</td>
-    <td class='x63'>milisecond</td>
-    <td class='x63'>menit</td>
-    <td class='x63'>second</td>
-    <td class='x63' style='border-right:1px solid windowtext;'>milisecond</td>
-  </tr>
-
-  <!-- LOOPING DATA ROW -->
-  <?php for ($i = 1; $i <= 10; $i++): ?>
-    <!-- Baris Standar -->
-    <tr class='x21' style='height:19.5pt'>
-      <td rowspan='2' class='x121' style='border-bottom:1px solid windowtext;height:37.5pt;'>
-        <input type="text"  name="titik_ukur_<?php echo $i; ?>" placeholder="..." style="width:80%; border:none; background:transparent; text-align:center;">
-      </td>
-      <td class='x53'>Standar</td>
-      <?php for ($pengulangan = 1; $pengulangan <= 5; $pengulangan++): ?>
+    <tbody>
+    <?php for($i = 1; $i <= 10; $i++): ?>
         <?php 
-          // Pengulangan 3 memiliki colspan 2 untuk milisecond
-          $colspan = ($pengulangan == 3) ? 2 : 1;
+            $detail = $calibration->detailStopwatches[$i-1] ?? null;
+            $hasData = $detail !== null;
         ?>
-        <td class='x53'>
-          <input type="number" step="any" name="standar_<?php echo $i; ?>_p<?php echo $pengulangan; ?>_menit" placeholder="..." style="width:80%; border:none; background:transparent; text-align:center;">
-        </td>
-        <td class='x53'>
-          <input type="number" step="any" name="standar_<?php echo $i; ?>_p<?php echo $pengulangan; ?>_second" placeholder="..." style="width:80%; border:none; background:transparent; text-align:center;">
-        </td>
-        <td class='x53' <?php echo ($pengulangan == 3) ? 'colspan="2"' : ''; ?>>
-          <input type="number" step="any" name="standar_<?php echo $i; ?>_p<?php echo $pengulangan; ?>_milisecond" placeholder="..." style="width:80%; border:none; background:transparent; text-align:center;">
-        </td>
-      <?php endfor; ?>
-    </tr>
-    
-    <!-- Baris Alat (UUT) -->
-    <tr class='x21' style='height:19.5pt'>
-      <td class='x78'>Alat (UUT)</td>
-      <?php for ($pengulangan = 1; $pengulangan <= 5; $pengulangan++): ?>
-        <td class='x78'>
-          <input type="number" step="any" name="alat_<?php echo $i; ?>_p<?php echo $pengulangan; ?>_menit" placeholder="..." style="width:80%; border:none; background:transparent; text-align:center;">
-        </td>
-        <td class='x78'>
-          <input type="number" step="any" name="alat_<?php echo $i; ?>_p<?php echo $pengulangan; ?>_second" placeholder="..." style="width:80%; border:none; background:transparent; text-align:center;">
-        </td>
-        <td class='x78' <?php echo ($pengulangan == 3) ? 'colspan="2"' : ''; ?>>
-          <input type="number" step="any" name="alat_<?php echo $i; ?>_p<?php echo $pengulangan; ?>_milisecond" placeholder="..." style="width:80%; border:none; background:transparent; text-align:center;">
-        </td>
-      <?php endfor; ?>
-    </tr>
-  <?php endfor; ?>
+        
+        <!-- Baris Standar -->
+        <tr>
+            <td rowspan="2" style="border:1px solid #000; text-align:center; vertical-align:middle; width:80px;">
+                <input type="text" name="titik_ukur_<?php echo $i; ?>" 
+                       value="{{ old('titik_ukur_' . $i, $detail->titikUkur ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:28px 4px; font-size:12px; min-width:70px;">
+            </td>
+            <td style="border:1px solid #000; text-align:center; background:#f5f5f5;">Standar</td>
+            
+            <!-- STD - Pengulangan 1 - semua input dengan ukuran sama -->
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p1_menit" 
+                       value="{{ old('standar_' . $i . '_p1_menit', $detail->STDm1 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p1_second" 
+                       value="{{ old('standar_' . $i . '_p1_second', $detail->STDs1 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p1_milisecond" 
+                       value="{{ old('standar_' . $i . '_p1_milisecond', $detail->STDms1 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            
+            <!-- STD - Pengulangan 2 -->
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p2_menit" 
+                       value="{{ old('standar_' . $i . '_p2_menit', $detail->STDm2 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p2_second" 
+                       value="{{ old('standar_' . $i . '_p2_second', $detail->STDs2 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p2_milisecond" 
+                       value="{{ old('standar_' . $i . '_p2_milisecond', $detail->STDms2 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            
+            <!-- STD - Pengulangan 3 -->
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p3_menit" 
+                       value="{{ old('standar_' . $i . '_p3_menit', $detail->STDm3 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p3_second" 
+                       value="{{ old('standar_' . $i . '_p3_second', $detail->STDs3 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p3_milisecond" 
+                       value="{{ old('standar_' . $i . '_p3_milisecond', $detail->STDms3 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            
+            <!-- STD - Pengulangan 4 -->
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p4_menit" 
+                       value="{{ old('standar_' . $i . '_p4_menit', $detail->STDm4 ?? '') }}"
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p4_second" 
+                       value="{{ old('standar_' . $i . '_p4_second', $detail->STDs4 ?? '') }}"
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p4_milisecond" 
+                       value="{{ old('standar_' . $i . '_p4_milisecond', $detail->STDms4 ?? '') }}"
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            
+            <!-- STD - Pengulangan 5 -->
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p5_menit" 
+                       value="{{ old('standar_' . $i . '_p5_menit', $detail->STDm5 ?? '') }}"
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p5_second" 
+                       value="{{ old('standar_' . $i . '_p5_second', $detail->STDs5 ?? '') }}"
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; text-align:center;">
+                <input type="text" name="standar_<?php echo $i; ?>_p5_milisecond" 
+                       value="{{ old('standar_' . $i . '_p5_milisecond', $detail->STDms5 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+        </tr>
+        
+        <!-- Baris Alat (UUT) -->
+        <tr>
+            <td style="border:1px solid #000; background:#DBEEF4; text-align:center; font-weight:bold;">Alat (UUT)</td>
+            
+            <!-- UUT - Pengulangan 1 -->
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p1_menit" 
+                       value="{{ old('alat_' . $i . '_p1_menit', $detail->UUTm1 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p1_second" 
+                       value="{{ old('alat_' . $i . '_p1_second', $detail->UUTs1 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p1_milisecond" 
+                       value="{{ old('alat_' . $i . '_p1_milisecond', $detail->UUTms1 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            
+            <!-- UUT - Pengulangan 2 -->
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p2_menit" 
+                       value="{{ old('alat_' . $i . '_p2_menit', $detail->UUTm2 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p2_second" 
+                       value="{{ old('alat_' . $i . '_p2_second', $detail->UUTs2 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p2_milisecond" 
+                       value="{{ old('alat_' . $i . '_p2_milisecond', $detail->UUTms2 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            
+            <!-- UUT - Pengulangan 3 -->
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p3_menit" 
+                       value="{{ old('alat_' . $i . '_p3_menit', $detail->UUTm3 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p3_second" 
+                       value="{{ old('alat_' . $i . '_p3_second', $detail->UUTs3 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p3_milisecond" 
+                       value="{{ old('alat_' . $i . '_p3_milisecond', $detail->UUTms3 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            
+            <!-- UUT - Pengulangan 4 -->
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p4_menit" 
+                       value="{{ old('alat_' . $i . '_p4_menit', $detail->UUTm4 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p4_second" 
+                       value="{{ old('alat_' . $i . '_p4_second', $detail->UUTs4 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p4_milisecond" 
+                       value="{{ old('alat_' . $i . '_p4_milisecond', $detail->UUTms4 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            
+            <!-- UUT - Pengulangan 5 -->
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p5_menit" 
+                       value="{{ old('alat_' . $i . '_p5_menit', $detail->UUTm5 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p5_second" 
+                       value="{{ old('alat_' . $i . '_p5_second', $detail->UUTs5 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+            <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center;">
+                <input type="text" name="alat_<?php echo $i; ?>_p5_milisecond" 
+                       value="{{ old('alat_' . $i . '_p5_milisecond', $detail->UUTms5 ?? '') }}" 
+                       style="width:100%; text-align:center; border:none; background:transparent; padding:6px 2px; font-size:11px;">
+            </td>
+        </tr>
+    <?php endfor; ?>
+    </tbody>
 </table>
-      </div>
+</div>
       
       <div class="container">
         <strong>Catatan:</strong>
@@ -748,69 +709,7 @@
 
 
 
-                <!-- Footer Section -->
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Footer Kalibrasi Roughness Tester</title>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      padding: 20px;
-      background-color: #f9f9f9;
-    }
-    table {
-      width: 100%;
-      max-width: 1100px;
-      margin: 20px auto;
-      border-collapse: collapse;
-      background-color: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    td {
-      border: 1px solid #000;
-      padding: 12px;
-      text-align: center;
-      vertical-align: middle;
-    }
-    .title {
-      font-weight: bold;
-      font-size: 18px;
-      background-color: #f0f0f0;
-    }
-    .label {
-      font-weight: bold;
-      background-color: #e0e0e0;
-    }
-    input[type="text"] {
-      width: 95%;
-      border: none;
-      background: transparent;
-      text-align: center;
-      padding: 5px;
-      font-size: 12pt;
-    }
-    input[type="text"]:focus {
-      outline: 2px solid #4a90e2;
-      background-color: #f0f8ff;
-    }
-    /* Area TTD tanpa garis bawah + ruang tinggi untuk tanda tangan */
-    .signature-box {
-      height: 120px;
-      vertical-align: top;
-      text-align: left;
-      padding: 15px 20px 10px;
-      border-bottom: none !important;
-    }
-    .empty-row {
-      height: 20px;
-      border: none;
-    }
-    @media print {
-      body { background: white; padding: 10px; }
-      table { box-shadow: none; }
-    }
-  </style>
+         
 
  <!-- Jarak besar sebelum footer (sudah termasuk di margin-bottom di atas + margin-top di tabel) -->
 
@@ -881,13 +780,13 @@
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: left; font-size: 11pt;">
             Nama : 
             <input type="text" name="calibrated_by" 
-                   style="width: 75%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;" 
+                   style="width: 75%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;"  value="{{ auth()->user()->nama ?? 'System' }}" readonly
                  >
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: left; font-size: 11pt;">
             Nama : 
             <input type="text" name="verified_by" 
-                   style="width: 75%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;" 
+                   style="width: 75%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;" readonly
                   >
         </td>
     </tr>
@@ -895,14 +794,12 @@
 
 
                 <!-- Submit Button Section -->
-                <div class="row mt-5">
+                 <!-- Submit Button Section -->
+                  <!-- Submit Button Section -->
+                  <div class="row mt-5">
                     <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                        <button type="button" id="btnSimpanSemua" class="btn btn-primary btn-lg" onclick="submitSemuaForm()" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
-                        </button>
-                        
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
                         </button>
                     </div>
                 </div>
@@ -913,162 +810,467 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-<script>
-// JavaScript form validation
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('kalibrasiForm');
-    
-    form.addEventListener('submit', function(e) {
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
-        
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                isValid = false;
-                field.style.borderColor = '#dc3545';
-            }
-        });
-
-        if (!isValid) {
-            e.preventDefault();
-            alert('Harap isi semua field yang wajib diisi!');
-            return;
-        }
-
-        const alatStandar = form.querySelectorAll('input[name="alat_standar[]"]:checked');
-        if (alatStandar.length === 0) {
-            e.preventDefault();
-            alert('Pilih minimal 1 alat standar!');
-            return;
-        }
-
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
-        submitBtn.disabled = true;
-    });
-});
-</script>
 
  <script>
-    function updateFormType(selectedAlat) {
-        // Normalize input (case-insensitive)
-        const alat = selectedAlat.toLowerCase().trim();
-        
-        // SEMUA alat menggunakan form_type 'enclosure'
-        const formTypeMap = {
-            'stopwatch': 'stopwatch',
-            'stopwatch digital': 'stopwatch',
-            // Tidak perlu 'enclosure' karena tidak ada di dropdown
-        };
-        
-        // Update hidden input
-        const formTypeInput = document.getElementById('form_type_input');
-        if (formTypeMap[alat]) {
-            formTypeInput.value = formTypeMap[alat];
-            console.log('✅ Form type set to: enclosure for alat:', selectedAlat);
-        } else {
-            formTypeInput.value = '';
-            console.warn('⚠️ No form type mapping for:', selectedAlat);
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
+// ==========================================
+// STORAGE PER TAB - GLOBAL
+// ==========================================
+if (typeof window.tempFormDataStore === 'undefined') {
+    window.tempFormDataStore = {};
+}
+if (typeof window.isRestoring === 'undefined') {
+    window.isRestoring = false;
+}
+if (typeof window.tabSubmitStatus === 'undefined') {
+    window.tabSubmitStatus = {};
+}
+
+// ==========================================
+// FUNGSI GET TAB AKTIF
+// ==========================================
+function getActiveTabId() {
+    const activePane = document.querySelector('.tab-pane.active');
+    if (activePane && activePane.id && activePane.id.startsWith('lk-pane-')) {
+        const tabId = activePane.id.replace('lk-pane-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+    
+    const activeTabButton = document.querySelector('.nav-link.active');
+    if (activeTabButton && activeTabButton.id && activeTabButton.id.startsWith('lk-tab-')) {
+        const tabId = activeTabButton.id.replace('lk-tab-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+    
+    const containers = document.querySelectorAll('.lk-form-container');
+    for (let i = 0; i < containers.length; i++) {
+        const style = window.getComputedStyle(containers[i]);
+        if (style.display !== 'none') {
+            const tabId = containers[i].getAttribute('data-lk-id');
+            if (tabId) return tabId;
         }
     }
-</script>
-
-<script>
-// Fungsi untuk update kapasitas secara real-time dari range max
-function updateKapasitas() {
-    const maxInput = document.getElementById('rentang_ukur_max');
-    const kapasitasInput = document.getElementById('kapasitas');
     
-    // Ambil nilai dari rentang max
-    const maxValue = parseFloat(maxInput.value);
-    
-    // Update kapasitas dengan nilai dari rentang max
-    if (!isNaN(maxValue)) {
-        // Format angka dengan 1 digit desimal
-        kapasitasInput.value = maxValue.toFixed(1);
-    } else {
-        kapasitasInput.value = '';
-    }
+    return currentActiveTabId;
 }
 
-// Event listener saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-    const maxInput = document.getElementById('rentang_ukur_max');
+function updateActiveTab(tabId) {
+    currentActiveTabId = tabId;
+    console.log(`ðŸ”„ Global active tab updated to: ${tabId}`);
+}
+
+// ==========================================
+// FUNGSI UNTUK MENONAKTIFKAN REQUIRED PADA FORM YANG TIDAK VISIBLE
+// ==========================================
+function disableRequiredOnHiddenForms() {
+    console.log('ðŸ”§ disableRequiredOnHiddenForms called');
     
-    // Tambahkan event listener untuk paste event juga
-    maxInput.addEventListener('paste', function(e) {
-        // Biarkan paste terjadi, lalu update kapasitas setelah 10ms
-        setTimeout(updateKapasitas, 10);
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    
+    allForms.forEach((form, index) => {
+        const formIndex = index + 1;
+        const container = form.closest('.lk-form-container');
+        const isVisible = container && window.getComputedStyle(container).display !== 'none';
+        
+        console.log(`ðŸ“Œ Form ${formIndex}: isVisible=${isVisible}`);
+        
+        const requiredInputs = form.querySelectorAll('[required]');
+        
+        if (!isVisible) {
+            requiredInputs.forEach(input => {
+                console.log(`ðŸ”§ Disabling required for: ${input.name}`);
+                input.removeAttribute('required');
+                input.setAttribute('data-required-temp', 'true');
+            });
+        } else {
+            requiredInputs.forEach(input => {
+                if (input.hasAttribute('data-required-temp')) {
+                    console.log(`ðŸ”§ Re-enabling required for: ${input.name}`);
+                    input.setAttribute('required', 'required');
+                    input.removeAttribute('data-required-temp');
+                }
+            });
+        }
     });
-    
-    // Juga update saat halaman pertama kali dimuat (jika ada nilai default di range max)
-    updateKapasitas();
-});
-</script>
-
-
-
-<script>
-// Fungsi format Type Alat - menerima huruf, angka, titik, koma, dash, slash, spasi
-function formatTypeAlat(input) {
-    // Izinkan: huruf, angka, titik, koma, dash, slash, spasi, kurung, tanda petik
-    // Tidak perlu mengubah value, hanya validasi input
-    const regex = /[^A-Za-z0-9\s.,\-\/()"'&]/g;
-    if (regex.test(input.value)) {
-        input.value = input.value.replace(regex, '');
-    }
 }
 
-// Fungsi format No. Seri - menerima huruf, angka, titik, koma, dash, slash
-function formatNoSeri(input) {
-    // Izinkan: huruf, angka, titik, koma, dash, slash
-    // Tidak perlu mengubah value, hanya validasi input
-    const regex = /[^A-Za-z0-9.,\-\/]/g;
-    if (regex.test(input.value)) {
-        input.value = input.value.replace(regex, '');
-    }
-}
-</script>
-
-
-<script>
-// Fungsi untuk format input number yang bisa menerima koma
-function formatNumberInput(input) {
-    // Ambil nilai input
-    let value = input.value;
-    
-    // Ganti koma dengan titik (untuk browser yang mengizinkan koma)
-    value = value.replace(',', '.');
-    
-    // Jika ada lebih dari satu titik, hapus yang berlebih
-    const dotCount = (value.match(/\./g) || []).length;
-    if (dotCount > 1) {
-        // Simpan bagian sebelum titik pertama dan setelah titik terakhir
-        const firstPart = value.substring(0, value.indexOf('.') + 1);
-        const lastPart = value.substring(value.lastIndexOf('.') + 1);
-        value = firstPart + lastPart.replace(/\./g, '');
-    }
-    
-    // Update nilai input jika ada perubahan
-    if (value !== input.value) {
-        input.value = value;
-    }
-}
-
-// Event listener untuk menangani paste
-document.addEventListener('DOMContentLoaded', function() {
-    const numberInputs = document.querySelectorAll('input[type="number"]');
-    
-    numberInputs.forEach(input => {
-        input.addEventListener('paste', function(e) {
-            // Biarkan paste terjadi dulu
-            setTimeout(() => {
-                formatNumberInput(this);
-            }, 10);
+function restoreRequiredOnAllForms() {
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    allForms.forEach(form => {
+        form.querySelectorAll('[data-required-temp]').forEach(input => {
+            input.setAttribute('required', 'required');
+            input.removeAttribute('data-required-temp');
         });
     });
+}
+
+// ==========================================
+// UPDATE FORM TYPE
+// ==========================================
+function updateFormType(selectedAlat) {
+    const manualInputContainer = document.getElementById('manualInputContainer');
+    const manualInput = document.getElementById('nama_alat_manual');
+    const finalInput = document.getElementById('nama_alat_final');
+    
+    if (!manualInputContainer || !manualInput) return;
+    
+    if (selectedAlat === 'MANUAL_INPUT') {
+        manualInputContainer.style.display = 'block';
+        manualInput.required = true;
+        if (finalInput) finalInput.value = '';
+    } else {
+        manualInputContainer.style.display = 'none';
+        manualInput.required = false;
+        manualInput.value = '';
+        if (finalInput && selectedAlat) finalInput.value = selectedAlat;
+    }
+}
+
+function syncNamaAlat() {
+    const manualInput = document.getElementById('nama_alat_manual');
+    const finalInput = document.getElementById('nama_alat_final');
+    if (manualInput && finalInput) {
+        finalInput.value = manualInput.value;
+    }
+}
+
+function formatNumberInput(input) {
+    if (!input) return;
+    let value = input.value;
+    if (value === '' || value === null) return;
+    value = value.toString().replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        let num = parseFloat(value);
+        if (!isNaN(num)) input.value = num.toString();
+    }
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ==========================================
+// HANDLE SAVE SUCCESS
+// ==========================================
+window.handleSaveSuccess = function(tabId, data) {
+    console.log('ðŸŽ‰ handleSaveSuccess called for tab:', tabId, data);
+    
+    const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+    if (!container) {
+        console.error(`Container for tab ${tabId} not found!`);
+        return;
+    }
+
+    const tabButton = document.getElementById(`lk-tab-${tabId}`);
+    if (tabButton) {
+        tabButton.classList.add('tab-saved');
+        const badge = tabButton.querySelector('.badge');
+        if (badge) {
+            badge.className = 'badge badge-success ml-1';
+            badge.innerHTML = '<i class="fas fa-check mr-1"></i>Tersimpan';
+        }
+    }
+
+    const formName = container.getAttribute('data-form-name') || 'Stopwatch';
+    const calibrationId = data.calibration_id || data.id || '-';
+    const printLabelUrl = data.print_label_url || `/calibrations/${calibrationId}/print-label`;
+    
+    tabSubmitStatus[tabId] = {
+        success: true,
+        calibrationId: calibrationId,
+        printLabelUrl: printLabelUrl,
+        formName: formName,
+        timestamp: Date.now()
+    };
+    
+    container.innerHTML = `
+      <div class="save-success-overlay text-center p-5 fade-in" style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+       <div class="mb-4">
+                    <i class="fas fa-check-circle text-success fa-5x"></i>
+                </div>
+                <h3 class="text-success mb-2">Simpan Berhasil!</h3>
+                <p class="mb-3" style="color: black;">Data kalibrasi untuk <strong>${escapeHtml(formName)}</strong> telah berhasil disimpan ke database.</p>
+                
+                <div class="d-inline-block mb-4 p-3" style="border-radius: 12px; text-align: left; background: white; border: 1px solid #ddd;">
+                    <i class="fas fa-info-circle mr-2" style="color: #0d6efd;"></i>
+                    <strong style="color: black;">ID Kalibrasi:</strong> <code style="background: #f5f5f5; color: black; font-weight: bold;">${escapeHtml(calibrationId)}</code>
+                    <br>
+                    <small style="color: black;">Status: <span class="badge bg-success">Draft</span></small>
+                </div>
+        
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+            <!-- Button Cetak Label - Blue -->
+            <button type="button" class="btn btn-primary btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="window.open('${printLabelUrl}', '_blank')">
+                <i class="fas fa-print me-2"></i> Cetak Label
+            </button>
+            
+            <!-- Button Input Lagi - Green -->
+            <button type="button" class="btn btn-success btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="resetTabForNewScan(${tabId})">
+                <i class="fas fa-plus-circle me-2"></i> Input Lagi
+            </button>
+            
+            <!-- Button Tutup Tab - Red -->
+            <button type="button" class="btn btn-danger btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="removeTab(${tabId})">
+                <i class="fas fa-times me-2"></i> Tutup Tab
+            </button>
+        </div>
+        
+        <div class="mt-3 text-muted small">
+            <i class="fas fa-info-circle me-1"></i> Data tersimpan sebagai Draft. 
+            Klik <strong>Cetak Label</strong> untuk mencetak, atau <strong>Input Lagi</strong> untuk melanjutkan kalibrasi berikutnya.
+        </div>
+    </div>
+    `;
+
+    const finishContainer = document.getElementById('finish-action-container');
+    if (finishContainer) finishContainer.classList.remove('d-none');
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'success',
+            title: 'âœ“ Data Tersimpan!',
+            html: `<strong>${escapeHtml(formName)}</strong><br>ID: ${calibrationId}`,
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
+        });
+    }
+};
+
+window.resetTabForNewScan = function(tabId) {
+    if (confirm('Data yang belum disimpan akan hilang. Lanjutkan?')) {
+        delete tabSubmitStatus[tabId];
+        location.reload();
+    }
+};
+
+window.removeTab = function(tabId) {
+    if (tabId == 1) {
+        alert('Tab utama tidak bisa ditutup!');
+        return;
+    }
+    if (confirm(`Apakah Anda yakin ingin menutup Form ${tabId}?`)) {
+        delete tabSubmitStatus[tabId];
+        delete tempFormDataStore[tabId];
+        const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+        if (container) container.remove();
+        const tabBtn = document.getElementById(`lk-tab-${tabId}`);
+        if (tabBtn) tabBtn.remove();
+        const firstContainer = document.querySelector('.lk-form-container[data-lk-id="1"]');
+        if (firstContainer) firstContainer.style.display = 'block';
+        updateActiveTab('1');
+    }
+};
+
+// ==========================================
+// SUBMIT Stopwatch - SINGLE FORM PER TAB
+// ==========================================
+async function submitSemuaForm() {
+    // Dapatkan tab ID yang aktif
+    const activeTabId = getActiveTabId();
+    console.log('ðŸ“Œ Submitting from active tab:', activeTabId);
+    
+    // Cari container yang aktif
+    const activeContainer = document.querySelector(`.lk-form-container[data-lk-id="${activeTabId}"]`);
+    if (!activeContainer) {
+        alert('Container form tidak ditemukan!');
+        return;
+    }
+    
+    // CARI FORM
+    let form = activeContainer.querySelector('#kalibrasiForm');
+    if (!form) {
+        form = activeContainer.querySelector('form[id^="kalibrasiForm"]');
+    }
+    if (!form) {
+        form = activeContainer.querySelector('form');
+    }
+    
+    if (!form) {
+        alert('Form tidak ditemukan!');
+        return;
+    }
+    
+    console.log(`âœ… Form ditemukan di tab ${activeTabId}`);
+    
+    // ðŸ”¥ JANGAN HAPUS REQUIRED, TAPI NONAKTIFKAN VALIDASI BROWSER SAJA
+    form.setAttribute('novalidate', 'novalidate');
+    form.noValidate = true;
+    
+    // Validasi manual untuk alat standar (tetap menggunakan required di HTML)
+    const alatStandar = form.querySelectorAll('input[name="alat_standar[]"]:checked');
+    if (alatStandar.length === 0) {
+        alert('Pilih minimal 1 alat standar!');
+        return;
+    }
+    
+    const btn = document.getElementById('btnSimpanSemua');
+    if (!btn) {
+        alert('Tombol simpan tidak ditemukan!');
+        return;
+    }
+    
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan Data...';
+    
+    try {
+        const formData = new FormData(form);
+        
+        // Tambahkan field wajib yang mungkin kosong
+        formData.append('form_type', 'stopwatch');
+        formData.append('rentang_ukur_min', '0');
+        formData.append('rentang_ukur_max', '0');
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        if (csrfToken) {
+            formData.append('_token', csrfToken);
+        }
+        
+        console.log('ðŸ“¤ Mengirim data dari tab:', activeTabId);
+        
+        const response = await fetch('/calibrations', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        });
+        
+        const contentType = response.headers.get('content-type');
+        
+        let result;
+        if (contentType && contentType.includes('application/json')) {
+            result = await response.json();
+        } else {
+            const text = await response.text();
+            console.error('Non-JSON response:', text.substring(0, 500));
+            throw new Error('Server mengembalikan response yang tidak valid');
+        }
+        
+        if (!response.ok) {
+            throw new Error(result.error || `Gagal menyimpan data: ${response.status}`);
+        }
+        
+        // Ambil nama form
+        let formName = 'Stopwatch';
+        const selectNamaAlat = form.querySelector('select[name="nama_alat"]');
+        if (selectNamaAlat && selectNamaAlat.value && selectNamaAlat.value !== 'MANUAL_INPUT') {
+            formName = selectNamaAlat.value;
+        } else {
+            const manualNamaAlat = form.querySelector('input[name="nama_alat_manual"]');
+            if (manualNamaAlat && manualNamaAlat.value) {
+                formName = manualNamaAlat.value;
+            }
+        }
+        
+        // Update data-form-name di container
+        activeContainer.setAttribute('data-form-name', formName);
+        
+        console.log('ðŸ“Œ Saving success for tab:', activeTabId);
+        
+        if (typeof window.handleSaveSuccess === 'function') {
+            window.handleSaveSuccess(activeTabId, result);
+        } else {
+            alert('Data berhasil disimpan!');
+        }
+        
+    } catch (err) {
+        console.error('Submit error:', err);
+        alert('Error: ' + err.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
+
+// ==========================================
+// SETUP TAB SWITCHING
+// ==========================================
+function setupTabSwitching() {
+    $(document).on('shown.bs.tab', 'button[data-toggle="tab"]', function (e) {
+        const targetId = $(e.target).attr('id');
+        if (targetId && targetId.startsWith('lk-tab-')) {
+            const tabId = targetId.replace('lk-tab-', '');
+            console.log('ðŸŽ¯ Tab switched to:', tabId);
+            updateActiveTab(tabId);
+            
+            document.querySelectorAll('.lk-form-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            
+            const targetContainer = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+            if (targetContainer) {
+                targetContainer.style.display = 'block';
+            }
+        }
+    });
+    
+    const activeButton = document.querySelector('.nav-link.active');
+    if (activeButton && activeButton.id) {
+        const tabId = activeButton.id.replace('lk-tab-', '');
+        updateActiveTab(tabId);
+    }
+}
+
+// ==========================================
+// INISIALISASI
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('ðŸš€ DOM Content Loaded - Initializing Stopwatch...');
+    
+    setupTabSwitching();
+    
+    const selectAlat = document.getElementById('nama_alat_select');
+    if (selectAlat) {
+        updateFormType(selectAlat.value);
+        selectAlat.addEventListener('change', function() {
+            updateFormType(this.value);
+        });
+    }
+    
+    const manualInput = document.getElementById('nama_alat_manual');
+    if (manualInput) {
+        manualInput.addEventListener('input', syncNamaAlat);
+    }
+    
+    setTimeout(() => {
+        disableRequiredOnHiddenForms();
+    }, 500);
+    
+    console.log('âœ… Stopwatch initialization complete!');
 });
 </script>
+
 
 </body>
 

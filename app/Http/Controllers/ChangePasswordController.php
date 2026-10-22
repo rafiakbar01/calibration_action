@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\LogHelper;
 
 class ChangePasswordController extends Controller
 {
@@ -46,6 +47,8 @@ class ChangePasswordController extends Controller
         // Update password
         $user->password = $request->new_password;
         $user->save();
+        
+        LogHelper::log('change_password', "User '{$user->nama}' mengubah password akun", $user);
         
         return redirect()->route('password.change')
             ->with('success', 'Password berhasil diubah!');

@@ -628,9 +628,9 @@
           <p style="margin:3pt;">
                 Pembacaan Alat X (
                 <?php 
-                $satuan_alat_x = isset($calibration->satuan_alat_x) 
-                    ? $calibration->satuan_alat_x 
-                    : 'MM';
+                $satuan_alat_x = isset($calibration->headProfilProjector->satuan_alat_x) 
+                    ? $calibration->headProfilProjector->satuan_alat_x 
+                    : ' ';
                 echo htmlspecialchars($satuan_alat_x);
                 ?>
                 )
@@ -640,9 +640,9 @@
            <p style="margin:3pt;">
             Pembacaan Alat Y (
             <?php 
-            $satuan_alat_y = isset($calibration->satuan_alat_y) 
-                ? $calibration->satuan_alat_y 
-                : 'MM';
+            $satuan_alat_y = isset($calibration->headProfilProjector->satuan_alat_y) 
+                ? $calibration->headProfilProjector->satuan_alat_y 
+                : ' ';
             echo htmlspecialchars($satuan_alat_y);
             ?>
             )
@@ -656,9 +656,9 @@
             <p style="margin:3pt;">
                 ( 
                 <?php 
-                $satuan_titik_ukur = isset($calibration->satuan_titik_ukur) 
-                    ? $calibration->satuan_titik_ukur 
-                    : 'MM';
+                $satuan_titik_ukur = isset($calibration->headProfilProjector->satuan_titik_ukur) 
+                    ? $calibration->headProfilProjector->satuan_titik_ukur 
+                    : ' ';
                 echo htmlspecialchars($satuan_titik_ukur);
                 ?>
                     )
@@ -870,9 +870,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

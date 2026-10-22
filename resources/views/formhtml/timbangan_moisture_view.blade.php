@@ -374,34 +374,7 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
-            <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-            
-            <span class="me-3" style="color: #000000;">-</span>
-            
-            <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+               
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -546,12 +519,17 @@
             <!-- Data Kalibrasi Section -->
             <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
             
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+       <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr valign="top">
         <!-- Blok Kiri: Setengah Kap. Max -->
         <td width="33%" valign="top" style="padding-right: 20px;">
             <b>Pemeriksaan Nilai Repeatability</b><br><br>
-            Setengah Kap. Max = ....................<br><br>
+            Setengah Kap. Max = 
+            <input type="text" 
+                   value="{{ $calibration->headTimbanganMoisture->setengah_kapasitas ?? $calibration->headTimbangan->setengah_kapasitas ?? '' }}"
+                   style="border:0; border-bottom:1px dotted #000; width:200px; background:transparent;"
+                   readonly>
+            <br><br>
 
             <table style="border-collapse: collapse; width: 100%;">
                 <tr style="background: #cccccc;">
@@ -566,19 +544,28 @@
                 <?php 
                     $field_z1 = 'HalfMax_z1_' . str_pad($i, 2, '0', STR_PAD_LEFT);
                     $field_m1 = 'HalfMax_m1_' . str_pad($i, 2, '0', STR_PAD_LEFT);
-                    $value_z1 = $calibration->addTimbanganMoisture->{$field_z1} ?? '';
-                    $value_m1 = $calibration->addTimbanganMoisture->{$field_m1} ?? '';
+                    
+                    $value_z1 = '';
+                    $value_m1 = '';
+                    $addModelHalf = $calibration->addTimbanganMoisture ?? $calibration->addTimbangan;
+                    
+                    if ($addModelHalf) {
+                        $value_z1 = $addModelHalf->{$field_z1} ?? '';
+                        $value_m1 = $addModelHalf->{$field_m1} ?? '';
+                    }
                 ?>
                 <tr>
                     <td style="border:2px solid #000; padding:0;">
-                        <div style="width:100%; text-align:center; padding:8px; box-sizing:border-box;">
-                            <?php echo $value_z1; ?>
-                        </div>
+                        <input type="text" 
+                               value="<?php echo $value_z1; ?>"
+                               style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;"
+                               readonly>
                     </td>
                     <td style="border:2px solid #000; padding:0;">
-                        <div style="width:100%; text-align:center; padding:8px; box-sizing:border-box;">
-                            <?php echo $value_m1; ?>
-                        </div>
+                        <input type="text" 
+                               value="<?php echo $value_m1; ?>"
+                               style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;"
+                               readonly>
                     </td>
                 </tr>
                 <?php endfor; ?>
@@ -588,7 +575,12 @@
         <!-- Blok Tengah: Kapasitas Max -->
         <td width="33%" valign="top" style="padding-right: 20px;">
             <b>Pemeriksaan Nilai Repeatability</b><br><br>
-            Kapasitas Max = ....................<br><br>
+            Kapasitas Max = 
+            <input type="text" 
+                   value="{{ $calibration->headTimbanganMoisture->kapasitas_max ?? $calibration->headTimbangan->kapasitas_max ?? '' }}"
+                   style="border:0; border-bottom:1px dotted #000; width:200px; background:transparent;"
+                   readonly>
+            <br><br>
 
             <table style="border-collapse: collapse; width: 100%;">
                 <tr style="background: #cccccc;">
@@ -603,25 +595,33 @@
                 <?php 
                     $field_z1 = 'FullMax_z1_' . str_pad($i, 2, '0', STR_PAD_LEFT);
                     $field_m1 = 'FullMax_m1_' . str_pad($i, 2, '0', STR_PAD_LEFT);
-                    $value_z1 = $calibration->addTimbanganMoisture->{$field_z1} ?? '';
-                    $value_m1 = $calibration->addTimbanganMoisture->{$field_m1} ?? '';
+                    
+                    $value_z1 = '';
+                    $value_m1 = '';
+                    $addModelFull = $calibration->addTimbanganMoisture ?? $calibration->addTimbangan;
+                    
+                    if ($addModelFull) {
+                        $value_z1 = $addModelFull->{$field_z1} ?? '';
+                        $value_m1 = $addModelFull->{$field_m1} ?? '';
+                    }
                 ?>
                 <tr>
                     <td style="border:2px solid #000; padding:0;">
-                        <div style="width:100%; text-align:center; padding:8px; box-sizing:border-box;">
-                            <?php echo $value_z1; ?>
-                        </div>
+                        <input type="text" 
+                               value="<?php echo $value_z1; ?>"
+                               style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;"
+                               readonly>
                     </td>
                     <td style="border:2px solid #000; padding:0;">
-                        <div style="width:100%; text-align:center; padding:8px; box-sizing:border-box;">
-                            <?php echo $value_m1; ?>
-                        </div>
+                        <input type="text" 
+                               value="<?php echo $value_m1; ?>"
+                               style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;"
+                               readonly>
                     </td>
                 </tr>
                 <?php endfor; ?>
             </table>
-        </td>
-
+       
     <!-- Blok Kanan: Suhu Moisture Analyzer -->
 <td width="34%" valign="top">
     <!-- Judul SUHU MOISTURE ANALYZER dimasukkan dalam tabel -->
@@ -770,72 +770,45 @@
         </td>
     </tr>
     
-    @foreach($calibration->detailTimbanganMoistures as $index => $detail)
-    <tr>
-        <td style="border:2px solid #000; padding:0;">
-            <input type="number" step="any" name="titikUkur_{{ $index+1 }}" 
-                   value="{{ $detail->titikUkur ?? '' }}"
-                   style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
-        </td>
-        <td style="border:2px solid #000; padding:0;">
-            <input type="number" step="any" name="Lz1_{{ $index+1 }}" 
-                   value="{{ $detail->Lz1 ?? '' }}"
-                   style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
-        </td>
-        <td style="border:2px solid #000; padding:0;">
-            <input type="number" step="any" name="Lm1_{{ $index+1 }}" 
-                   value="{{ $detail->Lm1 ?? '' }}"
-                   style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
-        </td>
-        <td style="border:2px solid #000; padding:0;">
-            <input type="number" step="any" name="Rm1_{{ $index+1 }}" 
-                   value="{{ $detail->Rm1 ?? '' }}"
-                   style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
-        </td>
-        <td style="border:2px solid #000; padding:0;">
-            <input type="number" step="any" name="Rz1_{{ $index+1 }}" 
-                   value="{{ $detail->Rz1 ?? '' }}"
-                   style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
-        </td>
-        <td style="border:2px solid #000; padding:0;">
-            <input type="number" step="any" name="STD_{{ $index+1 }}" 
-                   value="{{ $detail->STD ?? '' }}"
-                   style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
-        </td>
-    </tr>
-    @endforeach
-    
-    <!-- Fallback jika data belum ada (10 baris kosong) -->
-    @if($calibration->detailTimbanganMoistures->count() === 0)
-        @for($i = 1; $i <= 10; $i++)
+    @for($i = 0; $i < 10; $i++)
+        @php
+            // Ambil data berdasarkan index array (0-9)
+            $detail = $calibration->detailTimbanganMoistures[$i] ?? null;
+            $rowNumber = $i + 1;
+        @endphp
         <tr>
             <td style="border:2px solid #000; padding:0;">
-                <input type="number" step="any" name="titikUkur_{{ $i }}" 
+                <input type="number" step="any" name="titikUkur_{{ $rowNumber }}" 
+                       value="{{ $detail->titikUkur ?? '' }}"
                        style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
             </td>
             <td style="border:2px solid #000; padding:0;">
-                <input type="number" step="any" name="Lz1_{{ $i }}" 
+                <input type="number" step="any" name="Lz1_{{ $rowNumber }}" 
+                       value="{{ $detail->Lz1 ?? '' }}"
                        style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
             </td>
             <td style="border:2px solid #000; padding:0;">
-                <input type="number" step="any" name="Lm1_{{ $i }}" 
+                <input type="number" step="any" name="Lm1_{{ $rowNumber }}" 
+                       value="{{ $detail->Lm1 ?? '' }}"
                        style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
             </td>
             <td style="border:2px solid #000; padding:0;">
-                <input type="number" step="any" name="Rm1_{{ $i }}" 
+                <input type="number" step="any" name="Rm1_{{ $rowNumber }}" 
+                       value="{{ $detail->Rm1 ?? '' }}"
                        style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
             </td>
             <td style="border:2px solid #000; padding:0;">
-                <input type="number" step="any" name="Rz1_{{ $i }}" 
+                <input type="number" step="any" name="Rz1_{{ $rowNumber }}" 
+                       value="{{ $detail->Rz1 ?? '' }}"
                        style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
             </td>
             <td style="border:2px solid #000; padding:0;">
-                <input type="number" step="any" name="STD_{{ $i }}" 
+                <input type="number" step="any" name="STD_{{ $rowNumber }}" 
+                       value="{{ $detail->STD ?? '' }}"
                        style="width:100%; border:none; background:transparent; text-align:center; padding:8px; box-sizing:border-box;">
             </td>
         </tr>
-        @endfor
-    @endif
+    @endfor
 </table>
 
      <div style="margin-top: 40px; margin-bottom: 20px;"></div>
@@ -968,7 +941,7 @@
             <font>Anak Timbangan <i>class</i> :</font>
             @php
                 // Ambil data alat standar dari head_timbangan_moisture
-                $alatStandar = $calibration->headTimbanganMoisture->standard ?? '';
+                $alatStandar = $calibration->headTimbanganMoisture->standard ?? $calibration->headTimbangan->standard ?? '';
                 
                 // Konversi ke array
                 $alatStandarArray = [];
@@ -1127,10 +1100,7 @@
                     <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
-                    
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                   
                 </div>
             </div>
         </div>

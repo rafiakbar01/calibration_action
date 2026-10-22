@@ -9,7 +9,7 @@
     <style>
     /* Pastikan semua text berwarna hitam */
     .form-kalibrasi-container,
-    .form-kalibrasi-container *:not(input):not(select):not(textarea):not(button) {
+    .form-kalibrasi-container *:not(input):not(select):not(textarea):not(button):not(i):not(.btn) {
         color: #000000 !important;
     }
     
@@ -740,24 +740,31 @@
           <div class="table-responsive">
   <table style="font-size: 0.85rem; border-collapse: collapse; width: 100%;">
     <thead>
-      <tr style="background-color: #f8f9fa;">
+    <tr style="background-color: #f8f9fa;">
         <th colspan="2" class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">Nilai Nominal</th>
         <th rowspan="2" class="fw-bold text-center align-middle" style="border: 2px solid black; padding: 8px; vertical-align: middle;">No. Seri</th>
         <th rowspan="2" class="fw-bold text-center align-middle" style="border: 2px solid black; padding: 8px; vertical-align: middle;">Standar yang<br>digunakan</th>
         <th rowspan="2" class="fw-bold text-center align-middle" style="border: 2px solid black; padding: 8px; vertical-align: middle;">Pengukuran</th>
         <th colspan="6" class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">Penunjukan Standard</th>
-      </tr>
-      <tr style="background-color: #f8f9fa;">
+    </tr>
+    <tr style="background-color: #f8f9fa;">
         <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">No</th>
-        <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">Unit ( )</th>
+        <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">
+            Unit (
+            <input type="text" 
+                   name="satuan_unit"                
+                   value="{{ $calibration->headGaugeBlock->satuan_unit ?? 'Tidak tersedia'  }}"
+                   style="width: 40px; border: none; border-bottom: 1px solid #999; text-align: center; background: transparent; font-weight: bold; display: inline-block; margin: 0 2px;" readonly>
+            )
+        </th>   
         <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">1<br>Tengah</th>
         <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">2<br>Kiri Atas</th>
         <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">3<br>Kiri Bawah</th>
         <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">4<br>Kanan Atas</th>
         <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">5<br>Kanan Bawah</th>
         <th class="fw-bold text-center" style="border: 2px solid black; padding: 8px;">6<br>Tengah</th>
-      </tr>
-    </thead>
+    </tr>
+</thead>
     <tbody>
       @php
         // Ambil semua data sekali saja di luar loop
@@ -847,6 +854,154 @@
     </tbody>
   </table>
 </div>
+
+
+<!-- Attachment / Lampiran -->
+<div class="container" style="margin-top: 20px;">
+    <strong>Lampiran Attachment:</strong>
+    <div style="margin-top: 10px;">
+        @php
+            $head = $calibration->headGaugeBlock;
+            $attachments = [];
+            $attachmentNames = [];
+            
+            if ($head) {
+                if ($head->attachment) {
+                    if (is_string($head->attachment)) {
+                        $attachments = json_decode($head->attachment, true);
+                    } else {
+                        $attachments = $head->attachment;
+                    }
+                }
+                if ($head->attachment_name) {
+                    if (is_string($head->attachment_name)) {
+                        $attachmentNames = json_decode($head->attachment_name, true);
+                    } else {
+                        $attachmentNames = $head->attachment_name;
+                    }
+                }
+            }
+            
+            if (empty($attachmentNames) && !empty($attachments)) {
+                foreach ($attachments as $attachment) {
+                    $attachmentNames[] = basename($attachment);
+                }
+            }
+        @endphp
+        
+        <script>
+            console.log("=== DEBUG ATTACHMENT VIEW ===");
+            console.log("Raw attachment string:", @json($head->attachment ?? null));
+            console.log("Parsed attachments array:", @json($attachments ?? null));
+            console.log("Raw attachment_name string:", @json($head->attachment_name ?? null));
+            console.log("Parsed attachmentNames array:", @json($attachmentNames ?? null));
+        </script>
+        
+        @if(!empty($attachments) && count($attachments) > 0)
+            <table class="table table-bordered" style="width: 100%; border-collapse: collapse; background: #fff;">
+                <thead>
+                    <tr>
+                        <th style="width: 10%; text-align:center; background: #f5f5f5;">No</th>
+                        <th style="width: 60%; text-align:center; background: #f5f5f5;">Nama File</th>
+                        <th style="width: 30%; text-align:center; background: #f5f5f5;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($attachments as $index => $attachment)
+                    @php
+                        $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
+                        $fileExtension = strtolower($fileExtension);
+                        $isImage = in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']);
+                        $isPdf = $fileExtension == 'pdf';
+                        $fileName = $attachmentNames[$index] ?? basename($attachment);
+                        
+                        // URL langsung ke public (tanpa storage)
+                        $fileUrl = asset($attachment);
+                    @endphp
+                    <script>
+                        console.log("File:", {!! json_encode($attachment) !!});
+                        console.log("Extension:", {!! json_encode($fileExtension) !!});
+                        console.log("isPdf:", {!! json_encode($isPdf) !!});
+                    </script>
+                    
+                    <tr>
+                        <td style="text-align:center;">{{ $loop->iteration }}</td>
+                        <td>
+                            @if($isImage)
+                                <i class="fas fa-image text-primary me-2"></i>
+                            @elseif($isPdf)
+                                <i class="fas fa-file-pdf text-danger me-2"></i>
+                            @else
+                                <i class="fas fa-file text-secondary me-2"></i>
+                            @endif
+                            {{ $fileName }}
+                        </td>
+                        <td style="text-align:center; vertical-align: middle;">
+                            @if($isImage)
+                            <button type="button" class="btn btn-sm btn-primary" style="background: linear-gradient(135deg, #3b82f6, #1e40af) !important; color: #ffffff !important; border: none; padding: 5px 10px; display: inline-block !important; visibility: visible !important;" onclick="previewFile('{{ $fileUrl }}', '{{ $fileName }}')">
+                                <i class="fas fa-eye me-1" style="color: #ffffff !important;"></i> Lihat Gambar
+                            </button>
+                            @elseif($isPdf)
+                            <button type="button" class="btn btn-sm btn-primary" style="background: linear-gradient(135deg, #3b82f6, #1e40af) !important; color: #ffffff !important; border: none; padding: 5px 10px; display: inline-block !important; visibility: visible !important;" onclick="previewFile('{{ $fileUrl }}', '{{ $fileName }}')">
+                                <i class="fas fa-eye me-1" style="color: #ffffff !important;"></i> Lihat PDF
+                            </button>
+                            @else
+                            <a href="{{ $fileUrl }}" class="btn btn-sm btn-info" style="background-color: #0dcaf0 !important; color: #000000 !important; border: none; padding: 5px 10px; display: inline-block !important; visibility: visible !important;" target="_blank">
+                                <i class="fas fa-download me-1" style="color: #000000 !important;"></i> Download
+                            </a>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p style="color: #999; padding: 20px; background: #f9f9f9; border-radius: 5px;">Tidak ada lampiran</p>
+        @endif
+    </div>
+</div>
+
+<!-- Modal untuk preview GAMBAR -->
+<div id="imageModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9);">
+    <!--<span onclick="closeImageModal()" style="position: absolute; top: 20px; right: 35px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; background: rgba(255,255,255,0.2); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s;">&times;</span>-->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; flex-direction: column;">
+        <img id="modalImage" style="max-width: 90%; max-height: 80%; object-fit: contain;">
+        <div id="modalCaption" style="margin-top: 20px; color: white; text-align: center; font-size: 16px;"></div>
+        <button onclick="closeImageModal()" style="margin-top: 20px; background: white; color: black; border: none; border-radius: 5px; padding: 10px 30px; cursor: pointer; font-size: 16px; font-weight: bold;">
+            <i class="fas fa-times me-2"></i> Tutup
+        </button>
+    </div>
+</div>
+
+<!-- Modal untuk preview PDF -->
+<div id="pdfModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9);">
+    <!--<span onclick="closePdfModal()" style="position: absolute; top: 20px; right: 35px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; background: rgba(255,255,255,0.2); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s;">&times;</span>-->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; flex-direction: column; padding: 20px;">
+        <iframe id="modalPdf" style="width: 90%; height: 85%; border: none; background: white; border-radius: 8px;"></iframe>
+        <div id="pdfModalCaption" style="margin-top: 20px; color: white; text-align: center; font-size: 16px;"></div>
+        <button onclick="closePdfModal()" style="margin-top: 20px; background: white; color: black; border: none; border-radius: 5px; padding: 10px 30px; cursor: pointer; font-size: 16px; font-weight: bold;">
+            <i class="fas fa-times me-2"></i> Tutup
+        </button>
+    </div>
+</div>
+
+
+<style>
+/* Animasi hover untuk tombol close */
+#imageModal span:hover,
+#pdfModal span:hover {
+    background: rgba(255,255,255,0.4) !important;
+    transform: scale(1.1);
+}
+
+/* Styling untuk tombol di modal */
+#imageModal button:hover,
+#pdfModal button:hover {
+    background: #f0f0f0 !important;
+    transform: translateY(-2px);
+    transition: all 0.3s;
+}
+</style>
 
 
             <p style="margin-top:0.35pt; font-size:9pt">&nbsp;</p>
@@ -957,14 +1112,83 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function previewFile(fileUrl, fileName) {
+    const ext = fileName.split('.').pop().toLowerCase();
+    
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
+        Swal.fire({
+            title: fileName,
+            html: `<img src="${fileUrl}" style="max-width: 100%; max-height: 70vh; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">`,
+            showCloseButton: false,
+            showConfirmButton: true,
+            confirmButtonText: '<i class="fas fa-times me-2"></i>Tutup',
+            confirmButtonColor: '#6c757d',
+            width: 'auto',
+            padding: '20px',
+            background: '#fff',
+            backdrop: 'rgba(0,0,0,0.8)',
+            customClass: {
+                popup: 'preview-modal',
+                title: 'preview-title'
+            },
+            didOpen: () => {
+                const style = document.createElement('style');
+                style.textContent = `
+                    .preview-modal { border-radius: 16px !important; }
+                    .preview-title { font-size: 16px !important; color: #333 !important; word-break: break-all !important; }
+                `;
+                document.head.appendChild(style);
+            }
+        });
+    } 
+    else if (ext === 'pdf') {
+        Swal.fire({
+            title: fileName,
+            html: `<iframe src="${fileUrl}" style="width: 100%; height: 70vh; border: none; border-radius: 8px;"></iframe>`,
+            showCloseButton: false,
+            showConfirmButton: true,
+            confirmButtonText: '<i class="fas fa-times me-2"></i>Tutup',
+            confirmButtonColor: '#6c757d',
+            width: '90%',
+            maxWidth: '1000px',
+            padding: '20px',
+            background: '#fff',
+            backdrop: 'rgba(0,0,0,0.8)',
+            customClass: {
+                popup: 'preview-modal',
+                title: 'preview-title'
+            }
+        });
+    } 
+    else {
+        Swal.fire({
+            title: 'Tidak Dapat Dipreview',
+            text: `File "${fileName}" tidak dapat ditampilkan. Silakan download untuk melihat.`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="fas fa-download me-1"></i> Download',
+            cancelButtonText: 'Tutup'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.open(fileUrl, '_blank');
+            }
+        });
+    }
+}
+</script>
 </body>
 </html>

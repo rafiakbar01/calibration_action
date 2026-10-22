@@ -526,8 +526,9 @@
 /* Styling tabel */
 .setting-suhu-table {
     border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 650px;
     width: 100%;
-    min-width: 600px;
     font-family: Arial, sans-serif;
     font-size: 10pt;
     background: white;
@@ -535,16 +536,41 @@
 
 .setting-suhu-table td {
     border: 1px solid #000;
-    padding: 6px 4px;
+    padding: 0;
+    height: 26px;
+    line-height: 1.2;
     text-align: center;
     vertical-align: middle;
 }
 
+.setting-suhu-table .row-label {
+    width: 16px;
+    min-width: 16px;
+    max-width: 16px;
+    font-weight: bold;
+    background: #f8f9fa;
+    padding: 0 1px;
+    line-height: 1.1;
+    font-size: 9pt;
+    text-align: center;
+}
+
+.setting-suhu-table tr:first-child td:first-child {
+    width: 16px;
+    min-width: 16px;
+    max-width: 16px;
+    padding: 0;
+}
+
 .setting-suhu-table .head {
+    width: 40px;
+    min-width: 40px;
     font-weight: bold;
     background: #f5f5f5;
     position: relative;
-    min-width: 50px;
+    padding: 2px 2px;
+    height: 28px;
+    line-height: 1.1;
 }
 
 /* Styling untuk gambar panah di header */
@@ -616,84 +642,87 @@
     // Ambil data dengan benar
     // $calibration->detailSurfacePlates adalah COLLECTION, gunakan first()
     $detail = $calibration->detailSurfacePlates->first() ?? null;
-    $head = $calibration->headSurfacePlate->first() ?? null;
+    $head = $calibration->headSurfacePlate ?? null;
     
     // Header row
     ?>
     <tr>
-        <td></td>
-        <?php for($i = 1; $i <= 4; $i++):
-            $arrow = ($i % 2 == 1) ? $arrow1 : $arrow2;
-            $height = ($i % 2 == 1) ? '16' : '20';
-        ?>
-        <td class="head">
-            <?php echo $i; ?>
-            <span class="arrow-container">
-                <img width='8' height='<?php echo $height; ?>' 
-                     src='<?php echo $arrow; ?>' 
-                     class='header-arrow' 
-                     alt='→' />
-            </span>
-        </td>
-        <?php endfor; ?>
-        
-        <!-- Kolom keterangan dengan visualisasi gambar -->
-        <td rowspan="11" class="keterangan-cell">
-            <strong>Keterangan / Visualisasi:</strong><br>
-            <div class="drawing-container">
-               <?php
-$calibrationId = $calibration->id ?? null;
+         <td></td>
+         <?php for($i = 1; $i <= 10; $i++):
+             $arrow = ($i % 2 == 1) ? $arrow1 : $arrow2;
+             $height = ($i % 2 == 1) ? '16' : '20';
+         ?>
+         <td class="head">
+             <?php echo $i; ?>
+             <span class="arrow-container">
+                 <img width='8' height='<?php echo $height; ?>' 
+                      src='<?php echo $arrow; ?>' 
+                      class='header-arrow' 
+                      alt='→' />
+             </span>
+         </td>
+         <?php endfor; ?>
+         
+     <!-- Kolom keterangan dengan visualisasi gambar -->
+ <td rowspan="14" class="keterangan-cell">
+    <strong>Keterangan / Visualisasi:</strong><br>
+    <div class="drawing-container">
+        <?php
+        $calibrationId = $calibration->id ?? null;
 
-if($calibrationId):
-    // Cari file dengan pattern: surface_plate_{ID}_*.png
-    $pattern = public_path('img_SurfacePlate/surface_plate_' . $calibrationId . '_*.png');
-    $files = glob($pattern);
-    
-    if(!empty($files)):
-        // Ambil file pertama
-        $filePath = $files[0];
-        $fileName = basename($filePath);
-        $imageUrl = "http://127.0.0.1:8000/img_SurfacePlate/" . $fileName;
-?>
-        <div style="text-align: center; height: 280px; border: 1px solid #000; background: white;">
-            <img src="<?php echo $imageUrl; ?>" 
-                 style="max-width: 100%; max-height: 250px; margin-top: 10px;">
-            <div style="font-size: 10px; color: #666; margin-top: 5px;">
-                
+        if($calibrationId):
+            // Cari file dengan pattern: surface_plate_{ID}_*.png
+            $pattern = public_path('img_SurfacePlate/surface_plate_' . $calibrationId . '_*.png');
+            $files = glob($pattern);
+            
+            if(!empty($files)):
+                // Ambil file pertama
+                $filePath = $files[0];
+                $fileName = basename($filePath);
+                // Gunakan asset() helper untuk path yang benar
+                $imageUrl = asset('img_SurfacePlate/' . $fileName);
+        ?>
+                <div style="text-align: center; height: 280px; border: 1px solid #000; background: white;">
+                    <img src="<?php echo $imageUrl; ?>" 
+                         style="max-width: 100%; max-height: 250px; margin-top: 10px;"
+                         alt="Surface Plate Image"
+                         onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<div style=\'padding:40px; color:#999;\'>Gambar tidak dapat dimuat</div>';">
+                    <!--<div style="font-size: 10px; color: #666; margin-top: 5px;">-->
+                    <!--    <?php echo $fileName; ?>-->
+                    <!--</div>-->
+                </div>
+        <?php
+            else:
+        ?>
+                <div style="text-align: center; padding: 40px; color: #999; border: 1px solid #000; height: 280px;">
+                    Tidak ditemukan gambar untuk ID: <?php echo $calibrationId; ?>
+                </div>
+        <?php
+            endif;
+        else:
+        ?>
+            <div style="text-align: center; padding: 40px; color: #999; border: 1px solid #000; height: 280px;">
+                ID calibration tidak tersedia
             </div>
-        </div>
-<?php
-    else:
-?>
-        <div style="text-align: center; padding: 40px; color: #999; border: 1px solid #000; height: 280px;">
-            Tidak ditemukan gambar untuk ID: <?php echo $calibrationId; ?>
-        </div>
-<?php
-    endif;
-else:
-?>
-    <div style="text-align: center; padding: 40px; color: #999; border: 1px solid #000; height: 280px;">
-        ID calibration tidak tersedia
+        <?php endif; ?>
     </div>
-<?php endif; ?>
-            </div>
-        </td>
+</td>
     </tr>
 
-    <!-- Data pengukuran a1_1 sampai a10_4 -->
-    <?php for($row = 1; $row <= 10; $row++): ?>
-    <tr>
-        <td class="row-label">a<?php echo $row; ?></td>
-        <?php for($col = 1; $col <= 4; $col++): 
-            $key = "a{$row}_{$col}";
-            // Ambil value dari detail (jika ada)
-            $value = $detail ? ($detail->$key ?? '') : '';
-        ?>
-        <td>
-            <?php if($value !== '' && $value !== null): ?>
-                <span class="data-value"><?php echo $value; ?></span>
-            <?php else: ?>
-                <span class="data-value" style="color: #999;">-</span>
+     <!-- Data pengukuran a1_1 sampai a13_10 -->
+     <?php for($row = 1; $row <= 13; $row++): ?>
+     <tr>
+         <td class="row-label">a<?php echo $row; ?></td>
+         <?php for($col = 1; $col <= 10; $col++): 
+             $key = "a{$row}_{$col}";
+             // Ambil value dari detail (jika ada)
+             $value = $detail ? ($detail->$key ?? '') : '';
+         ?>
+         <td>
+             <?php if($value !== '' && $value !== null): ?>
+                 <span class="data-value"><?php echo $value; ?></span>
+             <?php else: ?>
+                 <span class="data-value" style="color: #999;"> </span>
             <?php endif; ?>
         </td>
         <?php endfor; ?>
@@ -764,108 +793,108 @@ else:
         $groupKey = $group['name'];
         $tableNum = $group['table_num'];
         $headers = $group['headers'];
-        
-        // Debug: Tampilkan info kelompok
-        // echo "<!-- Debug: Group {$groupKey}, Table {$tableNum} -->\n";
     ?>
-    <tr>
-        <td></td>
-        <?php foreach($headers as $header): ?>
-        <td class="head"><?php echo $header; ?></td>
-        <?php endforeach; ?>
-    </tr>
+    <thead>
+         <tr>
+            <td class="empty">&nbsp;</td>
+            <?php foreach($headers as $header): ?>
+            <td class="head"><?php echo $header; ?></td>
+            <?php endforeach; ?>
+         </tr>
+    </thead>
     
-    <!-- Row 1 -->
-    <tr>
-        <td class="rowno">
-            1 
-            <?php if($groupKey == 'A'): ?>
-            <img width='42' height='8' src="<?php echo $arrow1; ?>" class="arrow-img" alt='→' />
-            <?php else: ?>
-            <img width='42' height='8' src="<?php echo $arrow1; ?>" class="arrow-img" alt='→' />
-            <?php endif; ?>
-        </td>
-        <?php 
-        // Data untuk row 1 - ambil dari $detail sesuai database field
-        for($i=1; $i<=9; $i++): 
-            if ($groupKey == 'A') {
-                // Table 1: a1_1_tbl1, a2_1_tbl1, ..., a9_1_tbl1
-                $fieldName = "a{$i}_1_tbl1";
-                $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
-            } else {
-                if ($i == 1) {
-                    // Baris pertama untuk semua tabel: a1_1_tblX
-                    $fieldName = "a1_1_tbl{$tableNum}";
+    <tbody>
+        <!-- Row 1 -->
+         <tr>
+            <td class="rowno">
+                1 
+                <?php if($groupKey == 'A'): ?>
+                <img width='42' height='8' src="<?php echo $arrow1; ?>" class="arrow-img" alt='→' />
+                <?php else: ?>
+                <img width='42' height='8' src="<?php echo $arrow1; ?>" class="arrow-img" alt='→' />
+                <?php endif; ?>
+            </td>
+            <?php 
+            // Data untuk row 1 - ambil dari $detail sesuai database field
+            for($i=1; $i<=9; $i++): 
+                if ($groupKey == 'A') {
+                    // Table 1: a1_1_tbl1, a2_1_tbl1, ..., a9_1_tbl1
+                    $fieldName = "a{$i}_1_tbl1";
                     $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
                 } else {
-                    // Baris 2-9: b1_1_tbl2, b2_1_tbl2, ..., c1_1_tbl3, dst
-                    $letter = strtolower($groupKey);
-                    $rowNum = $i - 1; // Karena dimulai dari 2 di database
-                    $fieldName = "{$letter}{$rowNum}_1_tbl{$tableNum}";
-                    $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
+                    if ($i == 1) {
+                        // Baris pertama untuk semua tabel: a1_1_tblX
+                        $fieldName = "a1_1_tbl{$tableNum}";
+                        $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
+                    } else {
+                        // Baris 2-9: b1_1_tbl2, b2_1_tbl2, ..., c1_1_tbl3, dst
+                        $letter = strtolower($groupKey);
+                        $rowNum = $i - 1; // Karena dimulai dari 2 di database
+                        $fieldName = "{$letter}{$rowNum}_1_tbl{$tableNum}";
+                        $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
+                    }
                 }
-            }
-            
-            // Format nilai
-            $displayValue = ($value !== '' && $value !== null) ? number_format($value, 3) : '';
-        ?>
-        <td>
-            <?php if($displayValue !== ''): ?>
-                <span class="data-value"><?php echo $displayValue; ?></span>
-            <?php else: ?>
-                <span class="data-value" style="color: #999;">-</span>
-            <?php endif; ?>
-        </td>
-        <?php endfor; ?>
-    </tr>
-    
-    <!-- Row 2 -->
-    <tr>
-        <td class="rowno">
-            2
-            <?php if($groupKey == 'A'): ?>
-            <img width='39' height='8' src="<?php echo $arrow2; ?>" class="arrow-img" alt='→' />
-            <?php else: ?>
-            <img width='39' height='8' src="<?php echo $arrow2; ?>" class="arrow-img" alt='→' />
-            <?php endif; ?>
-        </td>
-        <?php 
-        // Data untuk row 2 - ambil dari $detail sesuai database field
-        for($i=1; $i<=9; $i++): 
-            if ($groupKey == 'A') {
-                // Table 1: a1_2_tbl1, a2_2_tbl1, ..., a9_2_tbl1
-                $fieldName = "a{$i}_2_tbl1";
-                $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
-            } else {
-                if ($i == 1) {
-                    // Baris pertama untuk semua tabel: a1_2_tblX
-                    $fieldName = "a1_2_tbl{$tableNum}";
+                
+                // Tampilkan nilai asli (tanpa number_format)
+                $displayValue = ($value !== '' && $value !== null) ? $value : '';
+            ?>
+            <td>
+                <?php if($displayValue !== ''): ?>
+                    <span class="data-value"><?php echo $displayValue; ?></span>
+                <?php else: ?>
+                    <span class="data-value" style="color: #999;"> </span>
+                <?php endif; ?>
+            </td>
+            <?php endfor; ?>
+         </tr>
+        
+        <!-- Row 2 -->
+         <tr>
+            <td class="rowno">
+                2
+                <?php if($groupKey == 'A'): ?>
+                <img width='39' height='8' src="<?php echo $arrow2; ?>" class="arrow-img" alt='→' />
+                <?php else: ?>
+                <img width='39' height='8' src="<?php echo $arrow2; ?>" class="arrow-img" alt='→' />
+                <?php endif; ?>
+            </td>
+            <?php 
+            // Data untuk row 2 - ambil dari $detail sesuai database field
+            for($i=1; $i<=9; $i++): 
+                if ($groupKey == 'A') {
+                    // Table 1: a1_2_tbl1, a2_2_tbl1, ..., a9_2_tbl1
+                    $fieldName = "a{$i}_2_tbl1";
                     $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
                 } else {
-                    // Baris 2-9: b1_2_tbl2, b2_2_tbl2, ..., c1_2_tbl3, dst
-                    $letter = strtolower($groupKey);
-                    $rowNum = $i - 1; // Karena dimulai dari 2 di database
-                    $fieldName = "{$letter}{$rowNum}_2_tbl{$tableNum}";
-                    $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
+                    if ($i == 1) {
+                        // Baris pertama untuk semua tabel: a1_2_tblX
+                        $fieldName = "a1_2_tbl{$tableNum}";
+                        $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
+                    } else {
+                        // Baris 2-9: b1_2_tbl2, b2_2_tbl2, ..., c1_2_tbl3, dst
+                        $letter = strtolower($groupKey);
+                        $rowNum = $i - 1; // Karena dimulai dari 2 di database
+                        $fieldName = "{$letter}{$rowNum}_2_tbl{$tableNum}";
+                        $value = isset($detail->$fieldName) ? $detail->$fieldName : '';
+                    }
                 }
-            }
-            
-            // Format nilai
-            $displayValue = ($value !== '' && $value !== null) ? number_format($value, 3) : '';
-        ?>
-        <td>
-            <?php if($displayValue !== ''): ?>
-                <span class="data-value"><?php echo $displayValue; ?></span>
-            <?php else: ?>
-                <span class="data-value" style="color: #999;">-</span>
-            <?php endif; ?>
-        </td>
-        <?php endfor; ?>
-    </tr>
+                
+                // Tampilkan nilai asli (tanpa number_format)
+                $displayValue = ($value !== '' && $value !== null) ? $value : '';
+            ?>
+            <td>
+                <?php if($displayValue !== ''): ?>
+                    <span class="data-value"><?php echo $displayValue; ?></span>
+                <?php else: ?>
+                    <span class="data-value" style="color: #999;"> </span>
+                <?php endif; ?>
+            </td>
+            <?php endfor; ?>
+         </tr>
+    </tbody>
     
     <?php endforeach; ?>
 </table>
-
 
 
               <table cellspacing="0" cellpadding="5" style="width:100%; max-width: 1100px; margin: 20px auto; border-collapse:collapse; font-size:12pt; background-color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
@@ -916,7 +945,7 @@ else:
         <td colspan="3" style="border:1px solid #000; vertical-align:top; padding: 15px 20px 10px; height: 120px;">
             TTD:<br><br><br>
             <div style="margin-top: 20px; font-weight: bold;">
-                Nama: <?php echo isset($calibration->verifiedBy) ? htmlspecialchars($calibration->verifiedBy) : ''; ?>
+                Nama: <?php echo isset($calibration->calibratedBy) ? htmlspecialchars($calibration->calibratedBy) : ''; ?>
             </div>
         </td>
 
@@ -936,9 +965,9 @@ else:
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

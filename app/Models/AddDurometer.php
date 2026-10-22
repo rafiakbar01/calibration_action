@@ -41,19 +41,18 @@ class AddDurometer extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        // 'repeability' => 'decimal:2',
-        'rep01' => 'decimal:2',
-        'rep02' => 'decimal:2',
-        'rep03' => 'decimal:2',
-        'rep04' => 'decimal:2',
-        'rep05' => 'decimal:2',
-        'rep06' => 'decimal:2',
-        'rep07' => 'decimal:2',
-        'rep08' => 'decimal:2',
-        'rep09' => 'decimal:2',
-        'rep10' => 'decimal:2',
-    ];
+   protected $casts = [
+    'rep01' => 'string',
+    'rep02' => 'string',
+    'rep03' => 'string',
+    'rep04' => 'string',
+    'rep05' => 'string',
+    'rep06' => 'string',
+    'rep07' => 'string',
+    'rep08' => 'string',
+    'rep09' => 'string',
+    'rep10' => 'string',
+];
 
     /**
      * Get the calibration that owns the dial indicator data.

@@ -25,6 +25,11 @@ class LogKalibrasiController extends Controller
             $query->where('user_id', $request->user_id);
         }
         
+        if ($request->filled('logable_id')) {
+            $logableIdVal = ltrim(trim($request->logable_id), '#');
+            $query->where('kalibrasi_id', 'like', '%' . $logableIdVal . '%');
+        }
+        
         if ($request->filled('tanggal_dari')) {
             $query->whereDate('created_at', '>=', $request->tanggal_dari);
         }
@@ -66,6 +71,11 @@ class LogKalibrasiController extends Controller
         
         if ($request->filled('user_id')) {
             $query->where('user_id', $request->user_id);
+        }
+        
+        if ($request->filled('logable_id')) {
+            $logableIdVal = ltrim(trim($request->logable_id), '#');
+            $query->where('kalibrasi_id', 'like', '%' . $logableIdVal . '%');
         }
         
         if ($request->filled('tanggal_dari')) {
@@ -116,6 +126,11 @@ class LogKalibrasiController extends Controller
             $query->where('user_id', $request->user_id);
         }
         
+        if ($request->filled('logable_id')) {
+            $logableIdVal = ltrim(trim($request->logable_id), '#');
+            $query->where('kalibrasi_id', 'like', '%' . $logableIdVal . '%');
+        }
+        
         if ($request->filled('tanggal_dari')) {
             $query->whereDate('created_at', '>=', $request->tanggal_dari);
         }
@@ -158,8 +173,21 @@ class LogKalibrasiController extends Controller
      */
     public function show($id)
     {
+        // Coba dulu dari ActivityLog (untuk log dari create.blade.php / activity logs)
+        $log = \App\Models\ActivityLog::with('performer')->find($id);
+
+        if ($log) {
+            // Decode metadata jika masih string
+            $metadata = $log->metadata ?? [];
+            if (is_string($metadata)) {
+                $metadata = json_decode($metadata, true) ?? [];
+            }
+            return view('log-kalibrasi.show', compact('log', 'metadata'));
+        }
+
+        // Fallback: coba dari LogKalibrasi lama
         $log = LogKalibrasi::with('user')->findOrFail($id);
-        
-        return view('log-kalibrasi.show', compact('log'));
+        $metadata = [];
+        return view('log-kalibrasi.show', compact('log', 'metadata'));
     }
-}
+}

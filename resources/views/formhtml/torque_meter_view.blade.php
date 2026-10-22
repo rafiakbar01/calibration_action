@@ -431,7 +431,7 @@
                         <div class="d-flex">
                             <div class="form-check me-5">
                                 <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }} disabled>
+                                       {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
@@ -448,6 +448,14 @@
                     </td>
                     <td colspan="3">
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
                     </td>
                 </tr>
             </table>
@@ -549,10 +557,11 @@
         </tr>
     </table>
 </div>
+
 <!-- Tabel Utama -->
 <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:0.6pt; border:1pt solid #000000; border-collapse:collapse; width:100%; max-width:1500px;">
     
-    <!-- Header Tabel -->
+    <!-- Header Tabel - Baris 1 -->
     <tr style="height:14pt">
         <td colspan="2" style="width:128px; border:1pt solid #000000; vertical-align:middle; text-align:center">
             <p style="margin:0; font-size:10pt;"><strong>Beban Anak Timbang</strong></p>
@@ -560,46 +569,67 @@
         <td colspan="2" rowspan="2" style="width:172px; border:1pt solid #000000; vertical-align:middle; text-align:center">
             <p style="margin:0; font-size:10pt;"><strong>Kode Anak timbangan yang digunakan</strong></p>
         </td>
-        <td colspan="3" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
-            <p style="margin:0; font-size:10pt;"><strong>Clockwise (..........)</strong></p>
+        <td colspan="6" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>Penunjukan Standard</strong></p>
+        </td>
+    </tr>
+    
+    <!-- Header Tabel - Baris 2 -->
+    <tr style="height:13pt">
+        <td colspan="2" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <!-- Empty cell - bagian dari rowspan di atas -->
         </td>
         <td colspan="3" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
-            <p style="margin:0; font-size:10pt;"><strong>Counter Clockwise (.........)</strong></p>
+            <p style="margin:0; font-size:10pt;">
+                <strong>Clockwise ({{ $calibration->headTorqueMeter->satuan_cw ?? '..........' }})</strong>
+            </p>
+        </td>
+        <td colspan="3" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <p style="margin:0; font-size:10pt;">
+                <strong>Counter Clockwise ({{ $calibration->headTorqueMeter->satuan_ccw ?? '.........' }})</strong>
+            </p>
         </td>
     </tr>
     
     <!-- Sub-header -->
     <tr style="height:14pt">
         <td colspan="2" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
-            <p style="margin:0; font-size:8.5pt;"><span style="font-family:'Lucida Console'; letter-spacing:0.5em">(...................)</span></p>
+            <p style="margin:0; font-size:8.5pt;">
+                ({{ $calibration->headTorqueMeter->satuan_titikUkur ?? '...................' }})
+            </p>
         </td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>1</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>2</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>3</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>1</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>2</strong></td>
-        <td style="border:1pt solid #000000; text-align:center"><strong>3</strong></td>
+        <td colspan="2" style="border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <!-- Empty cell - satuan untuk Kode Anak Timbang -->
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>1</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>2</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>3</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>1</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>2</strong></p>
+        </td>
+        <td style="border:1pt solid #000000; text-align:center">
+            <p style="margin:0; font-size:10pt;"><strong>3</strong></p>
+        </td>
     </tr>
     
-    <!-- Baris 1-13 dengan looping -->
-    @php
-        // Ambil data dari calibration->detailTorqueMeters
-        $detailData = isset($calibration) && $calibration->detailTorqueMeters ? 
-                     $calibration->detailTorqueMeters->sortBy('id') : 
-                     collect();
-        
-        // SELALU tampilkan 13 baris
-        $dataByRow = [];
-        for ($i = 0; $i < 13; $i++) {
-            $dataByRow[$i] = $detailData->get($i) ?? null;
-        }
-    @endphp
-    
-    @for($i = 0; $i < 13; $i++)
+    <!-- Baris 1-13 - Selalu tampilkan 13 baris -->
+    @for($i = 1; $i <= 13; $i++)
         @php
-            $rowNumber = $i + 1;
-            $detail = $dataByRow[$i] ?? null;
+            // Cari data untuk baris ini
+            $detail = isset($calibration) && $calibration->detailTorqueMeters && $calibration->detailTorqueMeters->count() > 0 
+                ? ($calibration->detailTorqueMeters->get($i-1) ?? null) 
+                : null;
         @endphp
+        
         <tr style="height:14pt">
             <!-- Beban Anak Timbang -->
             <td colspan="2" style="border:1pt solid #000000; vertical-align:top; text-align:center; font-size:9pt; padding:4px 2px;">
@@ -642,7 +672,6 @@
             </td>
         </tr>
     @endfor
-    
 </table>
 
 <!-- Repeatability Clockwise - VIEW MODE -->
@@ -706,7 +735,7 @@
             {{ $calibration->addTorqueMeter->repCcw01 ?? '-' }}
         </td>
         <td style="width:45pt; border:1pt solid #000; vertical-align:top; text-align:center; font-size:8.5pt; padding:2px;">
-            {{ $calibration->addTorqueMeter->repCcw02 ?? '-' }}
+            {{ $calibration->addTorqueMeter->repCcw02 ?? '-'}}
         </td>
         <td style="width:45pt; border:1pt solid #000; vertical-align:top; text-align:center; font-size:8.5pt; padding:2px;">
             {{ $calibration->addTorqueMeter->repCcw03 ?? '-' }}
@@ -741,7 +770,7 @@
 
 
 
-
+&nbsp;  &nbsp;
                  <!-- Footer Section -->
                  <table cellspacing="0" cellpadding="0" style="border-collapse: collapse; width: 100%; max-width: 1500px; margin-top: 20px; font-family: Arial, sans-serif; font-size: 10pt;">
     <!-- HEADER -->
@@ -846,9 +875,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

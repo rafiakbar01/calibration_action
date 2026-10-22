@@ -24,22 +24,23 @@ class DetailAnakTimbangan extends Model
         'LRUUT',
         'LRSTD',
         'ATSTD',
+        'form_index'
     ];
 
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'ULSTD' => 'decimal:5',
-        'ULUUT' => 'decimal:5',
-        'LLUUT' => 'decimal:5',
-        'LLSTD' => 'decimal:5',
-        'URSTD' => 'decimal:5',
-        'URUUT' => 'decimal:5',
-        'LRUUT' => 'decimal:5',
-        'LRSTD' => 'decimal:5',
-        'ATSTD' => 'string',
-    ];
+    // protected $casts = [
+    //     'ULSTD' => 'decimal:5',
+    //     'ULUUT' => 'decimal:5',
+    //     'LLUUT' => 'decimal:5',
+    //     'LLSTD' => 'decimal:5',
+    //     'URSTD' => 'decimal:5',
+    //     'URUUT' => 'decimal:5',
+    //     'LRUUT' => 'decimal:5',
+    //     'LRSTD' => 'decimal:5',
+    //     'ATSTD' => 'string',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

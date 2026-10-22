@@ -373,6 +373,22 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                            <td><p style="margin: 0;">Rentang Ukur</p></td>
+                            <td colspan="3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3" style="width: 45%;">
+                                        <input type="text" class="kalibrasi-input" 
+                                               value="{{ $calibration->rangeMin ?? '0' }}" readonly>
+                                    </div>
+                                    <span class="me-3">-</span>
+                                    <div style="width: 45%;">
+                                        <input type="text" class="kalibrasi-input" 
+                                               value="{{ $calibration->rangeMax ?? '0' }}" readonly>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -431,7 +447,7 @@
                         <div class="d-flex">
                             <div class="form-check me-5">
                                 <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }} disabled>
+                                       {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
@@ -448,6 +464,14 @@
                     </td>
                     <td colspan="3">
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
                     </td>
                 </tr>
             </table>
@@ -514,7 +538,7 @@
             <!-- Data Kalibrasi Section -->
             <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
             
-         <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:0.6pt; border:1pt solid #000000; -aw-border-insideh:1pt single #000000; -aw-border-insidev:1pt single #000000; border-collapse:collapse; width: 100%; max-width: 1500px;">
+           <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:0.6pt; border:1pt solid #000000; -aw-border-insideh:1pt single #000000; -aw-border-insidev:1pt single #000000; border-collapse:collapse; width: 100%; max-width: 1500px;">
     <tr style="height:9pt">
         <td rowspan="2" style="width:90pt; border:solid 1pt; border-left-style:solid; vertical-align:middle; text-align:center">
             <p class="TableParagraph" style="margin:0; font-size:10pt; line-height:1.1">
@@ -530,31 +554,23 @@
     <tr style="height:13pt">
         <td colspan="3" style="width:190pt; border:solid 1pt; vertical-align:middle; text-align:center">
             <p class="TableParagraph" style="margin:0; font-size:10pt; line-height:1.15">
-                <span style="font-family:Arial; font-weight:bold">Clockwise</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt"> (</span>
-                <span style="font-family:'Lucida Console'; font-size:7.5pt; letter-spacing:0.5em">
-                    {{ $calibration->headTorqueWrench->clockwise_unit ?? '.........' }}
-                </span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">)</span>
+                <span style="font-weight:bold">Clockwise (</span>
+                <span>{{ $calibration->headTorqueWrench->satuan_cw ?? '.........' }}</span>
+                <span style="font-weight:bold">)</span>
             </p>
         </td>
         <td colspan="3" style="width:190pt; border:solid 1pt; vertical-align:middle; text-align:center">
             <p class="TableParagraph" style="margin:0; font-size:10pt; line-height:1.15">
-                <span style="font-family:Arial; font-weight:bold">Counter Clockwise</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt"> (</span>
-                <span style="font-family:'Lucida Console'; font-size:7.5pt; letter-spacing:0.5em">
-                    {{ $calibration->headTorqueWrench->counter_clockwise_unit ?? '.........' }}
-                </span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">)</span>
+                <span style="font-weight:bold">Counter Clockwise (</span>
+                <span>{{ $calibration->headTorqueWrench->satuan_ccw ?? '.........' }}</span>
+                <span style="font-weight:bold">)</span>
             </p>
         </td>
     </tr>
     <tr style="height:12pt">
         <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center">
             <p class="TableParagraph" style="margin-top:0.8pt; margin-left:8pt; font-size:8pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">
-                    ({{ $calibration->headTorqueWrench->nominal_unit ?? '………………..' }})
-                </span>
+                <span>{{ $calibration->headTorqueWrench->satuan_setting_alat ?? '(………………..)' }}</span>
             </p>
         </td>
         <td style="width:45pt; border-style:solid; border-width:1pt; vertical-align:top">
@@ -589,99 +605,80 @@
         </td>
     </tr>
     
-    @php
-        // Ambil data dari database
-        $detailData = isset($calibration) && $calibration->detailTorqueWrenchs ? 
-                     $calibration->detailTorqueWrenchs->sortBy('titikUkur')->take(13) : 
-                     collect();
+    <!-- Baris 1-13 dengan data dari database -->
+    @for($i = 1; $i <= 13; $i++)
+        @php
+            // Cari data untuk baris ini
+            $detail = isset($calibration) && $calibration->detailTorqueWrenchs && $calibration->detailTorqueWrenchs->count() > 0 
+                ? ($calibration->detailTorqueWrenchs->get($i-1) ?? null) 
+                : null;
+        @endphp
         
-        // SELALU tampilkan 13 baris
-        $dataByRow = [];
-        for ($i = 0; $i < 13; $i++) {
-            $dataByRow[$i] = $detailData->get($i) ?? null;
-        }
-    @endphp
-    
-    <!-- BARIS 1-13: SELALU DITAMPILKAN -->
-    @for($i = 0; $i < 13; $i++)
-    @php
-        $rowNumber = $i + 1;
-        $detail = $dataByRow[$i];
-        $isLastRow = $rowNumber == 13;
-    @endphp
-    <tr style="height:14pt">
-        <!-- Kolom 1: Nominal Setting alat -->
-        <td style="width:90pt; 
-            @if(!$isLastRow) 
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt;
-            @endif
-            vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $detail->titikUkur ?? '-' }}
-        </td>
-        
-        <!-- Kolom 2-7: Data measurements -->
-        <td style="width:45pt; 
-            @if(!$isLastRow) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $detail->cw1 ?? '-' }}
-        </td>
-        
-        <td style="width:45pt; 
-            @if(!$isLastRow) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $detail->cw2 ?? '-' }}
-        </td>
-        
-        <td style="width:45pt; 
-            @if(!$isLastRow) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $detail->cw3 ?? '-' }}
-        </td>
-        
-        <td style="width:45pt; 
-            @if(!$isLastRow) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $detail->ccw1 ?? '-' }}
-        </td>
-        
-        <td style="width:45pt; 
-            @if(!$isLastRow) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $detail->ccw2 ?? '-' }}
-        </td>
-        
-        <td style="width:45pt; 
-            @if(!$isLastRow) 
-                border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $detail->ccw3 ?? '-' }}
-        </td>
-    </tr>
+        <tr style="height:14pt">
+            <td style="width:90pt; 
+                @if($i < 13) 
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt;
+                @endif
+                vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+                {{ $detail->titikUkur ?? '-' }}
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+                {{ $detail->cw1 ?? '-' }}
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+                {{ $detail->cw2 ?? '-' }}
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+                {{ $detail->cw3 ?? '-' }}
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+                {{ $detail->ccw1 ?? '-' }}
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+                {{ $detail->ccw2 ?? '-' }}
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+                {{ $detail->ccw3 ?? '-' }}
+            </td>
+        </tr>
     @endfor
 </table>
 
@@ -698,33 +695,31 @@
             {{ $calibration->addTorqueWrench->repCw01 ?? '-' }}
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw02 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCw02  ?? '-' }}
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw03 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCw03  ?? '-' }}
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw04 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCw04  ?? '-' }}
         </td>
         <td style="width:45pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw05 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCw05  ?? '-' }}
         </td>
     </tr>
     <tr style="height:14pt">
         <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw06 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCw06  ?? '-' }}
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw07 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCw07  ?? '-' }}
+        <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+            {{ $calibration->addTorqueWrench->repCw08  ?? '-' }}
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw08 ?? '-' }}
-        </td>
-        <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw09 ?? '-' }}
-        </td>
+            {{ $calibration->addTorqueWrench->repCw09  ?? '-' }}
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCw10 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCw10  ?? '-' }}
         </td>
     </tr>
 </table>
@@ -736,43 +731,42 @@
 <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:0.6pt; border:1pt solid #000000; -aw-border-insideh:1pt single #000000; -aw-border-insidev:1pt single #000000; border-collapse:collapse; width: 100%; max-width: 450px;">
     <tr style="height:14pt">
         <td style="width:90pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw01 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw01  ?? '-' }}
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw02 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw02  ?? '-' }}
+        <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
+            {{ $calibration->addTorqueWrench->repCcw03  ?? '-' }}
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw03 ?? '-' }}
-        </td>
-        <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw04 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw04  ?? '-' }}
         </td>
         <td style="width:45pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw05 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw05  ?? '-' }}
         </td>
     </tr>
     <tr style="height:14pt">
         <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw06 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw06  ?? '-' }}
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw07 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw07  ?? '-' }}
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw08 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw08  ?? '-' }}
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw09 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw09  ?? '-' }}
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; text-align:center; font-size:7.5pt; padding:1px;">
-            {{ $calibration->addTorqueWrench->repCcw10 ?? '-' }}
+            {{ $calibration->addTorqueWrench->repCcw10  ?? '-' }}
         </td>
     </tr>
 </table>
 @endif
 
 
-
+&nbsp;  &nbsp;
                  <!-- Footer Section -->
                  <table class="kalibrasi-main-table" style="width: 100%; border-collapse: collapse;">
     <!-- HEADER FOOTER -->
@@ -797,10 +791,10 @@
             @if($hasAlat1)
                 <span style="font-size: 16px; color: #000;">✓</span>
             @else
-                -
+                &nbsp;
             @endif
         @else
-            -
+            &nbsp;
         @endif
     </td>
     <td colspan="2" style="border: 1px solid #000; padding-left: 12px; font-size: 9pt; vertical-align: middle; color: #000000;">
@@ -828,10 +822,10 @@
             @if($hasAlat2)
                 <span style="font-size: 16px; color: #000;">✓</span>
             @else
-                -
+                &nbsp;
             @endif
         @else
-            -
+            &nbsp;
         @endif
     </td>
     <td colspan="2" style="border: 1px solid #000; padding-left: 12px; font-size: 9pt; vertical-align: middle; color: #000000;">
@@ -850,10 +844,10 @@
             @if($hasAlat3)
                 <span style="font-size: 16px; color: #000;">✓</span>
             @else
-                -
+                &nbsp;
             @endif
         @else
-            -
+            &nbsp;
         @endif
     </td>
     <td colspan="2" style="border: 1px solid #000; padding-left: 12px; font-size: 9pt; vertical-align: middle; color: #000000;">
@@ -879,7 +873,7 @@
         @if(isset($calibration) && $calibration->calibratedBy)
             {{ $calibration->calibratedBy }}
         @else
-            -
+            &nbsp;
         @endif
     </td>
     
@@ -888,7 +882,7 @@
         @if(isset($calibration) && $calibration->verifiedBy)
             {{ $calibration->verifiedBy }}
         @else
-            -
+            &nbsp;
         @endif
     </td>
 </tr>
@@ -912,9 +906,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

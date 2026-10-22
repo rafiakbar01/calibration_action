@@ -374,34 +374,34 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
+<!--                <tr>-->
+<!--    <td>-->
+<!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+<!--    </td>-->
+<!--    <td colspan="3">-->
+<!--        <div class="d-flex align-items-center">-->
             <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
+<!--            <div class="me-3" style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
             
-            <span class="me-3" style="color: #000000;">-</span>
+<!--            <span class="me-3" style="color: #000000;">-</span>-->
             
             <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+<!--            <div style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </td>-->
+<!--</tr>-->
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -463,7 +463,7 @@
                         <div class="d-flex">
                             <div class="form-check me-5">
                                 <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }} disabled>
+                                       {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
@@ -569,58 +569,60 @@ $jumlah_baris = 12; // Sesuai dengan jumlah baris yang ada
     <!-- Header kedua -->
     <tr style="height: 35px;">
         <td style="border: 2px solid #000000; background-color: #d9d9d9; text-align: center; vertical-align: middle;">
-            <span style="font-size: 12pt; font-weight: bold;">Unit (......)</span>
+            <span style="font-size: 12pt; font-weight: bold;">
+                Unit ({{ $calibration->headTachometer->satuan_unit ?? ' ' }})
+            </span>
         </td>
-        <?php for ($i = 1; $i <= 5; $i++): ?>
+        @for ($i = 1; $i <= 5; $i++)
         <td style="width: 100px; border: 2px solid #000000; background-color: #d9d9d9; text-align: center; vertical-align: middle;">
-            <span style="font-size: 13pt; font-weight: bold;"><?php echo $i; ?></span>
+            <span style="font-size: 13pt; font-weight: bold;">{{ $i }}</span>
         </td>
-        <?php endfor; ?>
+        @endfor
     </tr>
     
     <!-- Baris data -->
-    <?php for ($row = 1; $row <= $jumlah_baris; $row++): ?>
-    <?php
-    // Ambil data untuk baris ini (indeks 0-based)
-    $detail = isset($details[$row-1]) ? $details[$row-1] : null;
-    ?>
-    <tr style="height: 45px;">
-        <!-- Kolom nominal -->
-        <td style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-            <div style="width: 95%; height: 35px; font-size: 13pt; text-align: center; padding: 5px; display: flex; align-items: center; justify-content: center;">
-                <?php echo $detail && $detail->nilaiStandard ? number_format($detail->nilaiStandard, 2) : ''; ?>
-            </div>
-        </td>
-        
-        <!-- 5 kolom pembacaan -->
-        <?php for ($col = 1; $col <= 5; $col++): ?>
-        <td style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-            <div style="width: 95%; height: 35px; font-size: 13pt; text-align: center; padding: 5px; display: flex; align-items: center; justify-content: center;">
-                <?php 
-                $value = '';
-                if ($detail) {
-                    switch($col) {
-                        case 1: $value = $detail->rep01; break;
-                        case 2: $value = $detail->rep02; break;
-                        case 3: $value = $detail->rep03; break;
-                        case 4: $value = $detail->rep04; break;
-                        case 5: $value = $detail->rep05; break;
+    @for ($row = 1; $row <= $jumlah_baris; $row++)
+        @php
+            // Ambil data untuk baris ini (indeks 0-based)
+            $detail = isset($details[$row-1]) ? $details[$row-1] : null;
+        @endphp
+        <tr style="height: 45px;">
+            <!-- Kolom nominal - TANPA number_format -->
+            <td style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
+                <div style="width: 95%; height: 35px; font-size: 13pt; text-align: center; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                    {{ $detail && $detail->nilaiStandard ? $detail->nilaiStandard : '' }}
+                </div>
+             </div>
+            
+            <!-- 5 kolom pembacaan - TANPA number_format -->
+            @for ($col = 1; $col <= 5; $col++)
+                @php
+                    $value = '';
+                    if ($detail) {
+                        switch($col) {
+                            case 1: $value = $detail->rep01; break;
+                            case 2: $value = $detail->rep02; break;
+                            case 3: $value = $detail->rep03; break;
+                            case 4: $value = $detail->rep04; break;
+                            case 5: $value = $detail->rep05; break;
+                        }
                     }
-                }
-                echo $value ? number_format($value, 2) : '';
-                ?>
-            </div>
-        </td>
-        <?php endfor; ?>
-        
-        <!-- Kolom resolusi -->
-        <td style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
-            <div style="width: 95%; height: 35px; font-size: 13pt; text-align: center; padding: 5px; display: flex; align-items: center; justify-content: center;">
-                <?php echo $detail && $detail->resolusiAlat ? number_format($detail->resolusiAlat, 2) : ''; ?>
-            </div>
-        </td>
-    </tr>
-    <?php endfor; ?>
+                @endphp
+                <td style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
+                    <div style="width: 95%; height: 35px; font-size: 13pt; text-align: center; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                        {{ $value ? $value : '' }}
+                    </div>
+                 </div>
+            @endfor
+            
+            <!-- Kolom resolusi - TANPA number_format -->
+            <td style="border: 2px solid #000000; text-align: center; vertical-align: middle; background-color: #ffffff;">
+                <div style="width: 95%; height: 35px; font-size: 13pt; text-align: center; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                    {{ $detail && $detail->resolusiAlat ? $detail->resolusiAlat : '' }}
+                </div>
+             </div>
+         </tr>
+    @endfor
 </table>
 
             
@@ -717,13 +719,13 @@ $jumlah_baris = 12; // Sesuai dengan jumlah baris yang ada
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
             Nama : 
             <div style="width: 75%; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; min-height: 20px;">
-                <?php echo isset($calibration) ? htmlspecialchars($calibration->calibrated_by ?? '') : ''; ?>
+                <?php echo isset($calibration) ? htmlspecialchars($calibration->calibratedBy ?? '') : ''; ?>
             </div>
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
             Nama : 
             <div style="width: 75%; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; min-height: 20px;">
-                <?php echo isset($calibration) ? htmlspecialchars($calibration->verified_by ?? '') : ''; ?>
+                <?php echo isset($calibration) ? htmlspecialchars($calibration->verifiedBy ?? '') : ''; ?>
             </div>
         </td>
     </tr>
@@ -737,9 +739,9 @@ $jumlah_baris = 12; // Sesuai dengan jumlah baris yang ada
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

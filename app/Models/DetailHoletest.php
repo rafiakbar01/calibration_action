@@ -22,14 +22,14 @@ class DetailHoletest extends Model
         'rep05'
     ];
 
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'rep01'     => 'decimal:5',
-        'rep02'     => 'decimal:5',
-        'rep03'     => 'decimal:5',
-        'rep04'     => 'decimal:5',
-        'rep05'     => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'rep01'     => 'decimal:5',
+    //     'rep02'     => 'decimal:5',
+    //     'rep03'     => 'decimal:5',
+    //     'rep04'     => 'decimal:5',
+    //     'rep05'     => 'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

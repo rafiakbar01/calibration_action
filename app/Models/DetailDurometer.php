@@ -24,12 +24,12 @@ class DetailDurometer extends Model
 
     ];
 
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'x1'     => 'decimal:5',
-        'x2'     => 'decimal:5',
-        'x3'     => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'x1'     => 'decimal:5',
+    //     'x2'     => 'decimal:5',
+    //     'x3'     => 'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

@@ -519,68 +519,72 @@
             <!-- Data Kalibrasi Section -->
             <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
             
-      <table class="kalibrasi-data-table" style="width:100%; border-collapse:collapse; border:1px solid #000; font-family:Arial, sans-serif; font-size:11pt;">
+   <table class="kalibrasi-data-table" style="width:100%; border-collapse:collapse; border:1px solid #000; font-family:Arial, sans-serif; font-size:11pt;">
     
     <!-- HEADER TABEL -->
     <tr>
         <td colspan="3" style="border:1px solid #000; text-align:center; background:#f0f0f0; font-weight:bold;">
-            Setting Suhu (°C)
-        </td>
-        <td style="border:none; width:4%;"></td>
+            Setting Suhu (
+            <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 40px; text-align: center;">
+                {{ $calibration->headTempTransmitter->satuan_suhu_kiri ?? ' ' }}
+            </span>
+            )
+         </div>
+        <td style="border:none; width:4%;"></div>
         <td colspan="3" style="border:1px solid #000; text-align:center; background:#f0f0f0; font-weight:bold;">
-            Setting Suhu (°C)
-        </td>
+            Setting Suhu (
+            <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 40px; text-align: center;">
+                {{ $calibration->headTempTransmitter->satuan_suhu_kanan ?? ' ' }}
+            </span>
+            )
+         </div>
     </tr>
-    
+
     <tr>
         <td style="border:1px solid #000; text-align:center; background:#f8f8f8; font-weight:bold; width:12%;">
             Setting
-        </td>
+         </div>
         <td style="border:1px solid #000; text-align:center; background:#f8f8f8; font-weight:bold; width:10%;">
-            STD (°C)
-        </td>
+            STD (
+            <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 40px; text-align: center;">
+                {{ $calibration->headTempTransmitter->satuan_std_kiri ?? ' ' }}
+            </span>
+            )
+         </div>
         <td style="border:1px solid #000; text-align:center; background:#f8f8f8; font-weight:bold; width:10%;">
-            Indicator (mA)
-        </td>
-        <td style="border:none;"></td>
+            Indicator (
+            <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 50px; text-align: center;">
+                {{ $calibration->headTempTransmitter->satuan_indicator_kiri ?? ' ' }}
+            </span>
+            )
+         </div>
+        <td style="border:none;"></div>
         <td style="border:1px solid #000; text-align:center; background:#f8f8f8; font-weight:bold; width:12%;">
             Setting
-        </td>
+         </div>
         <td style="border:1px solid #000; text-align:center; background:#f8f8f8; font-weight:bold; width:10%;">
-            STD (°C)
-        </td>
+            STD (
+            <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 40px; text-align: center;">
+                {{ $calibration->headTempTransmitter->satuan_std_kanan ?? ' ' }}
+            </span>
+            )
+         </div>
         <td style="border:1px solid #000; text-align:center; background:#f8f8f8; font-weight:bold; width:10%;">
-            Indicator (mA)
-        </td>
+            Indicator (
+            <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 50px; text-align: center;">
+                {{ $calibration->headTempTransmitter->satuan_indicator_kanan ?? ' ' }}
+            </span>
+            )
+         </div>
     </tr>
 
     @php
-        // CARA 1: Gunakan relasi langsung dari Calibration (jika sudah didefinisikan)
-        // $details = $calibration->detailTempTransmitter ?? collect();
-        
-        // CARA 2: Query langsung (lebih aman)
         $details = \App\Models\DetailTempTransmitter::where('calibration_id', $calibration->id)
                     ->orderBy('id', 'asc')
                     ->get();
         
-        // Pisahkan data: Record 1-5 = KIRI, Record 6-10 = KANAN
-        $leftData = $details->slice(0, 5)->values();  // ID 1-5
-        $rightData = $details->slice(5, 5)->values(); // ID 6-10
-        
-        // Debug di console
-        echo '<script>';
-        echo 'console.log("=== TEMP TRANSMITTER DATA ===");';
-        echo 'console.log("Calibration ID: ' . $calibration->id . '");';
-        echo 'console.log("Total records: ' . $details->count() . '");';
-        echo 'console.log("Left records: ' . $leftData->count() . '");';
-        echo 'console.log("Right records: ' . $rightData->count() . '");';
-        
-        foreach ($details as $index => $detail) {
-            echo 'console.log("Record ' . ($index + 1) . ': T_setting=' . $detail->T_setting . 
-                 ', T_STD1=' . $detail->T_STD1 . ', T_STD2=' . $detail->T_STD2 . 
-                 ', T_STD3=' . $detail->T_STD3 . '");';
-        }
-        echo '</script>';
+        $leftData = $details->slice(0, 5)->values();  // Record 1-5 = KIRI
+        $rightData = $details->slice(5, 5)->values(); // Record 6-10 = KANAN
     @endphp
 
     <!-- DATA BARIS (5 grup × 3 baris = 15 baris data) -->
@@ -594,10 +598,10 @@
                     @php
                         $leftSetting = isset($leftData[$group-1]) ? $leftData[$group-1]->T_setting : '';
                     @endphp
-                    <input type="number" step="any" 
+                    <input type="text" 
                            value="{{ $leftSetting }}" 
                            style="width:90%; border:none; background:transparent; text-align:center;" readonly>
-                </td>
+                 </div>
             @endif
 
             <td style="border:1px solid #000; width:10%;">
@@ -609,10 +613,10 @@
                         if ($row == 3) $stdValue = $leftData[$group-1]->T_STD3;
                     }
                 @endphp
-                <input type="number" step="any" 
+                <input type="text" 
                        value="{{ $stdValue }}" 
                        style="width:90%; border:none; background:transparent; text-align:center;" readonly>
-            </td>
+             </div>
 
             <td style="border:1px solid #000; width:10%;">
                 @php
@@ -623,13 +627,13 @@
                         if ($row == 3) $indicatorValue = $leftData[$group-1]->T_Indicator3;
                     }
                 @endphp
-                <input type="number" step="any" 
+                <input type="text" 
                        value="{{ $indicatorValue }}" 
                        style="width:90%; border:none; background:transparent; text-align:center;" readonly>
-            </td>
+             </div>
 
             <!-- SPACER ANTAR KOLOM -->
-            <td style="width:4%; border:none;"></td>
+            <td style="width:4%; border:none;"></div>
 
             <!-- KOLOM KANAN (Records 6-10) -->
             @if($row === 1)
@@ -637,10 +641,10 @@
                     @php
                         $rightSetting = isset($rightData[$group-1]) ? $rightData[$group-1]->T_setting : '';
                     @endphp
-                    <input type="number" step="any" 
+                    <input type="text" 
                            value="{{ $rightSetting }}" 
                            style="width:90%; border:none; background:transparent; text-align:center;" readonly>
-                </td>
+                 </div>
             @endif
 
             <td style="border:1px solid #000; width:10%;">
@@ -652,10 +656,10 @@
                         if ($row == 3) $stdValueRight = $rightData[$group-1]->T_STD3;
                     }
                 @endphp
-                <input type="number" step="any" 
+                <input type="text" 
                        value="{{ $stdValueRight }}" 
                        style="width:90%; border:none; background:transparent; text-align:center;" readonly>
-            </td>
+             </div>
 
             <td style="border:1px solid #000; width:10%;">
                 @php
@@ -666,19 +670,56 @@
                         if ($row == 3) $indicatorValueRight = $rightData[$group-1]->T_Indicator3;
                     }
                 @endphp
-                <input type="number" step="any" 
+                <input type="text" 
                        value="{{ $indicatorValueRight }}" 
                        style="width:90%; border:none; background:transparent; text-align:center;" readonly>
-            </td>
+             </div>
         </tr>
         @endfor
     @endfor
 
 </table>
 
-
                     <!-- Footer Section -->
 <!-- Footer Section -->
+<style>
+    /* Styling untuk checkbox custom */
+    .custom-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: default;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: 2px solid #666;
+        border-radius: 3px;
+        background-color: #f0f0f0;
+        position: relative;
+        vertical-align: middle;
+        margin-right: 6px;
+    }
+    
+    .custom-checkbox:checked {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+    
+    .custom-checkbox:checked::after {
+        content: '✓';
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .custom-checkbox:disabled {
+        opacity: 1;
+    }
+</style>
+
 <table class="kalibrasi-main-table" style="width:100%; border-collapse:collapse; border:1px solid #000; font-family:Arial, sans-serif; font-size:10pt;">
     <tr>
         <td colspan="6" style="text-align:center; border-bottom:1px solid #000; padding:8px;">
@@ -689,23 +730,16 @@
     @php
         $head = $calibration->headTempTransmitter ?? null;
         
-      
-        
-        // Fungsi yang lebih baik untuk cek data
+        // Fungsi untuk cek data
         function isItemChecked($dataString, $searchValue) {
             if (empty($dataString)) return false;
             
-            // Hilangkan spasi di awal dan akhir
             $dataString = trim($dataString);
             $searchValue = trim($searchValue);
             
-            // Cek 1: Apakah string sama persis
             if ($dataString === $searchValue) return true;
-            
-            // Cek 2: Apakah string mengandung value
             if (strpos($dataString, $searchValue) !== false) return true;
             
-            // Cek 3: Split menjadi array dan cek
             $items = explode(', ', $dataString);
             foreach ($items as $item) {
                 if (trim($item) === $searchValue) return true;
@@ -714,7 +748,7 @@
             return false;
         }
         
-        // Atau cara yang lebih sederhana
+        // Cek status checkbox
         $isStandarChecked = $head && $head->standard && str_contains($head->standard, 'Digital Termometer SIKA, UM RTD.2');
         $isConstChecked = $head && $head->indicator && str_contains($head->indicator, 'Const mA');
         $isMultimeterChecked = $head && $head->indicator && str_contains($head->indicator, 'Multimeter mA');
@@ -728,8 +762,9 @@
         <td class="bold" style="width:20%; border:1px solid #000;">Standar</td>
         <td style="width:45%; border:1px solid #000;">
             <input type="checkbox" 
+                   class="custom-checkbox"
                    @if($isStandarChecked) checked @endif
-                   disabled style="transform:scale(1.2); margin-right:6px;">
+                   disabled>
             Digital Termometer SIKA, UM RTD.2
         </td>
         <td class="bold" style="width:17%; border:1px solid #000;">Dikalibrasi oleh</td>
@@ -741,8 +776,9 @@
         <td class="bold" rowspan="2" style="border:1px solid #000;">Indicator</td>
         <td style="border:1px solid #000;">
             <input type="checkbox" 
+                   class="custom-checkbox"
                    @if($isConstChecked) checked @endif
-                   disabled style="transform:scale(1.2); margin-right:6px;">
+                   disabled>
             Const mA
         </td>
         <td rowspan="2" style="border:1px solid #000; vertical-align:top">TTD :</td>
@@ -751,8 +787,9 @@
     <tr>
         <td style="border:1px solid #000;">
             <input type="checkbox" 
+                   class="custom-checkbox"
                    @if($isMultimeterChecked) checked @endif
-                   disabled style="transform:scale(1.2); margin-right:6px;">
+                   disabled>
             Multimeter mA
         </td>
     </tr>
@@ -762,8 +799,9 @@
         <td class="bold" rowspan="3" style="border:1px solid #000;">Media</td>
         <td style="border:1px solid #000;">
             <input type="checkbox" 
+                   class="custom-checkbox"
                    @if($isMicroOilbathChecked) checked @endif
-                   disabled style="transform:scale(1.2); margin-right:6px;">
+                   disabled>
             MicroOilbath Sika
         </td>
         <td rowspan="3" style="border:1px solid #000;"></td>
@@ -772,16 +810,18 @@
     <tr>
         <td style="border:1px solid #000;">
             <input type="checkbox" 
+                   class="custom-checkbox"
                    @if($isDryBlock650Checked) checked @endif
-                   disabled style="transform:scale(1.2); margin-right:6px;">
+                   disabled>
             Dry Block Temperature Calibrator 650
         </td>
     </tr>
     <tr>
         <td style="border:1px solid #000;">
             <input type="checkbox" 
+                   class="custom-checkbox"
                    @if($isDryBlock1200Checked) checked @endif
-                   disabled style="transform:scale(1.2); margin-right:6px;">
+                   disabled>
             Dry Block Temperature Calibrator 1200
         </td>
     </tr>
@@ -802,8 +842,6 @@
 
 
 
-
-
             <!-- Action Buttons Section -->
             <div class="row mt-5">
                 <div class="col-12 text-center">
@@ -811,9 +849,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

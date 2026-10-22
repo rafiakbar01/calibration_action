@@ -455,8 +455,8 @@
                                 <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="insitu" id="insitu" 
-                                       {{ $calibration->tempatKalibrasi == 'insitu' ? 'checked' : '' }} disabled>
+                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="Insitu" id="insitu" 
+                                       {{ $calibration->tempatKalibrasi == 'Insitu' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="insitu" style="color: #000000;">Insitu</label>
                             </div>
                         </div>
@@ -468,6 +468,15 @@
                     </td>
                     <td colspan="3">
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
+                    </td>
+                </tr>
+                
+                   <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
                     </td>
                 </tr>
             </table>
@@ -540,110 +549,108 @@
             <?php
         // Urutkan berdasarkan titikUkur (biasanya dari kecil ke besar)
         $detailsIndexed = $calibration->detailDifferentialPressureGauges
-            ->sortBy('titikUkur')
+            ->sortBy('id')
             ->values(); // reset key jadi 0,1,2,...
         ?>
 
         <!-- Tabel Kiri (baris 1-10) -->
-        <table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif; margin-bottom: 30px; float: left;">
-            <thead>
-               <tr>
-                    <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
-                        Pembacaan Alat<br>
-                        <span style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
-                            (@if(isset($calibration->headDifferentialPressureGauge->satuan_alat_kiri) && $calibration->headDifferentialPressureGauge->satuan_alat_kiri)
-                                {{ $calibration->headDifferentialPressureGauge->satuan_alat_kiri }}
-                            @else
-                                ……………
-                            @endif)
-                        </span>
-                    </th>
-                    <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
-                        Pembacaan STD<br>
-                        <span style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
-                            (@if(isset($calibration->HeadDifferentialPressureGauge->satuan_std_kiri) && $calibration->headDifferentialPressureGauge->satuan_std_kiri)
-                                {{ $calibration->headDifferentialPressureGauge->satuan_std_kiri }}
-                            @else
-                                ……………
-                            @endif)
-                        </span>
-                    </th>
-                </tr>
-                <tr>
-                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
-                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php for($i = 0; $i < 10; $i++): ?>
-                    <?php 
-                        $detail = $detailsIndexed->get($i);
-                        $titik = $detail ? number_format($detail->titikUkur, 5) : '';
-                        $naik  = $detail ? number_format($detail->STDNaik, 5) : '';
-                        $turun = $detail ? number_format($detail->STDTurun, 5) : '';
-                    ?>
-                    <tr>
-                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
-                            {{ $titik }}
-                        </td>
-                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
-                            {{ $naik }}
-                        </td>
-                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
-                            {{ $turun }}
-                        </td>
-                    </tr>
-                <?php endfor; ?>
-            </tbody>
-        </table>
+      <table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif; margin-bottom: 30px; float: left;">
+    <thead>
+        <tr>
+            <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
+                Pembacaan Alat<br>
+                <span style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
+                    (@if(isset($calibration->headDifferentialPressureGauge->satuan_alat_kiri) && $calibration->headDifferentialPressureGauge->satuan_alat_kiri)
+                        {{ $calibration->headDifferentialPressureGauge->satuan_alat_kiri }}
+                    @else
+                        ……………
+                    @endif)
+                </span>
+            </th>
+            <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
+                Pembacaan STD<br>
+                <span style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
+                    (@if(isset($calibration->headDifferentialPressureGauge->satuan_std_kiri) && $calibration->headDifferentialPressureGauge->satuan_std_kiri)
+                        {{ $calibration->headDifferentialPressureGauge->satuan_std_kiri }}
+                    @else
+                        ……………
+                    @endif)
+                </span>
+            </th>
+        </tr>
+        <tr>
+            <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
+            <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php for($i = 0; $i < 10; $i++): ?>
+            <?php 
+                $detail = $detailsIndexed->get($i);
+                $titik = $detail ? $detail->titikUkur : '';
+                $naik  = $detail ? $detail->STDNaik : '';
+                $turun = $detail ? $detail->STDTurun : '';
+            ?>
+            <tr>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
+                    {{ $titik }}
+                </td>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
+                    {{ $naik }}
+                </td>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
+                    {{ $turun }}
+                </td>
+            </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
 
-        <!-- Tabel Kanan (baris 11-20) -->
-        <table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif; float: right;">
-            <thead>
-                <!-- sama seperti atas -->
-                <tr>
-                    <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
-                        Pembacaan Alat<br>
-                        <span style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">(……………)</span>
-                    </th>
-                    <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
-                        Pembacaan STD<br>
-                        <span style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">(……………)</span>
-                    </th>
-                </tr>
-                <tr>
-                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
-                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php for($i = 10; $i < 20; $i++): ?>
-                    <?php 
-                        $detail = $detailsIndexed->get($i);
-                        $titik = $detail ? number_format($detail->titikUkur, 5) : '';
-                        $naik  = $detail ? number_format($detail->STDNaik, 5) : '';
-                        $turun = $detail ? number_format($detail->STDTurun, 5) : '';
-                    ?>
-                    <tr>
-                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
-                            {{ $titik }}
-                        </td>
-                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
-                            {{ $naik }}
-                        </td>
-                        <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
-                            {{ $turun }}
-                        </td>
-                    </tr>
-                <?php endfor; ?>
-            </tbody>
-        </table>
-            </div>
-        </div>
+<!-- Tabel Kanan (baris 11-20) -->
+<table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif; float: right;">
+    <thead>
+        <tr>
+            <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
+                Pembacaan Alat<br>
+                <span style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">(……………)</span>
+            </th>
+            <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
+                Pembacaan STD<br>
+                <span style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">(……………)</span>
+            </th>
+        </tr>
+        <tr>
+            <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
+            <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php for($i = 10; $i < 20; $i++): ?>
+            <?php 
+                $detail = $detailsIndexed->get($i);
+                $titik = $detail ? $detail->titikUkur : '';
+                $naik  = $detail ? $detail->STDNaik : '';
+                $turun = $detail ? $detail->STDTurun : '';
+            ?>
+            <tr>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
+                    {{ $titik }}
+                </td>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
+                    {{ $naik }}
+                </td>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
+                    {{ $turun }}
+                </td>
+            </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
+</div>
+</div>
 
-
-        @php
-    $addPG = $calibration->AddDifferentialPressureGauge ?? new \App\Models\AddDifferentialPressureGauge;
+@php
+    $addPG = $calibration->addDifferentialPressureGauge ?? new \App\Models\AddDifferentialPressureGauge;
 @endphp
 
 <table cellspacing="0" cellpadding="0" class="TableNormal"
@@ -661,7 +668,6 @@
                 </span>
             </p>
         </td>
-
         <td style="width:75.55pt; border-bottom:1.2pt solid #000; vertical-align:top;">
             <p class="TableParagraph" style="margin-left:3pt; line-height:11pt">
                 <span style="font-size:9pt">:</span>
@@ -669,18 +675,17 @@
                               width:60px; font-size:9pt; margin-left:6px;
                               background:transparent; display:inline-block;
                               text-align:center;">
-                    {{ $addPG->repeatability ? number_format($addPG->repeatability, 5) : '' }}
+                    {{ $addPG->repeatability }}
                 </span>
             </p>
         </td>
-
         <td style="width:80.35pt; border-bottom:1.2pt solid #000; vertical-align:top;">
             <p class="TableParagraph" style="margin-top:1pt; margin-left:18.05pt;">
                 <span style="font-size:9pt">(</span>
                 <span style="border:none; border-bottom:1.2pt dotted #000;
                               width:45px; font-size:9pt; text-align:center;
                               background:transparent; display:inline-block;">
-                    {{ $addPG->repeatabilitySTD ?? '' }}
+                    {{ $addPG->repeatabilitySTD }}
                 </span>
                 <span style="font-size:9pt">)</span>
             </p>
@@ -691,17 +696,17 @@
     <tr style="height:22pt">
         <td style="width:77.5pt; border:1.2pt solid #000; text-align:center;">
             <span style="font-size:8.5pt;">
-                {{ $addPG->ulangan01 ? number_format($addPG->ulangan01, 5) : '' }}
+                {{ $addPG->ulangan01 }}
             </span>
         </td>
         <td style="width:74.8pt; border:1.2pt solid #000; text-align:center;">
             <span style="font-size:8.5pt;">
-                {{ $addPG->ulangan02 ? number_format($addPG->ulangan02, 5) : '' }}
+                {{ $addPG->ulangan02 }}
             </span>
         </td>
         <td style="width:79.6pt; border:1.2pt solid #000; text-align:center;">
             <span style="font-size:8.5pt;">
-                {{ $addPG->ulangan03 ? number_format($addPG->ulangan03, 5) : '' }}
+                {{ $addPG->ulangan03 }}
             </span>
         </td>
     </tr>
@@ -710,18 +715,17 @@
     <tr style="height:22pt">
         <td style="width:77.5pt; border:1.2pt solid #000; text-align:center;">
             <span style="font-size:8.5pt;">
-                {{ $addPG->ulangan04 ? number_format($addPG->ulangan04, 5) : '' }}
+                {{ $addPG->ulangan04 }}
             </span>
         </td>
         <td style="width:74.8pt; border:1.2pt solid #000; text-align:center;">
             <span style="font-size:8.5pt;">
-                {{ $addPG->ulangan05 ? number_format($addPG->ulangan05, 5) : '' }}
+                {{ $addPG->ulangan05 }}
             </span>
         </td>
         <!-- Kolom kosong tanpa border -->
         <td style="width:79.6pt; border:none;"></td>
     </tr>
-
 </table>
 
             <!-- Footer Section -->
@@ -876,9 +880,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

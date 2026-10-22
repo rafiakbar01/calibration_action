@@ -12,7 +12,7 @@ class HeadCaliper extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_unit_inside','satuan_unit_outside','form_index','satuan_unit_depth'
     ];
 
     public function calibration()

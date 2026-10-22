@@ -21,10 +21,6 @@ return new class extends Migration
             $table->string('certificate_id');
             $table->string('standard');
             $table->string('calibrationMethod');
-            $table->string('satuan_alat_kiri');
-            $table->string('satuan_std_kiri');
-            $table->string('satuan_alat_kanan');
-            $table->string('satuan_std_kanan');
             $table->timestamps();
         });
     }

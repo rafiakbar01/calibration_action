@@ -222,20 +222,36 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                   <tr>
-                            <td style="width: 20%;">
+                     <tr>
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Measuring Taper Gauge"
-                                    placeholder="Measuring Taper Gauge"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Measuring Taper Gauge">Measuring Taper Gauge</option>
+                                    <option value="MANUAL_INPUT">-- Input Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
-                    </tr>
+                        </tr>
+                  
 
 
                     <!-- Merek & Kode Alat -->
@@ -375,7 +391,7 @@
                         <td colspan="3">
                             <div class="d-flex">
                                 <div class="form-check me-5">
-                                    <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" required>
+                                    <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab.PT PAS" id="lab" required>
                                     <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                                 </div>
                                 <div class="form-check">
@@ -391,7 +407,7 @@
                         </td>
                         <td colspan="3">
                             <div class="d-flex align-items-center">
-                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;" required>
+                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;"  >
                             </div>
                         </td>
                     </tr>
@@ -438,22 +454,22 @@
                                 <td><input type="number"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -462,22 +478,22 @@
                                 <td><input type="number"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -507,7 +523,10 @@
         <tr class="sub-header">
             <th colspan="2">
                 Unit (
-               
+                <input type="text" 
+                       name="satuan_unit" 
+                       value=""
+                       style="width: 60px; border: none; border-bottom: 1px solid #000; text-align: center;">
                 )
             </th>
             <th>1</th>
@@ -522,19 +541,19 @@
             <tr>
                 <td colspan="2">
                     <input
-                        type="number"
+                        type="text"
                         name="nominal_{{ $i }}"
-                        step="any"
-                        oninput="formatInputNumber(this)"
+                  
+                      
                         class="table-input"
                     >
                 </td>
 
-                <td><input type="number" step="any" name="penunjukan_{{ $i }}_1" class="table-input"></td>
-                <td><input type="number" step="any" name="penunjukan_{{ $i }}_2" class="table-input"></td>
-                <td><input type="number" step="any" name="penunjukan_{{ $i }}_3" class="table-input"></td>
-                <td><input type="number" step="any" name="penunjukan_{{ $i }}_4" class="table-input"></td>
-                <td><input type="number" step="any" name="penunjukan_{{ $i }}_5" class="table-input"></td>
+                <td><input type="text" name="penunjukan_{{ $i }}_1" class="table-input"></td>
+                <td><input type="text" name="penunjukan_{{ $i }}_2" class="table-input"></td>
+                <td><input type="text" name="penunjukan_{{ $i }}_3" class="table-input"></td>
+                <td><input type="text" name="penunjukan_{{ $i }}_4" class="table-input"></td>
+                <td><input type="text" name="penunjukan_{{ $i }}_5" class="table-input"></td>
             </tr>
         @endfor
 
@@ -726,7 +745,7 @@
                             PAS-IK1102-57
                         </td>
                         <td colspan="3" style="border: 1px solid #000; padding: 12px; text-align: center;">
-                            Nama: <input type="text" name="calibrated_by" placeholder="Masukkan nama" style="width: 70%; border: none; background: transparent; text-align: center;">
+                            Nama: <input type="text" name="calibrated_by" placeholder="Masukkan nama" style="width: 70%; border: none; background: transparent; text-align: center;"    value="{{ auth()->user()->nama ?? 'System' }}"  readonly>
                         </td>
                         <td colspan="3" style="border: 1px solid #000; padding: 12px; text-align: center;">
                             Nama: <input type="text" name="verified_by" placeholder="Masukkan nama" style="width: 70%; border: none; background: transparent; text-align: center;">
@@ -741,9 +760,9 @@
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
                         </button>
                         
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
-                        </button>
+                        <!--<button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-redo me-2"></i>Reset Form-->
+                        <!--</button>-->
                     </div>
                 </div>
 
@@ -754,6 +773,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
     // JavaScript form validation
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('kalibrasiForm');

@@ -12,7 +12,7 @@ class HeadTimbangan extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','note'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','note','setengah_kapasitas','kapasitas_max','form_index'
     ];
 
     public function calibration()

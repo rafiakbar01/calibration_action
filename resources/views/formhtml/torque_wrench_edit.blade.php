@@ -419,8 +419,8 @@
         <td colspan="3">
             <div class="d-flex">
                 <div class="form-check me-5">
-                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab"
-                        {{ old('tempatKalibrasi', $calibration->tempatKalibrasi) == 'lab' ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab.PT PAS"
+                        {{ old('tempatKalibrasi', $calibration->tempatKalibrasi) == 'lab.PT PAS' ? 'checked' : '' }}>
                     <label class="form-check-label" style="color:#000;">Lab. PT.PAS</label>
                 </div>
                 <div class="form-check">
@@ -437,6 +437,13 @@
         <td colspan="3">
             <input type="text" name="lokasiPT" class="kalibrasi-input"
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
+        </td>
+    </tr>
+      <tr>
+        <td><p style="margin:0;color:#000;">Kode TH</p></td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input"
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
         </td>
     </tr>
 
@@ -489,20 +496,20 @@
         </tr>
         <tr>
             <td class="bg-light fw-bold" style="color:#000;">Suhu (°C)</td>
-            <td><input type="text" name="RT_condition1" class="kondisi-input"
+            <td><input type="number" step="any"  name="RT_condition1" class="kondisi-input"
                        value="{{ old('RT_condition1', $calibration->RT_condition1) }}"></td>
-            <td><input type="text" name="RT_condition2" class="kondisi-input"
+            <td><input type="number" step="any"  name="RT_condition2" class="kondisi-input"
                        value="{{ old('RT_condition2', $calibration->RT_condition2) }}"></td>
-            <td><input type="text" name="RT_condition3" class="kondisi-input"
+            <td><input type="number" step="any"  name="RT_condition3" class="kondisi-input"
                        value="{{ old('RT_condition3', $calibration->RT_condition3) }}"></td>
         </tr>
         <tr>
             <td class="bg-light fw-bold" style="color:#000;">RH (%)</td>
-            <td><input type="text" name="RH_condition1" class="kondisi-input"
+            <td><input type="number" step="any"  name="RH_condition1" class="kondisi-input"
                        value="{{ old('RH_condition1', $calibration->RH_condition1) }}"></td>
-            <td><input type="text" name="RH_condition2" class="kondisi-input"
+            <td><input type="number" step="any"  name="RH_condition2" class="kondisi-input"
                        value="{{ old('RH_condition2', $calibration->RH_condition2) }}"></td>
-            <td><input type="text" name="RH_condition3" class="kondisi-input"
+            <td><input type="number" step="any"  name="RH_condition3" class="kondisi-input"
                        value="{{ old('RH_condition3', $calibration->RH_condition3) }}"></td>
         </tr>
     </table>
@@ -528,43 +535,69 @@
     <tr style="height:13pt">
         <td colspan="3" style="width:190pt; border:solid 1pt; vertical-align:middle; text-align:center">
             <p class="TableParagraph" style="margin:0; font-size:10pt; line-height:1.15">
-                <span style="font-family:Arial; font-weight:bold">Clockwise</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt"> (</span>
-                <span style="font-family:'Lucida Console'; font-size:7.5pt; letter-spacing:0.5em;">
-                    <input type="text"
-                           name="clockwise_unit"
-                           value="{{ $calibration->headTorqueWrench->clockwise_unit ?? '' }}"
-                           style="width:120px; border:none; outline:none; background:transparent; font-family:'Lucida Console'; font-size:7.5pt; letter-spacing:0.5em; text-align:center;"
-                           placeholder=".........">
-                </span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">)</span>
+                <span style="font-weight:bold">Clockwise</span>
+                <span style="font-weight:bold"> (</span>
+                <input type="text"
+                    name="satuan_cw"
+                    value="{{ old('satuan_cw', $calibration->headTorqueWrench->satuan_cw ?? '') }}"
+                    style="
+                        width:120px;
+                        border:none;
+                        outline:none;
+                        background:transparent;
+                        font-size:7.5pt;
+                        letter-spacing:normal;
+                        text-align:center;
+                        padding:0;
+                        margin:0;
+                    "
+                    placeholder=".........">
+                <span style="font-weight:bold">)</span>
             </p>
         </td>
         <td colspan="3" style="width:190pt; border:solid 1pt; vertical-align:middle; text-align:center">
             <p class="TableParagraph" style="margin:0; font-size:10pt; line-height:1.15">
-                <span style="font-family:Arial; font-weight:bold">Counter Clockwise</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt"> (</span>
-                <span style="font-family:'Lucida Console'; font-size:7.5pt; letter-spacing:0.5em;">
-                    <input type="text"
-                           name="counter_clockwise_unit"
-                           value="{{ $calibration->headTorqueWrench->counter_clockwise_unit ?? '' }}"
-                           style="width:120px; border:none; outline:none; background:transparent; font-family:'Lucida Console'; font-size:7.5pt; letter-spacing:0.5em; text-align:center;"
-                           placeholder=".........">
-                </span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">)</span>
+                <span style="font-weight:bold">Counter Clockwise</span>
+                <span style="font-weight:bold"> (</span>
+                <input type="text"
+                    name="satuan_ccw"
+                    value="{{ old('satuan_ccw', $calibration->headTorqueWrench->satuan_ccw ?? '') }}"
+                    style="
+                        width:120px;
+                        border:none;
+                        outline:none;
+                        background:transparent;
+                        font-size:7.5pt;
+                        letter-spacing:normal;
+                        text-align:center;
+                        padding:0;
+                        margin:0;
+                    "
+                    placeholder=".........">
+                <span style="font-weight:bold">)</span>
             </p>
         </td>
     </tr>
     <tr style="height:12pt">
         <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; text-align:center">
             <p class="TableParagraph" style="margin-top:0.8pt; margin-left:8pt; font-size:8pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt;">
                     (
                     <input type="text"
-                           name="nominal_unit"
-                           value="{{ $calibration->headTorqueWrench->nominal_unit ?? '' }}"
-                           style="border:none; border-bottom:1px dotted #000; outline:none; background:transparent; width:120px; font-family:Arial; font-weight:bold; letter-spacing:-0.1pt; text-align:center;"
-                           placeholder="………………..">
+                        name="satuan_setting_alat"
+                        value="{{ old('satuan_setting_alat', $calibration->headTorqueWrench->satuan_setting_alat ?? '') }}"
+                        style="
+                            border:none;
+                            border-bottom:1px dotted #000;
+                            outline:none;
+                            background:transparent;
+                            width:120px;
+                            font-family:Arial;
+                            font-weight:bold;
+                            letter-spacing:-0.1pt;
+                            text-align:center;
+                        "
+                        placeholder="………………..">
                     )
                 </span>
             </p>
@@ -601,223 +634,116 @@
         </td>
     </tr>
     
-    @php
-        // Ambil data dari database
-        $detailData = isset($calibration) && $calibration->detailTorqueWrenchs ? 
-                     $calibration->detailTorqueWrenchs->sortBy('titikUkur')->take(13) : 
-                     collect();
+    <!-- Baris 1-13 dengan input field untuk edit -->
+    @for($i = 1; $i <= 13; $i++)
+        @php
+            // Cari data untuk baris ini
+            $detail = isset($calibration) && $calibration->detailTorqueWrenchs && $calibration->detailTorqueWrenchs->count() > 0 
+                ? ($calibration->detailTorqueWrenchs->get($i-1) ?? null) 
+                : null;
+            
+            // Tentukan nama input yang konsisten
+            $inputName = "detail[" . ($i-1) . "]";
+        @endphp
         
-        // SELALU tampilkan 13 baris
-        $dataByRow = [];
-        for ($i = 0; $i < 13; $i++) {
-            $dataByRow[$i] = $detailData->get($i) ?? null;
-        }
-    @endphp
-    
-    <!-- BARIS 1-12 dengan border bawah -->
-    @for($i = 0; $i < 12; $i++)
-    @php
-        $rowNumber = $i + 1;
-        $detail = $dataByRow[$i];
-        $detailId = $detail->id ?? null;
-    @endphp
-    <tr style="height:14pt">
-        <!-- Kolom 1: Nominal Setting alat -->
-        <td style="width:90pt; 
-            @if($rowNumber < 13) 
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt;
-            @endif
-            vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[{{ $i }}][titikUkur]"
-                   value="{{ $detail->titikUkur ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-            @if($detailId)
-                <input type="hidden" name="torque[{{ $i }}][id]" value="{{ $detailId }}">
-            @endif
-        </td>
-        
-        <!-- Kolom 2: CW1 -->
-        <td style="width:45pt; 
-            @if($rowNumber < 13) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[{{ $i }}][cw1]"
-                   value="{{ $detail->cw1 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 3: CW2 -->
-        <td style="width:45pt; 
-            @if($rowNumber < 13) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[{{ $i }}][cw2]"
-                   value="{{ $detail->cw2 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 4: CW3 -->
-        <td style="width:45pt; 
-            @if($rowNumber < 13) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[{{ $i }}][cw3]"
-                   value="{{ $detail->cw3 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 5: CCW1 -->
-        <td style="width:45pt; 
-            @if($rowNumber < 13) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[{{ $i }}][ccw1]"
-                   value="{{ $detail->ccw1 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 6: CCW2 -->
-        <td style="width:45pt; 
-            @if($rowNumber < 13) 
-                border-style:solid; border-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[{{ $i }}][ccw2]"
-                   value="{{ $detail->ccw2 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 7: CCW3 -->
-        <td style="width:45pt; 
-            @if($rowNumber < 13) 
-                border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt;
-            @else
-                border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt;
-            @endif
-            vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[{{ $i }}][ccw3]"
-                   value="{{ $detail->ccw3 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-    </tr>
+        <tr style="height:14pt">
+            <td style="width:90pt; 
+                @if($i < 13) 
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt;
+                @endif
+                vertical-align:top; text-align:center;">
+                @if($detail && $detail->id)
+                    <input type="hidden" name="{{ $inputName }}[id]" value="{{ $detail->id }}">
+                @endif
+                <input type="hidden" name="{{ $inputName }}[row_index]" value="{{ $i-1 }}">
+                <input type="text" 
+                       name="{{ $inputName }}[titikUkur]" 
+                       value="{{ old($inputName . '.titikUkur', $detail->titikUkur ?? '') }}"
+                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
+                       placeholder="&#xa0;">
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top">
+                <input type="text" 
+                       name="{{ $inputName }}[cw1]" 
+                       value="{{ old($inputName . '.cw1', $detail->cw1 ?? '') }}"
+                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
+                       placeholder="&#xa0;">
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top">
+                <input type="text" 
+                       name="{{ $inputName }}[cw2]" 
+                       value="{{ old($inputName . '.cw2', $detail->cw2 ?? '') }}"
+                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
+                       placeholder="&#xa0;">
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top">
+                <input type="text" 
+                       name="{{ $inputName }}[cw3]" 
+                       value="{{ old($inputName . '.cw3', $detail->cw3 ?? '') }}"
+                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
+                       placeholder="&#xa0;">
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top">
+                <input type="text" 
+                       name="{{ $inputName }}[ccw1]" 
+                       value="{{ old($inputName . '.ccw1', $detail->ccw1 ?? '') }}"
+                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
+                       placeholder="&#xa0;">
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-style:solid; border-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top">
+                <input type="text" 
+                       name="{{ $inputName }}[ccw2]" 
+                       value="{{ old($inputName . '.ccw2', $detail->ccw2 ?? '') }}"
+                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
+                       placeholder="&#xa0;">
+            </td>
+            <td style="width:45pt; 
+                @if($i < 13) 
+                    border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt;
+                @else
+                    border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt;
+                @endif
+                vertical-align:top">
+                <input type="text" 
+                       name="{{ $inputName }}[ccw3]" 
+                       value="{{ old($inputName . '.ccw3', $detail->ccw3 ?? '') }}"
+                       style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
+                       placeholder="&#xa0;">
+            </td>
+        </tr>
     @endfor
-    
-    <!-- Baris terakhir (13) tanpa border bawah -->
-    @php
-        $detail = $dataByRow[12] ?? null;
-        $detailId = $detail->id ?? null;
-    @endphp
-    <tr style="height:14pt">
-        <!-- Kolom 1: Nominal Setting alat -->
-        <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[12][titikUkur]"
-                   value="{{ $detail->titikUkur ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-            @if($detailId)
-                <input type="hidden" name="torque[12][id]" value="{{ $detailId }}">
-            @endif
-        </td>
-        
-        <!-- Kolom 2: CW1 -->
-        <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[12][cw1]"
-                   value="{{ $detail->cw1 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 3: CW2 -->
-        <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[12][cw2]"
-                   value="{{ $detail->cw2 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 4: CW3 -->
-        <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[12][cw3]"
-                   value="{{ $detail->cw3 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 5: CCW1 -->
-        <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[12][ccw1]"
-                   value="{{ $detail->ccw1 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 6: CCW2 -->
-        <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[12][ccw2]"
-                   value="{{ $detail->ccw2 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-        
-        <!-- Kolom 7: CCW3 -->
-        <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="number" 
-                   step="any" 
-                   name="torque[12][ccw3]"
-                   value="{{ $detail->ccw3 ?? '' }}"
-                   style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
-                   placeholder="-">
-        </td>
-    </tr>
 </table>
 
 <!-- Repeatability Clockwise - EDIT MODE -->
@@ -846,7 +772,7 @@
                    placeholder="-">
         </td>
         <td style="width:45pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="text" 
+            <input  type="text" 
                    name="repCw03"
                    value="{{ $addTorqueWrench->repCw03 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -876,7 +802,7 @@
                    placeholder="-">
         </td>
         <td style="width:45pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; padding:1px;">
-            <input type="text" 
+            <input type="text"  
                    name="repCw07"
                    value="{{ $addTorqueWrench->repCw07 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -941,7 +867,7 @@
                    placeholder="-">
         </td>
         <td style="width:45pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; padding:1px;">
-            <input type="text" 
+            <input type="text"  
                    name="repCcw05"
                    value="{{ $addTorqueWrench->repCcw05 ?? '' }}"
                    style="width:100%; height:100%; box-sizing:border-box; border:none; padding:1px; font-size:7.5pt; text-align:center;"
@@ -1122,9 +1048,9 @@
     <div style="display:flex; align-items:center; gap:4px;">
         <span>Nama :</span>
         <input type="text"
-               name="calibratedBy"
-               value="{{ old('calibratedBy', $calibration->calibratedBy ?? '') }}"
-               style="flex:1; border:none; border-bottom:1px solid #000; font-size:9pt; background:transparent;">
+               name="verifiedBy"
+               value="{{ old('verifiedBy', $calibration->verifiedBy ?? '') }}"
+               style="flex:1; border:none; border-bottom:1px solid #000; font-size:9pt; background:transparent;" readonly>
     </div>
 </td>
 
@@ -1160,8 +1086,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -1234,7 +1165,7 @@
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data

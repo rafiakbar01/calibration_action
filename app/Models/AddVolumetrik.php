@@ -30,14 +30,14 @@ class AddVolumetrik extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'massaKosong' => 'decimal:5',
-        'massaIsi' => 'decimal:5',
-        'T_airSuling' => 'decimal:5',
-        'P_Udara' => 'decimal:5',
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'massaKosong' => 'decimal:5',
+    //     'massaIsi' => 'decimal:5',
+    //     'T_airSuling' => 'decimal:5',
+    //     'P_Udara' => 'decimal:5',
        
-    ];
+    // ];
   
 
     /**

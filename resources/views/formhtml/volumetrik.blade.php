@@ -146,6 +146,8 @@
         <form method="POST" action="/calibrations" id="kalibrasiForm">
         @csrf
         <input type="hidden" name="form_type" id="form_type_input"  value="volumetrik">
+        <input type="hidden" name="kategori_alat" value="volumetrik">
+
 
 
             <div class="form-kalibrasi-container">
@@ -190,21 +192,35 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                    <tr>
-                        <td style="width: 20%;">
-                            <p style="margin: 0; color: #000000;">Nama Alat</p>
-                        </td>
-                        <td colspan="3">
-                            <select name="nama_alat" class="kalibrasi-input"   onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
-                                <option value="">-- Pilih Jenis Alat --</option>
-                                <option value="Buret">Buret</option>
-                                <option value="Gelas Ukur">Gelas Ukur</option>
-                                <option value="Pipet Ukur">Pipet Ukur</option>
-                                <option value="Labu Ukur">Labu Ukur</option>
-                                <option value="Pipet Volume">Pipet Volume</option>
-                            </select>
-                        </td>
-                    </tr>
+                         <tr>
+    <td style="width: 20%;">
+        <p style="margin: 0; color: #000000;">Nama Alat</p>
+    </td>
+    <td colspan="3">
+        <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+            <option value="">-- Pilih Alat --</option>
+            <option value="Buret">Buret</option>
+            <option value="Gelas Ukur">Gelas Ukur</option>
+            <option value="Pipet Ukur">Pipet Ukur</option>
+            <option value="Labu Ukur">Labu Ukur</option>
+            <option value="Pipet Volume">Pipet Volume</option>
+            <option value="MANUAL_INPUT">-- Input Manual Nama Alat --</option>
+        </select>
+        
+        <!-- Input Manual - HIDANG AWALNYA -->
+        <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+            <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                   placeholder="Ketik nama alat volumetrik secara manual"
+                   style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                   oninput="syncNamaAlat()">
+        </div>
+        
+        <!-- Hidden input untuk menyimpan nama alat final (auto-created by JS) -->
+        <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+        
+    
+    </td>
+</tr>
 
                     <!-- Merek & Kode Alat -->
                     <tr>
@@ -311,7 +327,16 @@
                             <p style="margin: 0; color: #000000;">Lokasi PT</p>
                         </td>
                         <td colspan="3">
-                            <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT"required>
+                            <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT" >
+                        </td>
+                    </tr>
+                    
+                     <tr>
+                        <td>
+                            <p style="margin: 0; color: #000000;">Kode TH</p>
+                        </td>
+                        <td colspan="3">
+                            <input type="text" name="kode_th" class="kalibrasi-input" placeholder="Masukkan Kode TH" >
                         </td>
                     </tr>
                 </table>
@@ -354,15 +379,15 @@
                                 </tr>
                                <tr>
                                     <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
-                                    <td><input type="number" name="suhu_awal" class="kondisi-input" required></td>
-                                    <td><input type="number" name="suhu_tengah" class="kondisi-input" required></td>
-                                    <td><input type="number" name="suhu_akhir" class="kondisi-input" required></td>
+                                    <td><input type="text"  name="suhu_awal" class="kondisi-input" required></td>
+                                    <td><input type="text"  name="suhu_tengah" class="kondisi-input" required></td>
+                                    <td><input type="text"  name="suhu_akhir" class="kondisi-input" required></td>
                                 </tr>
                                 <tr>
                                     <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
-                                    <td><input type="number" name="rh_awal" class="kondisi-input" required></td>
-                                    <td><input type="number" name="rh_tengah" class="kondisi-input" required></td>
-                                    <td><input type="number" name="rh_akhir" class="kondisi-input" required></td>
+                                    <td><input type="text"  name="rh_awal" class="kondisi-input" required></td>
+                                    <td><input type="text"  name="rh_tengah" class="kondisi-input" required></td>
+                                    <td><input type="text"  name="rh_akhir" class="kondisi-input" required></td>
                                 </tr>
                             </table>
                         </div>
@@ -371,11 +396,11 @@
                 <!-- Data Kalibrasi Section -->
                 <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
                 
-                <table cellspacing="0" cellpadding="0" style="width:100%; max-width:800pt; margin:10pt 0; border:2pt solid #000; border-collapse:collapse; font-family:Arial,Helvetica,sans-serif;">
+              <table cellspacing="0" cellpadding="0" style="width:100%; max-width:800pt; margin:10pt 0; border:2pt solid #000; border-collapse:collapse; font-family:Arial,Helvetica,sans-serif;">
 
 <!-- Header Baris 1 -->
 <tr style="height:45pt;">
-    <td rowspan="2" style="width:160pt; border:2pt solid #000; border-right:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+    <td rowspan="2" style="width:160pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
         <p style="margin:0; font-size:15pt; font-weight:bold;">Nominal Alat Ukur</p>
        <p style="margin-top:10pt; font-size:12pt;">
     (
@@ -387,14 +412,14 @@
 </p>
 
     </td>
-    <td colspan="2" style="width:320pt; border:1pt solid #000; border-top:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+    <td colspan="2" style="width:320pt; border:2pt solid #000; border-left:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
         <p style="margin:0; font-size:15pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
     </td>
-    <td rowspan="2" style="width:140pt; border:1pt solid #000; border-top:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+    <td rowspan="2" style="width:140pt; border:2pt solid #000; border-left:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
         <p style="margin:0; font-size:15pt; font-weight:bold;">Suhu Air Suling</p>
         <p style="margin-top:8pt; font-size:15pt;">°C</p>
     </td>
-    <td colspan="2" rowspan="2" style="width:140pt; border:2pt solid #000; border-left:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+    <td rowspan="2" style="width:140pt; border:2pt solid #000; border-left:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
         <p style="margin:0; font-size:15pt; font-weight:bold;">Tekanan Udara</p>
         <p style="margin-top:8pt; font-size:15pt;">hPa</p>
     </td>
@@ -402,10 +427,10 @@
 
 <!-- Header Baris 2 -->
 <tr style="height:40pt;">
-    <td style="width:160pt; border:1pt solid #000; border-bottom:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+    <td style="width:160pt; border:2pt solid #000; border-top:1pt solid #000; border-left:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
         <p style="margin:0; font-size:14pt; font-weight:bold;">Massa Kosong</p>
     </td>
-    <td style="width:160pt; border:1pt solid #000; border-bottom:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+    <td style="width:160pt; border:2pt solid #000; border-top:1pt solid #000; border-left:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
         <p style="margin:0; font-size:14pt; font-weight:bold;">Massa Isi</p>
     </td>
 </tr>
@@ -415,26 +440,26 @@
     @for ($repeat = 1; $repeat <= 3; $repeat++)
     <tr style="height:32pt;">
         @if ($repeat == 1)
-        <td rowspan="3" style="width:160pt; border:2pt solid #000; border-right:1pt solid #000; vertical-align:middle; text-align:center;">
-            <input type="number" name="nominal_{{ $nominal }}" 
+        <td rowspan="3" style="width:160pt; border:2pt solid #000; vertical-align:middle; text-align:center;">
+            <input type="text"  name="nominal_{{ $nominal }}" 
                    style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;">
         </td>
         @endif
 
-        <td style="border:1pt solid #000; vertical-align:middle; text-align:center;">
-            <input type="number" name="massa_kosong_{{ $nominal }}_{{ $repeat }}" 
+        <td style="width:160pt; border:2pt solid #000; border-left:1pt solid #000; vertical-align:middle; text-align:center;">
+            <input type="text"  name="massa_kosong_{{ $nominal }}_{{ $repeat }}" 
                    style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;">
         </td>
-        <td style="border:1pt solid #000; vertical-align:middle; text-align:center;">
-            <input type="number" name="massa_isi_{{ $nominal }}_{{ $repeat }}" 
+        <td style="width:160pt; border:2pt solid #000; border-left:1pt solid #000; vertical-align:middle; text-align:center;">
+            <input type="text"  name="massa_isi_{{ $nominal }}_{{ $repeat }}" 
                    style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;">
         </td>
-        <td style="border:1pt solid #000; vertical-align:middle; text-align:center;">
-            <input type="number" name="suhu_{{ $nominal }}_{{ $repeat }}" 
+        <td style="width:140pt; border:2pt solid #000; border-left:1pt solid #000; vertical-align:middle; text-align:center;">
+            <input type="text"  name="suhu_{{ $nominal }}_{{ $repeat }}" 
                    style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;">
         </td>
-        <td colspan="2" style="width:140pt; border:2pt solid #000; border-left:1pt solid #000; vertical-align:middle; text-align:center;">
-            <input type="number" name="tekanan_{{ $nominal }}_{{ $repeat }}" 
+        <td style="width:140pt; border:2pt solid #000; border-left:1pt solid #000; vertical-align:middle; text-align:center;">
+            <input type="text"  name="tekanan_{{ $nominal }}_{{ $repeat }}" 
                    style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;">
         </td>
     </tr>
@@ -444,84 +469,90 @@
 </table>
 
 
-
-<p style="margin-top:2.15pt; margin-left:18.8pt; margin-bottom:1.05pt; font-size:15pt">
-    <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">REPEATABILITY</span>
-</p>
-<table cellspacing="0" cellpadding="0" class="TableNormal" 
-       style="margin-left:10pt; width:100%; max-width:750pt; border:2pt solid #000000; border-collapse:collapse; font-family:Arial;">
-
-    <!-- Header -->
-    <tr style="height:35pt">
-        <td rowspan="2" style="width:140pt; border:2pt solid #000000; border-right:1pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Nominal Alat Ukur</p>
-            <p style="margin-top:10pt; font-size:12pt;">
-    (
-    <input type="text" name="satuan_rep"
-           value="{{ old('satuan_rep', $satuan_rep ?? '') }}"
-           style="border:none; outline:none; font-size:12pt; width:150px; text-align:center; background:none;"
-           placeholder="......">
-    )
-</p>
-        </td>
-        <td colspan="2" style="width:280pt; border:2pt solid #000000; border-top:2pt solid #000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
-        </td>
-        <td rowspan="2"style="width:120pt; border:2pt solid #000000; border-top:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Suhu Air Suling</p>
-            <p style="margin-top:5pt; font-size:14pt;">°C</p>
-        </td>
-        <td rowspan="2" style="width:120pt; border:2pt solid #000000; border-left:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Tekanan Udara</p>
-            <p style="margin-top:5pt; font-size:14pt;">hPa</p>
-        </td>
-    </tr>
-
-    <tr style="height:30pt">
-        <td style="width:140pt; border:1pt solid #000000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Kosong</p>
-        </td>
-        <td style="width:140pt; border:1pt solid #000000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Isi</p>
-        </td>
-    </tr>
-
-    <!-- 10 baris input (sama seperti asli) -->
-    @for($i = 1; $i <= 10; $i++)
-    <tr style="height:25pt">
-        @if($i == 1)
-        <td rowspan="10" style="width:140pt; border:2pt solid #000000; border-right:1pt solid #000; vertical-align:middle;">
-            <input type="text" name="repeatability_nominal" 
-                   style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
-                  >
-        </td>
-        @endif
-
-        <td style="width:140pt; border:1pt solid #000000; vertical-align:middle;">
-            <input type="text" name="repeat_massa_kosong_{{ $i }}" 
-                   style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
-                  >
-        </td>
-        <td style="width:140pt; border:1pt solid #000000; vertical-align:middle;">
-            <input type="text" name="repeat_massa_isi_{{ $i }}" 
-                   style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
-                   >
-        </td>
-        <td style="width:120pt; border:1pt solid #000000; vertical-align:middle;">
-            <input type="text" name="repeat_suhu_{{ $i }}" 
-                   style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
-                   >
-        </td>
-        <td style="width:120pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle;">
-            <input type="text" name="repeat_tekanan_{{ $i }}" 
-                   style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
-                   >
-        </td>
-    </tr>
-    @endfor
-
-</table>
-
+        
+        <p style="margin-top:2.15pt; margin-left:18.8pt; margin-bottom:1.05pt; font-size:15pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">REPEATABILITY</span>
+        </p>
+        <table cellspacing="0" cellpadding="0" class="TableNormal" 
+               style="margin-left:10pt; width:100%; max-width:750pt; border:2pt solid #000000; border-collapse:collapse; font-family:Arial;">
+        
+            <!-- Header -->
+            <tr style="height:35pt">
+                <td rowspan="2" style="width:140pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                    <p style="margin:0; font-size:14pt; font-weight:bold;">Nominal Alat Ukur</p>
+                    <p style="margin-top:10pt; font-size:12pt;">
+            (
+            <input type="text" name="satuan_rep"
+                   value="{{ old('satuan_rep', $satuan_rep ?? '') }}"
+                   style="border:none; outline:none; font-size:12pt; width:150px; text-align:center; background:none;"
+                   placeholder="......">
+            )
+                    </p>
+                </td>
+                <td colspan="2" style="width:280pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                    <p style="margin:0; font-size:14pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
+                </td>
+                <td rowspan="2" style="width:120pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                    <p style="margin:0; font-size:14pt; font-weight:bold;">Suhu Air Suling</p>
+                    <p style="margin-top:5pt; font-size:14pt;">°C</p>
+                </td>
+                <td rowspan="2" style="width:120pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                    <p style="margin:0; font-size:14pt; font-weight:bold;">Tekanan Udara</p>
+                    <p style="margin-top:5pt; font-size:14pt;">hPa</p>
+                </td>
+            </tr>
+        
+            <tr style="height:30pt">
+                <td style="width:140pt; border:2pt solid #000000; border-top:1pt solid #000; border-left:1pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                    <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Kosong</p>
+                </td>
+                <td style="width:140pt; border:2pt solid #000000; border-top:1pt solid #000; border-left:1pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                    <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Isi</p>
+                </td>
+            </tr>
+        
+            <!-- 10 baris input untuk repeatability -->
+            @for($i = 1; $i <= 10; $i++)
+            <tr style="height:25pt">
+                <!-- Input nominal hanya di baris pertama -->
+                @if($i == 1)
+                <td rowspan="10" style="width:140pt; border:2pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text"  name="repeatability_nominal" 
+                           value="{{ old('repeatability_nominal', $repeatability_nominal ?? '') }}"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
+                           placeholder="Masukkan nominal">
+                </td>
+                @endif
+        
+                <!-- Input data untuk setiap baris -->
+                <td style="width:140pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle;">
+                    <input type="text"  name="repeat_massa_kosong_{{ $i }}" 
+                           value="{{ old('repeat_massa_kosong_' . $i, ${'repeat_massa_kosong_' . $i} ?? '') }}"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
+                           >
+                </td>
+                <td style="width:140pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle;">
+                    <input type="text"  name="repeat_massa_isi_{{ $i }}" 
+                           value="{{ old('repeat_massa_isi_' . $i, ${'repeat_massa_isi_' . $i} ?? '') }}"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
+                          >
+                </td>
+                <td style="width:120pt; border:2pt solid #000000; border-left:1pt solid #000;   vertical-align:middle;">
+                    <input type="text"  name="repeat_suhu_{{ $i }}" 
+                           value="{{ old('repeat_suhu_' . $i, ${'repeat_suhu_' . $i} ?? '') }}"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
+                          >
+                </td>
+                <td style="width:120pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle;">
+                    <input type="text"  name="repeat_tekanan_{{ $i }}" 
+                           value="{{ old('repeat_tekanan_' . $i, ${'repeat_tekanan_' . $i} ?? '') }}"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;" 
+                          >
+                </td>
+            </tr>
+            @endfor
+        
+        </table>
 
                 <div style="height: 50px;"></div>
 
@@ -622,7 +653,7 @@
                                     class="kalibrasi-input" 
                                     placeholder="Nama Lengkap" 
                                     style="width: 100%; border: none; border-bottom: 1px solid #000; outline: none; padding: 5px 0; font-size: 9pt; background: transparent;"
-                                    required>
+                                    required readonly value="{{ auth()->user()->nama ?? 'System' }}">
                             </div>
                             <div style="margin-top: 10px; font-weight: bold; font-size: 9pt;">
                                 TTD :
@@ -635,9 +666,9 @@
                                 <input type="text" 
                                     name="verified_by" 
                                     class="kalibrasi-input" 
-                                    placeholder="Nama Lengkap" 
+                                    placeholder="-" 
                                     style="width: 100%; border: none; border-bottom: 1px solid #000; outline: none; padding: 5px 0; font-size: 9pt; background: transparent;"
-                                    required>
+                                    readonly>
                             </div>
                             <div style="margin-top: 10px; font-weight: bold; font-size: 9pt;">
                                 TTD :
@@ -648,14 +679,12 @@
 
 
                 <!-- Submit Button Section -->
-                <div class="row mt-5">
+                 <!-- Submit Button Section -->
+                  <!-- Submit Button Section -->
+                  <div class="row mt-5">
                     <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                        <button type="button" id="btnSimpanSemua" class="btn btn-primary btn-lg" onclick="submitSemuaForm()" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
-                        </button>
-                        
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
                         </button>
                     </div>
                 </div>
@@ -667,66 +696,465 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 
-    <script>
-    function updateFormType(selectedAlat) {
-        // Normalize input (case-insensitive)
-        const alat = selectedAlat.toLowerCase().trim();
-        
-        // SEMUA alat menggunakan form_type 'enclosure'
-        const formTypeMap = {
-            'Buret': 'volumetrik',
-            'Gelas Ukur': 'volumetrik', 
-            'Pipet Ukur': 'volumetrik',
-            'Labu Ukur': 'volumetrik',
-            'Pipet Volume': 'volumetrik'
-            // Tidak perlu 'enclosure' karena tidak ada di dropdown
-        };
-        
-        // Update hidden input
-        const formTypeInput = document.getElementById('form_type_input');
-        if (formTypeMap[alat]) {
-            formTypeInput.value = formTypeMap[alat];
-            console.log('✅ Form type set to: enclosure for alat:', selectedAlat);
-        } else {
-            formTypeInput.value = '';
-            console.warn('⚠️ No form type mapping for:', selectedAlat);
+ <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
+// ==========================================
+// STORAGE PER TAB - GLOBAL
+// ==========================================
+if (typeof window.tempFormDataStore === 'undefined') {
+    window.tempFormDataStore = {};
+}
+if (typeof window.isRestoring === 'undefined') {
+    window.isRestoring = false;
+}
+if (typeof window.tabSubmitStatus === 'undefined') {
+    window.tabSubmitStatus = {};
+}
+
+// ==========================================
+// FUNGSI GET TAB AKTIF
+// ==========================================
+function getActiveTabId() {
+    const activePane = document.querySelector('.tab-pane.active');
+    if (activePane && activePane.id && activePane.id.startsWith('lk-pane-')) {
+        const tabId = activePane.id.replace('lk-pane-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+    
+    const activeTabButton = document.querySelector('.nav-link.active');
+    if (activeTabButton && activeTabButton.id && activeTabButton.id.startsWith('lk-tab-')) {
+        const tabId = activeTabButton.id.replace('lk-tab-', '');
+        currentActiveTabId = tabId;
+        return tabId;
+    }
+    
+    const containers = document.querySelectorAll('.lk-form-container');
+    for (let i = 0; i < containers.length; i++) {
+        const style = window.getComputedStyle(containers[i]);
+        if (style.display !== 'none') {
+            const tabId = containers[i].getAttribute('data-lk-id');
+            if (tabId) return tabId;
         }
     }
-</script>
-<script>
-// JavaScript form validation
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('kalibrasiForm');
     
-    form.addEventListener('submit', function(e) {
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
+    return currentActiveTabId;
+}
+
+function updateActiveTab(tabId) {
+    currentActiveTabId = tabId;
+    console.log(`🔄 Global active tab updated to: ${tabId}`);
+}
+
+// ==========================================
+// FUNGSI UNTUK MENONAKTIFKAN REQUIRED PADA FORM YANG TIDAK VISIBLE
+// ==========================================
+function disableRequiredOnHiddenForms() {
+    console.log('🔧 disableRequiredOnHiddenForms called');
+    
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    
+    allForms.forEach((form, index) => {
+        const formIndex = index + 1;
+        const container = form.closest('.lk-form-container');
+        const isVisible = container && window.getComputedStyle(container).display !== 'none';
         
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                isValid = false;
-                field.style.borderColor = '#dc3545';
+        console.log(`📌 Form ${formIndex}: isVisible=${isVisible}`);
+        
+        const requiredInputs = form.querySelectorAll('[required]');
+        
+        if (!isVisible) {
+            requiredInputs.forEach(input => {
+                console.log(`🔧 Disabling required for: ${input.name}`);
+                input.removeAttribute('required');
+                input.setAttribute('data-required-temp', 'true');
+            });
+        } else {
+            requiredInputs.forEach(input => {
+                if (input.hasAttribute('data-required-temp')) {
+                    console.log(`🔧 Re-enabling required for: ${input.name}`);
+                    input.setAttribute('required', 'required');
+                    input.removeAttribute('data-required-temp');
+                }
+            });
+        }
+    });
+}
+
+function restoreRequiredOnAllForms() {
+    const allForms = document.querySelectorAll('form[id^="kalibrasiForm"]');
+    allForms.forEach(form => {
+        form.querySelectorAll('[data-required-temp]').forEach(input => {
+            input.setAttribute('required', 'required');
+            input.removeAttribute('data-required-temp');
+        });
+    });
+}
+
+// ==========================================
+// UPDATE FORM TYPE
+// ==========================================
+function updateFormType(selectedAlat) {
+    const manualInputContainer = document.getElementById('manualInputContainer');
+    const manualInput = document.getElementById('nama_alat_manual');
+    const finalInput = document.getElementById('nama_alat_final');
+    
+    if (!manualInputContainer || !manualInput) return;
+    
+    if (selectedAlat === 'MANUAL_INPUT') {
+        manualInputContainer.style.display = 'block';
+        manualInput.required = true;
+        if (finalInput) finalInput.value = '';
+    } else {
+        manualInputContainer.style.display = 'none';
+        manualInput.required = false;
+        manualInput.value = '';
+        if (finalInput && selectedAlat) finalInput.value = selectedAlat;
+    }
+}
+
+function syncNamaAlat() {
+    const manualInput = document.getElementById('nama_alat_manual');
+    const finalInput = document.getElementById('nama_alat_final');
+    if (manualInput && finalInput) {
+        finalInput.value = manualInput.value;
+    }
+}
+
+function formatNumberInput(input) {
+    if (!input) return;
+    let value = input.value;
+    if (value === '' || value === null) return;
+    value = value.toString().replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        let num = parseFloat(value);
+        if (!isNaN(num)) input.value = num.toString();
+    }
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ==========================================
+// HANDLE SAVE SUCCESS
+// ==========================================
+window.handleSaveSuccess = function(tabId, data) {
+    console.log('🎉 handleSaveSuccess called for tab:', tabId, data);
+    
+    const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+    if (!container) {
+        console.error(`Container for tab ${tabId} not found!`);
+        return;
+    }
+
+    const tabButton = document.getElementById(`lk-tab-${tabId}`);
+    if (tabButton) {
+        tabButton.classList.add('tab-saved');
+        const badge = tabButton.querySelector('.badge');
+        if (badge) {
+            badge.className = 'badge badge-success ml-1';
+            badge.innerHTML = '<i class="fas fa-check mr-1"></i>Tersimpan';
+        }
+    }
+
+    const formName = container.getAttribute('data-form-name') || 'Volumetrik';
+    const calibrationId = data.calibration_id || data.id || '-';
+    const printLabelUrl = data.print_label_url || `/calibrations/${calibrationId}/print-label`;
+    
+    tabSubmitStatus[tabId] = {
+        success: true,
+        calibrationId: calibrationId,
+        printLabelUrl: printLabelUrl,
+        formName: formName,
+        timestamp: Date.now()
+    };
+    
+    container.innerHTML = `
+      <div class="save-success-overlay text-center p-5 fade-in" style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+       <div class="mb-4">
+                    <i class="fas fa-check-circle text-success fa-5x"></i>
+                </div>
+                <h3 class="text-success mb-2">Simpan Berhasil!</h3>
+                <p class="mb-3" style="color: black;">Data kalibrasi untuk <strong>${escapeHtml(formName)}</strong> telah berhasil disimpan ke database.</p>
+                
+                <div class="d-inline-block mb-4 p-3" style="border-radius: 12px; text-align: left; background: white; border: 1px solid #ddd;">
+                    <i class="fas fa-info-circle mr-2" style="color: #0d6efd;"></i>
+                    <strong style="color: black;">ID Kalibrasi:</strong> <code style="background: #f5f5f5; color: black; font-weight: bold;">${escapeHtml(calibrationId)}</code>
+                    <br>
+                    <small style="color: black;">Status: <span class="badge bg-success">Draft</span></small>
+                </div>
+        
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+            <!-- Button Cetak Label - Blue -->
+            <button type="button" class="btn btn-primary btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="window.open('${printLabelUrl}', '_blank')">
+                <i class="fas fa-print me-2"></i> Cetak Label
+            </button>
+            
+            <!-- Button Input Lagi - Green -->
+            <button type="button" class="btn btn-success btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="resetTabForNewScan(${tabId})">
+                <i class="fas fa-plus-circle me-2"></i> Input Lagi
+            </button>
+            
+            <!-- Button Tutup Tab - Red -->
+            <button type="button" class="btn btn-danger btn-lg px-4 py-2" 
+                    style="border-radius: 10px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                    onmousedown="this.style.transform='translateY(1px)';"
+                    onmouseup="this.style.transform='translateY(-2px)';"
+                    onclick="removeTab(${tabId})">
+                <i class="fas fa-times me-2"></i> Tutup Tab
+            </button>
+        </div>
+        
+        <div class="mt-3 text-muted small">
+            <i class="fas fa-info-circle me-1"></i> Data tersimpan sebagai Draft. 
+            Klik <strong>Cetak Label</strong> untuk mencetak, atau <strong>Input Lagi</strong> untuk melanjutkan kalibrasi berikutnya.
+        </div>
+    </div>
+    `;
+
+    const finishContainer = document.getElementById('finish-action-container');
+    if (finishContainer) finishContainer.classList.remove('d-none');
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'success',
+            title: '✓ Data Tersimpan!',
+            html: `<strong>${escapeHtml(formName)}</strong><br>ID: ${calibrationId}`,
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
+        });
+    }
+};
+
+window.resetTabForNewScan = function(tabId) {
+    if (confirm('Data yang belum disimpan akan hilang. Lanjutkan?')) {
+        delete tabSubmitStatus[tabId];
+        location.reload();
+    }
+};
+
+window.removeTab = function(tabId) {
+    if (tabId == 1) {
+        alert('Tab utama tidak bisa ditutup!');
+        return;
+    }
+    if (confirm(`Apakah Anda yakin ingin menutup Form ${tabId}?`)) {
+        delete tabSubmitStatus[tabId];
+        delete tempFormDataStore[tabId];
+        const container = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+        if (container) container.remove();
+        const tabBtn = document.getElementById(`lk-tab-${tabId}`);
+        if (tabBtn) tabBtn.remove();
+        const firstContainer = document.querySelector('.lk-form-container[data-lk-id="1"]');
+        if (firstContainer) firstContainer.style.display = 'block';
+        updateActiveTab('1');
+    }
+};
+
+// ==========================================
+// SUBMIT Volumetrik - SINGLE FORM PER TAB
+// ==========================================
+async function submitSemuaForm() {
+    // Dapatkan tab ID yang aktif
+    const activeTabId = getActiveTabId();
+    console.log('📌 Submitting from active tab:', activeTabId);
+    
+    // Cari container yang aktif
+    const activeContainer = document.querySelector(`.lk-form-container[data-lk-id="${activeTabId}"]`);
+    if (!activeContainer) {
+        alert('Container form tidak ditemukan!');
+        return;
+    }
+    
+    // CARI FORM
+    let form = activeContainer.querySelector('#kalibrasiForm');
+    if (!form) {
+        form = activeContainer.querySelector('form[id^="kalibrasiForm"]');
+    }
+    if (!form) {
+        form = activeContainer.querySelector('form');
+    }
+    
+    if (!form) {
+        alert('Form tidak ditemukan!');
+        return;
+    }
+    
+    console.log(`✅ Form ditemukan di tab ${activeTabId}`);
+    
+    // 🔥 JANGAN HAPUS REQUIRED, TAPI NONAKTIFKAN VALIDASI BROWSER SAJA
+    form.setAttribute('novalidate', 'novalidate');
+    form.noValidate = true;
+    
+    // Validasi manual untuk alat standar (tetap menggunakan required di HTML)
+    const alatStandar = form.querySelectorAll('input[name="alat_standar[]"]:checked');
+    if (alatStandar.length === 0) {
+        alert('Pilih minimal 1 alat standar!');
+        return;
+    }
+    
+    const btn = document.getElementById('btnSimpanSemua');
+    if (!btn) {
+        alert('Tombol simpan tidak ditemukan!');
+        return;
+    }
+    
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan Data...';
+    
+    try {
+        const formData = new FormData(form);
+        
+        // Tambahkan field wajib yang mungkin kosong
+        formData.append('form_type', 'volumetrik');
+        formData.append('rentang_ukur_min', '0');
+        formData.append('rentang_ukur_max', '0');
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        if (csrfToken) {
+            formData.append('_token', csrfToken);
+        }
+        
+        console.log('📤 Mengirim data dari tab:', activeTabId);
+        
+        const response = await fetch('/calibrations', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
             }
         });
-
-        if (!isValid) {
-            e.preventDefault();
-            alert('Harap isi semua field yang wajib diisi!');
-            return;
+        
+        const contentType = response.headers.get('content-type');
+        
+        let result;
+        if (contentType && contentType.includes('application/json')) {
+            result = await response.json();
+        } else {
+            const text = await response.text();
+            console.error('Non-JSON response:', text.substring(0, 500));
+            throw new Error('Server mengembalikan response yang tidak valid');
         }
-
-        const alatStandar = form.querySelectorAll('input[name="alat_standar[]"]:checked');
-        if (alatStandar.length === 0) {
-            e.preventDefault();
-            alert('Pilih minimal 1 alat standar!');
-            return;
+        
+        if (!response.ok) {
+            throw new Error(result.error || `Gagal menyimpan data: ${response.status}`);
         }
+        
+        // Ambil nama form
+        let formName = 'Volumetrik';
+        const selectNamaAlat = form.querySelector('select[name="nama_alat"]');
+        if (selectNamaAlat && selectNamaAlat.value && selectNamaAlat.value !== 'MANUAL_INPUT') {
+            formName = selectNamaAlat.value;
+        } else {
+            const manualNamaAlat = form.querySelector('input[name="nama_alat_manual"]');
+            if (manualNamaAlat && manualNamaAlat.value) {
+                formName = manualNamaAlat.value;
+            }
+        }
+        
+        // Update data-form-name di container
+        activeContainer.setAttribute('data-form-name', formName);
+        
+        console.log('📌 Saving success for tab:', activeTabId);
+        
+        if (typeof window.handleSaveSuccess === 'function') {
+            window.handleSaveSuccess(activeTabId, result);
+        } else {
+            alert('Data berhasil disimpan!');
+        }
+        
+    } catch (err) {
+        console.error('Submit error:', err);
+        alert('Error: ' + err.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
 
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
-        submitBtn.disabled = true;
+// ==========================================
+// SETUP TAB SWITCHING
+// ==========================================
+function setupTabSwitching() {
+    $(document).on('shown.bs.tab', 'button[data-toggle="tab"]', function (e) {
+        const targetId = $(e.target).attr('id');
+        if (targetId && targetId.startsWith('lk-tab-')) {
+            const tabId = targetId.replace('lk-tab-', '');
+            console.log('🎯 Tab switched to:', tabId);
+            updateActiveTab(tabId);
+            
+            document.querySelectorAll('.lk-form-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            
+            const targetContainer = document.querySelector(`.lk-form-container[data-lk-id="${tabId}"]`);
+            if (targetContainer) {
+                targetContainer.style.display = 'block';
+            }
+        }
     });
+    
+    const activeButton = document.querySelector('.nav-link.active');
+    if (activeButton && activeButton.id) {
+        const tabId = activeButton.id.replace('lk-tab-', '');
+        updateActiveTab(tabId);
+    }
+}
+
+// ==========================================
+// INISIALISASI
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Content Loaded - Initializing Volumetrik...');
+    
+    setupTabSwitching();
+    
+    const selectAlat = document.getElementById('nama_alat_select');
+    if (selectAlat) {
+        updateFormType(selectAlat.value);
+        selectAlat.addEventListener('change', function() {
+            updateFormType(this.value);
+        });
+    }
+    
+    const manualInput = document.getElementById('nama_alat_manual');
+    if (manualInput) {
+        manualInput.addEventListener('input', syncNamaAlat);
+    }
+    
+    setTimeout(() => {
+        disableRequiredOnHiddenForms();
+    }, 500);
+    
+    console.log('✅ Volumetrik initialization complete!');
 });
 </script>
+
 </body>
 </html>

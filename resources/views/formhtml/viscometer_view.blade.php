@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+    
+    
     /* Pastikan semua text berwarna hitam */
     .form-kalibrasi-container,
     .form-kalibrasi-container *:not(input):not(select):not(textarea):not(button) {
@@ -26,7 +28,7 @@
     .kalibrasi-input:read-only {
         background-color: #e9ecef;
         cursor: not-allowed;
-    }
+    }F
 
     /* Styling khusus untuk input suhu dan RH */
     .kondisi-input {
@@ -454,6 +456,15 @@
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
                     </td>
                 </tr>
+                
+                  <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
+                    </td>
+                </tr>
             </table>
 
             <!-- Fungsi Komponen Lainnya & Kondisi Kalibrasi -->
@@ -528,160 +539,180 @@
 
 <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:14.98pt; border:1.5pt solid #000000; -aw-border-insideh:1.5pt single #000000; -aw-border-insidev:1.5pt single #000000; border-collapse:collapse; width:100%">
     <tr style="height:25pt">
-        <td style="width:120pt; border-right-style:solid; border-right-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold">Nilai</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.05pt"></span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Standard</span>
-            </p>
-        </td>
-        <td rowspan="2" style="width:70pt; border-right-style:solid; border-right-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Spindle</span>
-            </p>
-        </td>
-        <td rowspan="2" style="width:70pt; border-right-style:solid; border-right-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.25pt">RPM</span>
-            </p>
-        </td>
-        <td colspan="5" style="width:350pt; border-right-style:solid; border-right-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold">Pembacaan</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt"></span>
-                <span style="font-family:Arial; font-weight:bold">Alat</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.4pt"></span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">(</span>
-                <span style="width:100pt; font-family:'Lucida Console'; display:inline-block; -aw-font-family:'Times New Roman'; -aw-tabstop-align:left; -aw-tabstop-leader:dots; -aw-tabstop-pos:198.55pt">............</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">)</span>
-            </p>
-        </td>
-        <td rowspan="2" style="width:80pt; border-right-style:solid; border-right-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Resolusi</span>
-            </p>
-        </td>
-        <td colspan="2" style="width:100pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold">Suhu CRM</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:0.1pt"></span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.2pt">(</span>
-                <span style="font-family:Calibri; font-weight:bold; letter-spacing:-0.2pt">°</span>
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.2pt">C)</span>
-            </p>
-        </td>
-    </tr>
-    <tr style="height:25pt">
-        <td style="width:120pt; border-right-style:solid; border-right-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">(………………)</span>
-            </p>
-        </td>
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">1</span>
-            </p>
-        </td>
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">2</span>
-            </p>
-        </td>
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">3</span>
-            </p>
-        </td>
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">4</span>
-            </p>
-        </td>
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">5</span>
-            </p>
-        </td>
-        <td style="width:50pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.2pt">Awal</span>
-            </p>
-        </td>
-        <td style="width:50pt; border-top-style:solid; border-top-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
-            <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
-                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Akhir</span>
-            </p>
-        </td>
-    </tr>
+    <td style="width:120pt; border-right-style:solid; border-right-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold">Nilai</span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.05pt"></span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Standard</span>
+        </p>
+    </td>
+    <td rowspan="2" style="width:70pt; border-right-style:solid; border-right-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Spindle</span>
+        </p>
+    </td>
+    <td rowspan="2" style="width:70pt; border-right-style:solid; border-right-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.25pt">RPM</span>
+        </p>
+    </td>
+    <td colspan="5" style="width:350pt; border-right-style:solid; border-right-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold">Pembacaan</span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt"></span>
+            <span style="font-family:Arial; font-weight:bold">Alat</span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.4pt"></span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">(</span>
+            <span style="width:100pt; font-family:'Lucida Console'; display:inline-block; -aw-font-family:'Times New Roman'; -aw-tabstop-align:left; -aw-tabstop-leader:dots; -aw-tabstop-pos:198.55pt">
+                <?php
+                // Tampilkan data satuan alat dari calibration->headViscometer jika ada
+                if(isset($calibration->headViscometer) && $calibration->headViscometer && !empty($calibration->headViscometer->satuan_alat)) {
+                    echo $calibration->headViscometer->satuan_alat;
+                } else {
+                    echo '............';
+                }
+                ?>
+            </span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">)</span>
+        </p>
+    </td>
+    <td rowspan="2" style="width:80pt; border-right-style:solid; border-right-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Resolusi</span>
+        </p>
+    </td>
+    <td colspan="2" style="width:100pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold">Suhu CRM</span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:0.1pt"></span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.2pt">(</span>
+            <span style="font-family:Calibri; font-weight:bold; letter-spacing:-0.2pt">°</span>
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.2pt">C)</span>
+        </p>
+    </td>
+</tr>
+<tr style="height:25pt">
+    <td style="width:120pt; border-right-style:solid; border-right-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">(
+                <?php
+                // Tampilkan data satuan standard dari calibration->headViscometer jika ada
+                if(isset($calibration->headViscometer) && $calibration->headViscometer && !empty($calibration->headViscometer->satuan_std)) {
+                    echo $calibration->headViscometer->satuan_std;
+                } else {
+                    echo '..............';
+                }
+                ?>
+            )</span>
+        </p>
+    </td>
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">1</span>
+        </p>
+    </td>
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">2</span>
+        </p>
+    </td>
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">3</span>
+        </p>
+    </td>
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">4</span>
+        </p>
+    </td>
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">5</span>
+        </p>
+    </td>
+    <td style="width:50pt; border-style:solid; border-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.2pt">Awal</span>
+        </p>
+    </td>
+    <td style="width:50pt; border-top-style:solid; border-top-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; background-color:#f2f2f2">
+        <p class="TableParagraph" style="margin:5pt; text-align:center; font-size:12pt">
+            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Akhir</span>
+        </p>
+    </td>
+</tr>
 
     <?php
-    // Asumsi $calibration->detailViscometer adalah collection dari DetailViscometer models
-    if(isset($calibration->detailViscometers) && $calibration->detailViscometers->count() > 0):
-        foreach($calibration->detailViscometers as $detail):
+    // PERBAIKAN: Tambahkan pengecekan null sebelum mengakses count()
+    $DetailViscometers = isset($calibration->DetailViscometers) ? $calibration->DetailViscometers : collect([]);
+    
+    if($DetailViscometers->count() > 0):
+        foreach($DetailViscometers as $detail):
     ?>
     
     <tr style="height:35pt">
-        <!-- Kolom 1: Nilai Standard (titikUkur) -->
-        <td style="width:120pt; border-top-style:solid; border-top-width:1.5pt; border-right-style:solid; border-right-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->titikUkur ?? 0, 2)); ?>
-        </td>
-        
-        <!-- Kolom 2: Spindle -->
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e($detail->spindle ?? ''); ?>
-        </td>
-        
-        <!-- Kolom 3: RPM -->
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e($detail->RPM ?? ''); ?>
-        </td>
-        
-        <!-- Kolom 4: Pembacaan Alat 1 (ulangan01) -->
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->ulangan01 ?? 0, 2)); ?>
-        </td>
-        
-        <!-- Kolom 5: Pembacaan Alat 2 (ulangan02) -->
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->ulangan02 ?? 0, 2)); ?>
-        </td>
-        
-        <!-- Kolom 6: Pembacaan Alat 3 (ulangan03) -->
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->ulangan03 ?? 0, 2)); ?>
-        </td>
-        
-        <!-- Kolom 7: Pembacaan Alat 4 (ulangan04) -->
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->ulangan04 ?? 0, 2)); ?>
-        </td>
-        
-        <!-- Kolom 8: Pembacaan Alat 5 (ulangan05) -->
-        <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->ulangan05 ?? 0, 2)); ?>
-        </td>
-        
-        <!-- Kolom 9: Resolusi (resolusion) -->
-        <td style="width:80pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->resolusion ?? 0, 2)); ?>
-        </td>
-        
-        <!-- Kolom 10: Suhu CRM Awal (T_awal) -->
-        <td style="width:50pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->T_awal ?? 0, 1)); ?>°C
-        </td>
-        
-        <!-- Kolom 11: Suhu CRM Akhir (T_akhir) -->
-        <td style="width:50pt; border-top-style:solid; border-top-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
-            <?php echo e(number_format($detail->T_akhir ?? 0, 1)); ?>°C
-        </td>
-    </tr>
+    <!-- Kolom 1: Nilai Standard (titikUkur) -->
+    <td style="width:120pt; border-top-style:solid; border-top-width:1.5pt; border-right-style:solid; border-right-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->titikUkur ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 2: Spindle -->
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->spindle ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 3: RPM -->
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->RPM ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 4: Pembacaan Alat 1 (ulangan01) -->
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->ulangan01 ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 5: Pembacaan Alat 2 (ulangan02) -->
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->ulangan02 ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 6: Pembacaan Alat 3 (ulangan03) -->
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->ulangan03 ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 7: Pembacaan Alat 4 (ulangan04) -->
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->ulangan04 ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 8: Pembacaan Alat 5 (ulangan05) -->
+    <td style="width:70pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->ulangan05 ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 9: Resolusi (resolution) -->
+    <td style="width:80pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->resolution ?? ''); ?>
+    </td>
+    
+    <!-- Kolom 10: Suhu CRM Awal (T_awal) -->
+    <td style="width:50pt; border-style:solid; border-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->T_awal ?? ''); ?>  
+    </td>
+    
+    <!-- Kolom 11: Suhu CRM Akhir (T_akhir) -->
+    <td style="width:50pt; border-top-style:solid; border-top-width:1.5pt; border-left-style:solid; border-left-width:1.5pt; border-bottom-style:solid; border-bottom-width:1.5pt; vertical-align:middle; text-align:center; padding:8px; font-size:11pt">
+        <?php echo e($detail->T_akhir ?? ''); ?>  
+    </td>
+</tr>
     
     <?php
         endforeach;
         
-        // Tambahkan baris kosong jika data kurang dari 15 baris
-        $remainingRows = 15 - $calibration->detailViscometer->count();
+        // PERBAIKAN: Gunakan variabel yang sudah didefinisikan
+        $remainingRows = 15 - $DetailViscometers->count();
         if($remainingRows > 0):
             for($i = 0; $i < $remainingRows; $i++):
     ?>
@@ -767,11 +798,174 @@
     endif;
     ?>
 </table>
+<br><br>
+
+<?php
+// Inisialisasi semua variabel dengan nilai default - DILUAR TABEL
+$viscosityChecked = false;
+$thermometerChecked = false;
+
+// Variabel untuk tipe viscosity (baris 1)
+$viscosityN35 = false;
+$viscosityS60 = false;
+$viscosityD1000 = false;
+
+// Variabel untuk tipe viscosity (baris 2)
+$viscosityS2000 = false;
+$viscosityN2000 = false;
+$viscosityN4000 = false;
+$viscosityN8000 = false;
+$viscosityN10000 = false;
+$viscosityN10200 = false;
+
+// Variabel untuk tipe thermometer
+$thermometerTES = false;
+$thermometerTFA = false;
+
+// Ambil data alat standar dari database menggunakan $calibration
+if (isset($calibration) && $calibration) {
+    // Cek apakah headViscometer ada
+    if (isset($calibration->headViscometer) && $calibration->headViscometer) {
+        $standardValue = $calibration->headViscometer->standard ?? '';
+        
+        // Parse data standard jika tidak kosong
+        if (!empty($standardValue)) {
+            // Pisahkan berdasarkan koma
+           $selectedItems = preg_split('/\s*,\s*/', $standardValue);
+            // Daftar tipe viscosity yang valid
+            $viscosityTypes = ['N35', 'S60', 'D1000', 'S2000', 'N2000', 'N4000', 'N8000', 'N10000', 'N10200'];
+            
+            foreach ($selectedItems as $item) {
+                $item = trim($item);
+                
+                // Cek apakah ini tipe viscosity
+                if (in_array($item, $viscosityTypes)) {
+                    $viscosityChecked = true;
+                    
+                    // Set variabel sesuai tipe yang ditemukan
+                    switch ($item) {
+                        // Baris 1
+                        case 'N35':
+                            $viscosityN35 = true;
+                            break;
+                        case 'S60':
+                            $viscosityS60 = true;
+                            break;
+                        case 'D1000':
+                            $viscosityD1000 = true;
+                            break;
+                        // Baris 2
+                        case 'S2000':
+                            $viscosityS2000 = true;
+                            break;
+                        case 'N2000':
+                            $viscosityN2000 = true;
+                            break;
+                        case 'N4000':
+                            $viscosityN4000 = true;
+                            break;
+                        case 'N8000':
+                            $viscosityN8000 = true;
+                            break;
+                        case 'N10000':
+                            $viscosityN10000 = true;
+                            break;
+                        case 'N10200':
+                            $viscosityN10200 = true;
+                            break;
+                    }
+                }
+                // Cek apakah ini tipe thermometer
+                elseif ($item == 'TES' || $item == 'TFA') {
+                    $thermometerChecked = true;
+                    
+                    if ($item == 'TES') {
+                        $thermometerTES = true;
+                    } elseif ($item == 'TFA') {
+                        $thermometerTFA = true;
+                    }
+                }
+                // Cek berdasarkan kata kunci untuk alat utama
+                elseif (strpos($item, 'Viscosity') !== false || strpos($item, 'Paragon') !== false) {
+                    $viscosityChecked = true;
+                }
+                elseif (strpos($item, 'Thermometer') !== false) {
+                    $thermometerChecked = true;
+                }
+            }
+        }
+    }
+}
+?>
+
+<style>
+/* CSS sederhana yang pasti bekerja */
+.radio-item {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+    font-size: 11pt;
+}
+
+.radio-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    cursor: default;
+    accent-color: #0066cc;
+    opacity: 1 !important;
+    position: static !important;
+    visibility: visible !important;
+    pointer-events: none; /* Mencegah interaksi mouse */
+}
+
+/* Untuk radio utama */
+.radio-main-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18pt;
+    height: 18pt;
+}
+
+.radio-main-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: default;
+    accent-color: #0066cc;
+    opacity: 1 !important;
+    position: static !important;
+    visibility: visible !important;
+    pointer-events: none; /* Mencegah interaksi mouse */
+}
+
+/* Grup radio */
+.radio-group {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.radio-group.wrap {
+    gap: 10px;
+}
+
+/* Style untuk checkbox yang di-disabled secara visual */
+input[type="checkbox"]:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* DEBUG - beri border merah pada elemen yang bermasalah (bisa dihapus nanti) */
+/* .debug { border: 1px solid red; } */
+</style>
 
 <table style="width: 100%; border-collapse: collapse; border: 1pt solid #000; font-family: Arial, sans-serif;">
     <!-- Header Judul -->
     <tr style="height: 40pt;">
-        <td colspan="5" style="border-bottom: 1pt solid #000; text-align: center; vertical-align: middle; background-color: #f5f5f5;">
+        <td colspan="5" style="border-bottom: 1pt solid #000; text-align: center; vertical-align: middle;">
             <span style="font-size: 18pt; font-weight: bold;">
                 Isilah lembar data kalibrasi dengan lengkap dan jelas!
             </span>
@@ -780,103 +974,55 @@
 
     <!-- Header Kolom -->
     <tr style="height: 35pt;">
-        <td rowspan="4" style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 12pt; background-color: #f0f0f0;">
+        <td rowspan="4" style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 12pt;">
             Standard
         </td>
-        <td colspan="2" style="width: 40%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; background-color: #f8f8f8;">
+        <td colspan="2" style="width: 40%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt;">
             Digital Pressure Calibrator :
         </td>
-        <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold; background-color: #f0f0f0;">
+        <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold;">
             Dikalibrasi oleh
         </td>
-        <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold; background-color: #f0f0f0;">
+        <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold;">
             Diperiksa oleh
         </td>
     </tr>
 
-    <?php
-    // Ambil data alat standar dan type yang dipilih
-    $standardValue = $calibration->headViscometer->standard ?? '';
-    
-    // Debug: Tampilkan nilai standard untuk troubleshooting
-    // echo "<!-- DEBUG standardValue: " . htmlspecialchars($standardValue) . " -->";
-    
-    // Inisialisasi semua variabel sebagai false
-    $viscosityChecked = false;
-    $stopwatchChecked = false;
-    $thermometerChecked = false;
-    
-    $viscosityN35 = false;
-    $viscosityS60 = false;
-    $viscosityD1000 = false;
-    
-    $stopwatchWF002 = false;
-    $stopwatchWF003 = false;
-    
-    $thermometerTES = false;
-    $thermometerTFA = false;
-    
-    // Parsing data standard (format: "AlatStandar TYPE")
-    if (!empty($standardValue)) {
-        // Cek alat standar mana yang dipilih berdasarkan keyword
-        if (strpos($standardValue, 'Viscosity Standard Paragon') !== false) {
-            $viscosityChecked = true;
-            
-            // Cek type viscosity yang dipilih
-            if (strpos($standardValue, 'N35') !== false) {
-                $viscosityN35 = true;
-            } elseif (strpos($standardValue, 'S60') !== false) {
-                $viscosityS60 = true;
-            } elseif (strpos($standardValue, 'D1000') !== false) {
-                $viscosityD1000 = true;
-            }
-        } elseif (strpos($standardValue, 'Digital Stopwatch') !== false) {
-            $stopwatchChecked = true;
-            
-            // Cek type stopwatch yang dipilih
-            if (strpos($standardValue, 'WF.002') !== false) {
-                $stopwatchWF002 = true;
-            } elseif (strpos($standardValue, 'WF.003') !== false) {
-                $stopwatchWF003 = true;
-            }
-        } elseif (strpos($standardValue, 'Thermometer') !== false) {
-            $thermometerChecked = true;
-            
-            // Cek type thermometer yang dipilih
-            if (strpos($standardValue, 'TES') !== false) {
-                $thermometerTES = true;
-            } elseif (strpos($standardValue, 'TFA') !== false) {
-                $thermometerTFA = true;
-            }
-        }
-    }
-    ?>
-
-    <!-- Viscosity -->
+    <!-- Viscosity Baris 1 -->
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
-            <input type="radio" name="alat_standar[]" value="Viscosity Standard Paragon"
-                   <?php echo ($viscosityChecked ? 'checked' : ''); ?> disabled
-                   style="width: 18pt; height: 18pt; cursor: pointer;">
+            <!-- Checkbox utama viscosity - TIDAK BISA DIINPUT -->
+            <div class="radio-main-item">
+                <input type="checkbox" name="alat_standar" value="Viscosity Standard Paragon"
+                       <?php echo ($viscosityChecked ? 'checked' : ''); ?> 
+                       style="accent-color: #0066cc; width: 18px; height: 18px;"
+                       disabled>
+            </div>
+            <!-- DEBUG TAMPILAN: Tampilkan nilai variabel -->
+            <span style="display:none;">viscosityChecked=<?php echo $viscosityChecked ? 'true' : 'false'; ?></span>
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
             Viscosity Standard Paragon :
-            <div style="margin-top:6pt;">
-                <label>
-                    <input type="radio" name="viscosity_type" value="N35" 
-                        <?php echo ($viscosityN35 ? 'checked' : ''); ?> disabled> 
+            <div class="radio-group">
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type1" value="N35" 
+                           <?php echo ($viscosityN35 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
                     N35
                 </label>
-                &nbsp;&nbsp;
-                <label>
-                    <input type="radio" name="viscosity_type" value="S60" 
-                        <?php echo ($viscosityS60 ? 'checked' : ''); ?> disabled> 
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type1" value="S60" 
+                           <?php echo ($viscosityS60 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
                     S60
                 </label>
-                &nbsp;&nbsp;
-                <label>
-                    <input type="radio" name="viscosity_type" value="D1000" 
-                        <?php echo ($viscosityD1000 ? 'checked' : ''); ?> disabled> 
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type1" value="D1000" 
+                           <?php echo ($viscosityD1000 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
                     D1000
                 </label>
             </div>
@@ -885,26 +1031,55 @@
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
     </tr>
 
-    <!-- Stopwatch -->
+    <!-- Viscosity Baris 2 -->
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
-            <input type="radio" name="alat_standar[]" value="Digital Stopwatch"
-                   <?php echo ($stopwatchChecked ? 'checked' : ''); ?> disabled
-                   style="width: 18pt; height: 18pt; cursor: pointer;">
+            <!-- Checkbox tetap di baris 1 -->
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
-            Digital Stopwatch :
-            <div style="margin-top:6pt;">
-                <label>
-                    <input type="radio" name="stopwatch_type" value="WF.002" 
-                        <?php echo ($stopwatchWF002 ? 'checked' : ''); ?> disabled> 
-                    WF.002
+            Viscosity Standard Paragon :
+            <div class="radio-group wrap">
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type2" value="S2000" 
+                           <?php echo ($viscosityS2000 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
+                    S2000
                 </label>
-                &nbsp;&nbsp;
-                <label>
-                    <input type="radio" name="stopwatch_type" value="WF.003" 
-                        <?php echo ($stopwatchWF003 ? 'checked' : ''); ?> disabled> 
-                    WF.003
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type2" value="N2000" 
+                           <?php echo ($viscosityN2000 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
+                    N2000
+                </label>
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type2" value="N4000" 
+                           <?php echo ($viscosityN4000 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
+                    N4000
+                </label>
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type2" value="N8000" 
+                           <?php echo ($viscosityN8000 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
+                    N8000
+                </label>
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type2" value="N10000" 
+                           <?php echo ($viscosityN10000 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
+                    N10000
+                </label>
+                <label class="radio-item">
+                    <input type="checkbox" name="viscosity_type2" value="N10200" 
+                           <?php echo ($viscosityN10200 ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
+                    N10200
                 </label>
             </div>
         </td>
@@ -915,22 +1090,31 @@
     <!-- Thermometer -->
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
-            <input type="radio" name="alat_standar[]" value="Thermometer"
-                   <?php echo ($thermometerChecked ? 'checked' : ''); ?> disabled
-                   style="width: 18pt; height: 18pt; cursor: pointer;">
+            <!-- Checkbox utama thermometer - TIDAK BISA DIINPUT -->
+            <div class="radio-main-item">
+                <input type="checkbox" name="alat_standar[]" value="Thermometer"
+                       <?php echo ($thermometerChecked ? 'checked' : ''); ?>
+                       style="accent-color: #0066cc; width: 18px; height: 18px;"
+                       disabled>
+            </div>
+            <!-- DEBUG TAMPILAN: Tampilkan nilai variabel -->
+            <span style="display:none;">thermometerChecked=<?php echo $thermometerChecked ? 'true' : 'false'; ?></span>
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
             Thermometer :
-            <div style="margin-top:6pt;">
-                <label>
-                    <input type="radio" name="thermometer_type" value="TES" 
-                        <?php echo ($thermometerTES ? 'checked' : ''); ?> disabled> 
+            <div class="radio-group">
+                <label class="radio-item">
+                    <input type="checkbox" name="thermometer_type" value="TES" 
+                           <?php echo ($thermometerTES ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
                     TES
                 </label>
-                &nbsp;&nbsp;
-                <label>
-                    <input type="radio" name="thermometer_type" value="TFA" 
-                        <?php echo ($thermometerTFA ? 'checked' : ''); ?> disabled> 
+                <label class="radio-item">
+                    <input type="checkbox" name="thermometer_type" value="TFA" 
+                           <?php echo ($thermometerTFA ? 'checked' : ''); ?>
+                           style="accent-color: #0066cc;"
+                           disabled> 
                     TFA
                 </label>
             </div>
@@ -945,7 +1129,7 @@
 
     <!-- Metode -->
     <tr style="height: 60pt;">
-        <td style="border: 1pt solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 12pt; background-color: #f0f0f0;">
+        <td style="border: 1pt solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 12pt;">
             Metode Kalibrasi
         </td>
         <td colspan="2" style="border: 1pt solid #000; text-align: center; font-size: 11pt;">
@@ -968,6 +1152,36 @@
     </tr>
 </table>
 
+<!-- JavaScript untuk mencegah perubahan (sebagai backup) -->
+<script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Cegah semua checkbox agar tidak berubah
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        checkbox.addEventListener('click', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        checkbox.addEventListener('change', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        checkbox.addEventListener('keydown', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    });
+});
+</script>
 <!-- Action Buttons Section -->
             <div class="row mt-5">
                 <div class="col-12 text-center">
@@ -975,9 +1189,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

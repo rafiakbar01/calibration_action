@@ -546,7 +546,7 @@
                 <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
                     Setting Suhu<br>
                     <span style="font-size: 9pt; font-weight: normal; margin-top: 5px; display: block;">
-                        {{ $calibration->headIrThermometer->satuan_suhu ?? '....' }}
+                        {{ $calibration->headIrThermometer->satuan_suhu_kiri ?? '....' }}
                     </span>
                 </th>
                 <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
@@ -633,7 +633,7 @@
                 <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
                     Setting Suhu<br>
                     <span style="font-size: 9pt; font-weight: normal; margin-top: 5px; display: block;">
-                        {{ $calibration->headIrThermometer->satuan_suhu ?? '....' }}
+                        {{ $calibration->headIrThermometer->satuan_suhu_kanan ?? '....' }}
                     </span>
                 </th>
                 <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
@@ -717,14 +717,14 @@
 </div>
 
 <div class="container">
-    <strong>Emisivitas : 0.95</strong>
+    <strong>Emisivitas : {{ $calibration->addIrThermometer->emisivitas ?? '0.95' }}</strong>
 </div>
 
 <div class="container">
     <strong>Jarak Kalibrasi : 
         <span style="display: inline-block; width: 8%; border-bottom: 1px solid #000; padding: 0 5px;">
             {{ $calibration->addIrThermometer->jarakKalibrasi ?? '' }}
-        </span> mm
+        </span>
     </strong>
 </div>
 
@@ -819,9 +819,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                        <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                        <!--</button>-->
                 </div>
             </div>
         </div>

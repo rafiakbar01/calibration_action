@@ -32,15 +32,14 @@ class AddPressureGauge extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'repeatability'    => 'decimal:5',
-     
-        'ulangan01'        => 'decimal:5',
-        'ulangan02'        => 'decimal:5',
-        'ulangan03'        => 'decimal:5',
-        'ulangan04'        => 'decimal:5',
-        'ulangan05'        => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'repeatability'    => 'decimal:5',
+    //     'ulangan01'        => 'decimal:5',
+    //     'ulangan02'        => 'decimal:5',
+    //     'ulangan03'        => 'decimal:5',
+    //     'ulangan04'        => 'decimal:5',
+    //     'ulangan05'        => 'decimal:5',
+    // ];
 
   
 

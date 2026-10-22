@@ -342,7 +342,7 @@
                         <p style="margin: 0; color: #000000;">Nama Alat</p>
                     </td>
                     <td colspan="3">
-                        <input type="text" name="namaAlat"class="kalibrasi-input" value="{{ $calibration->namaAlat }}" readonly>
+                        <input type="text" name="namaAlat" class="kalibrasi-input" value="{{ $calibration->namaAlat }}"  >
                     </td>
                 </tr>
 
@@ -466,6 +466,15 @@
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
         </td>
     </tr>
+    
+    <tr>
+        <td><p style="margin:0;color:#000;">Kode TH</p></td>
+        <td colspan="3">
+            <input type="text" class="kalibrasi-input"
+                   name="kode_th"
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
+        </td>
+    </tr>
 
 </table>
 
@@ -539,8 +548,7 @@
 
             <!-- Data Kalibrasi Section -->
             <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
-            
-     <?php
+   <?php
 // Ambil type dari database (asumsi dari model $calibration)
 $type = $calibration->type ?? 'single';
 
@@ -572,7 +580,6 @@ switch ($type) {
             <!-- Sub Header x1, x2, x3 untuk Temperatur -->
             <tr>
                 <td></td>
-                <!-- Kolom Set Point sudah di-merge ke atas, jadi tidak perlu lagi -->
                 <td style="border: 1px solid #000; text-align: center; vertical-align: middle; padding: 5px; background-color: #f8f8f8; font-weight: bold;">
                     x<sub>1</sub>
                 </td>
@@ -604,7 +611,7 @@ switch ($type) {
                 <td colspan="2"></td>
             </tr>
             
-            <!-- Baris Data Temperatur dengan Loop dan array -->
+            <!-- Baris Data Temperatur - SELALU 7 BARIS -->
             <?php 
             $tempDetails = $calibration->detailThermohygrometers ?? [];
             for($i = 0; $i < 7; $i++): 
@@ -612,77 +619,67 @@ switch ($type) {
             ?>
             <tr>
                 <td></td>
-                <!-- Set Point (kolom ini sekarang rowspan="2") -->
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][set_point]" step="0.1" 
+                    <input type="text" name="temp[<?php echo $i; ?>][set_point]" step="0.1" 
                            value="<?php echo $detail ? $detail->titikUkur_T : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
-                
-                <!-- Pembacaan Standar x1, x2, x3 -->
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][std_x1]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][std_x1]"  
                            value="<?php echo $detail ? $detail->T_STD1 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][std_x2]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][std_x2]"  
                            value="<?php echo $detail ? $detail->T_STD2 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][std_x3]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][std_x3]"  
                            value="<?php echo $detail ? $detail->T_STD3 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
-                
-                <!-- Spacer -->
                 <td></td>
-                
-                <!-- Pembacaan Alat IN x1, x2, x3 -->
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][in_x1]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][in_x1]"  
                            value="<?php echo $detail ? $detail->T_IN1 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][in_x2]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][in_x2]"  
                            value="<?php echo $detail ? $detail->T_IN2 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][in_x3]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][in_x3]"  
                            value="<?php echo $detail ? $detail->T_IN3 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
-                
-                <!-- Pembacaan Alat OUT x1, x2, x3 -->
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][out_x1]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][out_x1]"  
                            value="<?php echo $detail ? ($detail->T_OUT1 ?? '') : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][out_x2]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][out_x2]"  
                            value="<?php echo $detail ? ($detail->T_OUT2 ?? '') : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="temp[<?php echo $i; ?>][out_x3]" step="0.01" 
+                    <input type="text" name="temp[<?php echo $i; ?>][out_x3]"  
                            value="<?php echo $detail ? ($detail->T_OUT3 ?? '') : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
-                
                 <td colspan="2"></td>
             </tr>
             <?php endfor; ?>
@@ -692,7 +689,7 @@ switch ($type) {
                 <td colspan="14"></td>
             </tr>
             
-            <!-- Bagian Kelembaban -->
+            <!-- Bagian Kelembaban - SELALU 7 BARIS -->
             <tr>
                 <td></td>
                 <td rowspan="2" style="border: 1px solid #000; font-weight: bold; text-align: center; vertical-align: middle; padding: 8px; background-color: #f2f2f2;">
@@ -711,7 +708,6 @@ switch ($type) {
             <!-- Sub Header x1, x2, x3 untuk Kelembaban -->
             <tr>
                 <td></td>
-                <!-- Kolom Set Point sudah di-merge ke atas, jadi tidak perlu lagi -->
                 <td style="border: 1px solid #000; text-align: center; vertical-align: middle; padding: 5px; background-color: #f8f8f8; font-weight: bold;">
                     x<sub>1</sub>
                 </td>
@@ -734,7 +730,6 @@ switch ($type) {
                 <td colspan="5"></td>
             </tr>
             
-            <!-- Baris Data Kelembaban dengan Loop dan array -->
             <?php 
             $humidityDetails = $calibration->detailThermohygrometers ?? [];
             for($i = 0; $i < 7; $i++): 
@@ -742,57 +737,49 @@ switch ($type) {
             ?>
             <tr>
                 <td></td>
-                <!-- Set Point Kelembaban (kolom ini sekarang rowspan="2") -->
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="humidity[<?php echo $i; ?>][set_point]" step="0.1" 
+                    <input type="text" name="humidity[<?php echo $i; ?>][set_point]" step="0.1" 
                            value="<?php echo $detail ? $detail->titikUkur_RH : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
-                
-                <!-- Pembacaan Standar Kelembaban x1, x2, x3 -->
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="humidity[<?php echo $i; ?>][std_x1]" step="0.01" 
+                    <input type="text" name="humidity[<?php echo $i; ?>][std_x1]"  
                            value="<?php echo $detail ? $detail->RH_STD1 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="humidity[<?php echo $i; ?>][std_x2]" step="0.01" 
+                    <input type="text" name="humidity[<?php echo $i; ?>][std_x2]"  
                            value="<?php echo $detail ? $detail->RH_STD2 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="humidity[<?php echo $i; ?>][std_x3]" step="0.01" 
+                    <input type="text" name="humidity[<?php echo $i; ?>][std_x3]"  
                            value="<?php echo $detail ? $detail->RH_STD3 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
-                
-                <!-- Spacer -->
                 <td></td>
-                
-                <!-- Pembacaan Alat Kelembaban x1, x2, x3 -->
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="humidity[<?php echo $i; ?>][alat_x1]" step="0.01" 
+                    <input type="text" name="humidity[<?php echo $i; ?>][alat_x1]"  
                            value="<?php echo $detail ? $detail->RH_ALAT1 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="humidity[<?php echo $i; ?>][alat_x2]" step="0.01" 
+                    <input type="text" name="humidity[<?php echo $i; ?>][alat_x2]"  
                            value="<?php echo $detail ? $detail->RH_ALAT2 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
                 <td style="border: 1px solid #000; padding: 0;">
-                    <input type="number" name="humidity[<?php echo $i; ?>][alat_x3]" step="0.01" 
+                    <input type="text" name="humidity[<?php echo $i; ?>][alat_x3]"  
                            value="<?php echo $detail ? $detail->RH_ALAT3 : ''; ?>"
                            style="width: 100%; height: 35px; border: 1px solid #ddd; text-align: center; padding: 0 5px; font-size: 12px;"
                            >
                 </td>
-                
                 <td colspan="5"></td>
             </tr>
             <?php endfor; ?>
@@ -802,7 +789,7 @@ switch ($type) {
         
     case 'single':
     default:
-        // Template untuk type single (EDIT MODE)
+        // Template untuk type single - SELALU 10 BARIS
         ?>
         <table class="table table-bordered border-dark w-100">
             <thead>
@@ -825,88 +812,58 @@ switch ($type) {
 
             <tbody>
                 <?php 
-                if(isset($calibration) && $calibration->detailThermohygrometers && $calibration->detailThermohygrometers->count() > 0): 
-                    $iteration = 1;
-                    foreach($calibration->detailThermohygrometers as $detail): 
+                $tempDetails = $calibration->detailThermohygrometers ?? [];
+                // SELALU tampilkan 10 baris, walaupun datanya kurang
+                for ($i = 1; $i <= 10; $i++): 
+                    $detail = $tempDetails[$i-1] ?? null;
                 ?>
                 <tr>
                     <td class="p-0 border-dark">
-                        <input type="number" name="t_set<?php echo $iteration; ?>"
-                            value="<?php echo $detail->titikUkur_T ?? ''; ?>"
+                        <input type="text" name="t_set<?php echo $i; ?>"
+                            value="<?php echo $detail ? $detail->titikUkur_T : ''; ?>"
                             class="form-control text-center border-dark fs-5 py-3"
                             >
                     </td>
 
+                    <?php for ($j = 1; $j <= 3; $j++): ?>
                     <td class="p-0 border-dark">
-                        <input type="number" name="t_std<?php echo $iteration; ?>_1"
-                            value="<?php echo $detail->T_STD1 ?? ''; ?>"
+                        <input type="text" name="t_std<?php echo $i; ?>_<?php echo $j; ?>"
+                            value="<?php 
+                                if($detail) {
+                                    switch($j) {
+                                        case 1: echo $detail->T_STD1; break;
+                                        case 2: echo $detail->T_STD2; break;
+                                        case 3: echo $detail->T_STD3; break;
+                                    }
+                                } else {
+                                    echo '';
+                                }
+                            ?>"
                             class="form-control text-center border-dark fs-5 py-3"
-                             >
+                            >
                     </td>
-                    <td class="p-0 border-dark">
-                        <input type="number" name="t_std<?php echo $iteration; ?>_2"
-                            value="<?php echo $detail->T_STD2 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-                    <td class="p-0 border-dark">
-                        <input type="number" name="t_std<?php echo $iteration; ?>_3"
-                            value="<?php echo $detail->T_STD3 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-
-                    <td class="p-0 border-dark">
-                        <input type="number" name="t_inst<?php echo $iteration; ?>_1"
-                            value="<?php echo $detail->T_IN1 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-                    <td class="p-0 border-dark">
-                        <input type="number" name="t_inst<?php echo $iteration; ?>_2"
-                            value="<?php echo $detail->T_IN2 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-                    <td class="p-0 border-dark">
-                        <input type="number" name="t_inst<?php echo $iteration; ?>_3"
-                            value="<?php echo $detail->T_IN3 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-                </tr>
-                <?php 
-                    $iteration++;
-                    endforeach; 
-                else: 
-                ?>
-                    <!-- Jika tidak ada data, tampilkan input kosong -->
-                    <?php for ($i = 1; $i <= 10; $i++): ?>
-                    <tr>
-                        <td class="p-0 border-dark">
-                            <input type="number" name="t_set<?php echo $i; ?>"
-                                class="form-control text-center border-dark fs-5 py-3"
-                                 >
-                        </td>
-
-                        <?php for ($j = 1; $j <= 3; $j++): ?>
-                        <td class="p-0 border-dark">
-                            <input type="number" name="t_std<?php echo $i; ?>_<?php echo $j; ?>"
-                                class="form-control text-center border-dark fs-5 py-3"
-                                 >
-                        </td>
-                        <?php endfor; ?>
-
-                        <?php for ($j = 1; $j <= 3; $j++): ?>
-                        <td class="p-0 border-dark">
-                            <input type="number" name="t_inst<?php echo $i; ?>_<?php echo $j; ?>"
-                                class="form-control text-center border-dark fs-5 py-3"
-                                 >
-                        </td>
-                        <?php endfor; ?>
-                    </tr>
                     <?php endfor; ?>
-                <?php endif; ?>
+
+                    <?php for ($j = 1; $j <= 3; $j++): ?>
+                    <td class="p-0 border-dark">
+                        <input type="text" name="t_inst<?php echo $i; ?>_<?php echo $j; ?>"
+                            value="<?php 
+                                if($detail) {
+                                    switch($j) {
+                                        case 1: echo $detail->T_IN1; break;
+                                        case 2: echo $detail->T_IN2; break;
+                                        case 3: echo $detail->T_IN3; break;
+                                    }
+                                } else {
+                                    echo '';
+                                }
+                            ?>"
+                            class="form-control text-center border-dark fs-5 py-3"
+                            >
+                    </td>
+                    <?php endfor; ?>
+                </tr>
+                <?php endfor; ?>
             </tbody>
         </table>
 
@@ -932,88 +889,58 @@ switch ($type) {
 
             <tbody>
                 <?php 
-                if(isset($calibration) && $calibration->detailThermohygrometers && $calibration->detailThermohygrometers->count() > 0): 
-                    $iteration = 1;
-                    foreach($calibration->detailThermohygrometers as $detail): 
+                $humidityDetails = $calibration->detailThermohygrometers ?? [];
+                // SELALU tampilkan 10 baris, walaupun datanya kurang
+                for ($i = 1; $i <= 10; $i++): 
+                    $detail = $humidityDetails[$i-1] ?? null;
                 ?>
                 <tr>
                     <td class="p-0 border-dark">
-                        <input type="number" name="h_set<?php echo $iteration; ?>"
-                            value="<?php echo $detail->titikUkur_RH ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-
-                    <td class="p-0 border-dark">
-                        <input type="number" name="h_std<?php echo $iteration; ?>_1"
-                            value="<?php echo $detail->RH_STD1 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-                    <td class="p-0 border-dark">
-                        <input type="number" name="h_std<?php echo $iteration; ?>_2"
-                            value="<?php echo $detail->RH_STD2 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-                    <td class="p-0 border-dark">
-                        <input type="number" name="h_std<?php echo $iteration; ?>_3"
-                            value="<?php echo $detail->RH_STD3 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td>
-
-                    <td class="p-0 border-dark">
-                        <input type="number" name="h_inst<?php echo $iteration; ?>_1"
-                            value="<?php echo $detail->RH_ALAT1 ?? ''; ?>"
-                            class="form-control text-center border-dark fs-5 py-3"
-                             >
-                    </td> 
-                    <td class="p-0 border-dark">
-                        <input type="number" name="h_inst<?php echo $iteration; ?>_2"
-                            value="<?php echo $detail->RH_ALAT2 ?? ''; ?>"
+                        <input type="text" name="h_set<?php echo $i; ?>"
+                            value="<?php echo $detail ? $detail->titikUkur_RH : ''; ?>"
                             class="form-control text-center border-dark fs-5 py-3"
                             >
                     </td>
+
+                    <?php for ($j = 1; $j <= 3; $j++): ?>
                     <td class="p-0 border-dark">
-                        <input type="number" name="h_inst<?php echo $iteration; ?>_3"
-                            value="<?php echo $detail->RH_ALAT3 ?? ''; ?>"
+                        <input type="text" name="h_std<?php echo $i; ?>_<?php echo $j; ?>"
+                            value="<?php 
+                                if($detail) {
+                                    switch($j) {
+                                        case 1: echo $detail->RH_STD1; break;
+                                        case 2: echo $detail->RH_STD2; break;
+                                        case 3: echo $detail->RH_STD3; break;
+                                    }
+                                } else {
+                                    echo '';
+                                }
+                            ?>"
                             class="form-control text-center border-dark fs-5 py-3"
-                             >
+                            >
                     </td>
-                </tr>
-                <?php 
-                    $iteration++;
-                    endforeach; 
-                else: 
-                ?>
-                    <!-- Jika tidak ada data, tampilkan input kosong -->
-                    <?php for ($i = 1; $i <= 10; $i++): ?>
-                    <tr>
-                        <td class="p-0 border-dark">
-                            <input type="number" name="h_set<?php echo $i; ?>"
-                                class="form-control text-center border-dark fs-5 py-3"
-                                 >
-                        </td>
-
-                        <?php for ($j = 1; $j <= 3; $j++): ?>
-                        <td class="p-0 border-dark">
-                            <input type="number" name="h_std<?php echo $i; ?>_<?php echo $j; ?>"
-                                class="form-control text-center border-dark fs-5 py-3"
-                                 >
-                        </td>
-                        <?php endfor; ?>
-
-                        <?php for ($j = 1; $j <= 3; $j++): ?>
-                        <td class="p-0 border-dark">
-                            <input type="number" name="h_inst<?php echo $i; ?>_<?php echo $j; ?>"
-                                class="form-control text-center border-dark fs-5 py-3"
-                                 >
-                        </td>
-                        <?php endfor; ?>
-                    </tr>
                     <?php endfor; ?>
-                <?php endif; ?>
+
+                    <?php for ($j = 1; $j <= 3; $j++): ?>
+                    <td class="p-0 border-dark">
+                        <input type="text" name="h_inst<?php echo $i; ?>_<?php echo $j; ?>"
+                            value="<?php 
+                                if($detail) {
+                                    switch($j) {
+                                        case 1: echo $detail->RH_ALAT1; break;
+                                        case 2: echo $detail->RH_ALAT2; break;
+                                        case 3: echo $detail->RH_ALAT3; break;
+                                    }
+                                } else {
+                                    echo '';
+                                }
+                            ?>"
+                            class="form-control text-center border-dark fs-5 py-3"
+                            >
+                    </td>
+                    <?php endfor; ?>
+                </tr>
+                <?php endfor; ?>
             </tbody>
         </table>
         <?php
@@ -1078,13 +1005,12 @@ switch ($type) {
                     <strong>Metode<br>Kalibrasi</strong>
                 </td>
                 
-                <!-- Isi Metode Kalibrasi -->
+               <!-- Isi Metode Kalibrasi -->
                 <td colspan="4" style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 10px; font-size: 9pt; vertical-align: middle; color: #000000;">
-                    <input type="text" 
-                           name="metode" 
-                           value="<?php echo htmlspecialchars($calibration->headThermohygrometer->metode ?? 'PAS-IK1102-50'); ?>"
-                           style="width: 100%; border: 1px solid #ddd; outline: none; padding: 5px; font-size: 9pt;"
-                             readonly>
+                    <?php 
+                    $method = $calibration->headThermohygrometer->calibrationMethod ?? 'PAS-IK1102-50';
+                    echo htmlspecialchars($method);
+                    ?>
                 </td>
                 
                 <!-- TTD Dikalibrasi (sejajar dengan metode) -->
@@ -1148,9 +1074,9 @@ switch ($type) {
                             name="verifiedBy" 
                             class="kalibrasi-input" 
                             value="<?php echo htmlspecialchars($calibration->headThermohygrometer->verified_by ?? $calibration->verifiedBy ?? ''); ?>"
-                            placeholder="Nama lengkap" 
+                            placeholder="-" 
                             style="width: 70%; border: 1px solid #ddd; outline: none; padding: 5px; font-size: 9pt; background: white; text-align: center; margin-left: 5px;"
-                            required>
+                            readonly>
                     </div>
                 </td>
             </tr>
@@ -1232,9 +1158,9 @@ switch ($type) {
                 <td colspan="3" rowspan="2" style="border: 1px solid #000; padding: 10px; font-size: 9pt; vertical-align: middle; color: #000000; line-height: 1.4;">
                     <input type="text" 
                            name="metode" 
-                           value="<?php echo htmlspecialchars(isset($calibration->headThermohygrometer) ? $calibration->headThermohygrometer->metode : 'PAS-IK1102-50'); ?>"
+                           value="<?php echo htmlspecialchars(isset($calibration->headThermohygrometer) ? $calibration->headThermohygrometer->calibrationMethod : 'PAS-IK1102-50'); ?>"
                            style="width: 100%; border: 1px solid #ddd; outline: none; padding: 5px; font-size: 9pt;"
-                           required>
+                           readonly>
                 </td>
                 
                 <!-- Input Nama Dikalibrasi Oleh -->
@@ -1245,7 +1171,7 @@ switch ($type) {
                         value="<?php echo htmlspecialchars($calibration->headThermohygrometer->calibrated_by ?? $calibration->calibratedBy ?? ''); ?>"
                         placeholder="Nama Lengkap" 
                         style="width: 100%; border: 1px solid #ddd; outline: none; padding: 5px; font-size: 9pt; background: white;"
-                        required>
+                        readonly>
                 </td>
                 
                 <!-- Input Nama Diperiksa Oleh -->
@@ -1305,8 +1231,13 @@ switch ($type) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -1379,7 +1310,7 @@ switch ($type) {
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data

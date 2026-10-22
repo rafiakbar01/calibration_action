@@ -22,3 +22,17 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+*.zip
+/node/
+temp*
+*.py
+*.tmp
+/storage/logs/
+/public/error_log
+/public/data_approved/*.xlsm
+/public/data_verified/*.xlsm
+/public/data_rejected/*.xlsm
+/public/uploads/
+credentials.json
+token.json
+__pycache__/

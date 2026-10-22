@@ -685,10 +685,10 @@
     <span>Repeatability</span>
     <span style="letter-spacing:-0.15pt"></span>
     <span>:</span>
-    <span style="font-family:Arial; font-size:9pt; margin:0 5px">{{ $addData->repeatibility_P ?? '' }}</span>
+    <span style="font-family:Arial; font-size:9pt; margin:0 5px; display: inline-block; min-width: 80px;   text-align: center;">{{ $addData->repeatibility_P ?? '' }}</span>
     <span style="letter-spacing:-0.05pt"></span>
     <span style="letter-spacing:-0.5pt">(</span>
-    <span style="font-family:Arial; font-size:9pt; margin:0 2px">{{ $addData->satuan_P ?? '' }}</span>
+    <span style="font-family:Arial; font-size:9pt; margin:0 2px; display: inline-block; min-width: 40px;   text-align: center;">{{ $addData->satuan_P ?? '' }}</span>
     <span style="letter-spacing:-0.5pt">)</span>
 </p>
 
@@ -735,10 +735,10 @@
     <span>Repeatability</span>
     <span style="letter-spacing:-0.15pt"></span>
     <span>:</span>
-    <span style="font-family:Arial; font-size:9pt; margin:0 5px">{{ $addData->repeatibility_SO ?? '' }}</span>
+    <span style="font-family:Arial; font-size:9pt; margin:0 5px; display: inline-block; min-width: 80px;   text-align: center;">{{ $addData->repeatibility_SO ?? '' }}</span>
     <span style="letter-spacing:-0.05pt"></span>
     <span style="letter-spacing:-0.5pt">(</span>
-    <span style="font-family:Arial; font-size:9pt; margin:0 2px">{{ $addData->satuan_SO ?? '' }}</span>
+    <span style="font-family:Arial; font-size:9pt; margin:0 2px; display: inline-block; min-width: 40px;   text-align: center;">{{ $addData->satuan_SO ?? '' }}</span>
     <span style="letter-spacing:-0.5pt">)</span>
 </p>
 
@@ -906,9 +906,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

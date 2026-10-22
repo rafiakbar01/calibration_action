@@ -577,9 +577,9 @@
     <td colspan="3" bgcolor="#e6e6e6" align="center" style="border:1px solid #999;"><strong>Penunjukan Standard</strong></td>
 </tr>
 <tr>
-    <td width="25%" bgcolor="#f5f5f5" align="center" style="border:1px solid #999;">
-        <strong>Unit ( <span style="display: inline-block; width: 150px; text-align: center;">&nbsp;</span> )</strong>
-    </td>
+   <td width="160" bgcolor="#f5f5f5" align="center" style="border:1px solid #999;">
+    <strong>Unit ( <span style="border:none; outline:none;"><?php echo isset($head->satuan_go) && $head->satuan_go !== '' ? $head->satuan_go : '-'; ?></span> )</strong>
+</td>
     <td width="25%" bgcolor="#e6e6e6" align="center" style="border:1px solid #999;"><strong>Posisi</strong></td>
     <td width="25%" bgcolor="#e6e6e6" align="center" style="border:1px solid #999;"><strong>X</strong></td>
     <td width="25%" bgcolor="#e6e6e6" align="center" style="border:1px solid #999;"><strong>Y</strong></td>
@@ -656,9 +656,9 @@
     <td colspan="3" bgcolor="#e6e6e6" align="center" style="border:1px solid #999;"><strong>Penunjukan Standard</strong></td>
 </tr>
 <tr>
-    <td width="25%" bgcolor="#f5f5f5" align="center" style="border:1px solid #999;">
-        <strong>Unit ( <span style="display: inline-block; width: 150px; text-align: center;">&nbsp;</span> )</strong>
-    </td>
+<td width="160" bgcolor="#f5f5f5" align="center" style="border:1px solid #999;">
+    <strong>Unit ( <span style="border:none; outline:none;"><?php echo isset($head->satuan_no_go) && $head->satuan_no_go !== '' ? $head->satuan_no_go : '-'; ?></span> )</strong>
+</td>
     <td width="25%" bgcolor="#e6e6e6" align="center" style="border:1px solid #999;"><strong>Sumbu</strong></td>
     <td width="25%" bgcolor="#e6e6e6" align="center" style="border:1px solid #999;"><strong>X</strong></td>
     <td width="25%" bgcolor="#e6e6e6" align="center" style="border:1px solid #999;"><strong>Y</strong></td>
@@ -971,9 +971,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

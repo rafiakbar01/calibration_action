@@ -12,7 +12,7 @@ class HeadFeelerGauge extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_unit_uut','satuan_unit_gauge_block','form_index'
     ];
 
     public function calibration()

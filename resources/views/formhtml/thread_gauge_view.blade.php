@@ -710,192 +710,152 @@
         @endphp
 
         <!-- GO -->
-        <table style="width:100%; border-collapse: collapse; border: 1px solid #555; font-size: 14px; background: #fff; margin-bottom: 20px;">
-          <thead style="background: #f5f5f5;">
-            <tr>
-              <th style="border: 1px solid #555; width: 20%; padding: 8px; text-align: center; font-weight: bold;">Go</th>
-              <th colspan="3" style="border: 1px solid #555; padding: 8px; text-align: left;">
+       <table style="width:100%; border-collapse: collapse; border: 1px solid #555; font-size: 14px; background: #fff; margin-bottom: 20px;">
+    <thead style="background: #f5f5f5;">
+        <tr>
+            <th style="border: 1px solid #555; width: 20%; padding: 8px; text-align: center; font-weight: bold;">Go</th>
+            <th colspan="3" style="border: 1px solid #555; padding: 8px; text-align: left;">
                 Kode Go Side :
                 <span style="width: 65%; margin-left: 10px; font-size: 14px; display: inline-block; border-bottom: 1px solid #777; padding: 4px 0;">
-                  {{ $detail->kodeGO ?? '-' }}
+                    {{ $detail->kodeGO ?? '-' }}
                 </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background: #fafafa;">
-              <th style="border: 1px solid #555; padding: 10px; text-align: center;">Nilai Nominal</th>
-              <th colspan="3" style="border: 1px solid #555; padding: 10px; text-align: center;">Penunjukan Standard</th>
-            </tr>
-            <tr style="background: #fafafa;">
-              <th style="border: 1px solid #555; padding: 8px;">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="background: #fafafa;">
+            <th style="border: 1px solid #555; padding: 10px; text-align: center;">Nilai Nominal</th>
+            <th colspan="3" style="border: 1px solid #555; padding: 10px; text-align: center;">Penunjukan Standard</th>
+        </tr>
+        <tr style="background: #fafafa;">
+            <th style="border: 1px solid #555; padding: 8px;">
                 <div style="width: 100%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; font-size: 14px; background: white;">
-                  {{ $detail->satuan_go ?? 'mm' }}
+                    {{ $detail->satuan_go ?? 'mm' }}
                 </div>
-              </th>
-              <th style="border: 1px solid #555; padding: 8px; text-align: center;">Posisi</th>
-              <th style="border: 1px solid #555; padding: 8px; text-align: center;">X</th>
-              <th style="border: 1px solid #555; padding: 8px; text-align: center;">Y</th>
-            </tr>
+            </th>
+            <th style="border: 1px solid #555; padding: 8px; text-align: center;">Posisi</th>
+            <th style="border: 1px solid #555; padding: 8px; text-align: center;">X</th>
+            <th style="border: 1px solid #555; padding: 8px; text-align: center;">Y</th>
+        </tr>
 
-            <!-- ATAS -->
-            <tr>
-              <td rowspan="4" style="border: 1px solid #555; padding: 10px; vertical-align: middle;">
+        <!-- ATAS -->
+        <tr>
+            <td rowspan="4" style="border: 1px solid #555; padding: 10px; vertical-align: middle;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; background: white; text-align: center;">
-                  @if($detail->nominalGO)
-                    {{ number_format($detail->nominalGO, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->nominalGO ?? '-' }}
                 </div>
-              </td>
-              <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Atas</td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px;">
+            </div>
+            <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Atas</div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center;">
-                  @if($detail->GOatasX1)
-                    {{ number_format($detail->GOatasX1, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->GOatasX1 ?? '-' }}
                 </div>
-              </td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px;">
+            </div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center;">
-                  @if($detail->GOatasY1)
-                    {{ number_format($detail->GOatasY1, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->GOatasY1 ?? '-' }}
                 </div>
-              </td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></td>
-            </tr>
+            </div>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></div>
+        </tr>
 
-            <!-- BAWAH -->
-            <tr>
-              <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Bawah</td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px;">
+        <!-- BAWAH -->
+        <tr>
+            <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Bawah</div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center;">
-                  @if($detail->GObawahX1)
-                    {{ number_format($detail->GObawahX1, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->GObawahX1 ?? '-' }}
                 </div>
-              </td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px;">
+            </div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center;">
-                  @if($detail->GObawahY1)
-                    {{ number_format($detail->GObawahY1, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->GObawahY1 ?? '-' }}
                 </div>
-              </td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></td>
-            </tr>
-          </tbody>
-        </table>
+            </div>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></div>
+        </tr>
+    </tbody>
+</table>
 
-        <!-- NOT GO -->
-        <table style="width:100%; border-collapse: collapse; border: 1px solid #555; font-size: 14px; background: #fff;">
-          <thead style="background: #f5f5f5;">
-            <tr>
-              <th style="border: 1px solid #555; width: 20%; padding: 8px; text-align: center; font-weight: bold;">Not Go</th>
-              <th colspan="3" style="border: 1px solid #555; padding: 8px; text-align: left;">
+<!-- NOT GO -->
+<table style="width:100%; border-collapse: collapse; border: 1px solid #555; font-size: 14px; background: #fff;">
+    <thead style="background: #f5f5f5;">
+        <tr>
+            <th style="border: 1px solid #555; width: 20%; padding: 8px; text-align: center; font-weight: bold;">Not Go</th>
+            <th colspan="3" style="border: 1px solid #555; padding: 8px; text-align: left;">
                 Kode Not Go Side :
                 <span style="width: 65%; margin-left: 10px; font-size: 14px; display: inline-block; border-bottom: 1px solid #777; padding: 4px 0;">
-                  {{ $detail->kodeNOTGO ?? '-' }}
+                    {{ $detail->kodeNOTGO ?? '-' }}
                 </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background: #fafafa;">
-              <th style="border: 1px solid #555; padding: 10px; text-align: center;">Nilai Nominal</th>
-              <th colspan="3" style="border: 1px solid #555; padding: 10px; text-align: center;">Penunjukan Standard</th>
-            </tr>
-            <tr style="background: #fafafa;">
-              <th style="border: 1px solid #555; padding: 8px;">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="background: #fafafa;">
+            <th style="border: 1px solid #555; padding: 10px; text-align: center;">Nilai Nominal</th>
+            <th colspan="3" style="border: 1px solid #555; padding: 10px; text-align: center;">Penunjukan Standard</th>
+        </tr>
+        <tr style="background: #fafafa;">
+            <th style="border: 1px solid #555; padding: 8px;">
                 <div style="width: 100%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; font-size: 14px; background: white;">
-                  {{ $detail->satuan_not_go ?? 'mm' }}
+                    {{ $detail->satuan_not_go ?? 'mm' }}
                 </div>
-              </th>
-              <th style="border: 1px solid #555; padding: 8px; text-align: center;">Posisi</th>
-              <th style="border: 1px solid #555; padding: 8px; text-align: center;">X</th>
-              <th style="border: 1px solid #555; padding: 8px; text-align: center;">Y</th>
-            </tr>
+            </th>
+            <th style="border: 1px solid #555; padding: 8px; text-align: center;">Posisi</th>
+            <th style="border: 1px solid #555; padding: 8px; text-align: center;">X</th>
+            <th style="border: 1px solid #555; padding: 8px; text-align: center;">Y</th>
+        </tr>
 
-            <!-- ATAS -->
-            <tr>
-              <td rowspan="4" style="border: 1px solid #555; padding: 10px; vertical-align: middle;">
+        <!-- ATAS -->
+        <tr>
+            <td rowspan="4" style="border: 1px solid #555; padding: 10px; vertical-align: middle;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; background: white; text-align: center;">
-                  @if($detail->nominalNOTGO)
-                    {{ number_format($detail->nominalNOTGO, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->nominalNOTGO ?? '-' }}
                 </div>
-              </td>
-              <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Atas</td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px;">
+            </div>
+            <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Atas</div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center;">
-                  @if($detail->NOTGOatasX1)
-                    {{ number_format($detail->NOTGOatasX1, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->NOTGOatasX1 ?? '-' }}
                 </div>
-              </td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px;">
+            </div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center;">
-                  @if($detail->NOTGOatasY1)
-                    {{ number_format($detail->NOTGOatasY1, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->NOTGOatasY1 ?? '-' }}
                 </div>
-              </td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></td>
-            </tr>
+            </div>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></div>
+        </tr>
 
-            <!-- BAWAH -->
-            <tr>
-              <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Bawah</td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px;">
+        <!-- BAWAH -->
+        <tr>
+            <td rowspan="2" style="border: 1px solid #555; text-align: center; vertical-align: middle; padding: 40px 10px; background: #f9f9f9; font-weight: 500;">Bawah</div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center;">
-                  @if($detail->NOTGObawahX1)
-                    {{ number_format($detail->NOTGObawahX1, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->NOTGObawahX1 ?? '-' }}
                 </div>
-              </td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px;">
+            </div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px;">
                 <div style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center;">
-                  @if($detail->NOTGObawahY1)
-                    {{ number_format($detail->NOTGObawahY1, 5) }}
-                  @else
-                    -
-                  @endif
+                    {{ $detail->NOTGObawahY1 ?? '-' }}
                 </div>
-              </td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></td>
-              <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></td>
-            </tr>
-          </tbody>
-        </table>
+            </div>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></div>
+            <td style="border: 1px solid #555; padding: 8px; height: 50px; background: #fff;"></div>
+        </tr>
+    </tbody>
+</table>
       @else
         <!-- Tampilkan jika tidak ada data -->
         <div style="text-align: center; padding: 30px; background: #f8f9fa; border: 1px dashed #dee2e6; border-radius: 6px; margin-bottom: 20px;">
@@ -918,137 +878,140 @@
 <!-- ================= KETERANGAN & SUDUT ULIR (TANPA TABEL) ================= -->
 <div style="font-family:Arial, sans-serif; font-size:11pt; margin-top:20px; display:flex; gap:30px; align-items:flex-start;">
 
-  <!-- Keterangan Nilai Nominal -->
-  <div style="width:50%;">
-    <strong>Keterangan nilai nominal alat*</strong>
-    <div style="margin-top:6px;">
-      1. Tidak ada informasi<br>
-      2. Tertera di alat ukur<br>
-      3. Terdapat di lembaran dari manufaktur
+    <!-- Keterangan Nilai Nominal -->
+    <div style="width:50%;">
+        <strong>Keterangan nilai nominal alat*</strong>
+        <div style="margin-top:6px;">
+            1. Tidak ada informasi<br>
+            2. Tertera di alat ukur<br>
+            3. Terdapat di lembaran dari manufaktur
+        </div>
     </div>
-  </div>
 
-  <!-- Ukuran Pitch & Sudut Ulir -->
-  <div style="width:50%;">
-    @if($calibration->detailThreadGauges && $calibration->detailThreadGauges->isNotEmpty())
-      @php
-        $detail = $calibration->detailThreadGauges->first();
-        // Parse sudut ulir
-        $sudutUlirDisplay = $detail->sudutUlir;
-        $isMetrik = false;
-        $isNonMetrik = false;
-        $isLainnya = false;
-        $sudutLainnyaValue = '';
-        
-        if($sudutUlirDisplay) {
-            if(str_contains($sudutUlirDisplay, 'Ulir Metrik')) {
-                $isMetrik = true;
-            } elseif(str_contains($sudutUlirDisplay, 'Ulir Non Metrik')) {
-                $isNonMetrik = true;
-            } elseif(str_contains($sudutUlirDisplay, 'Lainnya')) {
-                $isLainnya = true;
-                // Ekstrak angka dari string, contoh: "45° (Lainnya)"
-                preg_match('/(\d+)°/', $sudutUlirDisplay, $matches);
-                if(isset($matches[1])) {
-                    $sudutLainnyaValue = $matches[1];
+    <!-- Ukuran Pitch & Sudut Ulir -->
+    <div style="width:50%;">
+        @if($calibration->detailThreadGauges && $calibration->detailThreadGauges->isNotEmpty())
+            @php
+                $detail = $calibration->detailThreadGauges->first();
+                // Ambil data sudut ulir dari database
+                $sudutUlirDisplay = $detail->sudutUlir ?? '';
+                $isMetrik = false;
+                $isNonMetrik = false;
+                $isLainnya = false;
+                $sudutLainnyaValue = '';
+                
+                if($sudutUlirDisplay) {
+                    // Cek apakah pilihan Metrik (60°)
+                    if($sudutUlirDisplay == 'Ulir Metrik : 60°' || $sudutUlirDisplay == '60°') {
+                        $isMetrik = true;
+                    } 
+                    // Cek apakah pilihan Non Metrik (55°)
+                    elseif($sudutUlirDisplay == 'Ulir Non Metrik : 55°' || $sudutUlirDisplay == '55°') {
+                        $isNonMetrik = true;
+                    } 
+                    // Selain itu adalah pilihan Lainnya - TAMPILKAN LANGSUNG APA ADANYA
+                    else {
+                        $isLainnya = true;
+                        // Langsung gunakan nilai yang tersimpan di database tanpa modifikasi
+                        $sudutLainnyaValue = $sudutUlirDisplay;
+                    }
                 }
-            }
-        }
-      @endphp
+            @endphp
 
-      <!-- Ukuran Pitch -->
-      @if($detail->ukuranPitch)
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
-          <strong style="white-space:nowrap;">Ukuran Pitch :</strong>
-          <div style="width:90px; border:none; border-bottom:1px solid #000; background:transparent; text-align:center; padding:2px 0;">
-            {{ number_format($detail->ukuranPitch, 5) }}
-          </div>
-          <div style="border:none; border-bottom:1px solid #000; background:transparent; font-size:11pt; padding:2px 4px;">
-            {{ $detail->satuan_pitch ?? 'mm' }}
-          </div>
-        </div>
-      @endif
+            <!-- Ukuran Pitch -->
+            @if($detail->ukuranPitch)
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+                    <strong style="white-space:nowrap;">Ukuran Pitch :</strong>
+                    <div style="width:90px; border:none; border-bottom:1px solid #000; background:transparent; text-align:center; padding:2px 0;">
+                        {{ $detail->ukuranPitch }}
+                    </div>
+                    <div style="border:none; border-bottom:1px solid #000; background:transparent; font-size:11pt; padding:2px 4px;">
+                        {{ $detail->satuan_pitch ?? 'mm' }}
+                    </div>
+                </div>
+            @endif
 
-      <!-- Sudut Ulir -->
-      <div>
-        <strong>Sudut Ulir *</strong><br>
-        <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div style="width:16px; height:16px; border:2px solid {{ $isMetrik ? '#28a745' : '#ccc' }}; border-radius:50%; background:{{ $isMetrik ? '#28a745' : 'white' }}; display:flex; align-items:center; justify-content:center;">
-              @if($isMetrik)
-                <div style="width:6px; height:6px; background:white; border-radius:50%;"></div>
-              @endif
+            <!-- Sudut Ulir -->
+            <div>
+                <strong>Sudut Ulir *</strong><br>
+                <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px;">
+                    <!-- Pilihan Metrik 60° -->
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <div style="width:16px; height:16px; border:2px solid {{ $isMetrik ? '#28a745' : '#ccc' }}; border-radius:50%; background:{{ $isMetrik ? '#28a745' : 'white' }}; display:flex; align-items:center; justify-content:center;">
+                            @if($isMetrik)
+                                <div style="width:6px; height:6px; background:white; border-radius:50%;"></div>
+                            @endif
+                        </div>
+                        <span {{ $isMetrik ? 'style=font-weight:bold;color:#28a745;' : '' }}>Ulir Metrik : 60°</span>
+                    </div>
+                    
+                    <!-- Pilihan Non Metrik 55° -->
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <div style="width:16px; height:16px; border:2px solid {{ $isNonMetrik ? '#28a745' : '#ccc' }}; border-radius:50%; background:{{ $isNonMetrik ? '#28a745' : 'white' }}; display:flex; align-items:center; justify-content:center;">
+                            @if($isNonMetrik)
+                                <div style="width:6px; height:6px; background:white; border-radius:50%;"></div>
+                            @endif
+                        </div>
+                        <span {{ $isNonMetrik ? 'style=font-weight:bold;color:#28a745;' : '' }}>Ulir Non Metrik : 55°</span>
+                    </div>
+                    
+                    <!-- Pilihan Lainnya - TAMPILKAN DATA APA ADANYA -->
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <div style="width:16px; height:16px; border:2px solid {{ $isLainnya ? '#28a745' : '#ccc' }}; border-radius:50%; background:{{ $isLainnya ? '#28a745' : 'white' }}; display:flex; align-items:center; justify-content:center;">
+                            @if($isLainnya)
+                                <div style="width:6px; height:6px; background:white; border-radius:50%;"></div>
+                            @endif
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span {{ $isLainnya ? 'style=font-weight:bold;color:#28a745;' : '' }}>Lainnya :</span>
+                            <div style="min-width:60px; border:none; border-bottom:1px solid #000; background:transparent; text-align:center; padding:2px; {{ $isLainnya ? 'font-weight:bold;color:#28a745;' : '' }}">
+                                {{ $sudutLainnyaValue }}
+                            </div>
+                            <span {{ $isLainnya ? 'style=font-weight:bold;color:#28a745;' : '' }}>°</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span>Ulir Metrik : 60°</span>
-          </div>
-          
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div style="width:16px; height:16px; border:2px solid {{ $isNonMetrik ? '#28a745' : '#ccc' }}; border-radius:50%; background:{{ $isNonMetrik ? '#28a745' : 'white' }}; display:flex; align-items:center; justify-content:center;">
-              @if($isNonMetrik)
-                <div style="width:6px; height:6px; background:white; border-radius:50%;"></div>
-              @endif
+        @else
+            <!-- Tampilkan kosong jika tidak ada data -->
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+                <strong style="white-space:nowrap;">Ukuran Pitch :</strong>
+                <div style="width:90px; border:none; border-bottom:1px dashed #ccc; background:transparent; text-align:center; padding:2px 0; color:#999;">
+                    -
+                </div>
+                <div style="border:none; border-bottom:1px dashed #ccc; background:transparent; font-size:11pt; padding:2px 4px; color:#999;">
+                    mm
+                </div>
             </div>
-            <span>Ulir Non Metrik : 55°</span>
-          </div>
-          
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div style="width:16px; height:16px; border:2px solid {{ $isLainnya ? '#28a745' : '#ccc' }}; border-radius:50%; background:{{ $isLainnya ? '#28a745' : 'white' }}; display:flex; align-items:center; justify-content:center;">
-              @if($isLainnya)
-                <div style="width:6px; height:6px; background:white; border-radius:50%;"></div>
-              @endif
+
+            <!-- Sudut Ulir -->
+            <div>
+                <strong>Sudut Ulir *</strong><br>
+                <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <div style="width:16px; height:16px; border:2px dashed #ccc; border-radius:50%; background:white;"></div>
+                        <span style="color:#999;">Ulir Metrik : 60°</span>
+                    </div>
+                    
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <div style="width:16px; height:16px; border:2px dashed #ccc; border-radius:50%; background:white;"></div>
+                        <span style="color:#999;">Ulir Non Metrik : 55°</span>
+                    </div>
+                    
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <div style="width:16px; height:16px; border:2px dashed #ccc; border-radius:50%; background:white;"></div>
+                        <span style="display:flex; align-items:center; gap:8px; color:#999;">
+                            Lainnya :
+                            <div style="width:60px; border:none; border-bottom:1px dashed #ccc; background:transparent; text-align:center; padding:2px;">
+                                -
+                            </div>
+                            °
+                        </span>
+                    </div>
+                </div>
             </div>
-            <span style="display:flex; align-items:center; gap:8px;">
-              Lainnya :
-              <div style="width:60px; border:none; border-bottom:1px solid #000; background:transparent; text-align:center; padding:2px;">
-                {{ $sudutLainnyaValue }}
-              </div>
-              °
-            </span>
-          </div>
-        </div>
-      </div>
-    @else
-      <!-- Tampilkan kosong jika tidak ada data -->
-      <!-- Ukuran Pitch -->
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
-        <strong style="white-space:nowrap;">Ukuran Pitch :</strong>
-        <div style="width:90px; border:none; border-bottom:1px dashed #ccc; background:transparent; text-align:center; padding:2px 0; color:#999;">
-          -
-        </div>
-        <div style="border:none; border-bottom:1px dashed #ccc; background:transparent; font-size:11pt; padding:2px 4px; color:#999;">
-          mm
-        </div>
-      </div>
-
-      <!-- Sudut Ulir -->
-      <div>
-        <strong>Sudut Ulir *</strong><br>
-        <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div style="width:16px; height:16px; border:2px dashed #ccc; border-radius:50%; background:white;"></div>
-            <span style="color:#999;">Ulir Metrik : 60°</span>
-          </div>
-          
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div style="width:16px; height:16px; border:2px dashed #ccc; border-radius:50%; background:white;"></div>
-            <span style="color:#999;">Ulir Non Metrik : 55°</span>
-          </div>
-          
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div style="width:16px; height:16px; border:2px dashed #ccc; border-radius:50%; background:white;"></div>
-            <span style="display:flex; align-items:center; gap:8px; color:#999;">
-              Lainnya :
-              <div style="width:60px; border:none; border-bottom:1px dashed #ccc; background:transparent; text-align:center; padding:2px;">
-                -
-              </div>
-              °
-            </span>
-          </div>
-        </div>
-      </div>
-    @endif
-  </div>
-
+        @endif
+    </div>
 </div>
 
 <!-- CATATAN -->
@@ -1095,7 +1058,6 @@
             Standard
         </td>
         <td colspan="2" style="width: 40%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; background-color: #f8f8f8;">
-           
         </td>
         <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold; background-color: #f0f0f0;">
             Dikalibrasi oleh
@@ -1124,8 +1086,6 @@
         $gaugeBlockValue = '';
         $hasRingGauge = false;
         $ringGaugeValue = '';
-        $ringGaugeIsStandard = false; // true jika 14 atau 50 mm
-        $ringGaugeIsManual = false;   // true jika nilai manual
         
         foreach($alatStandarArray as $alat) {
             if(str_contains($alat, 'Mesin ULM 01-600D')) {
@@ -1134,26 +1094,23 @@
             if(str_contains($alat, 'Gauge Block')) {
                 $hasGaugeBlock = true;
                 // Extract value, contoh: "Gauge Block 100 mm"
-                preg_match('/Gauge Block\s+(\d+)\s*mm/', $alat, $matches);
+                preg_match('/Gauge Block\s+([\d\.]+)\s*mm/', $alat, $matches);
                 if(isset($matches[1])) {
                     $gaugeBlockValue = $matches[1];
                 }
             }
             if(str_contains($alat, 'Ring Gauge')) {
                 $hasRingGauge = true;
-                // Extract value, contoh: "Ring Gauge 14 mm (pilihan)" atau "Ring Gauge 25 mm (manual)"
-                if(preg_match('/Ring Gauge\s+([\d\.]+)\s*mm\s*\((pilihan|manual)\)/', $alat, $matches)) {
-                    $ringGaugeValue = $matches[1];
-                    $ringGaugeIsStandard = ($matches[2] === 'pilihan');
-                    $ringGaugeIsManual = ($matches[2] === 'manual');
-                }
+                // TAMPILKAN SELURUH NILAI RING GAUGE APA ADANYA
+                // Hapus kata "Ring Gauge " dari depan
+                $ringGaugeValue = trim(str_replace('Ring Gauge', '', $alat));
+                // Hapus tanda kurung dan isinya jika ada
+                $ringGaugeValue = preg_replace('/\s*\([^)]*\)/', '', $ringGaugeValue);
+                $ringGaugeValue = trim($ringGaugeValue);
             }
         }
         
-        // Tentukan apakah ring gauge termasuk standar (14 atau 50)
-        $ringGaugeIs14or50 = in_array($ringGaugeValue, ['14', '50']);
-        
-        // Ambil data calibrated_by dan verified_by jika ada di headThreadGauge
+        // Ambil data calibrated_by dan verified_by
         $calibratedBy = $calibration->calibratedBy ?? null;
         $verifiedBy = $calibration->verifiedBy ?? null;
     @endphp
@@ -1188,13 +1145,17 @@
             
             <!-- TAMPILKAN NILAI GAUGE BLOCK -->
             @if($hasGaugeBlock && $gaugeBlockValue)
-                <div style="width: 100px; display: inline-block; padding: 2px; border: 1px solid #aaa; border-radius: 4px; font-size: 11pt; background: white; text-align: center;">
+                <span style="display: inline-block; padding: 2px 8px; border: 1px solid #aaa; border-radius: 4px; font-size: 11pt; background: white; text-align: center;">
                     {{ $gaugeBlockValue }} mm
-                </div>
+                </span>
+            @elseif($hasGaugeBlock)
+                <span style="display: inline-block; padding: 2px 8px; border: 1px solid #aaa; border-radius: 4px; font-size: 11pt; background: white; text-align: center;">
+                    {{ $gaugeBlockValue }}
+                </span>
             @else
-                <div style="width: 100px; display: inline-block; padding: 2px; border: 1px dashed #ccc; border-radius: 4px; font-size: 11pt; background: #f9f9f9; color: #999; text-align: center;">
+                <span style="display: inline-block; padding: 2px 8px; border: 1px dashed #ccc; border-radius: 4px; font-size: 11pt; background: #f9f9f9; color: #999; text-align: center;">
                     -
-                </div>
+                </span>
             @endif
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
@@ -1213,34 +1174,23 @@
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt; vertical-align: middle;">
             Ring Gauge
             
-            <!-- PILIHAN SELECT (14 atau 50 mm) -->
-            @if($hasRingGauge && $ringGaugeValue && $ringGaugeIs14or50)
-                <div style="width: 100px; display: inline-block; padding: 2px; border: 1px solid #aaa; border-radius: 4px; font-size: 11pt; background: white; text-align: center; margin-right: 10px;">
-                    {{ $ringGaugeValue }} mm
-                </div>
+            <!-- TAMPILKAN NILAI RING GAUGE APA ADANYA -->
+            @if($hasRingGauge && $ringGaugeValue)
+                <span style="display: inline-block; padding: 2px 8px; border: 1px solid #aaa; border-radius: 4px; font-size: 11pt; background: white; text-align: center;">
+                    {{ $ringGaugeValue }}
+                </span>
+                <span style="margin-left: 5px;"> </span>
+            @elseif($hasRingGauge)
+                <span style="display: inline-block; padding: 2px 8px; border: 1px solid #aaa; border-radius: 4px; font-size: 11pt; background: white; text-align: center;">
+                    {{ $ringGaugeValue }}
+                </span>
+                <span style="margin-left: 5px;"> </span>
             @else
-                <div style="width: 100px; display: inline-block; padding: 2px; border: 1px dashed #ccc; border-radius: 4px; font-size: 11pt; background: #f9f9f9; color: #999; text-align: center; margin-right: 10px;">
-                    @if($hasRingGauge && !$ringGaugeIs14or50)
-                        -
-                    @else
-                        -
-                    @endif
-                </div>
+                <span style="display: inline-block; padding: 2px 8px; border: 1px dashed #ccc; border-radius: 4px; font-size: 11pt; background: #f9f9f9; color: #999; text-align: center;">
+                    -
+                </span>
+                <span style="margin-left: 5px; color:#999;"> </span>
             @endif
-            
-            <span style="margin: 0 10px; color: #666;">,</span>
-            
-            <!-- INPUT MANUAL (untuk nilai selain 14 atau 50) -->
-            <div style="width: 100px; display: inline-block; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 2px 0; background: transparent; text-align: center;">
-                @if($hasRingGauge && $ringGaugeValue && !$ringGaugeIs14or50)
-                    {{ $ringGaugeValue }}
-                @elseif($hasRingGauge && $ringGaugeValue && $ringGaugeIsManual)
-                    {{ $ringGaugeValue }}
-                @else
-                    <span style="color: #999;">-</span>
-                @endif
-            </div>
-            mm
         </td>
         <!-- Hapus garis atas dan bawah sepenuhnya pada sel TTD -->
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none; padding: 10pt 0; vertical-align: top; font-size: 11pt; text-align: left;">
@@ -1261,13 +1211,13 @@
         <!-- Hapus border atas pada sel Nama -->
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
             Nama : 
-            <div style="width: 100%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;">
+            <div style="width: 100%; border: none; border-bottom: 1px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;">
                 {{ $calibratedBy ?? '-' }}
             </div>
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
             Nama : 
-            <div style="width: 100%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;">
+            <div style="width: 100%; border: none; border-bottom: 1px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;">
                 {{ $verifiedBy ?? '-' }}
             </div>
         </td>
@@ -1283,9 +1233,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

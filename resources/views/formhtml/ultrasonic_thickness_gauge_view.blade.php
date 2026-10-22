@@ -532,9 +532,11 @@
         </td>
     </tr>
     <tr style="background: #e8e8e8;">
-        <td style="border:2px solid #000; padding:8px;">
-            <span style="font-weight: bold; color: #000000;">Unit ( )</span>
-        </td>
+      <td style="border:2px solid #000; padding:8px; text-align: center;">
+            <span style="font-weight: bold; color: #000000;">
+                Unit ( {{ $calibration->headThreadGauge->satuan_unit ?? ' ' }} )
+            </span>
+        </div>
         <td style="width: 16%; border:2px solid #000; padding:8px;"><span style="font-weight: bold; color: #000000;">1</span></td>
         <td style="width: 16%; border:2px solid #000; padding:8px;"><span style="font-weight: bold; color: #000000;">2</span></td>
         <td style="width: 16%; border:2px solid #000; padding:8px;"><span style="font-weight: bold; color: #000000;">3</span></td>
@@ -680,9 +682,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

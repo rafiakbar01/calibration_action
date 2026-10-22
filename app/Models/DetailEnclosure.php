@@ -39,16 +39,16 @@ class DetailEnclosure extends Model
         'repetition_number' => 'integer',
         'interval_number' => 'integer',
       
-        'readAlat' => 'decimal:5',
-        'readSensor1' => 'decimal:5',
-        'readSensor2' => 'decimal:5',
-        'readSensor3' => 'decimal:5',
-        'readSensor4' => 'decimal:5',
-        'readSensor5' => 'decimal:5',
-        'readSensor6'  => 'decimal:5',
-        'readSensor7'  => 'decimal:5',
-        'readSensor8'  => 'decimal:5',
-        'readSensor9'  => 'decimal:5',
+        // 'readAlat' => 'decimal:5',
+        // 'readSensor1' => 'decimal:5',
+        // 'readSensor2' => 'decimal:5',
+        // 'readSensor3' => 'decimal:5',
+        // 'readSensor4' => 'decimal:5',
+        // 'readSensor5' => 'decimal:5',
+        // 'readSensor6'  => 'decimal:5',
+        // 'readSensor7'  => 'decimal:5',
+        // 'readSensor8'  => 'decimal:5',
+        // 'readSensor9'  => 'decimal:5',
     ];
 
 

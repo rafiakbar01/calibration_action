@@ -56,7 +56,7 @@ function setupCanvasObserver() {
         });
         
         if (shouldCheck && !isInitialized) {
-            console.log('🔄 DOM changed, checking for canvas...');
+            // console.log('🔄 DOM changed, checking for canvas...');
             checkForCanvasOnce();
         }
     }, 300));
@@ -82,27 +82,27 @@ function checkForCanvasOnce() {
 
 function performCanvasCheck() {
     if (isInitialized) {
-        console.log('⏹️ Already initialized, skipping check');
+        // console.log('⏹️ Already initialized, skipping check');
         return;
     }
     
-    console.log('🔍 Checking for canvas...');
+    // console.log('🔍 Checking for canvas...');
     
     canvas = document.getElementById('drawCanvas');
     if (!canvas) canvas = document.querySelector('canvas.drawing-canvas');
     if (!canvas) canvas = document.querySelector('.canvas-wrapper canvas');
     
     if (!canvas) {
-        console.log('📭 Canvas not found yet');
+        // console.log('📭 Canvas not found yet');
         return;
     }
     
-    console.log('✅ Canvas found! Initializing...');
+    // console.log('✅ Canvas found! Initializing...');
     
     if (observer) {
         observer.disconnect();
         observer = null;
-        console.log('🛑 Observer stopped');
+        // console.log('🛑 Observer stopped');
     }
     
     initializeCanvas();
@@ -111,11 +111,11 @@ function performCanvasCheck() {
 // INITIALIZATION
 function initializeCanvas() {
     if (isInitialized) {
-        console.warn('⚠️ Already initialized!');
+        // console.warn('⚠️ Already initialized!');
         return;
     }
     
-    console.log('🔧 Initializing canvas...');
+    // console.log('🔧 Initializing canvas...');
     
     ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -128,7 +128,7 @@ function initializeCanvas() {
     
     isInitialized = true;
     
-    console.log('✅ Canvas initialized successfully!');
+    // console.log('✅ Canvas initialized successfully!');
     // showNotification('Canvas Surface Plate siap digunakan!');
 }
 
@@ -141,10 +141,28 @@ function setupCanvas() {
     }
     canvas.height = 280;
     
+    // Reset canvas styling
     canvas.style.border = '1px solid #000';
     canvas.style.background = '#fff';
     canvas.style.cursor = 'crosshair';
     canvas.style.width = '100%';
+    
+    // Setup context dengan settings yang benar
+    ctx = canvas.getContext('2d', {
+        alpha: true, // Aktifkan alpha channel
+        desynchronized: false,
+        willReadFrequently: false
+    });
+    
+    // Reset context
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1.0;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    
+    // Clear dengan putih
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     setupCanvasEvents();
     redraw();
@@ -158,7 +176,7 @@ function addTools() {
     }
     
     if (document.getElementById('canvasTools')) {
-        console.log('Tools already exist');
+        // console.log('Tools already exist');
         return;
     }
     
@@ -255,7 +273,7 @@ function addTools() {
         clearAll();
     });
     
-    console.log('✅ Tools added');
+    // console.log('✅ Tools added');
 }
 
 function setTool(toolType) {
@@ -427,11 +445,14 @@ function removeDotAt(x, y) {
 function redraw() {
     if (!isInitialized) return;
     
-    // Clear canvas
-    ctx.fillStyle = '#fff';
+    // Clear canvas dengan putih
+    ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Gambar semua garis yang sudah dibuat
+    // Set ulang composite operation
+    ctx.globalCompositeOperation = 'source-over';
+    
+    // Gambar semua garis
     lines.forEach(line => {
         if (line.points.length > 1) {
             ctx.beginPath();
@@ -441,71 +462,60 @@ function redraw() {
                 ctx.lineTo(line.points[i].x, line.points[i].y);
             }
             
-            ctx.strokeStyle = line.color;
-            ctx.lineWidth = line.width;
+            ctx.strokeStyle = '#000000'; // Warna hitam
+            ctx.lineWidth = 2;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.stroke();
         }
     });
     
-    // Gambar garis yang sedang dibuat (jika ada)
+    // Gambar garis yang sedang dibuat
     if (drawing && currentLine && currentLine.points.length > 1) {
         ctx.beginPath();
         ctx.moveTo(currentLine.points[0].x, currentLine.points[0].y);
         
         for (let i = 1; i < currentLine.points.length; i++) {
-            ctx.lineTo(currentLine.points[i].x, line.points[i].y);
+            ctx.lineTo(currentLine.points[i].x, currentLine.points[i].y);
         }
         
-        ctx.strokeStyle = currentLine.color;
-        ctx.lineWidth = currentLine.width;
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2;
         ctx.stroke();
     }
     
-    // Gambar semua titik (SIMPLE - tanpa angka, hanya titik hitam)
+    // Gambar titik-titik (TANPA ANGKA)
     drawDots();
     
-    // Draw title
-    ctx.fillStyle = '#000';
-    ctx.font = 'bold 14px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('', canvas.width / 2, 20);
-    
-    // Draw instruction
-    ctx.font = '10px Arial';
-    ctx.fillText(
-        window.currentTool === 'draw' 
-            ? '' 
-            : '',
-        canvas.width / 2, 35
-    );
-    
-    // Draw stats
-    ctx.font = '10px Arial';
-    ctx.textAlign = 'left';
-   
-    
-    // Draw border
-    ctx.strokeStyle = '#000';
+    // Gambar border canvas
+    ctx.strokeStyle = '#000000';
     ctx.lineWidth = 1;
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
+    
+    // Hapus semua text/title yang tidak perlu
+    // Hanya canvas kosong dengan gambar saja
 }
 
 function drawDots() {
     dots.forEach((dot) => {
-        // PERBAIKAN: Hanya gambar titik hitam, tanpa angka
+        // Gambar titik hitam SIMPLE tanpa angka
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, 4, 0, Math.PI * 2); // Radius 4px
-        ctx.fillStyle = '#000000'; // Titik warna hitam
+        
+        // Warna hitam solid
+        ctx.fillStyle = '#000000';
         ctx.fill();
         
-        // Optional: border tipis
-        ctx.strokeStyle = '#000';
+        // Border tipis hitam
+        ctx.strokeStyle = '#000000';
         ctx.lineWidth = 1;
         ctx.stroke();
+        
+        // TIDAK ADA ANGKA/LABEL
     });
 }
+
+
 
 function clearAll() {
     if (!isInitialized) return;
@@ -577,13 +587,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // STARTUP
 window.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM loaded, setting up canvas detection...');
+    // console.log('📄 DOM loaded, setting up canvas detection...');
     
     setupCanvasObserver();
     
     setInterval(() => {
         if (!isInitialized) {
-            console.log('⏰ Periodic check for canvas...');
+            // console.log('⏰ Periodic check for canvas...');
             checkForCanvasOnce();
         }
     }, 5000);
@@ -594,4 +604,4 @@ window.clearCanvas = clearAll;
 window.initializeCanvas = initializeCanvas;
 window.setTool = setTool;
 
-console.log('🚀 Canvas Surface Plate Fixed script loaded');
+// console.log('🚀 Canvas Surface Plate Fixed script loaded');

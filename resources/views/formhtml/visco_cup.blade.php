@@ -191,20 +191,35 @@
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
                      <tr>
-                            <td style="width: 20%;">
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Visco Cup"
-                                    placeholder="Visco Cup"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Visco Cup">Visco Cup</option>
+                                    <option value="MANUAL_INPUT">-- Input Manual Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat secara manual"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
-                    </tr>
-
+                        </tr>
+                  
                     <!-- Merek & Kode Alat -->
                     <tr>
                         <td>
@@ -359,7 +374,7 @@
                         </td>
                         <td colspan="3">
                             <div class="d-flex align-items-center">
-                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;" required>
+                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;"  >
                         </td>
                     </tr>
 
@@ -409,22 +424,22 @@
                                 <td><input type="number"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                       
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                       
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                       
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -433,22 +448,22 @@
                                 <td><input type="number"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                       
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                       
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                       
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -510,21 +525,21 @@
         <!-- Semua radio button type cup menggunakan name yang sama -->
         <td style="width:150px;">
             <label>
-                <input type="radio" name="type_cup" value="ZAHN Cup">
+                <input type="checkbox" name="type_cup" value="ZAHN Cup">
                 <span class="bold">ZAHN Cup</span>
             </label>
         </td>
 
         <td style="width:150px;">
             <label>
-                <input type="radio" name="type_cup" value="FORD Cup">
+                <input type="checkbox" name="type_cup" value="FORD Cup">
                 <span class="bold">FORD Cup</span>
             </label>
         </td>
 
         <td style="width:130px;">
             <label>
-                <input type="radio" name="type_cup" value="NK-2">
+                <input type="checkbox" name="type_cup" value="NK-2">
                 <span class="bold">NK-2</span>
             </label>
         </td>
@@ -533,7 +548,7 @@
             <div style="display: inline-block; margin-right: 15px; vertical-align: top;">
                 <!-- Radio button Others dalam grup yang sama -->
                 <label>
-                    <input type="radio" name="others" value="Others">
+                    <input type="checkbox" name="others" value="Others">
                     <span class="bold">Others :</span>
                 </label>
                 <input type="text" name="type_other" class="input-line" style="width: 100px; margin-left: 5px;"
@@ -543,11 +558,11 @@
             <div style="display: inline-block; vertical-align: top;">
                 <span class="bold">Kode Nomor :</span>
                 <!-- Semua radio button kode nomor menggunakan name yang sama -->
-                <label><input type="radio" name="kode_nomor" value="1">1</label>
-                <label><input type="radio" name="kode_nomor" value="2">2</label>
-                <label><input type="radio" name="kode_nomor" value="3">3</label>
-                <label><input type="radio" name="kode_nomor" value="4">4</label>
-                <label><input type="radio" name="kode_nomor" value="5">5</label>
+                <label><input type="checkbox" name="kode_nomor" value="1">1</label>
+                <label><input type="checkbox" name="kode_nomor" value="2">2</label>
+                <label><input type="checkbox" name="kode_nomor" value="3">3</label>
+                <label><input type="checkbox" name="kode_nomor" value="4">4</label>
+                <label><input type="checkbox" name="kode_nomor" value="5">5</label>
             </div>
         </td>
     </tr>
@@ -690,17 +705,17 @@
     <!-- Viscosity -->
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
-            <input type="radio" name="alat_standar[]" value="Viscosity Standard Paragon"
+            <input type="checkbox" name="alat_standar[]" value="Viscosity Standard Paragon"
                    style="width: 18pt; height: 18pt; cursor: pointer;">
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
             Viscosity Standard Paragon :
             <div style="margin-top:6pt;">
-                <label><input type="radio" name="viscosity_type" value="N35"> N35</label>
+                <label><input type="checkbox" name="viscosity_type" value="N35"> N35</label>
                 &nbsp;&nbsp;
-                <label><input type="radio" name="viscosity_type" value="S60"> S60</label>
+                <label><input type="checkbox" name="viscosity_type" value="S60"> S60</label>
                 &nbsp;&nbsp;
-                <label><input type="radio" name="viscosity_type" value="D1000"> D1000</label>
+                <label><input type="checkbox" name="viscosity_type" value="D1000"> D1000</label>
             </div>
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
@@ -710,15 +725,15 @@
     <!-- Stopwatch -->
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
-            <input type="radio" name="alat_standar[]" value="Digital Stopwatch"
+            <input type="checkbox" name="alat_standar[]" value="Digital Stopwatch"
                    style="width: 18pt; height: 18pt; cursor: pointer;">
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
             Digital Stopwatch :
             <div style="margin-top:6pt;">
-                <label><input type="radio" name="stopwatch_type" value="WF.002"> WF.002</label>
+                <label><input type="checkbox" name="stopwatch_type" value="WF.002"> WF.002</label>
                 &nbsp;&nbsp;
-                <label><input type="radio" name="stopwatch_type" value="WF.003"> WF.003</label>
+                <label><input type="checkbox" name="stopwatch_type" value="WF.003"> WF.003</label>
             </div>
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
@@ -728,15 +743,15 @@
     <!-- Thermometer -->
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
-            <input type="radio" name="alat_standar[]" value="Thermometer"
+            <input type="checkbox" name="alat_standar[]" value="Thermometer"
                    style="width: 18pt; height: 18pt; cursor: pointer;">
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
             Thermometer :
             <div style="margin-top:6pt;">
-                <label><input type="radio" name="thermometer_type" value="TES"> TES</label>
+                <label><input type="checkbox" name="thermometer_type" value="TES"> TES</label>
                 &nbsp;&nbsp;
-                <label><input type="radio" name="thermometer_type" value="TFA"> TFA</label>
+                <label><input type="checkbox" name="thermometer_type" value="TFA"> TFA</label>
             </div>
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;">
@@ -758,7 +773,7 @@
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none;">
             Nama :
             <input type="text" name="calibrated_by"
-                   style="width:100%; border:none; border-bottom:2px solid #000; background:transparent;">
+                   style="width:100%; border:none; border-bottom:2px solid #000; background:transparent;"  value="{{ auth()->user()->nama ?? 'System' }}"  readonly>
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none;">
             Nama :
@@ -776,9 +791,9 @@
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
                         </button>
                         
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
-                        </button>
+                        <!--<button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-redo me-2"></i>Reset Form-->
+                        <!--</button>-->
                     </div>
                 </div>
 
@@ -789,6 +804,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
 // JavaScript form validation
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('kalibrasiForm');

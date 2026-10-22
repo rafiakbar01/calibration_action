@@ -17,6 +17,7 @@ class DetailConductivityMeter extends Model
 
     protected $fillable = [
         'calibration_id',
+        'form_index',
         'nilaiCRM',
         'rep01',
         'rep02',
@@ -30,16 +31,16 @@ class DetailConductivityMeter extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'nilaiCRM' => 'decimal:5',
-        'rep01' => 'decimal:5',
-        'rep02' => 'decimal:5',
-        'rep03' => 'decimal:5',
-        'rep04' => 'decimal:5',
-        'rep05' => 'decimal:5',
-        'Resolusi' => 'decimal:5',
-        'suhuCRM' => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'nilaiCRM' => 'decimal:5',
+    //     'rep01' => 'decimal:5',
+    //     'rep02' => 'decimal:5',
+    //     'rep03' => 'decimal:5',
+    //     'rep04' => 'decimal:5',
+    //     'rep05' => 'decimal:5',
+    //     'Resolusi' => 'decimal:5',
+    //     'suhuCRM' => 'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

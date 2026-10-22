@@ -339,17 +339,18 @@
             <table class="kalibrasi-main-table">
 
     <!-- Nama Alat -->
-   <tr>
+<tr>
     <td style="width: 20%;">
         <p style="margin: 0; color: #000000;">Nama Alat</p>
     </td>
     <td colspan="3">
-        <select name="namaAlat" class="kalibrasi-input" onchange="updateFormType(this.value)" required 
+        <!-- Select dropdown untuk pilihan alat -->
+        <select name="nama_alat_select" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" 
                 style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
-            <option value="">-- Pilih Jenis Alat --</option>
+            <option value="">-- Pilih Jenis Alat Enclosure --</option>
             @php
                 $alatOptions = ['Oven', 'Freezer', 'Furnace', 'Incubator', 'Waterbath', 'Autoclave'];
-                $selectedAlat = old('namaAlat', $calibration->namaAlat ?? '');
+                $selectedAlat = old('nama_alat_select', $calibration->namaAlat ?? '');
             @endphp
             
             @foreach($alatOptions as $alat)
@@ -357,6 +358,7 @@
                     {{ $alat }}
                 </option>
             @endforeach
+            <option value="MANUAL_INPUT">-- Input Manual Nama Alat --</option>
             
             {{-- Jika ada nilai custom yang tidak ada di options --}}
             @if($selectedAlat && !in_array($selectedAlat, $alatOptions))
@@ -364,12 +366,24 @@
             @endif
         </select>
         
+        <!-- Input Manual - HIDDEN AWALNYA -->
+        <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+            <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                   placeholder="Ketik nama alat Enclosure secara manual"
+                   value="{{ old('nama_alat_manual', (!in_array($selectedAlat, $alatOptions) && $selectedAlat ? $selectedAlat : '')) }}"
+                   style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                   oninput="syncNamaAlat()">
+        </div>
+        
+        <!-- Hidden input untuk menyimpan nama alat final -->
+        <input type="hidden" name="nama_alat_final" id="nama_alat_final" 
+               value="{{ old('nama_alat_final', $calibration->namaAlat ?? '') }}">
+        
         <!-- Hidden input untuk form_type -->
-        <input type="hidden" name="form_type" id="form_type_input" 
+        <input type="hidden" name="form_type" id="form_type" 
                value="{{ old('form_type', $calibration->form_type ?? 'enclosure') }}">
     </td>
 </tr>
-
 
     <!-- Merek & Kode -->
     <tr>
@@ -472,6 +486,14 @@
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
         </td>
     </tr>
+    
+      <tr>
+        <td><p style="margin:0;color:#000;">Kode TH</p></td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input"
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
+        </td>
+    </tr>
 </table>
 
 
@@ -529,21 +551,21 @@
 
             <tr>
                 <td class="bg-light fw-bold">Suhu (°C)</td>
-                <td><input type="text" name="RT_condition1" class="kondisi-input"
+                <td><input type="number" step="any" name="RT_condition1" class="kondisi-input"
                            value="{{ $calibration->RT_condition1 }}"></td>
-                <td><input type="text" name="RT_condition2" class="kondisi-input"
+                <td><input type="number" step="any" name="RT_condition2" class="kondisi-input"
                            value="{{ $calibration->RT_condition2 }}"></td>
-                <td><input type="text" name="RT_condition3" class="kondisi-input"
+                <td><input type="number" step="any" name="RT_condition3" class="kondisi-input"
                            value="{{ $calibration->RT_condition3 }}"></td>
             </tr>
 
             <tr>
                 <td class="bg-light fw-bold">RH (%)</td>
-                <td><input type="text" name="RH_condition1" class="kondisi-input"
+                <td><input type="number" step="any" name="RH_condition1" class="kondisi-input"
                            value="{{ $calibration->RH_condition1 }}"></td>
-                <td><input type="text" name="RH_condition2" class="kondisi-input"
+                <td><input type="number" step="any" name="RH_condition2" class="kondisi-input"
                            value="{{ $calibration->RH_condition2 }}"></td>
-                <td><input type="text" name="RH_condition3" class="kondisi-input"
+                <td><input type="number" step="any" name="RH_condition3" class="kondisi-input"
                            value="{{ $calibration->RH_condition3 }}"></td>
             </tr>
         </table>
@@ -570,8 +592,146 @@
         </div>
     </div>
     
-    <!-- Spacer -->
-    <span style="width:359.85pt; font-family:Arial; display:inline-block; -aw-tabstop-align:left; -aw-tabstop-pos:359.9pt">&#xa0;</span>
+    <!-- Canvas Edit Penempatan Sensor (Tengah) -->
+    <div style="display: inline-block; vertical-align: top; text-align: center; margin: 0 10px; min-width: 200px; max-width: 260px;">
+        <strong style="font-family: Arial; font-size: 9pt; color: #000000;">Penempatan Sensor:</strong>
+        @php
+            $existingImg = $calibration->headEnclosure->keterangan_gambar ?? null;
+        @endphp
+        <div class="enclosure-edit-canvas-wrapper" style="border: 2px solid #000; background: #fff; margin-top: 4px; position: relative;">
+            <canvas id="enclosureEditCanvas" height="200" style="display:block; width:100%; cursor:crosshair; touch-action:none;"></canvas>
+        </div>
+        <div style="margin-top: 5px; text-align: center;">
+            <button type="button" id="enclosureEditClearBtn" class="btn btn-danger btn-sm"
+                style="padding: 3px 12px; font-size: 8pt; font-family: Arial;
+                       background-color: #dc3545 !important; color: #ffffff !important; border: none;
+                       border-radius: 3px; cursor: pointer; display: inline-block !important; visibility: visible !important;">
+                🗑️ Hapus Gambar
+            </button>
+        </div>
+        <div style="font-family: Arial; font-size: 8pt; color: #666; text-align: center; margin-top: 3px; font-style: italic;">
+            Gambar penempatan sensor di sini
+        </div>
+        <!-- Input hidden gambar lama untuk referensi -->
+        <input type="hidden" id="enclosureEditExistingImg" value="{{ $existingImg && file_exists(public_path($existingImg)) ? '/' . $existingImg : ($existingImg ?? '') }}">
+        <!-- Input hidden untuk data canvas baru -->
+        <input type="hidden" name="keterangan_gambar" id="enclosureEditCanvasHidden">
+    </div>
+
+    <script>
+    // =============================================
+    // ENCLOSURE EDIT FREE-DRAW CANVAS
+    // =============================================
+    (function() {
+        function initEnclosureEditCanvas() {
+            var canvas = document.getElementById('enclosureEditCanvas');
+            if (!canvas) return;
+
+            var wrapper = canvas.parentElement;
+            canvas.width = wrapper.clientWidth || 240;
+            canvas.height = 200;
+
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Load gambar yang sudah ada
+            var existingImgEl = document.getElementById('enclosureEditExistingImg');
+            var existingSrc = existingImgEl ? existingImgEl.value : '';
+            if (existingSrc && existingSrc.trim() !== '') {
+                var img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    saveCanvas();
+                };
+                img.src = existingSrc;
+            }
+
+            var drawing = false;
+
+            function getPos(e) {
+                var rect = canvas.getBoundingClientRect();
+                var scaleX = canvas.width / rect.width;
+                var scaleY = canvas.height / rect.height;
+                if (e.touches) {
+                    return {
+                        x: (e.touches[0].clientX - rect.left) * scaleX,
+                        y: (e.touches[0].clientY - rect.top) * scaleY
+                    };
+                }
+                return {
+                    x: (e.clientX - rect.left) * scaleX,
+                    y: (e.clientY - rect.top) * scaleY
+                };
+            }
+
+            function startDraw(e) {
+                e.preventDefault();
+                drawing = true;
+                var pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            }
+
+            function draw(e) {
+                if (!drawing) return;
+                e.preventDefault();
+                var pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+
+            function stopDraw(e) {
+                if (!drawing) return;
+                drawing = false;
+                ctx.beginPath();
+                saveCanvas();
+            }
+
+            function saveCanvas() {
+                var hidden = document.getElementById('enclosureEditCanvasHidden');
+                if (hidden) {
+                    hidden.value = canvas.toDataURL('image/png');
+                }
+            }
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mouseleave', stopDraw);
+            canvas.addEventListener('touchstart', startDraw, {passive: false});
+            canvas.addEventListener('touchmove', draw, {passive: false});
+            canvas.addEventListener('touchend', stopDraw);
+
+            // Tombol Hapus Gambar (Reset Canvas)
+            var clearBtn = document.getElementById('enclosureEditClearBtn');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    saveCanvas();
+                });
+            }
+
+            var form = canvas.closest('form');
+            if (form) {
+                form.addEventListener('submit', saveCanvas);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initEnclosureEditCanvas);
+        } else {
+            initEnclosureEditCanvas();
+        }
+    })();
+    </script>
     
     <!-- Gambar Kanan -->
     <div style="display: inline-block; vertical-align: top; text-align: center; margin-left: 20px;">
@@ -640,8 +800,8 @@ if ($addEnclosuresData->isNotEmpty()) {
         $tsettingValue = null;
         if (isset($add->TSetting)) {
             $tsettingValue = $add->TSetting;
-        } elseif (isset($add->tsetting)) {
-            $tsettingValue = $add->tsetting;
+        } elseif (isset($add->Tsetting)) {
+            $tsettingValue = $add->Tsetting;
         } elseif (isset($add['TSetting'])) {
             $tsettingValue = $add['TSetting'];
         } elseif (isset($add['tsetting'])) {
@@ -833,7 +993,7 @@ if ($repetition < 1) {
                 {{ $interval }}
             </td>
             <td style="border:2px solid #000; padding:0; vertical-align:middle;">
-                <input type="text" 
+                <input type="number" step="any"
                        name="alat_{{ $p }}_{{ $interval }}" 
                        value="{{ $alatOldValue }}"
                        style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;box-sizing:border-box;"
@@ -873,7 +1033,7 @@ if ($repetition < 1) {
                 $sensorOldValue = old("sensor_{$p}_{$interval}_{$s}", $sensorValue);
             @endphp
             <td style="border:2px solid #000; padding:0; vertical-align:middle;">
-                <input type="text" 
+                <input type="number" step="any" 
                        name="sensor_{{ $p }}_{{ $interval }}_{{ $s }}" 
                        value="{{ $sensorOldValue }}"
                        style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;box-sizing:border-box;"
@@ -913,18 +1073,18 @@ if ($repetition < 1) {
                 : ''
         );
 
-        $hasAlat1 = str_contains($alatStandar, 'Mini Data Logger Graphtec GL-220');
+        $hasAlat1 = str_contains($alatStandar, 'Midi Data Logger Graphtec GL-220');
     @endphp
 
     <input type="checkbox" name="standard_list[]"
-           value="Mini Data Logger Graphtec GL-220"
+           value="Midi Data Logger Graphtec GL-220"
            {{ $hasAlat1 ? 'checked' : '' }}
            style="transform: scale(1.2); cursor:pointer;">
 </td>
 
         <td colspan="2" style="border: 1px solid #000; padding-left: 12px; font-size: 9pt; vertical-align: middle; color: #000000;">
             <span style="display: block; padding: 5px 0;">
-                Mini Data Logger Graphtec GL-220
+                Midi Data Logger Graphtec GL-220
             </span>
         </td>
 
@@ -949,18 +1109,18 @@ if ($repetition < 1) {
                 : ''
         );
 
-        $hasAlat2 = str_contains($alatStandar, 'Mini Data Logger Graphtec GL-240');
+        $hasAlat2 = str_contains($alatStandar, 'Midi Data Logger Graphtec GL-240');
     @endphp
 
     <input type="checkbox" name="standard_list[]"
-           value="Mini Data Logger Graphtec GL-240"
+           value="Midi Data Logger Graphtec GL-240"
            {{ $hasAlat2 ? 'checked' : '' }}
            style="transform: scale(1.2); cursor:pointer;">
 </td>
 
         <td colspan="2" style="border: 1px solid #000; padding-left: 12px; font-size: 9pt; vertical-align: middle; color: #000000;">
             <span style="display: block; padding: 5px 0;">
-                Mini Data Logger Graphtec GL-240
+                Midi Data Logger Graphtec GL-240
             </span>
         </td>
     </tr>
@@ -976,18 +1136,18 @@ if ($repetition < 1) {
                 : ''
         );
 
-        $hasAlat3 = str_contains($alatStandar, 'Mini Data Logger Huato');
+        $hasAlat3 = str_contains($alatStandar, 'Midi Data Logger Huato');
     @endphp
 
     <input type="checkbox" name="standard_list[]"
-           value="Mini Data Logger Huato"
+           value="Midi Data Logger Huato"
            {{ $hasAlat3 ? 'checked' : '' }}
            style="transform: scale(1.2); cursor:pointer;">
 </td>
 
         <td colspan="2" style="border: 1px solid #000; padding-left: 12px; font-size: 9pt; vertical-align: middle; color: #000000;">
             <span style="display: block; padding: 5px 0;">
-                 Mini Data Logger Huato
+                 Midi Data Logger Huato
             </span>
         </td>
     </tr>
@@ -1024,7 +1184,7 @@ if ($repetition < 1) {
     <input type="text"
            name="verifiedBy"
            value="{{ old('verifiedBy', $calibration->verifiedBy ?? '') }}"
-           style="flex:1; border:none; border-bottom:1px solid #000; font-size:9pt; background:transparent;">
+           style="flex:1; border:none; border-bottom:1px solid #000; font-size:9pt; background:transparent;" readonly>
 </div>
 
         </td>
@@ -1079,7 +1239,7 @@ if ($repetition < 1) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -1152,7 +1312,7 @@ if ($repetition < 1) {
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data
@@ -1209,12 +1369,12 @@ if ($repetition < 1) {
         
        
         
-        // 4. Validasi alat standar (minimal satu dipilih)
+        // 4. Validasi alat standar (Midimal satu dipilih)
         if (alatStandarCheckboxes.length === 0) {
             const alatStandarSection = document.querySelector('.alat-standar-table');
             if (alatStandarSection) {
                 alatStandarSection.style.border = '2px solid #ffc107';
-                warningMessages.push('Pilih minimal satu alat standar');
+                warningMessages.push('Pilih Midimal satu alat standar');
                 console.warn('⚠️ No alat standar selected');
             }
         } else {

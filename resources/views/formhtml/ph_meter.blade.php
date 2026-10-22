@@ -223,19 +223,35 @@
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
                      <tr>
-                            <td style="width: 20%;">
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="PH Meter"
-                                    placeholder="PH Meter"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="PH Meter">PH Meter</option>
+                                    <option value="MANUAL_INPUT">-- Input Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
-                    </tr>
+                        </tr>
+                   
 
                     <!-- Merek & Kode Alat -->
                     <tr>
@@ -391,7 +407,7 @@
                         </td>
                         <td colspan="3">
                             <div class="d-flex align-items-center">
-                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;" required>
+                                <input type="text" name="lokasi_pt" class="kalibrasi-input me-3" placeholder="Masukkan lokasi pt" style="width: 60%;text-align: left;"  >
                             </div>
                         </td>
                     </tr>
@@ -438,22 +454,22 @@
                                 <td><input type="number"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                        
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                        
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                        
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -462,22 +478,22 @@
                                 <td><input type="number"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                        
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                        
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                        
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -557,140 +573,140 @@
         <!-- BARIS 1 -->
         <tr style="height:60pt">
             <td style="width:150pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.01" name="buffer_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text"   name="buffer_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_1_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_1_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_1_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_1_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_1_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_1_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_1_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_1_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_1_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_1_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="resolusi_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="resolusi_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.1" name="suhu_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="suhu_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
         </tr>
         
         <!-- BARIS 2 -->
         <tr style="height:60pt">
             <td style="width:150pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.01" name="buffer_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="buffer_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_2_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_2_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_2_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_2_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_2_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_2_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_2_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_2_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_2_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_2_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="resolusi_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="resolusi_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.1" name="suhu_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="suhu_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
         </tr>
         
         <!-- BARIS 3 -->
         <tr style="height:60pt">
             <td style="width:150pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.01" name="buffer_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="buffer_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_3_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_3_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_3_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_3_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_3_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_3_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_3_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_3_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_3_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_3_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="resolusi_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="resolusi_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.1" name="suhu_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="suhu_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
         </tr>
         
         <!-- BARIS 4 -->
         <tr style="height:60pt">
             <td style="width:150pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.01" name="buffer_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="buffer_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_4_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_4_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_4_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_4_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_4_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_4_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_4_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_4_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_4_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_4_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="resolusi_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="resolusi_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.1" name="suhu_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="suhu_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
         </tr>
         
         <!-- BARIS 5 -->
         <tr style="height:60pt">
             <td style="width:150pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.01" name="buffer_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="buffer_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_5_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_5_1" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_5_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_5_2" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_5_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_5_3" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_5_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_5_4" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:90pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="pembacaan_5_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="pembacaan_5_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.001" name="resolusi_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="resolusi_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
             <td style="width:120pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; vertical-align:middle; text-align:center; padding:10px">
-            <input type="number" step="0.1" name="suhu_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
+            <input type="text" name="suhu_5" style="width:100%; height:50px; text-align:center; font-size:16pt; border:none; outline:none">
             </td>
         </tr>
         </table>
@@ -745,7 +761,7 @@
                 <div style="text-align: center; margin-bottom: 15px;">
                     <p style="margin: 0 0 10px 0; font-size: 11px;">TTD :</p>
                     <div style="border-bottom: 1px solid black; width: 80%; margin: 0 auto 15px;"></div>
-                    <input type="text" name="calibrated_by" placeholder="Nama" style="width: 90%; padding: 5px; border: 1px solid #ccc; text-align: center; font-size: 11px;">
+                    <input type="text" name="calibrated_by" placeholder="Nama" style="width: 90%; padding: 5px; border: 1px solid #ccc; text-align: center; font-size: 11px;"  value="{{ auth()->user()->nama ?? 'System' }}"  readonly>
                 </div>
                 </td>
                 <td rowspan="2" style="border: 1px solid black; padding: 10px; text-align: center; vertical-align: top;">
@@ -774,9 +790,9 @@
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
                         </button>
                         
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
-                        </button>
+                        <!--<button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-redo me-2"></i>Reset Form-->
+                        <!--</button>-->
                     </div>
                 </div>
 
@@ -787,6 +803,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
     // JavaScript form validation
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('kalibrasiForm');

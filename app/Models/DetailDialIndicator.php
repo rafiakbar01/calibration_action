@@ -9,11 +9,11 @@ class DetailDialIndicator extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'ulanganNaik' => 'decimal:5',
-        'ulanganTurun' => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'ulanganNaik' => 'decimal:5',
+    //     'ulanganTurun' => 'decimal:5',
+    // ];
 
     protected $fillable = [
         'calibration_id', 

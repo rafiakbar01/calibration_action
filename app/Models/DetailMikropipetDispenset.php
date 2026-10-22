@@ -9,29 +9,29 @@ class DetailMikropipetDispenset extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'm0' => 'decimal:5',
-        'm1' => 'decimal:5',
-        'm2' => 'decimal:5',
-        'm3' => 'decimal:5',
-        'm4' => 'decimal:5',
-        'm5' => 'decimal:5',
-        'm6' => 'decimal:5',
-        'm7' => 'decimal:5',
-        'm8' => 'decimal:5',
-        'm9' => 'decimal:5',
-        'm10' => 'decimal:5',
-        'm11' => 'decimal:5',
-        'TUdaraS' => 'decimal:5',
-        'TUdaraE' => 'decimal:5',
-        'RHS' => 'decimal:5',
-        'RHE' => 'decimal:5',
-        'PUdaraS' => 'decimal:5',
-        'PUdaraE' => 'decimal:5',
-        'TAirS' => 'decimal:5',
-        'TAirE' => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'm0' => 'decimal:5',
+    //     'm1' => 'decimal:5',
+    //     'm2' => 'decimal:5',
+    //     'm3' => 'decimal:5',
+    //     'm4' => 'decimal:5',
+    //     'm5' => 'decimal:5',
+    //     'm6' => 'decimal:5',
+    //     'm7' => 'decimal:5',
+    //     'm8' => 'decimal:5',
+    //     'm9' => 'decimal:5',
+    //     'm10' => 'decimal:5',
+    //     'm11' => 'decimal:5',
+    //     'TUdaraS' => 'decimal:5',
+    //     'TUdaraE' => 'decimal:5',
+    //     'RHS' => 'decimal:5',
+    //     'RHE' => 'decimal:5',
+    //     'PUdaraS' => 'decimal:5',
+    //     'PUdaraE' => 'decimal:5',
+    //     'TAirS' => 'decimal:5',
+    //     'TAirE' => 'decimal:5',
+    // ];
 
     protected $fillable = [
         'calibration_id', 
@@ -57,6 +57,7 @@ class DetailMikropipetDispenset extends Model
         'TAirS',
         'TAirE',
         'waktu',
+        'form_index'
     ];
 
     // ✅ Relation langsung ke Calibration

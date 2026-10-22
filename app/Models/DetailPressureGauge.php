@@ -22,11 +22,11 @@ class DetailPressureGauge extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'STDNaik'   => 'decimal:5',
-        'STDTurun'  => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'STDNaik'   => 'decimal:5',
+    //     'STDTurun'  => 'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

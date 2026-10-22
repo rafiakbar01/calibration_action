@@ -31,6 +31,7 @@ class AddOutsideMicrometer extends Model
         'jumlahSpindle1',
         'ukuranSpindle2',
         'jumlahSpindle2',
+        'form_index'
     ];
 
     /**
@@ -38,12 +39,12 @@ class AddOutsideMicrometer extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'ukuranAnvil1' => 'decimal:2',
-        'ukuranAnvil2' => 'decimal:2',
-        'ukuranSpindle1' => 'decimal:2',
-        'ukuranSpindle2' => 'decimal:2',
-    ];
+    // protected $casts = [
+    //     'ukuranAnvil1' => 'decimal:2',
+    //     'ukuranAnvil2' => 'decimal:2',
+    //     'ukuranSpindle1' => 'decimal:2',
+    //     'ukuranSpindle2' => 'decimal:2',
+    // ];
 
     /**
      * Get the calibration that owns the outside micrometer data.

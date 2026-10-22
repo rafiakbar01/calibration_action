@@ -12,7 +12,7 @@ class HeadTimbanganMoisture extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','setengah_kapasitas','kapasitas_max','form_index'
     ];
 
     public function calibration()

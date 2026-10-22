@@ -19,21 +19,21 @@ class DetailFeelerGauge extends Model
         'GBA1','UUTB1',
         'GBA2','UUTB2',
         'GBA3','UUTC3',
-        'GBA4','UUTC4'
+        'GBA4','UUTC4','form_index'
     ];
 
     protected $casts = [
-        'nominalUUT' => 'decimal:5',
-        'nominalGB'  => 'decimal:5',
+        'nominalUUT' => 'string',
+        'nominalGB'  => 'string',
 
-        'GBA1'  => 'decimal:5',
-        'UUTB1' => 'decimal:5',
-        'GBA2'  => 'decimal:5',
-        'UUTB2' => 'decimal:5',
-        'GBA3'  => 'decimal:5',
-        'UUTC3' => 'decimal:5',
-        'GBA4'  => 'decimal:5',
-        'UUTC4' => 'decimal:5',
+        'GBA1'  => 'string',
+        'UUTB1' => 'string',
+        'GBA2'  => 'string',
+        'UUTB2' => 'string',
+        'GBA3'  => 'string',
+        'UUTC3' => 'string',
+        'GBA4'  => 'string',
+        'UUTC4' => 'string',
         
     ];
 

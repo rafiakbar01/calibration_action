@@ -25,14 +25,14 @@ class DetailPhMeter extends Model
     ];
 
     protected $casts = [
-        'nilaiBuffer' => 'decimal:5',
-        'rep01'  => 'decimal:5',
-        'rep02'  => 'decimal:5',
-        'rep03'  => 'decimal:5',
-        'rep04'  => 'decimal:5',
-        'rep05'  => 'decimal:5',
-        'Resolusi'  => 'decimal:5',
-        'TBuffer' => 'decimal:5',
+        'nilaiBuffer' => 'string',
+        'rep01'  => 'string',
+        'rep02'  => 'string',
+        'rep03'  => 'string',
+        'rep04'  => 'string',
+        'rep05'  => 'string',
+        'Resolusi'  => 'string',
+        'TBuffer' => 'string',
 
     ];
 

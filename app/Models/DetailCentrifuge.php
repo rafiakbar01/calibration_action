@@ -20,19 +20,20 @@ class DetailCentrifuge extends Model
         'STD3',
         'STD4',
         'STD5',
-        'resolusi'
+        'resolusi',
+        'form_index'
     ];
 
-    protected $casts = [
-        'nominalRPM'=>'decimal:3',
-        'STD1'=>'decimal:3',
-        'STD2'=>'decimal:3',
-        'STD3'=>'decimal:3',
-        'STD4'=>'decimal:3',
-        'STD5'=>'decimal:3',
-        'resolusi'=>'decimal:3'
+    // protected $casts = [
+    //     'nominalRPM'=>'decimal:3',
+    //     'STD1'=>'decimal:3',
+    //     'STD2'=>'decimal:3',
+    //     'STD3'=>'decimal:3',
+    //     'STD4'=>'decimal:3',
+    //     'STD5'=>'decimal:3',
+    //     'resolusi'=>'decimal:3'
         
-    ];
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

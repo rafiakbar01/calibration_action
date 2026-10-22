@@ -42,38 +42,38 @@ class AddTimbanganBias extends Model
         'offCenterRight','offCenterLeft'
     ];
 
-    protected $casts = [
-        // Setengah Kapasitas Maksimal - MI (1-10)
-        'HalfMax_m1_01'=>'decimal:5','HalfMax_m1_02'=>'decimal:5','HalfMax_m1_03'=>'decimal:5',
-        'HalfMax_m1_04'=>'decimal:5','HalfMax_m1_05'=>'decimal:5','HalfMax_m1_06'=>'decimal:5',
-        'HalfMax_m1_07'=>'decimal:5','HalfMax_m1_08'=>'decimal:5','HalfMax_m1_09'=>'decimal:5',
-        'HalfMax_m1_10'=>'decimal:5',
+    // protected $casts = [
+    //     // Setengah Kapasitas Maksimal - MI (1-10)
+    //     'HalfMax_m1_01'=>'decimal:5','HalfMax_m1_02'=>'decimal:5','HalfMax_m1_03'=>'decimal:5',
+    //     'HalfMax_m1_04'=>'decimal:5','HalfMax_m1_05'=>'decimal:5','HalfMax_m1_06'=>'decimal:5',
+    //     'HalfMax_m1_07'=>'decimal:5','HalfMax_m1_08'=>'decimal:5','HalfMax_m1_09'=>'decimal:5',
+    //     'HalfMax_m1_10'=>'decimal:5',
 
-        // Setengah Kapasitas Maksimal - ZI (1-10)
-        'HalfMax_z1_01'=>'decimal:5','HalfMax_z1_02'=>'decimal:5','HalfMax_z1_03'=>'decimal:5',
-        'HalfMax_z1_04'=>'decimal:5','HalfMax_z1_05'=>'decimal:5','HalfMax_z1_06'=>'decimal:5',
-        'HalfMax_z1_07'=>'decimal:5','HalfMax_z1_08'=>'decimal:5','HalfMax_z1_09'=>'decimal:5',
-        'HalfMax_z1_10'=>'decimal:5',
+    //     // Setengah Kapasitas Maksimal - ZI (1-10)
+    //     'HalfMax_z1_01'=>'decimal:5','HalfMax_z1_02'=>'decimal:5','HalfMax_z1_03'=>'decimal:5',
+    //     'HalfMax_z1_04'=>'decimal:5','HalfMax_z1_05'=>'decimal:5','HalfMax_z1_06'=>'decimal:5',
+    //     'HalfMax_z1_07'=>'decimal:5','HalfMax_z1_08'=>'decimal:5','HalfMax_z1_09'=>'decimal:5',
+    //     'HalfMax_z1_10'=>'decimal:5',
 
-        // Kapasitas Maksimal - ZI (1-10)
-        'FullMax_z1_01'=>'decimal:5','FullMax_z1_02'=>'decimal:5','FullMax_z1_03'=>'decimal:5',
-        'FullMax_z1_04'=>'decimal:5','FullMax_z1_05'=>'decimal:5','FullMax_z1_06'=>'decimal:5',
-        'FullMax_z1_07'=>'decimal:5','FullMax_z1_08'=>'decimal:5','FullMax_z1_09'=>'decimal:5',
-        'FullMax_z1_10'=>'decimal:5',
+    //     // Kapasitas Maksimal - ZI (1-10)
+    //     'FullMax_z1_01'=>'decimal:5','FullMax_z1_02'=>'decimal:5','FullMax_z1_03'=>'decimal:5',
+    //     'FullMax_z1_04'=>'decimal:5','FullMax_z1_05'=>'decimal:5','FullMax_z1_06'=>'decimal:5',
+    //     'FullMax_z1_07'=>'decimal:5','FullMax_z1_08'=>'decimal:5','FullMax_z1_09'=>'decimal:5',
+    //     'FullMax_z1_10'=>'decimal:5',
 
-        // Kapasitas Maksimal - MI (1-10)
-        'FullMax_m1_01'=>'decimal:5','FullMax_m1_02'=>'decimal:5','FullMax_m1_03'=>'decimal:5',
-        'FullMax_m1_04'=>'decimal:5','FullMax_m1_05'=>'decimal:5','FullMax_m1_06'=>'decimal:5',
-        'FullMax_m1_07'=>'decimal:5','FullMax_m1_08'=>'decimal:5','FullMax_m1_09'=>'decimal:5',
-        'FullMax_m1_10'=>'decimal:5',
+    //     // Kapasitas Maksimal - MI (1-10)
+    //     'FullMax_m1_01'=>'decimal:5','FullMax_m1_02'=>'decimal:5','FullMax_m1_03'=>'decimal:5',
+    //     'FullMax_m1_04'=>'decimal:5','FullMax_m1_05'=>'decimal:5','FullMax_m1_06'=>'decimal:5',
+    //     'FullMax_m1_07'=>'decimal:5','FullMax_m1_08'=>'decimal:5','FullMax_m1_09'=>'decimal:5',
+    //     'FullMax_m1_10'=>'decimal:5',
 
-        'bebanOffCenter'=>'decimal:5',
-        'offCenterFront'=>'decimal:5',
-        'offCenterMiddle'=>'decimal:5',
-        'offCenterBack'=>'decimal:5',
-        'offCenterRight'=>'decimal:5',
-        'offCenterLeft'=>'decimal:5',
-    ];
+    //     'bebanOffCenter'=>'decimal:5',
+    //     'offCenterFront'=>'decimal:5',
+    //     'offCenterMiddle'=>'decimal:5',
+    //     'offCenterBack'=>'decimal:5',
+    //     'offCenterRight'=>'decimal:5',
+    //     'offCenterLeft'=>'decimal:5',
+    // ];
 
     /**
      * Get the calibration that owns the dial indicator data.

@@ -12,7 +12,7 @@ class HeadStopwatch extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','catatan'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod', 'catatan', 'satuan_titik_ukur'
     ];
 
     public function calibration()

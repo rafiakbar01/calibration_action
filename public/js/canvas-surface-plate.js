@@ -1,8 +1,8 @@
 // ============================================
-// CANVAS SURFACE PLATE - FIXED VERSION
+// CANVAS SURFACE PLATE - MOBILE & PC FIXED
 // ============================================
 
-console.log('🎯 CANVAS SURFACE PLATE - Fixed Version');
+console.log('🎯 CANVAS SURFACE PLATE - Mobile Fix Loaded');
 
 // Variables
 let canvas, ctx;
@@ -14,6 +14,20 @@ let currentLine = null;
 let isInitialized = false;
 let observer = null;
 let checkTimeout = null;
+let canvasHasContent = false; 
+
+function isCanvasEmpty() {
+    if (lines.length > 0 || dots.length > 0) return false;
+    if (currentLine && currentLine.points.length > 1) return false;
+    return true;
+}
+
+function markCanvasHasContent() {
+    if (!isCanvasEmpty()) {
+        canvasHasContent = true;
+        console.log('🎨 Canvas has content detected');
+    }
+}
 
 // DEBOUNCE FUNCTION
 function debounce(func, wait) {
@@ -31,12 +45,10 @@ function debounce(func, wait) {
 // OBSERVER DENGAN DEBOUNCE
 function setupCanvasObserver() {
     console.log('👀 Setting up canvas observer...');
-    
     checkForCanvasOnce();
     
     observer = new MutationObserver(debounce(function(mutations) {
         let shouldCheck = false;
-        
         mutations.forEach(function(mutation) {
             if (mutation.addedNodes.length > 0) {
                 mutation.addedNodes.forEach(function(node) {
@@ -54,18 +66,12 @@ function setupCanvasObserver() {
                 });
             }
         });
-        
         if (shouldCheck && !isInitialized) {
-            // console.log('🔄 DOM changed, checking for canvas...');
             checkForCanvasOnce();
         }
     }, 300));
     
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-    
+    observer.observe(document.body, { childList: true, subtree: true });
     console.log('✅ Canvas observer activated');
 }
 
@@ -74,49 +80,36 @@ function checkForCanvasOnce() {
         clearTimeout(checkTimeout);
         checkTimeout = null;
     }
-    
     checkTimeout = setTimeout(() => {
         performCanvasCheck();
     }, 100);
 }
 
 function performCanvasCheck() {
-    if (isInitialized) {
-        // console.log('⏹️ Already initialized, skipping check');
-        return;
-    }
-    
-    // console.log('🔍 Checking for canvas...');
+    if (isInitialized) return;
     
     canvas = document.getElementById('drawCanvas');
     if (!canvas) canvas = document.querySelector('canvas.drawing-canvas');
     if (!canvas) canvas = document.querySelector('.canvas-wrapper canvas');
     
     if (!canvas) {
-        // console.log('📭 Canvas not found yet');
+        console.log('📭 Canvas not found yet');
         return;
     }
     
-    // console.log('✅ Canvas found! Initializing...');
-    
+    console.log('✅ Canvas found! Initializing...');
     if (observer) {
         observer.disconnect();
         observer = null;
-        // console.log('🛑 Observer stopped');
     }
-    
     initializeCanvas();
 }
 
 // INITIALIZATION
 function initializeCanvas() {
-    if (isInitialized) {
-        // console.warn('⚠️ Already initialized!');
-        return;
-    }
+    if (isInitialized) return;
     
-    // console.log('🔧 Initializing canvas...');
-    
+    console.log('🔧 Initializing canvas...');
     ctx = canvas.getContext('2d');
     if (!ctx) {
         console.error('Cannot get 2D context');
@@ -127,9 +120,8 @@ function initializeCanvas() {
     addTools();
     
     isInitialized = true;
-    
-    // console.log('✅ Canvas initialized successfully!');
-    // showNotification('Canvas Surface Plate siap digunakan!');
+    console.log('✅ Canvas initialized successfully!');
+    loadExistingImageToCanvas();
 }
 
 function setupCanvas() {
@@ -141,26 +133,25 @@ function setupCanvas() {
     }
     canvas.height = 280;
     
-    // Reset canvas styling
     canvas.style.border = '1px solid #000';
     canvas.style.background = '#fff';
     canvas.style.cursor = 'crosshair';
     canvas.style.width = '100%';
     
-    // Setup context dengan settings yang benar
+    // 🔥 PENTING UNTUK MOBILE: Mencegah layar scroll saat menggambar
+    canvas.style.touchAction = 'none'; 
+    
     ctx = canvas.getContext('2d', {
-        alpha: true, // Aktifkan alpha channel
+        alpha: true,
         desynchronized: false,
         willReadFrequently: false
     });
     
-    // Reset context
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1.0;
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     
-    // Clear dengan putih
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
@@ -168,141 +159,125 @@ function setupCanvas() {
     redraw();
 }
 
-function addTools() {
-    const tools = document.querySelector('.simple-tools');
-    if (!tools) {
-        console.warn('Tools container not found');
-        return;
+function loadExistingImageToCanvas() {
+    console.log('🔍 loadExistingImageToCanvas called');
+    const existingImage = document.getElementById('existingImage');
+    const hiddenInput = document.getElementById('keteranganGambar');
+    
+    if (hiddenInput && hiddenInput.value && hiddenInput.value.startsWith('data:image')) {
+        console.log('🖼️ Loading image from hidden input, length:', hiddenInput.value.length);
+        const img = new Image();
+        img.onload = function() {
+            console.log('✅ Image loaded successfully from hidden input');
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvasHasContent = true;
+            lines = [];
+            dots = [];
+        };
+        img.onerror = function() {
+            console.error('❌ Failed to load image from hidden input');
+            canvasHasContent = false;
+        };
+        img.src = hiddenInput.value;
+    }
+    else if (existingImage && existingImage.src && existingImage.src !== window.location.href && existingImage.src !== '') {
+        console.log('🖼️ Loading image from folder:', existingImage.src);
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.onload = function() {
+            console.log('✅ Image loaded successfully from folder');
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvasHasContent = true;
+            lines = [];
+            dots = [];
+            if (hiddenInput) {
+                hiddenInput.value = canvas.toDataURL('image/png');
+            }
+        };
+        img.onerror = function() {
+            console.error('❌ Failed to load image from folder:', existingImage.src);
+            canvasHasContent = false;
+        };
+        img.src = existingImage.src;
+    } else {
+        console.log('ℹ️ No existing image found');
+        canvasHasContent = false;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        lines = [];
+        dots = [];
+    }
+}
+
+function saveCanvasToHidden() {
+    console.log('💾 saveCanvasToHidden called');
+    const hiddenInput = document.getElementById('keteranganGambar');
+    if (!hiddenInput || !canvas) return false;
+    
+    if (isCanvasEmpty()) {
+        console.log('🖼️ Canvas is EMPTY (all white), NOT saving image');
+        hiddenInput.value = '';
+        return false;
     }
     
-    if (document.getElementById('canvasTools')) {
-        // console.log('Tools already exist');
-        return;
+    try {
+        const imageData = canvas.toDataURL('image/png');
+        hiddenInput.value = imageData;
+        canvasHasContent = true;
+        console.log('✅ Canvas saved to hidden input, length:', imageData.length);
+        return true;
+    } catch (error) {
+        console.error('❌ Error saving canvas:', error);
+        return false;
     }
+}
+
+function addTools() {
+    const tools = document.querySelector('.simple-tools');
+    if (!tools || document.getElementById('canvasTools')) return;
     
     const toolsDiv = document.createElement('div');
     toolsDiv.id = 'canvasTools';
-    toolsDiv.style.cssText = `
-        display: inline-block;
-        margin-right: 15px;
-        padding: 5px;
-        background: #f5f5f5;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-    `;
+    toolsDiv.style.cssText = `display: inline-block; margin-right: 15px; padding: 5px; background: #f5f5f5; border-radius: 4px; border: 1px solid #ddd;`;
     
     toolsDiv.innerHTML = `
-    <span style="
-        font-weight: 600;
-        color: #333;
-        font-size: 14px;
-        white-space: nowrap;
-    ">
-        🎨 Tools:
-    </span>
-    
-    <button id="canvasDrawBtn" style="
-        padding: 6px 12px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 12px;
-        height: 32px;
-        flex-shrink: 0;
-        white-space: nowrap;
-    ">
-        ✏️ Garis
-    </button>
-    
-    <button id="canvasDotBtn" style="
-        padding: 6px 12px;
-        background: #28a745;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 400;
-        font-size: 12px;
-        height: 32px;
-        flex-shrink: 0;
-        white-space: nowrap;
-    ">
-        🔘 Titik
-    </button>
-    
-    <button id="canvasClearBtn" style="
-        padding: 6px 12px;
-        background: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 400;
-        font-size: 12px;
-        height: 32px;
-        flex-shrink: 0;
-        white-space: nowrap;
-    ">
-        🗑️ Hapus Semua
-    </button>
-`;
+        <span style="font-weight: 600; color: #333; font-size: 14px; white-space: nowrap;">🎨 Tools:</span>
+        <button id="canvasDrawBtn" style="padding: 6px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px; height: 32px; flex-shrink: 0; white-space: nowrap;">✏️ Garis</button>
+        <button id="canvasDotBtn" style="padding: 6px 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 400; font-size: 12px; height: 32px; flex-shrink: 0; white-space: nowrap;">🔘 Titik</button>
+        <button id="canvasClearBtn" style="padding: 6px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 400; font-size: 12px; height: 32px; flex-shrink: 0; white-space: nowrap;">🗑️ Hapus Semua</button>
+    `;
     
     tools.insertBefore(toolsDiv, tools.firstChild);
     
-    // PERBAIKAN: Gunakan event listener yang benar
-    document.getElementById('canvasDrawBtn').addEventListener('click', function(e) {
-        e.preventDefault(); // Mencegah submit form
-        e.stopPropagation(); // Mencegah event bubbling
-        setTool('draw');
-        // showNotification('Mode: Gambar Garis • Klik dan drag untuk menggambar');
-    });
-    
-    document.getElementById('canvasDotBtn').addEventListener('click', function(e) {
-        e.preventDefault(); // Mencegah submit form
-        e.stopPropagation(); // Mencegah event bubbling
-        setTool('dot');
-        // showNotification('Mode: Tambah Titik • Klik: tambah titik • Shift+Klik: hapus titik');
-    });
-    
-    document.getElementById('canvasClearBtn').addEventListener('click', function(e) {
-        e.preventDefault(); // Mencegah submit form
-        e.stopPropagation(); // Mencegah event bubbling
-        clearAll();
-    });
-    
-    // console.log('✅ Tools added');
+    document.getElementById('canvasDrawBtn').addEventListener('click', function(e) { e.preventDefault(); setTool('draw'); });
+    document.getElementById('canvasDotBtn').addEventListener('click', function(e) { e.preventDefault(); setTool('dot'); });
+    document.getElementById('canvasClearBtn').addEventListener('click', function(e) { e.preventDefault(); clearAll(); });
 }
 
 function setTool(toolType) {
     if (!isInitialized) return;
     
-    // Update button styles
     const btnDraw = document.getElementById('canvasDrawBtn');
     const btnDot = document.getElementById('canvasDotBtn');
     
     if (btnDraw && btnDot) {
         if (toolType === 'draw') {
-            btnDraw.style.background = '#007bff';
             btnDraw.style.fontWeight = 'bold';
-            btnDot.style.background = '#28a745';
             btnDot.style.fontWeight = 'normal';
             canvas.style.cursor = 'crosshair';
         } else {
-            btnDraw.style.background = '#007bff';
             btnDraw.style.fontWeight = 'normal';
-            btnDot.style.background = '#28a745';
             btnDot.style.fontWeight = 'bold';
             canvas.style.cursor = 'pointer';
         }
     }
     
-    // Set current tool
     window.currentTool = toolType;
     
-    // Setup drawing style
     if (toolType === 'draw') {
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
@@ -313,122 +288,164 @@ function setTool(toolType) {
 }
 
 function setupCanvasEvents() {
-    // Clear existing events
     const newCanvas = canvas.cloneNode(true);
     canvas.parentNode.replaceChild(newCanvas, canvas);
     canvas = document.getElementById('drawCanvas') || document.querySelector('canvas.drawing-canvas');
     ctx = canvas.getContext('2d');
     
-    // Re-apply styles
     canvas.style.border = '1px solid #000';
     canvas.style.background = '#fff';
     canvas.style.cursor = 'crosshair';
+    canvas.style.touchAction = 'none'; // 🔥 PENTING UNTUK MOBILE
     
-    // Add event listeners
+    // 🔥 EVENT MOUSE (LAPTOP)
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseup', handleMouseUp);
     canvas.addEventListener('mouseout', handleMouseOut);
     
-    // Start with draw tool
+    // 🔥 EVENT TOUCH (HP / TABLET)
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+    canvas.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+    
     setTool('draw');
 }
 
-function handleMouseDown(e) {
-    e.preventDefault(); // PERBAIKAN: Mencegah default behavior
-    e.stopPropagation(); // Mencegah event bubbling
-    
+// ==========================================
+// 🔥 FUNGSI BANTUAN KOORDINAT (MOUSE & TOUCH)
+// ==========================================
+function getCanvasCoords(e) {
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    let clientX, clientY;
+    
+    if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+    } else if (e.changedTouches && e.changedTouches.length > 0) {
+        clientX = e.changedTouches[0].clientX;
+        clientY = e.changedTouches[0].clientY;
+    } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+    }
+    
+    return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+    };
+}
+
+// ==========================================
+// 🔥 HANDLER UNTUK MOUSE (LAPTOP)
+// ==========================================
+function handleMouseDown(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const pos = getCanvasCoords(e);
     
     if (window.currentTool === 'draw') {
-        // Mulai menggambar garis
         drawing = true;
-        lastX = x;
-        lastY = y;
-        
-        currentLine = {
-            points: [{x: x, y: y}],
-            color: '#000000',
-            width: 2
-        };
-        
+        lastX = pos.x;
+        lastY = pos.y;
+        currentLine = { points: [{x: pos.x, y: pos.y}], color: '#000000', width: 2 };
         ctx.beginPath();
-        ctx.moveTo(x, y);
-        
+        ctx.moveTo(pos.x, pos.y);
     } else if (window.currentTool === 'dot') {
-        // Mode titik
         if (e.shiftKey) {
-            // Shift + klik: hapus titik
-            removeDotAt(x, y);
+            removeDotAt(pos.x, pos.y);
         } else {
-            // Klik biasa: tambah titik
-            dots.push({
-                x: x,
-                y: y,
-                id: Date.now() + Math.random()
-            });
+            dots.push({ x: pos.x, y: pos.y, id: Date.now() + Math.random() });
         }
         redraw();
+        markCanvasHasContent();
     }
 }
 
 function handleMouseMove(e) {
-    e.preventDefault();
-    
     if (!drawing || window.currentTool !== 'draw') return;
+    e.preventDefault();
+    const pos = getCanvasCoords(e);
     
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    // Gambar garis sementara
-    ctx.lineTo(x, y);
+    ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
     
-    // Tambahkan titik ke garis saat ini
-    if (currentLine) {
-        currentLine.points.push({x: x, y: y});
-    }
-    
-    lastX = x;
-    lastY = y;
+    if (currentLine) currentLine.points.push({x: pos.x, y: pos.y});
+    lastX = pos.x;
+    lastY = pos.y;
 }
 
 function handleMouseUp(e) {
-    if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-    
+    if (e) { e.preventDefault(); e.stopPropagation(); }
     if (drawing && window.currentTool === 'draw' && currentLine) {
         drawing = false;
-        
-        // Simpan garis yang sudah selesai
         if (currentLine.points.length > 1) {
-            lines.push({
-                points: [...currentLine.points],
-                color: currentLine.color,
-                width: currentLine.width
-            });
+            lines.push({ points: [...currentLine.points], color: currentLine.color, width: currentLine.width });
         }
-        
         currentLine = null;
         ctx.beginPath();
+        markCanvasHasContent();
     }
 }
 
 function handleMouseOut(e) {
-    if (e) {
-        e.preventDefault();
-    }
+    if (e) e.preventDefault();
+    if (drawing) handleMouseUp();
+}
+
+// ==========================================
+// 🔥 HANDLER UNTUK TOUCH (HP)
+// ==========================================
+function handleTouchStart(e) {
+    e.preventDefault(); // Mencegah layar scroll
+    e.stopPropagation();
+    const pos = getCanvasCoords(e);
     
-    if (drawing) {
-        handleMouseUp();
+    if (window.currentTool === 'draw') {
+        drawing = true;
+        lastX = pos.x;
+        lastY = pos.y;
+        currentLine = { points: [{x: pos.x, y: pos.y}], color: '#000000', width: 2 };
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+    } else if (window.currentTool === 'dot') {
+        dots.push({ x: pos.x, y: pos.y, id: Date.now() + Math.random() });
+        redraw();
+        markCanvasHasContent();
     }
 }
 
+function handleTouchMove(e) {
+    if (!drawing || window.currentTool !== 'draw') return;
+    e.preventDefault(); // Mencegah layar scroll saat menarik garis
+    e.stopPropagation();
+    const pos = getCanvasCoords(e);
+    
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    
+    if (currentLine) currentLine.points.push({x: pos.x, y: pos.y});
+    lastX = pos.x;
+    lastY = pos.y;
+}
+
+function handleTouchEnd(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    if (drawing && window.currentTool === 'draw' && currentLine) {
+        drawing = false;
+        if (currentLine.points.length > 1) {
+            lines.push({ points: [...currentLine.points], color: currentLine.color, width: currentLine.width });
+        }
+        currentLine = null;
+        ctx.beginPath();
+        markCanvasHasContent();
+    }
+}
+
+// ==========================================
+// FUNGSI LAINNYA
+// ==========================================
 function removeDotAt(x, y) {
     for (let i = 0; i < dots.length; i++) {
         const dot = dots[i];
@@ -436,7 +453,7 @@ function removeDotAt(x, y) {
         if (distance < 10) {
             dots.splice(i, 1);
             redraw();
-            // showNotification('Titik dihapus');
+            markCanvasHasContent();
             return;
         }
     }
@@ -445,24 +462,18 @@ function removeDotAt(x, y) {
 function redraw() {
     if (!isInitialized) return;
     
-    // Clear canvas dengan putih
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Set ulang composite operation
     ctx.globalCompositeOperation = 'source-over';
     
-    // Gambar semua garis
     lines.forEach(line => {
         if (line.points.length > 1) {
             ctx.beginPath();
             ctx.moveTo(line.points[0].x, line.points[0].y);
-            
             for (let i = 1; i < line.points.length; i++) {
                 ctx.lineTo(line.points[i].x, line.points[i].y);
             }
-            
-            ctx.strokeStyle = '#000000'; // Warna hitam
+            ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -470,52 +481,31 @@ function redraw() {
         }
     });
     
-    // Gambar garis yang sedang dibuat
     if (drawing && currentLine && currentLine.points.length > 1) {
         ctx.beginPath();
         ctx.moveTo(currentLine.points[0].x, currentLine.points[0].y);
-        
         for (let i = 1; i < currentLine.points.length; i++) {
             ctx.lineTo(currentLine.points[i].x, currentLine.points[i].y);
         }
-        
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 2;
         ctx.stroke();
     }
     
-    // Gambar titik-titik (TANPA ANGKA)
     drawDots();
-    
-    // Gambar border canvas
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-    
-    // Hapus semua text/title yang tidak perlu
-    // Hanya canvas kosong dengan gambar saja
 }
 
 function drawDots() {
     dots.forEach((dot) => {
-        // Gambar titik hitam SIMPLE tanpa angka
         ctx.beginPath();
-        ctx.arc(dot.x, dot.y, 4, 0, Math.PI * 2); // Radius 4px
-        
-        // Warna hitam solid
+        ctx.arc(dot.x, dot.y, 4, 0, Math.PI * 2);
         ctx.fillStyle = '#000000';
         ctx.fill();
-        
-        // Border tipis hitam
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 1;
         ctx.stroke();
-        
-        // TIDAK ADA ANGKA/LABEL
     });
 }
-
-
 
 function clearAll() {
     if (!isInitialized) return;
@@ -525,58 +515,43 @@ function clearAll() {
         dots = [];
         currentLine = null;
         drawing = false;
-        redraw();
-        // showNotification('Semua garis dan titik telah dihapus');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        canvasHasContent = false;
+        console.log('🗑️ Canvas cleared, hasContent set to false');
+        
+        const hiddenInput = document.getElementById('keteranganGambar');
+        if (hiddenInput) hiddenInput.value = '';
     }
 }
 
-function showNotification(message) {
-    const existing = document.getElementById('canvasNotification');
-    if (existing) existing.remove();
-    
-    const notification = document.createElement('div');
-    notification.id = 'canvasNotification';
-    notification.style.cssText = `
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        background: #333;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 4px;
-        z-index: 10000;
-        font-size: 12px;
-        animation: fadeIn 0.3s;
-    `;
-    
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    `;
-    document.head.appendChild(style);
-    
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transition = 'opacity 0.5s';
-        setTimeout(() => notification.remove(), 500);
-    }, 3000);
-}
+// AUTO SAVE BEFORE FORM SUBMIT
+document.addEventListener('submit', function(e) {
+    console.log('📤 Form submit detected');
+    const form = e.target.closest('form');
+    if (form) {
+        const hiddenInput = document.getElementById('keteranganGambar');
+        if (!isCanvasEmpty() && canvasHasContent) {
+            console.log('Canvas has content, saving before submit...');
+            saveCanvasToHidden();
+        } else {
+            console.log('📝 Canvas is empty, clearing hidden input');
+            if (hiddenInput) hiddenInput.value = '';
+        }
+    }
+});
 
-// PERBAIKAN: Prevent form submission dari tombol canvas
+// PREVENT FORM SUBMISSION FROM CANVAS BUTTONS
 document.addEventListener('DOMContentLoaded', function() {
-    // Cegah form submission kalau ada form di halaman
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         form.addEventListener('submit', function(e) {
-            // Cek jika submit berasal dari tombol canvas
             const activeElement = document.activeElement;
             if (activeElement && 
                 (activeElement.id === 'canvasDrawBtn' || 
                  activeElement.id === 'canvasDotBtn' || 
-                 activeElement.id === 'canvasClearBtn')) {
+                 activeElement.id === 'canvasClearBtn' ||
+                 activeElement.id === 'saveCanvasBtn')) {
                 e.preventDefault();
                 e.stopPropagation();
                 return false;
@@ -587,15 +562,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // STARTUP
 window.addEventListener('DOMContentLoaded', function() {
-    // console.log('📄 DOM loaded, setting up canvas detection...');
-    
+    console.log('📄 DOMContentLoaded - starting canvas setup');
     setupCanvasObserver();
     
     setInterval(() => {
-        if (!isInitialized) {
-            // console.log('⏰ Periodic check for canvas...');
-            checkForCanvasOnce();
-        }
+        if (!isInitialized) checkForCanvasOnce();
     }, 5000);
 });
 
@@ -603,5 +574,6 @@ window.addEventListener('DOMContentLoaded', function() {
 window.clearCanvas = clearAll;
 window.initializeCanvas = initializeCanvas;
 window.setTool = setTool;
+window.saveCanvasToHidden = saveCanvasToHidden;
 
-// console.log('🚀 Canvas Surface Plate Fixed script loaded');
+console.log('🚀 Canvas Surface Plate Mobile Fix Loaded');

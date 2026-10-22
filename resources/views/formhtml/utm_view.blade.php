@@ -455,6 +455,14 @@
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
                     </td>
                 </tr>
+                 <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
+                    </td>
+                </tr>v
             </table>
 
             <!-- Fungsi Komponen Lainnya & Kondisi Kalibrasi -->
@@ -608,27 +616,27 @@ $headUtm = $calibration->headUtm ?? null;
         @foreach($dataTekan as $index => $detail)
         <tr>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->titikUkur ? number_format($detail->titikUkur, 2) : '-' }}
+                {{ $detail->titikUkur ? $detail->titikUkur : '-' }}
             </td>
             <!-- Pembacaan Tekan Standar -->
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTekanSTD1 ? number_format($detail->readTekanSTD1, 2) : '-' }}
+                {{ $detail->readTekanSTD1 ? $detail->readTekanSTD1 : '-' }}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTekanSTD2 ? number_format($detail->readTekanSTD2, 2) : '-' }}
+                {{ $detail->readTekanSTD2 ? $detail->readTekanSTD2 : '-' }}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTekanSTD3 ? number_format($detail->readTekanSTD3, 2) : '-' }}
+                {{ $detail->readTekanSTD3 ? $detail->readTekanSTD3 : '-' }}
             </td>
             <!-- Pembacaan Tekan UUT -->
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTekanUUT1 ? number_format($detail->readTekanUUT1, 2) : '-' }}
+                {{ $detail->readTekanUUT1 ? $detail->readTekanUUT1 : '-' }}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTekanUUT2 ? number_format($detail->readTekanUUT2, 2) : '-' }}
+                {{ $detail->readTekanUUT2 ? $detail->readTekanUUT2 : '-' }}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTekanUUT3 ? number_format($detail->readTekanUUT3, 2) : '-' }}
+                {{ $detail->readTekanUUT3 ? $detail->readTekanUUT3 : '-' }}
             </td>
         </tr>
         @endforeach
@@ -736,27 +744,27 @@ $headUtm = $calibration->headUtm ?? null;
         @foreach($dataTarik as $index => $detail)
         <tr>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->titikUkur ? number_format($detail->titikUkur, 2) : '-' }}
+                {{ $detail->titikUkur ? $detail->titikUkur : '-' }}
             </td>
             <!-- Pembacaan Tarik Standar -->
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTarikSTD1 ? number_format($detail->readTarikSTD1, 2) : '-' }}
+                {{ $detail->readTarikSTD1 ? $detail->readTarikSTD1 : '-' }}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTarikSTD2 ? number_format($detail->readTarikSTD2, 2) : '-' }}
+                {{ $detail->readTarikSTD2 ? $detail->readTarikSTD2 : '-' }}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTarikSTD3 ? number_format($detail->readTarikSTD3, 2) : '-' }}
+                {{ $detail->readTarikSTD3 ? $detail->readTarikSTD3 : '-' }}
             </td>
             <!-- Pembacaan Tarik UUT -->
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTarikUUT1 ? number_format($detail->readTarikUUT1, 2) : '-' }}
+                {{ $detail->readTarikUUT1 ? $detail->readTarikUUT1 : '-' }}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTarikUUT2 ? number_format($detail->readTarikUUT2, 2) : '-' }}
+                {{ $detail->readTarikUUT2 ? $detail->readTarikUUT2 : '-' }}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center; vertical-align: middle;">
-                {{ $detail->readTarikUUT3 ? number_format($detail->readTarikUUT3, 2) : '-' }}
+                {{ $detail->readTarikUUT3 ? $detail->readTarikUUT3 : '-' }}
             </td>
         </tr>
         @endforeach
@@ -789,7 +797,7 @@ $headUtm = $calibration->headUtm ?? null;
         </tr>
         @endfor
     @endif
-</table>    
+</table>
 
 <!-- CSS untuk styling radio button tanpa Bootstrap -->
 <style>
@@ -965,9 +973,9 @@ span {
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

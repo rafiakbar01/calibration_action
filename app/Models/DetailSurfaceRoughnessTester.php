@@ -23,11 +23,11 @@ class DetailSurfaceRoughnessTester extends Model
     ];
 
     protected $casts = [
-        'nominalSTD' => 'decimal:5',
-        'ukurAlat1'  => 'decimal:5',
-        'ukurAlat2'  => 'decimal:5',
-        'ukurAlat3'  => 'decimal:5',
-        'CutOff'     => 'decimal:5',
+        'nominalSTD' => 'string',
+        'ukurAlat1'  => 'string',
+        'ukurAlat2'  => 'string',
+        'ukurAlat3'  => 'string',
+        'CutOff'     => 'string',
         
     ];
 

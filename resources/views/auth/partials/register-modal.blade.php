@@ -31,6 +31,7 @@
               <option value="teknisi">Teknisi</option>
               <option value="checker">Checker</option>
               <option value="approver">Approver</option>
+              <option value="ppic">PPIC</option>
             </select>
           </div>
           <div>

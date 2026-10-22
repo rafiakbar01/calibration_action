@@ -11,15 +11,15 @@ class Detail_T_TempHumidTransmitter extends Model
 
     protected $table = 'detail_t_temp_humid_transmitters';
 
-    protected $casts = [
-        'T_setting' => 'decimal:3',
-        'T_STD1' => 'decimal:3',
-        'T_STD2' => 'decimal:3',
-        'T_STD3' => 'decimal:3',
-        'T_OSmA1' => 'decimal:3',
-        'T_OSmA2' => 'decimal:3',
-        'T_OSmA3' => 'decimal:3',
-    ];
+    // protected $casts = [
+    //     'T_setting' => 'decimal:3',
+    //     'T_STD1' => 'decimal:3',
+    //     'T_STD2' => 'decimal:3',
+    //     'T_STD3' => 'decimal:3',
+    //     'T_OSmA1' => 'decimal:3',
+    //     'T_OSmA2' => 'decimal:3',
+    //     'T_OSmA3' => 'decimal:3',
+    // ];
 
     protected $fillable = [
         'calibration_id', 

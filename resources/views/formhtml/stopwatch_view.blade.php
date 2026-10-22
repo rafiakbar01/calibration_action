@@ -292,6 +292,12 @@
             font-size: 14px !important;
         }
     }
+
+    .col-repeat {
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
+    }
 </style>
 </head>
 <body>
@@ -523,33 +529,40 @@
     <table style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:12px;">
         <!-- Header -->
         <tr>
-            <td rowspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Titik Ukur</td>
-            <td rowspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Objek</td>
-            <td colspan="16" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Penunjukan Standar dan UUT</td>
+            <td rowspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; width:80px; vertical-align:middle;">
+                Titik Ukur
+                @if(isset($calibration->headStopwatch->satuan_titik_ukur) && !empty($calibration->headStopwatch->satuan_titik_ukur))
+                    <div style="margin-top: 3px; font-weight: normal; font-size: 10px;">
+                        ({{ $calibration->headStopwatch->satuan_titik_ukur }})
+                    </div>
+                @endif
+            </td>
+            <td rowspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; width:80px; vertical-align:middle;">Objek</td>
+            <td colspan="15" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Penunjukan Standar dan UUT</td>
         </tr>
         <tr>
             <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 1</td>
             <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 2</td>
-            <td colspan="4" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 3</td>
+            <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 3</td>
             <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 4</td>
             <td colspan="3" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">Pengulangan 5</td>
         </tr>
         <tr>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">milisecond</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">milisecond</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
-            <td colspan="2" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">milisecond</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">milisecond</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
-            <td style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">milisecond</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">menit</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center;">second</td>
+            <td class="col-repeat" style="border:1px solid #000; background:#D9D9D9; font-weight:bold; text-align:center; line-height: 1.2;">mili<br>second</td>
         </tr>
 
         <?php for($i = 0; $i < 10; $i++): ?>
@@ -560,48 +573,47 @@
             
             <!-- Baris Standar -->
             <tr>
-                <td rowspan="2" style="border:1px solid #000; text-align:center;">
-                    <?php echo e($hasData ? ($detail->titikUkur ?? '-') : '-'); ?>
-
+                <td rowspan="2" style="border:1px solid #000; text-align:center; width:80px; padding:28px 4px; font-size:12px; min-width:70px; vertical-align:middle;">
+                    {{ $hasData ? ($detail->titikUkur ?? '') : '' }}
                 </td>
-                <td style="border:1px solid #000; text-align:center;">Standar</td>
+                <td style="border:1px solid #000; text-align:center; background:#f5f5f5;">Standar</td>
                 <!-- STD -->
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDm1 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDs1 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDms1 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDm2 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDs2 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDms2 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDm3 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDs3 ?? '-') : '-'); ?></td>
-                <td colspan="2" style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDms3 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDm4 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDs4 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDms4 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDm5 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDs5 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; text-align:center;"><?php echo e($hasData ? ($detail->STDms5 ?? '-') : '-'); ?></td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDm1 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDs1 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDms1 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDm2 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDs2 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDms2 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDm3 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDs3 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDms3 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDm4 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDs4 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDms4 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDm5 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDs5 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->STDms5 ?? '') : '' }}</td>
             </tr>
             
             <!-- Baris Alat (UUT) -->
             <tr>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center; font-weight:bold;">Alat (UUT)</td>
+                <td style="border:1px solid #000; background:#DBEEF4; text-align:center; font-weight:bold; padding:6px 2px; font-size:11px;">Alat (UUT)</td>
                 <!-- UUT -->
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTm1 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTs1 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTms1 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTm2 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTs2 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTms2 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTm3 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTs3 ?? '-') : '-'); ?></td>
-                <td colspan="2" style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTms3 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTm4 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTs4 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTms4 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTm5 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTs5 ?? '-') : '-'); ?></td>
-                <td style="border:1px solid #000; background:#DBEEF4; text-align:center;"><?php echo e($hasData ? ($detail->UUTms5 ?? '-') : '-'); ?></td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTm1 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTs1 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTms1 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTm2 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTs2 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTms2 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTm3 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTs3 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTms3 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTm4 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTs4 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTms4 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTm5 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTs5 ?? '') : '' }}</td>
+                <td class="col-repeat" style="border:1px solid #000; background:#DBEEF4; text-align:center; padding:6px 2px; font-size:11px;">{{ $hasData ? ($detail->UUTms5 ?? '') : '' }}</td>
             </tr>
         <?php endfor; ?>
     </table>
@@ -747,9 +759,9 @@ if (isset($headStopwatch) && $headStopwatch) {
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

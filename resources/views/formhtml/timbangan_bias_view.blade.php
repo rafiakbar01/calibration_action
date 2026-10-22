@@ -374,34 +374,7 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
-            <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-            
-            <span class="me-3" style="color: #000000;">-</span>
-            
-            <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+             
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -563,14 +536,24 @@
             </span>
         </td>
     </tr>
-    <tr style="height:18pt">
-        <td colspan="2" style="border:0.75pt solid #000000; text-align:center; vertical-align:middle;">
-            <span style="font-weight:bold;">Beban 1/2 Kapasitas Maksimal ........ kg</span>
-        </td>
-        <td colspan="2" style="border:0.75pt solid #000000; text-align:center; vertical-align:middle;">
-            <span style="font-weight:bold;">Beban Kapasitas Maksimal ........ kg</span>
-        </td>
-    </tr>
+ <tr style="height:18pt">
+    <td colspan="2" style="border:0.75pt solid #000000; text-align:center; vertical-align:middle;">
+        <span style="font-weight:bold;">
+            Beban 1/2 Kapasitas Maksimal 
+            <span style="border-bottom:1px solid #000; min-width:80px; display:inline-block; text-align:center;">
+                {{ optional($calibration->headTimbanganBias)->beban_setengah_kapasitas ?? '........' }}
+            </span> kg
+        </span>
+    </td>
+    <td colspan="2" style="border:0.75pt solid #000000; text-align:center; vertical-align:middle;">
+        <span style="font-weight:bold;">
+            Beban Kapasitas Maksimal 
+            <span style="border-bottom:1px solid #000; min-width:80px; display:inline-block; text-align:center;">
+                {{ optional($calibration->headTimbanganBias)->beban_kapasitas_maks ?? '........' }}
+            </span> kg
+        </span>
+    </td>
+</tr>
     <tr style="height:20pt">
         <td colspan="2" style="border:0.75pt solid #000000; background-color:#d9d9d9; text-align:center; vertical-align:middle;">
             <span style="font-weight:bold;">Penunjukan Timbangan</span>
@@ -998,9 +981,7 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                  
                 </div>
             </div>
         </div>

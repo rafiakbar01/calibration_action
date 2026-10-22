@@ -21,12 +21,12 @@ class DetailThreadGauge extends Model
     ];
 
     protected $casts = [
-        'nominalGO' => 'decimal:5',
-        'GOatasX1'=>'decimal:5','GOatasY1'=>'decimal:5',
-        'GObawahX1'=>'decimal:5','GObawahY1'=>'decimal:5',
-        'nominalNOTGO'=>'decimal:5','NOTGOatasX1'=>'decimal:5','NOTGOatasY1'=>'decimal:5',
-        'NOTGObawahX1'=>'decimal:5','NOTGObawahY1'=>'decimal:5',
-        'ukuranPitch'=>'decimal:5',
+        'nominalGO' => 'string',
+        'GOatasX1'=>'string','GOatasY1'=>'string',
+        'GObawahX1'=>'string','GObawahY1'=>'string',
+        'nominalNOTGO'=>'string','NOTGOatasX1'=>'string','NOTGOatasY1'=>'string',
+        'NOTGObawahX1'=>'string','NOTGObawahY1'=>'string',
+        'ukuranPitch'=>'string',
         
     ];
 

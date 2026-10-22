@@ -12,7 +12,7 @@ class HeadAnakTimbangan extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_unit01','satuan_unit02'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_unit01','satuan_unit02', 'form_index'
     ];
 
     public function calibration()

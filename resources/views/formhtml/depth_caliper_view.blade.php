@@ -430,8 +430,8 @@
                     <td colspan="3">
                         <div class="d-flex">
                             <div class="form-check me-5">
-                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }} disabled>
+                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab.PT PAS" id="lab" 
+                                       {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
@@ -448,6 +448,15 @@
                     </td>
                     <td colspan="3">
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
+                    </td>
+                </tr>
+                
+                  <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th}}" readonly>
                     </td>
                 </tr>
             </table>
@@ -536,10 +545,10 @@
                 
                 <!-- Header Row 2 -->
                 <tr style="height:10.25pt">
-                    <td style="width:20%; border:1pt solid #000; vertical-align:middle">
-                        <p style="margin:0; text-align:center; line-height:9.3pt">
-                            <span style="font-family:Arial; font-size:9.5pt; font-weight:bold">Unit ( )</span>
-                        </p>
+                   <td style="text-align: center;">
+                        <span style="font-weight: bold; color: #000000;">Unit (</span>
+                        <span style="color: #333;">{{ $calibration->headDepthCaliper->satuan_unit ?? 'Tidak tersedia' }}</span>
+                        <span style="font-weight: bold; color: #000000;">)</span>
                     </td>
                     <td style="width:12.5%; border:1pt solid #000; vertical-align:middle">
                         <p style="margin:0.1pt 0; text-align:center; line-height:9.15pt">
@@ -809,9 +818,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

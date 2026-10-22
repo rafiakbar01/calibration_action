@@ -431,7 +431,7 @@
                         <div class="d-flex">
                             <div class="form-check me-5">
                                 <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }} disabled>
+                                       {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
@@ -448,6 +448,15 @@
                     </td>
                     <td colspan="3">
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
+                    </td>
+                </tr>
+                
+                  <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
                     </td>
                 </tr>
             </table>
@@ -514,27 +523,26 @@
             <!-- Data Kalibrasi Section -->
             <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
             
-            <table cellspacing="0" cellpadding="0" 
-       style="width:100%; max-width:800pt; margin:10pt 0; border:2pt solid #000; border-collapse:collapse; font-family:Arial,Helvetica,sans-serif;">
+           <table cellspacing="0" cellpadding="0" style="width:100%; max-width:800pt; margin:10pt 0; border:2pt solid #000; border-collapse:collapse; font-family:Arial,Helvetica,sans-serif;">
 
     <!-- Header Baris 1 -->
     <tr style="height:45pt;">
-        <td rowspan="2" style="width:160pt; border:2pt solid #000; border-right:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+        <td rowspan="2" style="width:160pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
             <p style="margin:0; font-size:15pt; font-weight:bold;">Nominal Alat Ukur</p>
             <p style="margin-top:10pt; font-size:12pt;">
-            (
-            {{ $calibration->headVolumetrik->satuan_alatUkur ?? '…………………' }}
-            )
+                (
+                {{ $calibration->headVolumetrik->satuan_alatUkur ?? '…………………' }}
+                )
             </p>
         </td>
-        <td colspan="2" style="width:320pt; border:1pt solid #000; border-top:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+        <td colspan="2" style="width:320pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
             <p style="margin:0; font-size:15pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
         </td>
-        <td rowspan="2" style="width:140pt; border:1pt solid #000; border-top:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+        <td rowspan="2" style="width:140pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
             <p style="margin:0; font-size:15pt; font-weight:bold;">Suhu Air Suling</p>
             <p style="margin-top:8pt; font-size:15pt;">°C</p>
         </td>
-        <td rowspan="2" style="width:140pt; border:2pt solid #000; border-left:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+        <td rowspan="2" style="width:140pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
             <p style="margin:0; font-size:15pt; font-weight:bold;">Tekanan Udara</p>
             <p style="margin-top:8pt; font-size:15pt;">hPa</p>
         </td>
@@ -542,10 +550,10 @@
 
     <!-- Header Baris 2 -->
     <tr style="height:40pt;">
-        <td style="width:160pt; border:1pt solid #000; border-bottom:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+        <td style="width:160pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
             <p style="margin:0; font-size:14pt; font-weight:bold;">Massa Kosong</p>
         </td>
-        <td style="width:160pt; border:1pt solid #000; border-bottom:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+        <td style="width:160pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
             <p style="margin:0; font-size:14pt; font-weight:bold;">Massa Isi</p>
         </td>
     </tr>
@@ -553,63 +561,84 @@
     <!-- Ambil data detail, urutkan berdasarkan titikUkur -->
     @php
         $details = $calibration->detailVolumetriks()
-                    ->orderBy('titikUkur')
+                    ->orderBy('id')
                     ->get();
     @endphp
 
-    @foreach($details as $detail)
-        @for($repeat = 1; $repeat <= 3; $repeat++)
-        <tr style="height:32pt;">
-            @if($repeat == 1)
-            <td rowspan="3" style="width:160pt; border:2pt solid #000; border-right:1pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
-                {{ number_format($detail->titikUkur, 2) }}
-            </td>
-            @endif
+   @foreach($details as $detail)
+    @for($repeat = 1; $repeat <= 3; $repeat++)
+    <tr style="height:32pt;">
+        @if($repeat == 1)
+        <td rowspan="3" style="width:160pt; border:2pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
+            {{ $detail->titikUkur ?: '-' }}
+        </td>
+        @endif
 
-            <td style="border:1pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
-                {{ $repeat == 1 ? $detail->masssaKosong01 : ($repeat == 2 ? $detail->masssaKosong02 : $detail->masssaKosong03) ?? '-' }}
-            </td>
-            <td style="border:1pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
-                {{ $repeat == 1 ? $detail->massaIsi01 : ($repeat == 2 ? $detail->massaIsi02 : $detail->massaIsi03) ?? '-' }}
-            </td>
-            <td style="border:1pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
-                {{ $repeat == 1 ? $detail->T_airSuling01 : ($repeat == 2 ? $detail->T_airSuling02 : $detail->T_airSuling03) ?? '-' }}
-            </td>
-            <td style="border:2pt solid #000; border-left:1pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
-                {{ $repeat == 1 ? $detail->P_Udara01 : ($repeat == 2 ? $detail->P_Udara02 : $detail->P_Udara03) ?? '-' }}
-            </td>
-        </tr>
-        @endfor
-    @endforeach
-
-    <!-- Jika data kurang dari 5 nominal, tambahkan baris kosong agar tetap 15 baris -->
-    @php
-        $filledNominals = $details->count();
-        $emptyRowsNeeded = (5 - $filledNominals) * 3;
-    @endphp
-
-    @for($i = 1; $i <= $emptyRowsNeeded; $i++)
-        <tr style="height:32pt;">
-            @if($i % 3 == 1)
-            <td rowspan="3" style="width:160pt; border:2pt solid #000; border-right:1pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
-                -
-            </td>
-            @endif
-            <td style="border:1pt solid #000; text-align:center; font-size:13pt;">-</td>
-            <td style="border:1pt solid #000; text-align:center; font-size:13pt;">-</td>
-            <td style="border:1pt solid #000; text-align:center; font-size:13pt;">-</td>
-            <td style="border:2pt solid #000; border-left:1pt solid #000; text-align:center; font-size:13pt;">-</td>
-        </tr>
+        <td style="border:2pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
+            @php
+                $value = null;
+                if($repeat == 1) $value = $detail->masssaKosong01 ?? $detail->massaKosong01 ?? null;
+                elseif($repeat == 2) $value = $detail->masssaKosong02 ?? $detail->massaKosong02 ?? null;
+                else $value = $detail->masssaKosong03 ?? $detail->massaKosong03 ?? null;
+                
+                echo $value !== null ? $value : '-';
+            @endphp
+        </td>
+        <td style="border:2pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
+            @php
+                $value = null;
+                if($repeat == 1) $value = $detail->massaIsi01 ?? null;
+                elseif($repeat == 2) $value = $detail->massaIsi02 ?? null;
+                else $value = $detail->massaIsi03 ?? null;
+                
+                echo $value !== null ? $value : '-';
+            @endphp
+        </td>
+        <td style="border:2pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
+            @php
+                $value = null;
+                if($repeat == 1) $value = $detail->T_airSuling01 ?? null;
+                elseif($repeat == 2) $value = $detail->T_airSuling02 ?? null;
+                else $value = $detail->T_airSuling03 ?? null;
+                
+                echo $value !== null ? $value : '-';
+            @endphp
+        </td>
+        <td style="border:2pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
+            @php
+                $value = null;
+                if($repeat == 1) $value = $detail->P_Udara01 ?? null;
+                elseif($repeat == 2) $value = $detail->P_Udara02 ?? null;
+                else $value = $detail->P_Udara03 ?? null;
+                
+                echo $value !== null ? $value : '-';
+            @endphp
+        </td>
+    </tr>
     @endfor
+@endforeach
+
+<!-- Jika data kurang dari 5 nominal, tambahkan baris kosong agar tetap 15 baris -->
+@php
+    $filledNominals = $details->count();
+    $emptyRowsNeeded = (5 - $filledNominals) * 3;
+@endphp
+
+@for($i = 1; $i <= $emptyRowsNeeded; $i++)
+    <tr style="height:32pt;">
+        @if($i % 3 == 1)
+        <td rowspan="3" style="width:160pt; border:2pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
+            -
+        </td>
+        @endif
+        <td style="border:2pt solid #000; text-align:center; font-size:13pt; vertical-align:middle;">-</td>
+        <td style="border:2pt solid #000; text-align:center; font-size:13pt; vertical-align:middle;">-</td>
+        <td style="border:2pt solid #000; text-align:center; font-size:13pt; vertical-align:middle;">-</td>
+        <td style="border:2pt solid #000; text-align:center; font-size:13pt; vertical-align:middle;">-</td>
+    </tr>
+@endfor
 
 </table>
-
-
-
-
-
-&nbsp;  &nbsp;
-
 
 <p style="margin-top:2.15pt; margin-left:18.8pt; margin-bottom:1.05pt; font-size:15pt">
     <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">REPEATABILITY</span>
@@ -620,67 +649,100 @@
 
     <!-- Header -->
     <tr style="height:35pt">
-        <td rowspan="2" style="width:140pt; border:2pt solid #000000; border-right:1pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+        <td rowspan="2" style="width:140pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
             <p style="margin:0; font-size:14pt; font-weight:bold;">Nominal Alat Ukur</p>
             <p style="margin-top:10pt; font-size:12pt;">
-            (
-            {{ $calibration->headVolumetrik->satuan_rep ?? '…………………' }}
-            )
+                (
+                {{ $calibration->headVolumetrik->satuan_rep ?? '…………………' }}
+                )
             </p>
         </td>
-        <td colspan="2" style="width:280pt; border:2pt solid #000000; border-top:2pt solid #000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+        <td colspan="2" style="width:280pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
             <p style="margin:0; font-size:14pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
         </td>
-        <td rowspan="2" style="width:120pt; border:2pt solid #000000; border-top:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+        <td rowspan="2" style="width:120pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
             <p style="margin:0; font-size:14pt; font-weight:bold;">Suhu Air Suling</p>
             <p style="margin-top:5pt; font-size:14pt;">°C</p>
         </td>
-        <td rowspan="2" style="width:120pt; border:2pt solid #000000; border-left:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+        <td rowspan="2" style="width:120pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
             <p style="margin:0; font-size:14pt; font-weight:bold;">Tekanan Udara</p>
             <p style="margin-top:5pt; font-size:14pt;">hPa</p>
         </td>
     </tr>
 
     <tr style="height:30pt">
-        <td style="width:140pt; border:1pt solid #000000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+        <td style="width:140pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
             <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Kosong</p>
         </td>
-        <td style="width:140pt; border:1pt solid #000000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+        <td style="width:140pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
             <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Isi</p>
         </td>
     </tr>
 
     <!-- Ambil data AddVolumetrik (repeatability) -->
     @php
-        $repeatData = $calibration->addVolumetrik()->orderBy('id')->get(); // urutkan sesuai urutan simpan
-        $nominal = $repeatData->isNotEmpty() ? $repeatData->first()->titikUkur : null;
+        $repeatData = $calibration->addVolumetrik()->orderBy('id')->get();
+        
+        // Cek struktur data
+        if($repeatData->isNotEmpty()) {
+            $firstData = $repeatData->first();
+            $nominal = $firstData->titikUkur ?? $firstData->nominal ?? null;
+        } else {
+            $nominal = null;
+        }
     @endphp
 
     <!-- Tampilkan 10 baris data -->
     @for($i = 1; $i <= 10; $i++)
         @php
-            $data = $repeatData->where('id', $repeatData->skip($i - 1)->first()->id ?? null)->first();
-            // Atau lebih aman: $data = $repeatData->get($i - 1);
             $data = $repeatData->get($i - 1);
         @endphp
         <tr style="height:25pt">
             @if($i == 1)
-            <td rowspan="10" style="width:140pt; border:2pt solid #000000; border-right:1pt solid #000; vertical-align:middle; text-align:center; font-size:12pt;">
-                {{ $nominal ? number_format($nominal, 2) : '-' }}
+            <td rowspan="10" style="width:140pt; border:2pt solid #000000; vertical-align:middle; text-align:center; font-size:12pt;">
+                {{ $nominal ?: '-' }}
             </td>
             @endif
 
-            <td style="width:140pt; border:1pt solid #000000; vertical-align:middle; text-align:center; font-size:12pt;">
-                {{ $data && $data->massaKosong ? number_format($data->massaKosong, 4) : '-' }}
+            <td style="width:140pt; border:2pt solid #000000; vertical-align:middle; text-align:center; font-size:12pt;">
+                @php
+                    if($data) {
+                        $value = $data->massaKosong ?? $data->masssaKosong ?? $data->massa_kosong ?? null;
+                        echo $value !== null ? $value : '-';
+                    } else {
+                        echo '-';
+                    }
+                @endphp
             </td>
-            <td style="width:140pt; border:1pt solid #000000; vertical-align:middle; text-align:center; font-size:12pt;">
-                {{ $data && $data->massaIsi ? number_format($data->massaIsi, 4) : '-' }}
+            <td style="width:140pt; border:2pt solid #000000; vertical-align:middle; text-align:center; font-size:12pt;">
+                @php
+                    if($data) {
+                        $value = $data->massaIsi ?? $data->massa_isi ?? null;
+                        echo $value !== null ? $value : '-';
+                    } else {
+                        echo '-';
+                    }
+                @endphp
             </td>
-            <td style="width:120pt; border:1pt solid #000000; vertical-align:middle; text-align:center; font-size:12pt;">
-                {{ $data && $data->T_airSuling ? number_format($data->T_airSuling, 2) : '-' }}
+            <td style="width:120pt; border:2pt solid #000000; vertical-align:middle; text-align:center; font-size:12pt;">
+                @php
+                    if($data) {
+                        $value = $data->T_airSuling ?? $data->t_airSuling ?? $data->suhu ?? null;
+                        echo $value !== null ? $value : '-';
+                    } else {
+                        echo '-';
+                    }
+                @endphp
             </td>
-            <td style="width:120pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle; text-align:center; font-size:12pt;">
-                {{ $data && $data->P_Udara ? number_format($data->P_Udara, 2) : '-' }}
+            <td style="width:120pt; border:2pt solid #000000; vertical-align:middle; text-align:center; font-size:12pt;">
+                @php
+                    if($data) {
+                        $value = $data->P_Udara ?? $data->p_udara ?? $data->tekanan ?? null;
+                        echo $value !== null ? $value : '-';
+                    } else {
+                        echo '-';
+                    }
+                @endphp
             </td>
         </tr>
     @endfor
@@ -824,9 +886,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

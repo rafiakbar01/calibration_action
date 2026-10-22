@@ -374,34 +374,34 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
+<!--                <tr>-->
+<!--    <td>-->
+<!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+<!--    </td>-->
+<!--    <td colspan="3">-->
+<!--        <div class="d-flex align-items-center">-->
             <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
+<!--            <div class="me-3" style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
             
-            <span class="me-3" style="color: #000000;">-</span>
+<!--            <span class="me-3" style="color: #000000;">-</span>-->
             
             <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+<!--            <div style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </td>-->
+<!--</tr>-->
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -463,8 +463,8 @@
                         <div class="d-flex">
                             <div class="form-check me-5">
                                 <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }} disabled>
-                                <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
+                                       {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
+                                <label class="form-check-label" for="lab" style="color: #000000;">Lab.PT PAS</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="insitu" id="insitu" 
@@ -550,56 +550,127 @@
                 <span style="font-size: 16px; font-weight: bold; color: #000000;">Uji Skala Nominal</span>
             </div>
             
-            <table class="kalibrasi-data-table">
-                <tr style="background: #d9d9d9;">
-                    <td style="width: 20%;">
-                        <span style="font-weight: bold; color: #000000;">Nilai Nominal</span>
-                    </td>
-                    <td colspan="5">
-                        <span style="font-weight: bold; color: #000000;">Penunjukan Alat</span>
-                    </td>
-                </tr>
-                <tr style="background: #e8e8e8;">
-                    <td>
-                        <span style="font-weight: bold; color: #000000;">Unit ( )</span>
-                    </td>
-                    <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">1</span></td>
-                    <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">2</span></td>
-                    <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">3</span></td>
-                    <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">4</span></td>
-                    <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">5</span></td>
-                </tr>
+           <table class="kalibrasi-data-table">
+    <tr style="background: #d9d9d9;">
+        <td style="width: 20%;">
+            <span style="font-weight: bold; color: #000000;">Nilai Nominal</span>
+        </td>
+        <td colspan="5">
+            <span style="font-weight: bold; color: #000000;">Penunjukan Alat</span>
+        </td>
+    </tr>
+    <tr style="background: #e8e8e8;">
+        <td>
+            <span style="font-weight: bold; color: #000000;">Unit (</span>
+            <span style="color: #333;">{{ $calibration->headHoletest->satuan_unit ?? 'Tidak tersedia' }}</span>
+            <span style="font-weight: bold; color: #000000;">)</span>
+        </td>
+        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">1</span></td>
+        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">2</span></td>
+        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">3</span></td>
+        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">4</span></td>
+        <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">5</span></td>
+    </tr>
 
-                <!-- Loop through detail measurements -->
-                @foreach($calibration->detailHoletests as $detail)
-                <tr style="height:21.3pt;">
-                    <td style="border:2px solid #000; padding:0;">
-                        <input type="text" value="{{ $detail->titikUkur }}" readonly 
-                               style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
-                    </td>
-                    <td style="border:2px solid #000; padding:0;">
-                        <input type="text" value="{{ $detail->rep01 }}" readonly 
-                               style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
-                    </td>
-                    <td style="border:2px solid #000; padding:0;">
-                        <input type="text" value="{{ $detail->rep02 }}" readonly 
-                               style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
-                    </td>
-                    <td style="border:2px solid #000; padding:0;">
-                        <input type="text" value="{{ $detail->rep03 }}" readonly 
-                               style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
-                    </td>
-                    <td style="border:2px solid #000; padding:0;">
-                        <input type="text" value="{{ $detail->rep04 }}" readonly 
-                               style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
-                    </td>
-                    <td style="border:2px solid #000; padding:0;">
-                        <input type="text" value="{{ $detail->rep05 }}" readonly 
-                               style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
-                    </td>
-                </tr>
-                @endforeach
-            </table>
+    <!-- Loop through detail measurements -->
+    @php
+        $detailCount = $calibration->detailHoletests ? count($calibration->detailHoletests) : 0;
+        $maxRows = 10; // Jumlah baris maksimal yang diinginkan
+    @endphp
+
+    @if($detailCount > 0)
+        @foreach($calibration->detailHoletests as $detail)
+        <tr style="height:21.3pt;">
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="{{ $detail->titikUkur }}" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="{{ $detail->rep01 }}" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="{{ $detail->rep02 }}" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="{{ $detail->rep03 }}" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="{{ $detail->rep04 }}" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="{{ $detail->rep05 }}" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+        </tr>
+        @endforeach
+    @endif
+
+    <!-- Baris kosong untuk memenuhi jumlah baris yang diinginkan -->
+    @for($i = $detailCount; $i < $maxRows; $i++)
+    <tr style="height:21.3pt;">
+        <td style="border:2px solid #000; padding:0;">
+            <input type="text" value="" readonly 
+                   style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+        </td>
+        <td style="border:2px solid #000; padding:0;">
+            <input type="text" value="" readonly 
+                   style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+        </td>
+        <td style="border:2px solid #000; padding:0;">
+            <input type="text" value="" readonly 
+                   style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+        </td>
+        <td style="border:2px solid #000; padding:0;">
+            <input type="text" value="" readonly 
+                   style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+        </td>
+        <td style="border:2px solid #000; padding:0;">
+            <input type="text" value="" readonly 
+                   style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+        </td>
+        <td style="border:2px solid #000; padding:0;">
+            <input type="text" value="" readonly 
+                   style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+        </td>
+    </tr>
+    @endfor
+
+    <!-- Jika sama sekali tidak ada data, tampilkan 10 baris kosong -->
+    @if($detailCount == 0)
+        @for($i = 1; $i <= 10; $i++)
+        <tr style="height:21.3pt;">
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+            <td style="border:2px solid #000; padding:0;">
+                <input type="text" value="" readonly 
+                       style="width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:10pt;color:#000;padding:2px;">
+            </td>
+        </tr>
+        @endfor
+    @endif
+</table>
 
             <!-- Footer Section - View Data (WIDE VERSION) -->
 <div class="mt-4" style="width: 100%;">
@@ -750,9 +821,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

@@ -41,19 +41,19 @@ class AddDialTestIndicator extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [
-      
-        'ulangan01' => 'decimal:5',
-        'ulangan02' => 'decimal:5',
-        'ulangan03' => 'decimal:5',
-        'ulangan04' => 'decimal:5',
-        'ulangan05' => 'decimal:5',
-        'ulangan06' => 'decimal:5',
-        'ulangan07' => 'decimal:5',
-        'ulangan08' => 'decimal:5',
-        'ulangan09' => 'decimal:5',
-        'ulangan10' => 'decimal:5',
-    ];
+    // protected $casts = [
+        
+    //     'ulangan01' => 'decimal:2',
+    //     'ulangan02' => 'decimal:2',
+    //     'ulangan03' => 'decimal:2',
+    //     'ulangan04' => 'decimal:2',
+    //     'ulangan05' => 'decimal:2',
+    //     'ulangan06' => 'decimal:2',
+    //     'ulangan07' => 'decimal:2',
+    //     'ulangan08' => 'decimal:2',
+    //     'ulangan09' => 'decimal:2',
+    //     'ulangan10' => 'decimal:2',
+    // ];
 
     /**
      * Get the calibration that owns the dial indicator data.

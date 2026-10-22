@@ -514,151 +514,157 @@
             <!-- Data Kalibrasi Section -->
             <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
             
-         <!-- resources/views/formhtml/push_pull_view.blade.php -->
+       <!-- resources/views/formhtml/push_pull_view.blade.php -->
 <table cellspacing="0" cellpadding="0" class="TableNormal" 
     style="margin-left:6.12pt; border:1.5pt solid #000000; border-collapse:collapse; width:98%; font-family:Arial, sans-serif;">
     
-    <!-- BARIS 1: HEADER UTAMA -->
-    <!-- BARIS 1: HEADER UTAMA - VIEW DATA -->
-<tr style="height:18pt">
-    <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
-        <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
-            Titik Ukur
-        </p>
-    </td>
-    <td rowspan="2" style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
-        <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
-            STD Yang Digunakan
-        </p>
-    </td>
-    <td colspan="3" style="width:300pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
-        <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
-            Pembacaan Tarik 
-            <span style="border-bottom: 1px solid #000; padding: 0 10px; min-width: 80px; display: inline-block;">
-                {{ $calibration->headPushPull->satuan_tarik ?? '(N)' }}
-            </span>
-        </p>
-    </td>
-    <td colspan="3" style="width:300pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
-        <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
-            Pembacaan Tekan 
-            <span style="border-bottom: 1px solid #000; padding: 0 10px; min-width: 80px; display: inline-block;">
-                {{ $calibration->headPushPull->satuan_tekan ?? '(N)' }}
-            </span>
-        </p>
-    </td>
-</tr>
-
-<!-- BARIS 2: SUB HEADER - VIEW DATA -->
-<tr style="height:18pt">
-    <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle;">
-        <p style="margin:3pt; text-align:center; font-size:10pt;">
-            <span style="border-bottom: 1px solid #000; padding: 0 10px; min-width: 120px; display: inline-block;">
-                {{ $calibration->headPushPull->satuan_titik_ukur ?? '(N)' }}
-            </span>
-        </p>
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        1
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        2
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        3
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        1
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        2
-    </td>
-    <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
-        3
-    </td>
-</tr>
+    <!-- BARIS 1: HEADER UTAMA DENGAN SATUAN -->
+    <tr style="height:18pt">
+        <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
+            <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
+                Titik Ukur
+            </p>
+        </td>
+        <td rowspan="2" style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
+            <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
+                STD Yang Digunakan
+            </p>
+        </td>
+        <td colspan="3" style="width:300pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
+            <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
+                Pembacaan Tarik 
+                @if(isset($calibration->headPushPull) && $calibration->headPushPull->satuan_tarik)
+                    ({{ $calibration->headPushPull->satuan_tarik }})
+                @else
+                    ( - )
+                @endif
+            </p>
+        </td>
+        <td colspan="3" style="width:300pt; border:1.5pt solid #000000; vertical-align:middle; background-color:#f0f0f0;">
+            <p style="margin:3pt; text-align:center; font-size:11pt; font-weight:bold;">
+                Pembacaan Tekan 
+                @if(isset($calibration->headPushPull) && $calibration->headPushPull->satuan_tekan)
+                    ({{ $calibration->headPushPull->satuan_tekan }})
+                @else
+                    ( - )
+                @endif
+            </p>
+        </td>
+    </tr>
+    
+    <!-- BARIS 2: SUB HEADER DENGAN SATUAN TITIK UKUR -->
+    <tr style="height:18pt">
+        <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle;">
+            <p style="margin:3pt; text-align:center; font-size:10pt;">
+                @if(isset($calibration->headPushPull) && $calibration->headPushPull->satuan_titik_ukur)
+                    ({{ $calibration->headPushPull->satuan_titik_ukur }})
+                @else
+                    ( - )
+                @endif
+            </p>
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            1
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            2
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            3
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            1
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            2
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center; font-size:10pt; font-weight:bold;">
+            3
+        </td>
+    </tr>
     
     <!-- BARIS 3-12: DATA DETAIL (10 BARIS) -->
-    @if($calibration->detailPushpulls && count($calibration->detailPushpulls) > 0)
-        @foreach($calibration->detailPushpulls as $index => $detail)
-        <tr style="height:25pt">
-            <!-- Kolom 1: Titik Ukur -->
-            <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-                <span style="font-size:11pt;">
-                    {{ $detail->titikUkur ?? '' }}
-                </span>
-            </td>
-            
-            <!-- Kolom 2: STD -->
-            <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-                <span style="font-size:11pt;">
-                    {{ $detail->STD ?? '' }}
-                </span>
-            </td>
-            
-            <!-- Kolom 3-5: Pembacaan Tarik -->
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-                <span style="font-size:11pt;">
-                    {{ $detail->ulanganTarik01 ?? '' }}
-                </span>
-            </td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-                <span style="font-size:11pt;">
-                    {{ $detail->ulanganTarik02 ?? '' }}
-                </span>
-            </td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-                <span style="font-size:11pt;">
-                    {{ $detail->ulanganTarik03 ?? '' }}
-                </span>
-            </td>
-            
-            <!-- Kolom 6-8: Pembacaan Tekan -->
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-                <span style="font-size:11pt;">
-                    {{ $detail->ulanganTekan01 ?? '' }}
-                </span>
-            </td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-                <span style="font-size:11pt;">
-                    {{ $detail->ulanganTekan02 ?? '' }}
-                </span>
-            </td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
-                <span style="font-size:11pt;">
-                    {{ $detail->ulanganTekan03 ?? '' }}
-                </span>
-            </td>
-        </tr>
-        @endforeach
+  @if($calibration->detailPushpulls && count($calibration->detailPushpulls) > 0)
+    @foreach($calibration->detailPushpulls as $index => $detail)
+    <tr style="height:25pt">
+        <!-- Kolom 1: Titik Ukur -->
+        <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+            <span style="font-size:11pt;">
+                {{ $detail->titikUkur ?? '-' }}
+            </span>
+        </td>
+        
+        <!-- Kolom 2: STD -->
+        <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+            <span style="font-size:11pt;">
+                {{ $detail->STD ?? '-' }}
+            </span>
+        </td>
+        
+        <!-- Kolom 3-5: Pembacaan Tarik -->
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+            <span style="font-size:11pt;">
+                {{ $detail->ulanganTarik01 ?? '-' }}
+            </span>
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+            <span style="font-size:11pt;">
+                {{ $detail->ulanganTarik02 ?? '-' }}
+            </span>
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+            <span style="font-size:11pt;">
+                {{ $detail->ulanganTarik03 ?? '-' }}
+            </span>
+        </td>
+        
+        <!-- Kolom 6-8: Pembacaan Tekan -->
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+            <span style="font-size:11pt;">
+                {{ $detail->ulanganTekan01 ?? '-' }}
+            </span>
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+            <span style="font-size:11pt;">
+                {{ $detail->ulanganTekan02 ?? '-' }}
+            </span>
+        </td>
+        <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">
+            <span style="font-size:11pt;">
+                {{ $detail->ulanganTekan03 ?? '-' }}
+            </span>
+        </td>
+    </tr>
+    @endforeach
+
         
         <!-- Jika kurang dari 10 baris, tampilkan baris kosong -->
         @if(count($calibration->detailPushpulls) < 10)
             @for($i = count($calibration->detailPushpulls); $i < 10; $i++)
             <tr style="height:25pt">
-                <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
+                <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+                <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+                <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
             </tr>
             @endfor
         @endif
     @else
-        <!-- Jika tidak ada data -->
+        <!-- Jika tidak ada data sama sekali -->
         @for($i = 1; $i <= 10; $i++)
         <tr style="height:25pt">
-            <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
-            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;"></td>
+            <td style="width:120pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+            <td style="width:200pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
+            <td style="width:100pt; border:1.5pt solid #000000; vertical-align:middle; text-align:center;">-</td>
         </tr>
         @endfor
     @endif
@@ -724,11 +730,7 @@
         <td style="width:120px; border-left:1.5pt solid #000; {{ $i < 5 ? 'border-right:1.5pt solid #000;' : '' }} border-bottom:1.5pt solid #000; vertical-align:middle; text-align:center;">
             <span style="font-size:11pt;">
                 @if($calibration->addPushpull)
-                    @if($i == 1)<input type="text"
-       name="repeatabilityTekan01"
-       value="{{ $calibration->addPushpull->repeatabilityTekan01 ?? '' }}"
-       style="width:100%; border:0; background:transparent; text-align:center;">
-
+                    @if($i == 1) {{ $calibration->addPushpull->repeatabilityTekan01 ?? '' }}
                     @elseif($i == 2) {{ $calibration->addPushpull->repeatabilityTekan02 ?? '' }}
                     @elseif($i == 3) {{ $calibration->addPushpull->repeatabilityTekan03 ?? '' }}
                     @elseif($i == 4) {{ $calibration->addPushpull->repeatabilityTekan04 ?? '' }}
@@ -864,9 +866,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

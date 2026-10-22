@@ -501,7 +501,7 @@
                 <td class="table-secondary fw-bold text-center" style="color: #000000;">Akhir</td>
             </tr>
             <tr>
-                <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
+                <td class="bg-light fw-bold" style="color: #000000;">Suhu (C)</td>
                 <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition1 ?? '-' }}" readonly></td>
                 <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition2 ?? '-' }}" readonly></td>
                 <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition3 ?? '-' }}" readonly></td>
@@ -585,39 +585,39 @@
     
     <tr style='height:16.5pt'>
         <td class='x53' style='height:15.75pt;'>
-            <input type="number" step="any" name="T_setting_{{ $i }}" 
+            <input type="text" name="T_setting_{{ $i }}" 
                    value="{{ old('T_setting_' . $i, $tempData ? $tempData->T_setting : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly >
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="T_STD{{ $i }}_1" 
+            <input type="text" name="T_STD{{ $i }}_1" 
                    value="{{ old('T_STD' . $i . '_1', $tempData ? $tempData->T_STD1 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="T_STD{{ $i }}_2" 
+            <input type="text" name="T_STD{{ $i }}_2" 
                    value="{{ old('T_STD' . $i . '_2', $tempData ? $tempData->T_STD2 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="T_STD{{ $i }}_3" 
+            <input type="text" name="T_STD{{ $i }}_3" 
                    value="{{ old('T_STD' . $i . '_3', $tempData ? $tempData->T_STD3 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="T_OSmA{{ $i }}_1" 
+            <input type="text" name="T_OSmA{{ $i }}_1" 
                    value="{{ old('T_OSmA' . $i . '_1', $tempData ? $tempData->T_OSmA1 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="T_OSmA{{ $i }}_2" 
+            <input type="text" name="T_OSmA{{ $i }}_2" 
                    value="{{ old('T_OSmA' . $i . '_2', $tempData ? $tempData->T_OSmA2 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="T_OSmA{{ $i }}_3" 
+            <input type="text" name="T_OSmA{{ $i }}_3" 
                    value="{{ old('T_OSmA' . $i . '_3', $tempData ? $tempData->T_OSmA3 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
     </tr>
     @endfor
@@ -676,39 +676,39 @@
     
     <tr style='height:16.5pt'>
         <td class='x53' style='height:15.75pt;'>
-            <input type="number" step="any" name="RH_setting_{{ $i }}" 
+            <input type="text" name="RH_setting_{{ $i }}" 
                    value="{{ old('RH_setting_' . $i, $humidData ? $humidData->RH_setting : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="RH_STD{{ $i }}_1" 
+            <input type="text" name="RH_STD{{ $i }}_1" 
                    value="{{ old('RH_STD' . $i . '_1', $humidData ? $humidData->RH_STD1 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="RH_STD{{ $i }}_2" 
+            <input type="text" name="RH_STD{{ $i }}_2" 
                    value="{{ old('RH_STD' . $i . '_2', $humidData ? $humidData->RH_STD2 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="RH_STD{{ $i }}_3" 
+            <input type="text" name="RH_STD{{ $i }}_3" 
                    value="{{ old('RH_STD' . $i . '_3', $humidData ? $humidData->RH_STD3 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="RH_OSmA{{ $i }}_1" 
+            <input type="text" name="RH_OSmA{{ $i }}_1" 
                    value="{{ old('RH_OSmA' . $i . '_1', $humidData ? $humidData->RH_OSmA1 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="RH_OSmA{{ $i }}_2" 
+            <input type="text" name="RH_OSmA{{ $i }}_2" 
                    value="{{ old('RH_OSmA' . $i . '_2', $humidData ? $humidData->RH_OSmA2 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
         <td class='x51'>
-            <input type="number" step="any" name="RH_OSmA{{ $i }}_3" 
+            <input type="text" name="RH_OSmA{{ $i }}_3" 
                    value="{{ old('RH_OSmA' . $i . '_3', $humidData ? $humidData->RH_OSmA3 : '') }}" 
-                   style="width:90%; border:none; background:transparent;">
+                   style="width:90%; border:none; background:transparent;"readonly>
         </td>
     </tr>
     @endfor
@@ -855,9 +855,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

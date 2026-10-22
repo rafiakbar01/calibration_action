@@ -466,8 +466,8 @@
                     <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="insitu" id="insitu" 
-                           {{ old('tempat_kalibrasi', $calibration->tempatKalibrasi) == 'insitu' ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="Insitu" id="insitu" 
+                           {{ old('tempat_kalibrasi', $calibration->tempatKalibrasi) == 'Insitu' ? 'checked' : '' }}>
                     <label class="form-check-label" for="insitu" style="color: #000000;">Insitu</label>
                 </div>
             </div>
@@ -480,6 +480,16 @@
         <td colspan="3">
             <input type="text" name="lokasiPT" class="kalibrasi-input" 
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
+        </td>
+    </tr>
+    
+     <tr>
+        <td>
+            <p style="margin: 0; color: #000000;">Kode TH</p>
+        </td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input" 
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
         </td>
     </tr>
 </table>
@@ -556,137 +566,137 @@
             ->values(); // reset key jadi 0,1,2,...
         ?>
 
-        <!-- Tabel Kiri (baris 1-10) -->
-        <table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif; margin-bottom: 30px; float: left;">
-            <thead>
-     <tr>
-    <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
-        Pembacaan Alat<br>
-        <div style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
-            (
-            <input type="text" 
-                name="headPressureGauge[satuan_alat_kiri]" 
-                value="{{ isset($calibration->headPressureGauge->satuan_alat_kiri) ? $calibration->headPressureGauge->satuan_alat_kiri : '' }}"
-                style="border: none; border-bottom: none; outline: none; width: 80px; font-size: 9pt; font-weight: normal; text-align: center; background: none;"
-                placeholder="............"
-            >
-            )
-        </div>
-    </th>
-    <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
-        Pembacaan STD<br>
-        <div style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
-            (
-            <input type="text" 
-                name="headPressureGauge[satuan_std_kiri]" 
-                value="{{ isset($calibration->headPressureGauge->satuan_std_kiri) ? $calibration->headPressureGauge->satuan_std_kiri : '' }}"
-                style="border: none; border-bottom: none; outline: none; width: 80px; font-size: 9pt; font-weight: normal; text-align: center; background: none;"
-                placeholder="............"
-            >
-            )
-        </div>
-    </th>
-</tr>
-                <tr>
-                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
-                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php for($i = 0; $i < 10; $i++): ?>
-                    <?php 
-                        $detail = $detailsIndexed->get($i);
-                        $titik = $detail ? number_format($detail->titikUkur, 5) : '';
-                        $naik  = $detail ? number_format($detail->STDNaik, 5) : '';
-                        $turun = $detail ? number_format($detail->STDTurun, 5) : '';
-                    ?>
-                     <tr>
-    <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
-        <input type="number" step="any" name="pembacaan_alat_kiri[]" 
-               value="{{ old('titik.'.$i, $detail ? $detail->titikUkur : '') }}" 
-               style="width: 100%; text-align: center; border: none; border-bottom: none; background: transparent; font-size: 10pt;">
-    </td>
-    <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
-        <input type="number" step="any" name="naik_kiri_<?php echo $i; ?>" 
-               value="{{ old('naik.'.$i, $detail ? $detail->STDNaik : '') }}" 
-               style="width: 100%; text-align: center; border: none; border-bottom: none; background: transparent; font-size: 9pt;">
-    </td>
-    <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
-        <input type="number" step="any" name="turun_kiri_<?php echo $i; ?>"
-               value="{{ old('turun.'.$i, $detail ? $detail->STDTurun : '') }}" 
-               style="width: 100%; text-align: center; border: none; border-bottom:none; background: transparent; font-size: 9pt;">
-    </td>
-</tr>
-                <?php endfor; ?>
-            </tbody>
-        </table>
+       <!-- Tabel Kiri (baris 1-10) -->
+<table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif; margin-bottom: 30px; float: left;">
+    <thead>
+        <tr>
+            <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
+                Pembacaan Alat<br>
+                <div style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
+                    (
+                    <input type="text" 
+                        name="headPressureGauge[satuan_alat_kiri]" 
+                        value="{{ isset($calibration->headPressureGauge->satuan_alat_kiri) ? $calibration->headPressureGauge->satuan_alat_kiri : '' }}"
+                        style="border: none; border-bottom: none; outline: none; width: 80px; font-size: 9pt; font-weight: normal; text-align: center; background: none;"
+                        placeholder="............"
+                    >
+                    )
+                </div>
+            </th>
+            <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
+                Pembacaan STD<br>
+                <div style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
+                    (
+                    <input type="text" 
+                        name="headPressureGauge[satuan_std_kiri]" 
+                        value="{{ isset($calibration->headPressureGauge->satuan_std_kiri) ? $calibration->headPressureGauge->satuan_std_kiri : '' }}"
+                        style="border: none; border-bottom: none; outline: none; width: 80px; font-size: 9pt; font-weight: normal; text-align: center; background: none;"
+                        placeholder="............"
+                    >
+                    )
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
+            <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php for($i = 0; $i < 10; $i++): ?>
+            <?php 
+                $detail = $detailsIndexed->get($i);
+                // HAPUS number_format, langsung ambil nilai asli
+                $titik = $detail ? $detail->titikUkur : '';
+                $naik  = $detail ? $detail->STDNaik : '';
+                $turun = $detail ? $detail->STDTurun : '';
+            ?>
+            <tr>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
+                    <input type="text"  name="pembacaan_alat_kiri[]" 
+                           value="{{ old('titik.'.$i, $titik) }}" 
+                           style="width: 100%; text-align: center; border: none; border-bottom: none; background: transparent; font-size: 10pt;">
+                </td>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
+                    <input type="text"  name="naik_kiri_<?php echo $i; ?>" 
+                           value="{{ old('naik.'.$i, $naik) }}" 
+                           style="width: 100%; text-align: center; border: none; border-bottom: none; background: transparent; font-size: 9pt;">
+                 </td>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
+                    <input type="text"  name="turun_kiri_<?php echo $i; ?>"
+                           value="{{ old('turun.'.$i, $turun) }}" 
+                           style="width: 100%; text-align: center; border: none; border-bottom:none; background: transparent; font-size: 9pt;">
+                 </td>
+            </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
 
-        <!-- Tabel Kanan (baris 11-20) -->
-        <table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif; float: right;">
-            <thead>
-                <!-- sama seperti atas -->
-          <tr>
-    <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
-        Pembacaan Alat<br>
-        <div style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
-            (
-            <input type="text" 
-                name="headPressureGauge[satuan_alat_kanan]" 
-                value="{{ isset($calibration->headPressureGauge->satuan_alat_kanan) ? $calibration->headPressureGauge->satuan_alat_kanan : '' }}"
-                style="border: none; border-bottom: none; outline: none; width: 80px; font-size: 9pt; font-weight: normal; text-align: center; background: none;"
-                placeholder="............"
-            >
-            )
-        </div>
-    </th>
-    <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
-        Pembacaan STD<br>
-        <div style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
-            (
-            <input type="text" 
-                name="headPressureGauge[satuan_std_kanan]" 
-                value="{{ isset($calibration->headPressureGauge->satuan_std_kanan) ? $calibration->headPressureGauge->satuan_std_kanan : '' }}"
-                style="border: none; border-bottom: none; outline: none; width: 80px; font-size: 9pt; font-weight: normal; text-align: center; background: none;"
-                placeholder="............"
-            >
-            )
-        </div>
-    </th>
-</tr>
-                <tr>
-                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
-                    <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php for($i = 10; $i < 20; $i++): ?>
-                    <?php 
-                        $detail = $detailsIndexed->get($i);
-                        $titik = $detail ? number_format($detail->titikUkur, 5) : '';
-                        $naik  = $detail ? number_format($detail->STDNaik, 5) : '';
-                        $turun = $detail ? number_format($detail->STDTurun, 5) : '';
-                    ?>
-                    <tr>
-    <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
-        <input type="number" step="any" name="pembacaan_alat_kanan[]" 
-               value="{{ old('titik.'.$i, $detail ? $detail->titikUkur : '') }}" 
-               style="width: 100%; text-align: center; border: none; border-bottom: none; background: transparent; font-size: 10pt;">
-    </td>
-    <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
-        <input type="number" step="any" name="naik_kanan_<?php echo $i; ?>"
-               value="{{ old('naik.'.$i, $detail ? $detail->STDNaik : '') }}" 
-               style="width: 100%; text-align: center; border: none; border-bottom: none; background: transparent; font-size: 9pt;">
-    </td>
-    <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
-        <input type="number" step="any" name="turun_kanan_<?php echo $i; ?>"
-               value="{{ old('turun.'.$i, $detail ? $detail->STDTurun : '') }}" 
-               style="width: 100%; text-align: center; border: none; border-bottom:none; background: transparent; font-size: 9pt;">
-    </td>
-</tr>
-
-                <?php endfor; ?>
-            </tbody>
-        </table>
+<!-- Tabel Kanan (baris 11-20) -->
+<table class="setting-suhu-table" style="border-collapse: collapse; width: 48%; font-family: Arial, sans-serif; float: right;">
+    <thead>
+        <tr>
+            <th rowspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0; width: 25%;">
+                Pembacaan Alat<br>
+                <div style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
+                    (
+                    <input type="text" 
+                        name="headPressureGauge[satuan_alat_kanan]" 
+                        value="{{ isset($calibration->headPressureGauge->satuan_alat_kanan) ? $calibration->headPressureGauge->satuan_alat_kanan : '' }}"
+                        style="border: none; border-bottom: none; outline: none; width: 80px; font-size: 9pt; font-weight: normal; text-align: center; background: none;"
+                        placeholder="............"
+                    >
+                    )
+                </div>
+            </th>
+            <th colspan="2" style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 10pt; background-color: #f0f0f0;">
+                Pembacaan STD<br>
+                <div style="font-size: 9pt; font-weight: normal; display: block; margin-top: 5px;">
+                    (
+                    <input type="text" 
+                        name="headPressureGauge[satuan_std_kanan]" 
+                        value="{{ isset($calibration->headPressureGauge->satuan_std_kanan) ? $calibration->headPressureGauge->satuan_std_kanan : '' }}"
+                        style="border: none; border-bottom: none; outline: none; width: 80px; font-size: 9pt; font-weight: normal; text-align: center; background: none;"
+                        placeholder="............"
+                    >
+                    )
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Naik</th>
+            <th style="border: 1pt solid #000; padding: 8px; text-align: center; font-size: 10pt; background-color: #f0f0f0;">Turun</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php for($i = 10; $i < 20; $i++): ?>
+            <?php 
+                $detail = $detailsIndexed->get($i);
+                // HAPUS number_format, langsung ambil nilai asli
+                $titik = $detail ? $detail->titikUkur : '';
+                $naik  = $detail ? $detail->STDNaik : '';
+                $turun = $detail ? $detail->STDTurun : '';
+            ?>
+            <tr>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; height: 40px; font-size: 10pt;">
+                    <input type="text"  name="pembacaan_alat_kanan[]" 
+                           value="{{ old('titik.'.$i, $titik) }}" 
+                           style="width: 100%; text-align: center; border: none; border-bottom: none; background: transparent; font-size: 10pt;">
+                </td>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
+                    <input type="text"  name="naik_kanan_<?php echo $i; ?>"
+                           value="{{ old('naik.'.$i, $naik) }}" 
+                           style="width: 100%; text-align: center; border: none; border-bottom: none; background: transparent; font-size: 9pt;">
+                </td>
+                <td style="border: 1pt solid #000; padding: 8px; text-align: center; vertical-align: middle; font-size: 9pt;">
+                    <input type="text"  name="turun_kanan_<?php echo $i; ?>"
+                           value="{{ old('turun.'.$i, $turun) }}" 
+                           style="width: 100%; text-align: center; border: none; border-bottom:none; background: transparent; font-size: 9pt;">
+                </td>
+            </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
             </div>
         </div>
 
@@ -971,7 +981,7 @@
                 <input type="text" name="verifiedBy" 
        value="{{ old('diperiksaOleh', $diperiksaOleh) }}" 
        style="width: 100%; font-size: 9pt; border: none; border-bottom: none; background: transparent; color: #000; padding: 2px;"
-       placeholder="masukan nama">
+       placeholder="-" readonly>
 
             </span>
         </td>
@@ -996,8 +1006,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -1070,7 +1085,7 @@
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data

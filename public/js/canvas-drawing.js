@@ -14,7 +14,7 @@ let lastX = 0;
 let lastY = 0;
 
 // ============================================
-// DEBUGGING FUNCTIONS
+// DEBUGGING FUNCTIONSf
 // ============================================
 
 function debugLog(message, type = 'info') {

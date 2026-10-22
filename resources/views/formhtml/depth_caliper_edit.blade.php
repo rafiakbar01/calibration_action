@@ -297,7 +297,7 @@
 <body>
     <div class="container my-4">
         <div class="form-kalibrasi-container">
-            <table class="kalibrasi-header-table">
+            <table class="kalibrasi-header-table">F
                 <tr>
                     <td colspan="2">
                         <p style="margin: 0; font-size: 14px; color: #000000;">PAS-FLK11</p>
@@ -424,8 +424,8 @@
         <td colspan="3">
             <div class="d-flex">
                 <div class="form-check me-5">
-                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab"
-                           {{ old('tempatKalibrasi', $calibration->tempatKalibrasi) == 'lab' ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab.PT PAS"
+                           {{ old('tempatKalibrasi', $calibration->tempatKalibrasi) == 'lab.PT PAS' ? 'checked' : '' }}>
                     <label class="form-check-label">Lab. PT.PAS</label>
                 </div>
                 <div class="form-check">
@@ -443,6 +443,14 @@
         <td colspan="3">
             <input type="text" name="lokasiPT" class="kalibrasi-input"
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
+        </td>
+    </tr>
+
+  <tr>
+        <td>Kode TH</td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input"
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
         </td>
     </tr>
 
@@ -541,10 +549,23 @@
                 
                 <!-- Header Row 2 -->
                 <tr style="height:10.25pt">
-                    <td style="width:20%; border:1pt solid #000; vertical-align:middle">
-                        <p style="margin:0; text-align:center; line-height:9.3pt">
-                            <span style="font-family:Arial; font-size:9.5pt; font-weight:bold">Unit ( )</span>
-                        </p>
+                    <td style="text-align: center;">
+                        <span style="font-weight: bold; color: #000000;">Unit (</span>
+                        <input type="text" 
+                               name="satuan_unit" 
+                               value="{{ old('satuan_unit', $calibration->headDepthCaliper->satuan_unit ?? 'mm') }}"
+                               style="width: 60px; 
+                                      padding: 2px;
+                                      margin: 0 2px;
+                                      border: none;
+                                      border-bottom: 1px dashed #666;
+                                      text-align: center;
+                                      background: transparent;
+                                      font-size: 14px;
+                                      outline: none;"
+                               placeholder="mm"
+                               maxlength="10">
+                        <span style="font-weight: bold; color: #000000;">)</span>
                     </td>
                     <td style="width:12.5%; border:1pt solid #000; vertical-align:middle">
                         <p style="margin:0.1pt 0; text-align:center; line-height:9.15pt">
@@ -758,7 +779,7 @@
         <input type="text" class="kalibrasi-input" name="calibratedBy"
                value="{{ $calibration->calibratedBy ?? '-' }}"
                
-               style="border:none; width:100%; font-size:8.5pt; background:transparent;">
+               style="border:none; width:100%; font-size:8.5pt; background:transparent;" readonly>
     </div>
 </td>
 
@@ -768,7 +789,7 @@
         <input type="text" class="kalibrasi-input" name="verifiedBy"
                value="{{ $calibration->verifiedBy ?? '-' }}"
                
-               style="border:none; width:100%; font-size:8.5pt; background:transparent;">
+               style="border:none; width:100%; font-size:8.5pt; background:transparent;" readonly>
     </div>
 </td>
 
@@ -802,8 +823,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -876,7 +902,7 @@
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data

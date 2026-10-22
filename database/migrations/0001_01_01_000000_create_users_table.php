@@ -19,7 +19,6 @@ return new class extends Migration
             // removed: email, email_verified_at
             $table->string('password');
             $table->string('role')->default('user');
-            $table->string('foto');
             // --- CHANGES END ---
             $table->rememberToken();
             $table->timestamps();

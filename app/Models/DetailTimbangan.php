@@ -16,20 +16,20 @@ class DetailTimbangan extends Model
         'calibration_id',
         'titikUkur',
         'Lm1','Lz1','Rm1','Rz1',
-        'STD',
+        'STD','form_index'
         
     ];
 
-    protected $casts = [
-        'titikUkur'=>'decimal:5',
-        'Lm1'=>'decimal:5',
-        'Lz1'=>'decimal:5',
-        'Rm1'=>'decimal:5',
-        'Rz1'=>'decimal:5',
-        'STD'=>'decimal:5',
+    // protected $casts = [
+    //     'titikUkur'=>'string',
+    //     'Lm1'=>'string',
+    //     'Lz1'=>'string',
+    //     'Rm1'=>'string',
+    //     'Rz1'=>'string',
+    //     'STD'=>'string',
 
        
-    ];
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

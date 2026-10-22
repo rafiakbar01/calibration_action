@@ -48,29 +48,29 @@ class AddTorqueMeter extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'repCw01' => 'decimal:5',
-        'repCw02' => 'decimal:5',
-        'repCw03' => 'decimal:5',
-        'repCw04' => 'decimal:5',
-        'repCw05' => 'decimal:5',
-        'repCw06' => 'decimal:5',
-        'repCw07' => 'decimal:5',
-        'repCw08' => 'decimal:5',
-        'repCw09' => 'decimal:5',
-        'repCw10' => 'decimal:5',
+    // protected $casts = [
+    //     'repCw01' => 'decimal:5',
+    //     'repCw02' => 'decimal:5',
+    //     'repCw03' => 'decimal:5',
+    //     'repCw04' => 'decimal:5',
+    //     'repCw05' => 'decimal:5',
+    //     'repCw06' => 'decimal:5',
+    //     'repCw07' => 'decimal:5',
+    //     'repCw08' => 'decimal:5',
+    //     'repCw09' => 'decimal:5',
+    //     'repCw10' => 'decimal:5',
 
-        'repCcw01' => 'decimal:5',
-        'repCcw02' => 'decimal:5',
-        'repCcw03' => 'decimal:5',
-        'repCcw04' => 'decimal:5',
-        'repCcw05' => 'decimal:5',
-        'repCcw06' => 'decimal:5',
-        'repCcw07' => 'decimal:5',
-        'repCcw08' => 'decimal:5',
-        'repCcw09' => 'decimal:5',
-        'repCcw10' => 'decimal:5',
-    ];
+    //     'repCcw01' => 'decimal:5',
+    //     'repCcw02' => 'decimal:5',
+    //     'repCcw03' => 'decimal:5',
+    //     'repCcw04' => 'decimal:5',
+    //     'repCcw05' => 'decimal:5',
+    //     'repCcw06' => 'decimal:5',
+    //     'repCcw07' => 'decimal:5',
+    //     'repCcw08' => 'decimal:5',
+    //     'repCcw09' => 'decimal:5',
+    //     'repCcw10' => 'decimal:5',
+    // ];
 
   
 

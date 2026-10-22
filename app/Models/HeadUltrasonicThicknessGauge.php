@@ -12,7 +12,8 @@ class HeadUltrasonicThicknessGauge extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod',
+        'satuan_unit', 'form_index', 'keterangan_fungsi_komponen'
     ];
 
     public function calibration()

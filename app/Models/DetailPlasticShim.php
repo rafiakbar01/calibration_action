@@ -23,15 +23,15 @@ class DetailPlasticShim extends Model
         'STD05'
     ];
 
-    protected $casts = [
-        'nominal' => 'decimal:5',
-        'STD01'   => 'decimal:5',
-        'STD02'   => 'decimal:5',
-        'STD03'   => 'decimal:5',
-        'STD04'   => 'decimal:5',
-        'STD05'   => 'decimal:5',
+    // protected $casts = [
+    //     'nominal' => 'decimal:5',
+    //     'STD01'   => 'decimal:5',
+    //     'STD02'   => 'decimal:5',
+    //     'STD03'   => 'decimal:5',
+    //     'STD04'   => 'decimal:5',
+    //     'STD05'   => 'decimal:5',
         
-    ];
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

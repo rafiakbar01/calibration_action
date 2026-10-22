@@ -12,7 +12,7 @@ class HeadPlainLimitGauge extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','catatan'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','catatan','satuan_go','satuan_no_go'
     ];
 
     public function calibration()

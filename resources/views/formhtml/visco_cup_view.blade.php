@@ -7,6 +7,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+    .radio-blue {
+    width: 18px;
+    height: 18px;
+    margin-right: 3px;
+    vertical-align: middle;
+    opacity: 1;
+    pointer-events: none;
+    }
+    
+    .radio-blue:checked {
+        accent-color: #007bff;
+    }
     /* Pastikan semua text berwarna hitam */
     .form-kalibrasi-container,
     .form-kalibrasi-container *:not(input):not(select):not(textarea):not(button) {
@@ -95,18 +107,21 @@
     input[type="radio"]:checked {
         background-color: #0d6efd !important;
         border-color: #0d6efd !important;
+        
     }
 
     input[type="radio"]:checked:disabled {
         background-color: #0d6efd !important;
         border-color: #0d6efd !important;
         opacity: 1 !important;
+       
     }
 
     input[type="radio"]:disabled {
         background-color: #f8f9fa !important;
         border-color: #6c757d !important;
         opacity: 1 !important;
+       
     }
 
     /* Styling khusus untuk checkbox alat standar */
@@ -374,34 +389,34 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
+<!--                <tr>-->
+<!--    <td>-->
+<!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+<!--    </td>-->
+<!--    <td colspan="3">-->
+<!--        <div class="d-flex align-items-center">-->
             <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
+<!--            <div class="me-3" style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
             
-            <span class="me-3" style="color: #000000;">-</span>
+<!--            <span class="me-3" style="color: #000000;">-</span>-->
             
             <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+<!--            <div style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </td>-->
+<!--</tr>-->
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -616,21 +631,20 @@
                        value="<?php echo htmlspecialchars($othersValue); ?>" readonly>
             </div>
 
-            <div style="display: inline-block; vertical-align: top;">
-                <span class="bold">Kode Nomor :</span>
-                <?php 
-                for ($i = 1; $i <= 5; $i++): 
-                    // Bandingkan sebagai string karena di database disimpan sebagai string
-                    $kodeChecked = ((string)$kodeNomor === (string)$i);
-                ?>
-                    <label style="margin-right: 5px; display: inline-block;">
-                        <input type="radio"  name="kode_nomor" value="<?php echo $i; ?>" 
-                            <?php echo ($kodeChecked ? 'checked' : ''); ?> disabled
-                            style="width: 18px; height: 18px; margin-right: 3px;">
-                        <span style="display: inline-block;"><?php echo $i; ?></span>
-                    </label>
-                <?php endfor; ?>
-            </div>
+        <div style="display: inline-block; vertical-align: top;">
+    <span class="bold">Kode Nomor :</span>
+    <?php 
+    for ($i = 1; $i <= 5; $i++): 
+        $kodeChecked = ((string)$kodeNomor === (string)$i);
+    ?>
+        <label style="margin-right: 15px; display: inline-block;">
+         <input type="radio" name="kode_nomor" value="<?php echo $i; ?>" 
+    <?php echo ($kodeChecked ? 'checked' : ''); ?> 
+    onclick="return false;">
+            <span style="vertical-align: middle;"><?php echo $i; ?></span>
+        </label>
+    <?php endfor; ?>
+</div>
         </td>
     </tr>
 </table>
@@ -870,28 +884,32 @@ span {
     <!-- Viscosity -->
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
-            <input type="radio" name="alat_standar[]" value="Viscosity Standard Paragon"
-                   <?php echo ($viscosityChecked ? 'checked' : ''); ?> disabled
-                   style="width: 18pt; height: 18pt; cursor: pointer;">
+          <input type="radio" name="alat_standar[]" value="Viscosity Standard Paragon"
+            <?php echo ($viscosityChecked ? 'checked' : ''); ?> 
+            onclick="return false;"
+            style="width: 18pt; height: 18pt; cursor: default;">
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
             Viscosity Standard Paragon :
             <div style="margin-top:6pt;">
                 <label>
-                    <input type="radio" name="viscosity_type" value="N35" 
-                        <?php echo ($viscosityN35 ? 'checked' : ''); ?> disabled> 
+                  <input type="radio" name="viscosity_type" value="N35" 
+                        <?php echo ($viscosityN35 ? 'checked' : ''); ?> 
+                        onclick="return false;">
                     N35
                 </label>
                 &nbsp;&nbsp;
                 <label>
                     <input type="radio" name="viscosity_type" value="S60" 
-                        <?php echo ($viscosityS60 ? 'checked' : ''); ?> disabled> 
+                        <?php echo ($viscosityS60 ? 'checked' : ''); ?> 
+                        onclick="return false;">
                     S60
                 </label>
                 &nbsp;&nbsp;
                 <label>
-                    <input type="radio" name="viscosity_type" value="D1000" 
-                        <?php echo ($viscosityD1000 ? 'checked' : ''); ?> disabled> 
+                   <input type="radio" name="viscosity_type" value="D1000" 
+                        <?php echo ($viscosityD1000 ? 'checked' : ''); ?> 
+                        onclick="return false;">
                     D1000
                 </label>
             </div>
@@ -904,21 +922,24 @@ span {
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
             <input type="radio" name="alat_standar[]" value="Digital Stopwatch"
-                   <?php echo ($stopwatchChecked ? 'checked' : ''); ?> disabled
-                   style="width: 18pt; height: 18pt; cursor: pointer;">
+                <?php echo ($stopwatchChecked ? 'checked' : ''); ?> 
+                onclick="return false;"
+                style="width: 18pt; height: 18pt; cursor: default;">
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
             Digital Stopwatch :
             <div style="margin-top:6pt;">
                 <label>
                     <input type="radio" name="stopwatch_type" value="WF.002" 
-                        <?php echo ($stopwatchWF002 ? 'checked' : ''); ?> disabled> 
+                        <?php echo ($stopwatchWF002 ? 'checked' : ''); ?> 
+                        onclick="return false;">
                     WF.002
                 </label>
                 &nbsp;&nbsp;
                 <label>
-                    <input type="radio" name="stopwatch_type" value="WF.003" 
-                        <?php echo ($stopwatchWF003 ? 'checked' : ''); ?> disabled> 
+                   <input type="radio" name="stopwatch_type" value="WF.003" 
+                        <?php echo ($stopwatchWF003 ? 'checked' : ''); ?> 
+                        onclick="return false;">
                     WF.003
                 </label>
             </div>
@@ -930,22 +951,25 @@ span {
     <!-- Thermometer -->
     <tr style="height: 60pt;">
         <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
-            <input type="radio" name="alat_standar[]" value="Thermometer"
-                   <?php echo ($thermometerChecked ? 'checked' : ''); ?> disabled
-                   style="width: 18pt; height: 18pt; cursor: pointer;">
+           <input type="radio" name="alat_standar[]" value="Thermometer"
+                <?php echo ($thermometerChecked ? 'checked' : ''); ?> 
+                onclick="return false;"
+                style="width: 18pt; height: 18pt; cursor: default;">
         </td>
         <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
             Thermometer :
             <div style="margin-top:6pt;">
                 <label>
-                    <input type="radio" name="thermometer_type" value="TES" 
-                        <?php echo ($thermometerTES ? 'checked' : ''); ?> disabled> 
+                  <input type="radio" name="thermometer_type" value="TES" 
+                        <?php echo ($thermometerTES ? 'checked' : ''); ?> 
+                        onclick="return false;">
                     TES
                 </label>
                 &nbsp;&nbsp;
                 <label>
-                    <input type="radio" name="thermometer_type" value="TFA" 
-                        <?php echo ($thermometerTFA ? 'checked' : ''); ?> disabled> 
+                   <input type="radio" name="thermometer_type" value="TFA" 
+                        <?php echo ($thermometerTFA ? 'checked' : ''); ?> 
+                        onclick="return false;">
                     TFA
                 </label>
             </div>
@@ -990,9 +1014,9 @@ span {
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

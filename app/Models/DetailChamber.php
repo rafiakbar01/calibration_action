@@ -31,6 +31,7 @@ class DetailChamber extends Model
         'ulangan08',
         'ulangan09',
         'RHulangan',
+        'form_index'
 
     ];
 
@@ -41,18 +42,18 @@ class DetailChamber extends Model
         'repetition_number' => 'integer',
         'interval_number' => 'integer',
       
-        'readAlat' => 'decimal:5',
-        'RHAlat' => 'decimal:5',
-        'ulangan01' => 'decimal:5',
-        'ulangan02' => 'decimal:5',
-        'ulangan03' => 'decimal:5',
-        'ulangan04' => 'decimal:5',
-        'ulangan05' => 'decimal:5',
-        'ulangan06'  => 'decimal:5',
-        'ulangan07'  => 'decimal:5',
-        'ulangan08'  => 'decimal:5',
-        'ulangan09'  => 'decimal:5',
-        'RHulangan'  => 'decimal:5',
+        // 'readAlat' => 'decimal:5',
+        // 'RHAlat' => 'decimal:5',
+        // 'ulangan01' => 'decimal:5',
+        // 'ulangan02' => 'decimal:5',
+        // 'ulangan03' => 'decimal:5',
+        // 'ulangan04' => 'decimal:5',
+        // 'ulangan05' => 'decimal:5',
+        // 'ulangan06'  => 'decimal:5',
+        // 'ulangan07'  => 'decimal:5',
+        // 'ulangan08'  => 'decimal:5',
+        // 'ulangan09'  => 'decimal:5',
+        // 'RHulangan'  => 'decimal:5',
     ];
 
 

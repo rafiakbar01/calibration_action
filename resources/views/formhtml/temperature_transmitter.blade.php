@@ -189,20 +189,36 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                    <tr>
-                            <td style="width: 20%;">
+                     <tr>
+                           <td style="width: 20%;">
                                 <p style="margin: 0; color: #000000;">Nama Alat</p>
                             </td>
                             <td colspan="3">
-                                <input type="text"
-                                    name="nama_alat"
-                                    class="kalibrasi-input"
-                                    value="Temperature Transmitter"
-                                    placeholder="Temperature Transmitter"
-                                    readonly
-                                    style="background-color: #f5f5f5; color: #333;">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Temperature Transmitter">Temperature Transmitter</option>
+                                    <option value="MANUAL_INPUT">-- Input Manual Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat secara manual"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
                             </td>
                         </tr>
+                   
 
                     <!-- Merek & Kode Alat -->
                     <tr>
@@ -405,22 +421,22 @@
                                 <td><input type="number"
                                         name="suhu_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="suhu_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -429,22 +445,22 @@
                                 <td><input type="number"
                                         name="rh_awal" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_tengah" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                                 <td><input type="number"
                                         name="rh_akhir" 
                                         class="kondisi-input" 
-                                        step="0.1"
-                                        oninput="formatInputNumber(this)"
+                                        step="any"
+                                      
                                         placeholder="0.0"
                                         required></td>
                             </tr>
@@ -458,23 +474,74 @@
 
 <table style="width: 100%; max-width: 1000px; margin: 20px auto; border-collapse: collapse; border: 1px solid #000; font-family: Arial, sans-serif; font-size: 11pt; table-layout: fixed;">
 
-  <!-- Header Utama -->
-  <tr style="height:35px; background:#f0f0f0; font-weight:bold; text-align:center;">
-  <td colspan="3" style="border:1px solid #000;">Setting Suhu (°C)</td>
-  <td rowspan="2" style="border:none;"></td>
-  <td colspan="3" style="border:1px solid #000;">Setting Suhu (°C)</td>
-</tr>
+ <!-- Header Utama -->
+<tr style="height:35px; background:#f0f0f0; font-weight:bold; text-align:center;">
+    <td colspan="3" style="border:1px solid #000;">
+        Setting Suhu (
+        <input type="text" 
+               name="satuan_setting_suhu_kiri" 
+               value=" "
+               style="width: 40px; padding: 2px; border: none; border-bottom: 1px solid #000; text-align: center; background: transparent;">
+        )
+    </div>
+    <td rowspan="2" style="border:none;"></div>
+    <td colspan="3" style="border:1px solid #000;">
+        Setting Suhu (
+        <input type="text" 
+               name="satuan_setting_suhu_kanan" 
+               value=" "
+               style="width: 40px; padding: 2px; border: none; border-bottom: 1px solid #000; text-align: center; background: transparent;">
+        )
+    </div>
+</div>
 
 <tr style="height:30px; background:#f8f8f8; font-weight:bold; text-align:center; font-size:10pt;">
-  <td style="border:1px solid #000;">Setting</td>
-  <td style="border:1px solid #000;">STD (°C)</td>
-  <td style="border:1px solid #000;">Indicator (mA)</td>
+    <!-- Setting (tanpa satuan) -->
+    <td style="border:1px solid #000;">Setting</div>
+    
+    <!-- STD dengan satuan -->
+    <td style="border:1px solid #000;">
+        STD (
+        <input type="text" 
+               name="satuan_std_kiri" 
+               value=" "
+               style="width: 40px; padding: 2px; border: none; border-bottom: 1px solid #000; text-align: center; background: transparent;">
+        )
+    </div>
+    
+    <!-- Indicator dengan satuan -->
+    <td style="border:1px solid #000;">
+        Indicator (
+        <input type="text" 
+               name="satuan_indicator_kiri" 
+               value=" "
+               style="width: 50px; padding: 2px; border: none; border-bottom: 1px solid #000; text-align: center; background: transparent;">
+        )
+    </div>
 
-  <td style="border:1px solid #000;">Setting</td>
-  <td style="border:1px solid #000;">STD (°C)</td>
-  <td style="border:1px solid #000;">Indicator (mA)</td>
-</tr>
-
+    <!-- Setting (tanpa satuan) -->
+    <td style="border:1px solid #000;">Setting</div>
+    
+    <!-- STD dengan satuan -->
+    <td style="border:1px solid #000;">
+        STD (
+        <input type="text" 
+               name="satuan_std_kanan" 
+               value=" "
+               style="width: 40px; padding: 2px; border: none; border-bottom: 1px solid #000; text-align: center; background: transparent;">
+        )
+    </div>
+    
+    <!-- Indicator dengan satuan -->
+    <td style="border:1px solid #000;">
+        Indicator (
+        <input type="text" 
+               name="satuan_indicator_kanan" 
+               value=" "
+               style="width: 50px; padding: 2px; border: none; border-bottom: 1px solid #000; text-align: center; background: transparent;">
+        )
+    </div>
+</div>
 
   <!-- Data Baris (5 grup × 3 baris = 15 baris data) -->
   <?php for ($group = 1; $group <= 5; $group++): ?>
@@ -483,16 +550,16 @@
       <!-- Kolom kiri (Setting Suhu & STD) -->
       <?php if ($row === 1): ?>
         <td rowspan="3" style="border: 1px solid #000; vertical-align: middle; width: 12%;">
-          <input type="number" step="any" name="setting_suhu_kiri_<?php echo $group; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
+          <input type="text" name="setting_suhu_kiri_<?php echo $group; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
         </td>
       <?php endif; ?>
 
       <td style="border: 1px solid #000; width: 10%;">
-        <input type="number" step="any" name="std_kiri_<?php echo $group . '_' . $row; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
+        <input type="text" name="std_kiri_<?php echo $group . '_' . $row; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
       </td>
 
       <td style="border: 1px solid #000; width: 10%;">
-        <input type="number" step="any" name="indicator_kiri_<?php echo $group . '_' . $row; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
+        <input type="text" name="indicator_kiri_<?php echo $group . '_' . $row; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
       </td>
 
       <!-- Spacer kecil antar blok (opsional, bisa dihapus jika tidak perlu) -->
@@ -501,16 +568,16 @@
       <!-- Kolom kanan (Setting Suhu & STD) -->
       <?php if ($row === 1): ?>
         <td rowspan="3" style="border: 1px solid #000; vertical-align: middle; width: 12%;">
-          <input type="number" step="any" name="setting_suhu_kanan_<?php echo $group; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
+          <input type="text" name="setting_suhu_kanan_<?php echo $group; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
         </td>
       <?php endif; ?>
 
       <td style="border: 1px solid #000; width: 10%;">
-        <input type="number" step="any" name="std_kanan_<?php echo $group . '_' . $row; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
+        <input type="text" name="std_kanan_<?php echo $group . '_' . $row; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
       </td>
 
       <td style="border: 1px solid #000; width: 10%;">
-        <input type="number" step="any" name="indicator_kanan_<?php echo $group . '_' . $row; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
+        <input type="text" name="indicator_kanan_<?php echo $group . '_' . $row; ?>"  style="width: 90%; border: none; background: transparent; text-align: center;">
       </td>
     </tr>
     <?php endfor; ?>
@@ -614,7 +681,7 @@
         <td>PAS-IK1102-66 (Temp. Transmitter)</td>
         <td>
             Nama :
-            <input type="text" name="calibrated_by" placeholder="masukan nama">
+            <input type="text" name="calibrated_by" placeholder="masukan nama"  value="{{ auth()->user()->nama ?? 'System' }}"  readonly>
         </td>
         <td>
             Nama :
@@ -631,9 +698,9 @@
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
                         </button>
                         
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
-                        </button>
+                        <!--<button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-redo me-2"></i>Reset Form-->
+                        <!--</button>-->
                     </div>
                 </div>
 
@@ -644,6 +711,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
 // JavaScript form validation
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('kalibrasiForm');

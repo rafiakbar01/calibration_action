@@ -28,27 +28,27 @@ class DetailThermohygrometer extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'titikUkur_T'  => 'decimal:5',
-        'titikUkur_RH' => 'decimal:5',
+    // protected $casts = [
+    //     'titikUkur_T'  => 'decimal:5',
+    //     'titikUkur_RH' => 'decimal:5',
 
-        'T_STD1' => 'decimal:5',
-        'T_STD2' => 'decimal:5',
-        'T_STD3' => 'decimal:5',
-        'T_IN1'  => 'decimal:5',
-        'T_IN2'  => 'decimal:5',
-        'T_IN3'  => 'decimal:5',
-        'T_OUT1' => 'decimal:5',
-        'T_OUT2' => 'decimal:5',
-        'T_OUT3' => 'decimal:5',
+    //     'T_STD1' => 'decimal:5',
+    //     'T_STD2' => 'decimal:5',
+    //     'T_STD3' => 'decimal:5',
+    //     'T_IN1'  => 'decimal:5',
+    //     'T_IN2'  => 'decimal:5',
+    //     'T_IN3'  => 'decimal:5',
+    //     'T_OUT1' => 'decimal:5',
+    //     'T_OUT2' => 'decimal:5',
+    //     'T_OUT3' => 'decimal:5',
 
-        'RH_STD1'  => 'decimal:5',
-        'RH_STD2'  => 'decimal:5',
-        'RH_STD3'  => 'decimal:5',
-        'RH_ALAT1' => 'decimal:5',
-        'RH_ALAT2' => 'decimal:5',
-        'RH_ALAT3' => 'decimal:5',
-    ];
+    //     'RH_STD1'  => 'decimal:5',
+    //     'RH_STD2'  => 'decimal:5',
+    //     'RH_STD3'  => 'decimal:5',
+    //     'RH_ALAT1' => 'decimal:5',
+    //     'RH_ALAT2' => 'decimal:5',
+    //     'RH_ALAT3' => 'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

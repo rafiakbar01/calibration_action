@@ -12,7 +12,7 @@ class HeadEnclosure extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod', 'keterangan_gambar'
     ];
 
     public function calibration()

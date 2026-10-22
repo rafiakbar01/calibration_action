@@ -7,12 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class HeadConductivityMeter extends Model
 {
     protected $table = 'head_conductivity_meter';
-    protected $primaryKey = 'id'; 
-    public $incrementing = true;  
+    protected $primaryKey = 'id';
+    public $incrementing = true;
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id',
+        'certificate_id',
+        'standard',
+        'calibrationMethod',
+        'form_index',
+        'keterangan_fungsi_komponen',
+        'kapasitas',
+        'resolusi'
     ];
 
     public function calibration()

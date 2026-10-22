@@ -12,7 +12,7 @@ class HeadTorqueWrench extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_setting_alat','satuan_cw','satuan_ccw'
     ];
 
     public function calibration()

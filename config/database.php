@@ -98,6 +98,20 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'compass_postgres' => [
+            'driver' => 'pgsql',
+            'host' => env('COMPASS_DB_HOST', '127.0.0.1'),
+            'port' => env('COMPASS_DB_PORT', '5432'),
+            'database' => env('COMPASS_DB_DATABASE', 'compass_staging'),
+            'username' => env('COMPASS_DB_USERNAME', 'postgres'),
+            'password' => env('COMPASS_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),

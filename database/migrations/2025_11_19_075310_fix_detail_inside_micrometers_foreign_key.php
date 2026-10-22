@@ -9,15 +9,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('detail_inside_micrometers', function (Blueprint $table) {
-            // 1. Hapus foreign key constraint yang salah
-            $table->dropForeign(['calibration_id']);
+            // Hapus bagian drop foreign key (karena tidak ada atau tidak perlu)
             
-            // 2. Pastikan tipe data kolom sesuai dengan calibrations.id
-            // Jika calibrations.id adalah bigint, sesuaikan
+            // 1. Pastikan tipe data kolom sesuai dengan calibrations.id (biasanya unsignedBigInteger)
             $table->unsignedBigInteger('calibration_id')->change();
-            
-            // 3. Tambahkan foreign key constraint yang benar
-            $table->foreign('calibration_id')
+
+            // 2. Tambahkan foreign key constraint yang benar
+            $table->foreign('calibration_id', 'fk_detail_inside_micrometers_calibration_id')
                   ->references('id')
                   ->on('calibrations')
                   ->onDelete('cascade');
@@ -27,13 +25,11 @@ return new class extends Migration
     public function down()
     {
         Schema::table('detail_inside_micrometers', function (Blueprint $table) {
-            $table->dropForeign(['calibration_id']);
+            // Untuk rollback: hapus foreign key yang baru dibuat
+            $table->dropForeign('fk_detail_inside_micrometers_calibration_id');
             
-            // Kembalikan ke foreign key lama (head_inside_micrometers)
-            $table->foreign('calibration_id')
-                  ->references('id')
-                  ->on('calibrations')
-                  ->onDelete('cascade');
+            // Opsional: kembalikan tipe data kalau perlu (tapi biasanya tidak usah)
+            // $table->unsignedInteger('calibration_id')->change(); // atau sesuai tipe lama
         });
     }
 };

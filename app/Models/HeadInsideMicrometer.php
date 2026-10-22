@@ -12,11 +12,11 @@ class HeadInsideMicrometer extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'id', 'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_unit','form_index', 'rentang_ukur_min','rentang_ukur_max','kapasitas','resolusi'
     ];
 
     public function calibration()
-    {
+    {   
         return $this->belongsTo(Calibration::class, 'calibration_id');
     }
 

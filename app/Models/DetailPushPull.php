@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetailPushpull extends Model
+class DetailPushPull extends Model
 {
     use HasFactory;
 
@@ -26,17 +26,17 @@ class DetailPushpull extends Model
        
     ];
 
-    protected $casts = [
-        'titikUkur'=>'decimal:5',
-        'STD'=>'string',
-        'ulanganTarik01'=>'decimal:5',
-        'ulanganTarik02'=>'decimal:5',
-        'ulanganTarik03'=>'decimal:5',
-        'ulanganTekan01'=>'decimal:5',
-        'ulanganTekan02'=>'decimal:5',
-        'ulanganTekan03'=>'decimal:5'
+    // protected $casts = [
+    //     'titikUkur'=>'decimal:5',
+    //     'STD'=>'string',
+    //     'ulanganTarik01'=>'decimal:5',
+    //     'ulanganTarik02'=>'decimal:5',
+    //     'ulanganTarik03'=>'decimal:5',
+    //     'ulanganTekan01'=>'decimal:5',
+    //     'ulanganTekan02'=>'decimal:5',
+    //     'ulanganTekan03'=>'decimal:5'
         
-    ];
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

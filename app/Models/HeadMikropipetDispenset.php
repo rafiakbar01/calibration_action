@@ -12,7 +12,7 @@ class HeadMikropipetDispenset extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod'
+        'calibration_id', 'certificate_id', 'standard', 'calibrationMethod','satuan_alat_ukur_kiri','satuan_alat_ukur_kanan','satuan_alat_ukur_bawah_kiri','satuan_alat_ukur_bawah_kanan','satuan_alat_ukur_tambahan_kiri','form_index'
     ];
 
     public function calibration()

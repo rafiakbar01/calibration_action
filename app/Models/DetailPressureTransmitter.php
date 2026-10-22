@@ -22,11 +22,11 @@ class DetailPressureTransmitter extends Model
     ];
 
     protected $casts = [
-        'setPoint'=>'decimal:5',
-        'readP_UP'=>'decimal:5',
-        'readS_UP'=>'decimal:5',
-        'readP_DOWN'=>'decimal:5',
-        'readS_DOWN'=>'decimal:5',
+        'setPoint'=>'string',
+        'readP_UP'=>'string',
+        'readS_UP'=>'string',
+        'readP_DOWN'=>'string',
+        'readS_DOWN'=>'string',
     ];
         
     

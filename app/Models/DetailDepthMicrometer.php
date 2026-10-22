@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class DetailDepthMicrometer extends Model
 {
     use HasFactory;
-
-    protected $casts = [
-        'titikUkur' => 'decimal:3',
-        'ulangan01' => 'decimal:3',
-        'ulangan02' => 'decimal:3',
-        'ulangan03' => 'decimal:3',
-        'ulangan04' => 'decimal:3',
-        'ulangan05' => 'decimal:3',
-    ];
+  protected $table = 'detail_depth_micrometers';
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:3',
+    //     'ulangan01' => 'decimal:3',
+    //     'ulangan02' => 'decimal:3',
+    //     'ulangan03' => 'decimal:3',
+    //     'ulangan04' => 'decimal:3',
+    //     'ulangan05' => 'decimal:3',
+    // ];
 
     protected $fillable = [
         'calibration_id', 
@@ -25,7 +25,8 @@ class DetailDepthMicrometer extends Model
         'ulangan02',
         'ulangan03',
         'ulangan04',
-        'ulangan05'
+        'ulangan05',
+        'form_index'
     ];
 
     // ✅ Relation langsung ke Calibration

@@ -8,17 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class DetailThermometer extends Model
 {
     use HasFactory;
-        protected $table = 'detail_thermometers';
 
-
-    protected $casts = [
-        'STD01' => 'decimal:5',
-        'STD02' => 'decimal:5',
-        'STD03' => 'decimal:5',
-        'UUT01' => 'decimal:5',
-        'UUT02' => 'decimal:5',
-        'UUT03' => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'STD01' => 'decimal:5',
+    //     'STD02' => 'decimal:5',
+    //     'STD03' => 'decimal:5',
+    //     'UUT01' => 'decimal:5',
+    //     'UUT02' => 'decimal:5',
+    //     'UUT03' => 'decimal:5',
+    // ];
 
     protected $fillable = [
         'calibration_id', 
@@ -29,7 +27,8 @@ class DetailThermometer extends Model
         'STD03',
         'UUT01',
         'UUT02',
-        'UUT03'
+        'UUT03',
+        'form_index'
     ];
 
     // ✅ Relation langsung ke Calibration

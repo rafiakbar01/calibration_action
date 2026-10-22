@@ -298,6 +298,7 @@
     <div class="container my-4">
         <div class="form-kalibrasi-container">
             <table class="kalibrasi-header-table">
+                  <input type="hidden" name="form_type" id="form_type_input"  value="volumetrik">
                 <tr>
                     <td colspan="2">
                         <p style="margin: 0; font-size: 14px; color: #000000;">PAS-FLK38</p>
@@ -337,18 +338,21 @@
             <!-- Main Form Section - Readonly -->
             <table class="kalibrasi-main-table">
                 <!-- Nama Alat -->
-             <tr>
+         <tr>
     <td style="width: 20%;">
         <p style="margin: 0; color: #000000;">Nama Alat</p>
     </td>
     <td colspan="3">
-        <select name="namaAlat" class="kalibrasi-input" onchange="updateFormType(this.value)" required 
+        @php
+            $alatOptions = ['Buret', 'Gelas Ukur', 'Pipet Ukur', 'Labu Ukur', 'Pipet Volume'];
+            $selectedAlat = old('namaAlat', $calibration->namaAlat ?? '');
+            $isCustomAlat = $selectedAlat && !in_array($selectedAlat, $alatOptions);
+        @endphp
+        
+        <select name="nama_alat_select" id="nama_alat_select" class="kalibrasi-input" 
+                onchange="toggleManualInput(this.value)" required 
                 style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
             <option value="">-- Pilih Jenis Alat --</option>
-            @php
-                $alatOptions = ['Buret', 'Gelas Ukur', 'Pipet Ukur', 'Labu Ukur', 'Pipet Volume'];
-                $selectedAlat = old('namaAlat', $calibration->namaAlat ?? '');
-            @endphp
             
             @foreach($alatOptions as $alat)
                 <option value="{{ $alat }}" {{ $selectedAlat == $alat ? 'selected' : '' }}>
@@ -356,17 +360,146 @@
                 </option>
             @endforeach
             
-            {{-- Jika ada nilai custom yang tidak ada di options --}}
-            @if($selectedAlat && !in_array($selectedAlat, $alatOptions))
-                <option value="{{ $selectedAlat }}" selected>{{ $selectedAlat }}</option>
-            @endif
+            {{-- Opsi Input Manual --}}
+            <option value="MANUAL_INPUT" {{ $isCustomAlat ? 'selected' : '' }}>
+                -- Input Manual Nama Alat --
+            </option>
         </select>
+        
+        <!-- Input Manual - Tampilkan jika custom atau MANUAL_INPUT selected -->
+        <div id="manualInputContainer" style="display: {{ $isCustomAlat ? 'block' : 'none' }}; margin-top: 10px;">
+            <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                   value="{{ $isCustomAlat ? $selectedAlat : '' }}"
+                   placeholder="Ketik nama alat secara manual"
+                   style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                   oninput="syncNamaAlat()">
+        </div>
+        
+        <!-- Hidden input untuk menyimpan nama alat final -->
+        <input type="hidden" name="namaAlat" id="namaAlat_final" value="{{ $selectedAlat }}">
         
         <!-- Hidden input untuk form_type -->
         <input type="hidden" name="form_type" id="form_type_input" 
-               value="{{ old('form_type', $calibration->form_type ?? 'enclosure') }}">
+               value="{{ old('form_type', $calibration->form_type ?? 'volumetrik') }}">
     </td>
 </tr>
+
+<script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
+// Fungsi untuk toggle input manual
+function toggleManualInput(selectedValue) {
+    const manualInputContainer = document.getElementById('manualInputContainer');
+    const manualInput = document.getElementById('nama_alat_manual');
+    const namaAlatFinal = document.getElementById('namaAlat_final');
+    
+    if (selectedValue === 'MANUAL_INPUT') {
+        // Tampilkan input manual
+        manualInputContainer.style.display = 'block';
+        if (manualInput) {
+            manualInput.required = true;
+            manualInput.focus();
+        }
+        // Kosongkan final jika user pilih manual tapi belum input
+        if (namaAlatFinal) {
+            namaAlatFinal.value = '';
+        }
+    } else {
+        // Sembunyikan input manual
+        manualInputContainer.style.display = 'none';
+        if (manualInput) {
+            manualInput.required = false;
+            manualInput.value = '';
+        }
+        // Set nilai final dari dropdown
+        if (namaAlatFinal && selectedValue) {
+            namaAlatFinal.value = selectedValue;
+        }
+    }
+}
+
+// Fungsi untuk sync nilai dari input manual ke hidden input
+function syncNamaAlat() {
+    const manualInput = document.getElementById('nama_alat_manual');
+    const namaAlatFinal = document.getElementById('namaAlat_final');
+    const selectElement = document.getElementById('nama_alat_select');
+    
+    if (manualInput && namaAlatFinal && selectElement) {
+        if (selectElement.value === 'MANUAL_INPUT' && manualInput.value.trim() !== '') {
+            namaAlatFinal.value = manualInput.value.trim();
+        }
+    }
+}
+
+// Setup saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    const selectElement = document.getElementById('nama_alat_select');
+    const manualInput = document.getElementById('nama_alat_manual');
+    const namaAlatFinal = document.getElementById('namaAlat_final');
+    const form = document.querySelector('form');
+    
+    // Setup event listeners
+    if (selectElement) {
+        selectElement.addEventListener('change', function() {
+            toggleManualInput(this.value);
+        });
+    }
+    
+    if (manualInput) {
+        manualInput.addEventListener('input', syncNamaAlat);
+        manualInput.addEventListener('blur', syncNamaAlat);
+    }
+    
+    // Handle form submission
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const selectElement = document.getElementById('nama_alat_select');
+            const manualInput = document.getElementById('nama_alat_manual');
+            const namaAlatFinal = document.getElementById('namaAlat_final');
+            
+            // Validasi
+            if (!selectElement || selectElement.value === '') {
+                alert('Silakan pilih jenis alat dari dropdown!');
+                e.preventDefault();
+                selectElement.focus();
+                return false;
+            }
+            
+            // Validasi input manual
+            if (selectElement.value === 'MANUAL_INPUT') {
+                if (!manualInput || manualInput.value.trim() === '') {
+                    alert('Silakan isi nama alat secara manual!');
+                    e.preventDefault();
+                    manualInput.focus();
+                    return false;
+                }
+                // Pastikan namaAlat_final terisi
+                if (namaAlatFinal) {
+                    namaAlatFinal.value = manualInput.value.trim();
+                }
+            } else {
+                // Pastikan namaAlat_final terisi untuk dropdown biasa
+                if (namaAlatFinal) {
+                    namaAlatFinal.value = selectElement.value;
+                }
+            }
+            
+            return true;
+        });
+    }
+    
+    // Initialize berdasarkan nilai awal
+    @if($isCustomAlat)
+        // Jika custom, pastikan manual input terisi
+        if (manualInput && namaAlatFinal) {
+            syncNamaAlat();
+        }
+    @endif
+});
+</script>
 
                 <!-- Merek & Kode Alat -->
               <tr>
@@ -469,6 +602,14 @@
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
         </td>
     </tr>
+    
+      <tr>
+        <td><p style="margin:0;color:#000;">Kode TH</p></td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input"
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
+        </td>
+    </tr>
 </table>
 
             <!-- Fungsi Komponen Lainnya & Kondisi Kalibrasi -->
@@ -541,227 +682,238 @@
             <!-- Data Kalibrasi Section -->
             <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
             
-         <table cellspacing="0" cellpadding="0" 
-       style="width:100%; max-width:800pt; margin:10pt 0; border:2pt solid #000; border-collapse:collapse; font-family:Arial,Helvetica,sans-serif;">
-
-    <!-- Header Baris 1 -->
-    <tr style="height:45pt;">
-        <td rowspan="2" style="width:160pt; border:2pt solid #000; border-right:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
-            <p style="margin:0; font-size:15pt; font-weight:bold;">Nominal Alat Ukur</p>
-            <p style="margin-top:10pt; font-size:12pt;">
-            <!-- Input untuk Satuan Alat Ukur -->
-            <input type="text" 
-                   name="satuan_alatUkur" 
-                   value="{{ $calibration->headVolumetrik->satuan_alatUkur ?? 'mL' }}"
-                   style="width:80%; border:1px solid #ddd; text-align:center; padding:5px; font-size:12pt;"
-                   placeholder="mL">
-            </p>
-        </td>
-        <td colspan="2" style="width:320pt; border:1pt solid #000; border-top:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
-            <p style="margin:0; font-size:15pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
-        </td>
-        <td rowspan="2" style="width:140pt; border:1pt solid #000; border-top:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
-            <p style="margin:0; font-size:15pt; font-weight:bold;">Suhu Air Suling</p>
-            <p style="margin-top:8pt; font-size:15pt;">°C</p>
-        </td>
-        <td rowspan="2" style="width:140pt; border:2pt solid #000; border-left:1pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
-            <p style="margin:0; font-size:15pt; font-weight:bold;">Tekanan Udara</p>
-            <p style="margin-top:8pt; font-size:15pt;">hPa</p>
-        </td>
-    </tr>
-
-    <!-- Header Baris 2 -->
-    <tr style="height:40pt;">
-        <td style="width:160pt; border:1pt solid #000; border-bottom:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Massa Kosong</p>
-        </td>
-        <td style="width:160pt; border:1pt solid #000; border-bottom:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Massa Isi</p>
-        </td>
-    </tr>
-
-    <!-- Ambil data detail, urutkan berdasarkan titikUkur -->
-    @php
-        $details = $calibration->detailVolumetriks()
-                    ->orderBy('titikUkur')
-                    ->get();
-        
-        // Tentukan jumlah data yang akan ditampilkan (5 nominal * 3 pengulangan)
-        $totalNominals = 5;
-        $repeatsPerNominal = 3;
-    @endphp
-
-    @for($nominalIndex = 0; $nominalIndex < $totalNominals; $nominalIndex++)
-        @php
-            $detail = $details[$nominalIndex] ?? null;
-            $titikUkur = $detail->titikUkur ?? '';
-        @endphp
-        
-        @for($repeat = 1; $repeat <= $repeatsPerNominal; $repeat++)
-        <tr style="height:32pt;">
-            @if($repeat == 1)
-            <td rowspan="3" style="width:160pt; border:2pt solid #000; border-right:1pt solid #000; vertical-align:middle; text-align:center; font-size:13pt;">
-                <!-- Input untuk Titik Ukur -->
-                <input type="number" 
-                       name="volumetrik[{{ $nominalIndex }}][titikUkur]" 
-                       value="{{ $titikUkur }}"
-                       step="0.01"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:5px; font-size:13pt;"
-                       >
+           <table cellspacing="0" cellpadding="0" style="width:100%; max-width:800pt; margin:10pt 0; border:2pt solid #000; border-collapse:collapse; font-family:Arial,Helvetica,sans-serif;">
+    
+        <!-- Header Baris 1 -->
+        <tr style="height:45pt;">
+            <td rowspan="2" style="width:160pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+                <p style="margin:0; font-size:15pt; font-weight:bold;">Nominal Alat Ukur</p>
+                <p style="margin-top:10pt; font-size:12pt;">
+                    (
+                    <input type="text" name="satuan_alatUkur"
+                           value="{{ old('satuan_alatUkur', $calibration->headVolumetrik->satuan_alatUkur ?? '') }}"
+                           style="border:none; outline:none; font-size:12pt; width:150px; text-align:center; background:none;"
+                           placeholder="......">
+                    )
+                </p>
             </td>
-            @endif
-
-            <!-- Massa Kosong -->
-            <td style="border:1pt solid #000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="volumetrik[{{ $nominalIndex }}][masssaKosong0{{ $repeat }}]" 
-                       value="{{ $repeat == 1 ? ($detail->masssaKosong01 ?? '') : ($repeat == 2 ? ($detail->masssaKosong02 ?? '') : ($detail->masssaKosong03 ?? '')) }}"
-                       step="0.0001"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:5px; font-size:13pt;">
+            <td colspan="2" style="width:320pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+                <p style="margin:0; font-size:15pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
             </td>
-            
-            <!-- Massa Isi -->
-            <td style="border:1pt solid #000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="volumetrik[{{ $nominalIndex }}][massaIsi0{{ $repeat }}]" 
-                       value="{{ $repeat == 1 ? ($detail->massaIsi01 ?? '') : ($repeat == 2 ? ($detail->massaIsi02 ?? '') : ($detail->massaIsi03 ?? '')) }}"
-                       step="0.0001"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:5px; font-size:13pt;">
+            <td rowspan="2" style="width:140pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+                <p style="margin:0; font-size:15pt; font-weight:bold;">Suhu Air Suling</p>
+                <p style="margin-top:8pt; font-size:15pt;">°C</p>
             </td>
-            
-            <!-- Suhu Air Suling -->
-            <td style="border:1pt solid #000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="volumetrik[{{ $nominalIndex }}][T_airSuling0{{ $repeat }}]" 
-                       value="{{ $repeat == 1 ? ($detail->T_airSuling01 ?? '') : ($repeat == 2 ? ($detail->T_airSuling02 ?? '') : ($detail->T_airSuling03 ?? '')) }}"
-                       step="0.1"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:5px; font-size:13pt;">
-            </td>
-            
-            <!-- Tekanan Udara -->
-            <td style="border:2pt solid #000; border-left:1pt solid #000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="volumetrik[{{ $nominalIndex }}][P_Udara0{{ $repeat }}]" 
-                       value="{{ $repeat == 1 ? ($detail->P_Udara01 ?? '') : ($repeat == 2 ? ($detail->P_Udara02 ?? '') : ($detail->P_Udara03 ?? '')) }}"
-                       step="0.1"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:5px; font-size:13pt;">
+            <td rowspan="2" style="width:140pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+                <p style="margin:0; font-size:15pt; font-weight:bold;">Tekanan Udara</p>
+                <p style="margin-top:8pt; font-size:15pt;">hPa</p>
             </td>
         </tr>
+    
+        <!-- Header Baris 2 -->
+        <tr style="height:40pt;">
+            <td style="width:160pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+                <p style="margin:0; font-size:14pt; font-weight:bold;">Massa Kosong</p>
+            </td>
+            <td style="width:160pt; border:2pt solid #000; background:#f0f0f0; text-align:center; vertical-align:middle;">
+                <p style="margin:0; font-size:14pt; font-weight:bold;">Massa Isi</p>
+            </td>
+        </tr>
+    
+        <!-- Ambil data detail, urutkan berdasarkan titikUkur -->
+        @php
+            $details = $calibration->detailVolumetriks()
+                       
+                        ->get();
+            
+            // Pastikan selalu ada 5 nominal (15 baris)
+            $totalNominals = 5;
+            $totalRows = $totalNominals * 3; // 15 baris
+        @endphp
+    
+        @for($nominalIndex = 0; $nominalIndex < $totalNominals; $nominalIndex++)
+            @php
+                $detail = $details->get($nominalIndex) ?? null;
+                $nominalNumber = $nominalIndex + 1;
+            @endphp
+            
+            @for($repeat = 1; $repeat <= 3; $repeat++)
+            <tr style="height:32pt;">
+                @if($repeat == 1)
+                <td rowspan="3" style="width:160pt; border:2pt solid #000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="nominal_{{ $nominalNumber }}" 
+                           value="{{ old('nominal_'.$nominalNumber, $detail->titikUkur ?? '') }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;"
+                           {{ $detail ? '-' : 'placeholder= - ' }}>
+                </td>
+                @endif
+    
+                <td style="border:2pt solid #000; vertical-align:middle; text-align:center;">
+                    <input type="text" 
+                           name="massa_kosong_{{ $nominalNumber }}_{{ $repeat }}" 
+                           value="{{ old('massa_kosong_'.$nominalNumber.'_'.$repeat, 
+                                   $repeat == 1 ? ($detail->masssaKosong01 ?? $detail->massaKosong01 ?? '') : 
+                                   ($repeat == 2 ? ($detail->masssaKosong02 ?? $detail->massaKosong02 ?? '') : 
+                                   ($detail->masssaKosong03 ?? $detail->massaKosong03 ?? ''))) }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;"
+                           placeholder= - >
+                </td>
+                <td style="border:2pt solid #000; vertical-align:middle; text-align:center;">
+                    <input type="text" 
+                           name="massa_isi_{{ $nominalNumber }}_{{ $repeat }}" 
+                           value="{{ old('massa_isi_'.$nominalNumber.'_'.$repeat, 
+                                   $repeat == 1 ? ($detail->massaIsi01 ?? '') : 
+                                   ($repeat == 2 ? ($detail->massaIsi02 ?? '') : 
+                                   ($detail->massaIsi03 ?? ''))) }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;"
+                           placeholder= ->
+                </td>
+                <td style="border:2pt solid #000; vertical-align:middle; text-align:center;">
+                    <input type="text" 
+                           name="suhu_{{ $nominalNumber }}_{{ $repeat }}" 
+                           value="{{ old('suhu_'.$nominalNumber.'_'.$repeat, 
+                                   $repeat == 1 ? ($detail->T_airSuling01 ?? '') : 
+                                   ($repeat == 2 ? ($detail->T_airSuling02 ?? '') : 
+                                   ($detail->T_airSuling03 ?? ''))) }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;"
+                           placeholder= - >
+                </td>
+                <td style="border:2pt solid #000; vertical-align:middle; text-align:center;">
+                    <input type="text" 
+                           name="tekanan_{{ $nominalNumber }}_{{ $repeat }}" 
+                           value="{{ old('tekanan_'.$nominalNumber.'_'.$repeat, 
+                                   $repeat == 1 ? ($detail->P_Udara01 ?? '') : 
+                                   ($repeat == 2 ? ($detail->P_Udara02 ?? '') : 
+                                   ($detail->P_Udara03 ?? ''))) }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; background:transparent; font-size:13pt; text-align:center;"
+                           placeholder= - >
+                </td>
+            </tr>
+            @endfor
         @endfor
-    @endfor
-
-</table>
-
-
-
-
-
-&nbsp;  &nbsp;
-
-<p style="margin-top:2.15pt; margin-left:18.8pt; margin-bottom:1.05pt; font-size:15pt">
-    <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">REPEATABILITY</span>
-</p>
-
-<table cellspacing="0" cellpadding="0" class="TableNormal" 
-       style="margin-left:10pt; width:100%; max-width:750pt; border:2pt solid #000000; border-collapse:collapse; font-family:Arial;">
-
-    <!-- Header -->
-    <tr style="height:35pt">
-        <td rowspan="2" style="width:140pt; border:2pt solid #000000; border-right:1pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Nominal Alat Ukur</p>
-            <p style="margin-top:10pt; font-size:12pt;">
-            <!-- Input untuk Satuan Repeatability -->
-            <input type="text" 
-                   name="satuan_rep" 
-                   value="{{ $calibration->headVolumetrik->satuan_rep ?? 'mL' }}"
-                   style="width:80%; border:1px solid #ddd; text-align:center; padding:3px; font-size:11pt; background:white;"
-                   placeholder="mL">
-            </p>
-        </td>
-        <td colspan="2" style="width:280pt; border:2pt solid #000000; border-top:2pt solid #000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
-        </td>
-        <td rowspan="2" style="width:120pt; border:2pt solid #000000; border-top:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Suhu Air Suling</p>
-            <p style="margin-top:5pt; font-size:14pt;">°C</p>
-        </td>
-        <td rowspan="2" style="width:120pt; border:2pt solid #000000; border-left:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:14pt; font-weight:bold;">Tekanan Udara</p>
-            <p style="margin-top:5pt; font-size:14pt;">hPa</p>
-        </td>
-    </tr>
-
-    <tr style="height:30pt">
-        <td style="width:140pt; border:1pt solid #000000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Kosong</p>
-        </td>
-        <td style="width:140pt; border:1pt solid #000000; border-bottom:2pt solid #000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
-            <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Isi</p>
-        </td>
-    </tr>
-
-    <!-- Ambil data AddVolumetrik (repeatability) -->
-    @php
-        $repeatData = $calibration->addVolumetrik()->orderBy('id')->get();
-        $nominal = $repeatData->isNotEmpty() ? $repeatData->first()->titikUkur : null;
-    @endphp
-
-    <!-- Tampilkan 10 baris data dengan input field -->
-    @for($i = 1; $i <= 10; $i++)
-        @php
-            $data = $repeatData->get($i - 1);
-        @endphp
-        <tr style="height:25pt">
-            @if($i == 1)
-            <td rowspan="10" style="width:140pt; border:2pt solid #000000; border-right:1pt solid #000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="repeatability_nominal" 
-                       value="{{ $nominal ?? '' }}"
-                       step="0.01"
-                       style="width:80%; border:1px solid #ddd; text-align:center; padding:5px; font-size:12pt; background:white;"
-                       >
+    
+    </table>
+    
+    <p style="margin-top:2.15pt; margin-left:18.8pt; margin-bottom:1.05pt; font-size:15pt">
+        <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">REPEATABILITY</span>
+    </p>
+    
+    <table cellspacing="0" cellpadding="0" class="TableNormal" 
+           style="margin-left:10pt; width:100%; max-width:750pt; border:2pt solid #000000; border-collapse:collapse; font-family:Arial;">
+    
+        <!-- Header -->
+        <tr style="height:35pt">
+            <td rowspan="2" style="width:140pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                <p style="margin:0; font-size:14pt; font-weight:bold;">Nominal Alat Ukur</p>
+                <p style="margin-top:10pt; font-size:12pt;">
+                    (
+                    <input type="text" name="satuan_rep"
+                           value="{{ old('satuan_rep', $calibration->headVolumetrik->satuan_rep ?? '') }}"
+                           style="border:none; outline:none; font-size:12pt; width:150px; text-align:center; background:none;"
+                           placeholder="......">
+                    )
+                </p>
             </td>
-            @endif
-
-            <!-- Massa Kosong -->
-            <td style="width:140pt; border:1pt solid #000000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="repeatability[{{ $i }}][massaKosong]" 
-                       value="{{ $data ? $data->massaKosong : '' }}"
-                       step="0.0001"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:3px; font-size:12pt; background:white;">
+            <td colspan="2" style="width:280pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                <p style="margin:0; font-size:14pt; font-weight:bold;">Pembacaan Timbangan (g)</p>
             </td>
-            
-            <!-- Massa Isi -->
-            <td style="width:140pt; border:1pt solid #000000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="repeatability[{{ $i }}][massaIsi]" 
-                       value="{{ $data ? $data->massaIsi : '' }}"
-                       step="0.0001"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:3px; font-size:12pt; background:white;">
+            <td rowspan="2" style="width:120pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                <p style="margin:0; font-size:14pt; font-weight:bold;">Suhu Air Suling</p>
+                <p style="margin-top:5pt; font-size:14pt;">°C</p>
             </td>
-            
-            <!-- Suhu Air Suling -->
-            <td style="width:120pt; border:1pt solid #000000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="repeatability[{{ $i }}][T_airSuling]" 
-                       value="{{ $data ? $data->T_airSuling : '' }}"
-                       step="0.1"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:3px; font-size:12pt; background:white;">
-            </td>
-            
-            <!-- Tekanan Udara -->
-            <td style="width:120pt; border:2pt solid #000000; border-left:1pt solid #000; vertical-align:middle; text-align:center;">
-                <input type="number" 
-                       name="repeatability[{{ $i }}][P_Udara]" 
-                       value="{{ $data ? $data->P_Udara : '' }}"
-                       step="0.1"
-                       style="width:90%; border:1px solid #ddd; text-align:center; padding:3px; font-size:12pt; background:white;">
+            <td rowspan="2" style="width:120pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                <p style="margin:0; font-size:14pt; font-weight:bold;">Tekanan Udara</p>
+                <p style="margin-top:5pt; font-size:14pt;">hPa</p>
             </td>
         </tr>
-    @endfor
-
-</table>
+    
+        <tr style="height:30pt">
+            <td style="width:140pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Kosong</p>
+            </td>
+            <td style="width:140pt; border:2pt solid #000000; vertical-align:middle; background-color:#d9d9d9; text-align:center;">
+                <p style="margin:0; font-size:12pt; font-weight:bold;">Massa Isi</p>
+            </td>
+        </tr>
+    
+        <!-- Ambil data AddVolumetrik (repeatability) -->
+        @php
+            $repeatData = $calibration->addVolumetrik()->orderBy('id')->get();
+            
+            // Jika tidak ada data, buat array kosong untuk 10 baris
+            if($repeatData->isEmpty()) {
+                $repeatData = collect();
+                for($i = 0; $i < 10; $i++) {
+                    $repeatData->push((object)[]);
+                }
+            }
+            
+            // Ambil nominal dari data pertama jika ada
+            $firstData = $repeatData->first();
+            $nominalValue = $firstData->titikUkur ?? $firstData->nominal ?? '';
+        @endphp
+    
+        <!-- Tampilkan 10 baris data -->
+        @for($i = 1; $i <= 10; $i++)
+            @php
+                $data = $repeatData->get($i - 1) ?? (object)[];
+            @endphp
+            <tr style="height:25pt">
+                @if($i == 1)
+                <td rowspan="10" style="width:140pt; border:2pt solid #000000; vertical-align:middle; text-align:center;">
+                    <input type="text" name="repeatability_nominal" 
+                           value="{{ old('repeatability_nominal', $nominalValue) }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;"
+                           placeholder= - >
+                </td>
+                @endif
+    
+                <td style="width:140pt; border:2pt solid #000000; vertical-align:middle;">
+                    <input type="text" 
+                           name="repeat_massa_kosong_{{ $i }}" 
+                           value="{{ old('repeat_massa_kosong_'.$i, 
+                                   $data->massaKosong ?? $data->masssaKosong ?? $data->massa_kosong ?? '') }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;"
+                           placeholder= - >
+                </td>
+                <td style="width:140pt; border:2pt solid #000000; vertical-align:middle;">
+                    <input type="text" 
+                           name="repeat_massa_isi_{{ $i }}" 
+                           value="{{ old('repeat_massa_isi_'.$i, 
+                                   $data->massaIsi ?? $data->massa_isi ?? '') }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;"
+                           placeholder= - >
+                </td>
+                <td style="width:120pt; border:2pt solid #000000; vertical-align:middle;">
+                    <input type="text" 
+                           name="repeat_suhu_{{ $i }}" 
+                           value="{{ old('repeat_suhu_'.$i, 
+                                   $data->T_airSuling ?? $data->t_airSuling ?? $data->suhu ?? '') }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;"
+                           placeholder= - >
+                </td>
+                <td style="width:120pt; border:2pt solid #000000; vertical-align:middle;">
+                    <input type="text" 
+                           name="repeat_tekanan_{{ $i }}" 
+                           value="{{ old('repeat_tekanan_'.$i, 
+                                   $data->P_Udara ?? $data->p_udara ?? $data->tekanan ?? '') }}"
+                           step="any"
+                           style="width:100%; height:100%; border:none; font-size:12pt; text-align:center; background:transparent;"
+                           placeholder= - >
+                </td>
+            </tr>
+        @endfor
+    
+    </table>
 
 &nbsp;  &nbsp;
 <table class="kalibrasi-main-table" style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
@@ -912,7 +1064,7 @@
                        name="verifiedBy" 
                        value="{{ $calibration->headVolumetrik->verifiedBy ?? $calibration->verifiedBy ?? '' }}"
                        placeholder="Nama lengkap"
-                       style="width: 100%; border: 1px solid #ddd; padding: 5px; font-size: 9pt; background: white;">
+                       style="width: 100%; border: 1px solid #ddd; padding: 5px; font-size: 9pt; background: white;" readonly>
             </div>
             <div style="margin-top: 10px;">
                 <strong>TTD :</strong>
@@ -947,7 +1099,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -994,7 +1146,7 @@
         });
         
         // Add input validation for numeric fields
-        document.querySelectorAll('input[type="number"]').forEach(input => {
+        document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
                 if (this.value < 0 && this.getAttribute('min') === null) {
                     this.value = Math.abs(this.value);
@@ -1020,7 +1172,7 @@
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data
@@ -1065,7 +1217,7 @@
         }
         
         // 2. Validasi numeric fields (jika diisi)
-        document.querySelectorAll('input[type="number"]').forEach(input => {
+        document.querySelectorAll('input[type="text"]').forEach(input => {
             if (input.value && isNaN(parseFloat(input.value))) {
                 input.style.borderColor = '#ffc107';
                 warningMessages.push(`${input.name} harus berupa angka`);
@@ -1205,7 +1357,7 @@
         }, 5000);
         
         // Real-time validation for numeric fields
-        document.querySelectorAll('input[type="number"]').forEach(input => {
+        document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('blur', function() {
                 if (this.value && isNaN(parseFloat(this.value))) {
                     this.classList.add('is-invalid');

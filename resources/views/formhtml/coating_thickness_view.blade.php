@@ -374,34 +374,34 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
+<!--                <tr>-->
+<!--    <td>-->
+<!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+<!--    </td>-->
+<!--    <td colspan="3">-->
+<!--        <div class="d-flex align-items-center">-->
             <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
+<!--            <div class="me-3" style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
             
-            <span class="me-3" style="color: #000000;">-</span>
+<!--            <span class="me-3" style="color: #000000;">-</span>-->
             
             <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+<!--            <div style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </td>-->
+<!--</tr>-->
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -570,60 +570,64 @@ $jumlah_baris = 12;
     <!-- Header kedua -->
     <tr style="height:30px;">
         <td style="border:1px solid #000000; background-color:#d9d9d9; text-align:center; vertical-align:middle;">
-            <span style="font-size:10pt;">Unit (......)</span>
+            <span style="font-size:10pt;">Unit (
+                <span style="color: #333;">{{ $calibration->headCoatingThickness->satuan_unit ?? 'Tidak tersedia' }}</span>
+            )</span>
         </td>
-        <?php for ($i = 1; $i <= 5; $i++): ?>
+        @for ($i = 1; $i <= 5; $i++)
         <td style="width:90px; border:1px solid #000000; background-color:#d9d9d9; text-align:center; vertical-align:middle;">
-            <span style="font-size:11pt; font-weight:bold;"><?php echo $i; ?></span>
+            <span style="font-size:11pt; font-weight:bold;">{{ $i }}</span>
         </td>
-        <?php endfor; ?>
+        @endfor
     </tr>
     
     <!-- Baris data -->
-    <?php for ($row = 1; $row <= $jumlah_baris; $row++): 
-        // Ambil data untuk baris ini dari collection
-        $detail = isset($detailCoatingThickness[$row-1]) ? $detailCoatingThickness[$row-1] : null;
-    ?>
-    <tr style="height:35px;">
-        <!-- Kolom nominal (titikUkur) -->
-        <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
-            <?php if($detail && $detail->titikUkur !== null): ?>
-                <span style="font-size:11pt; font-weight:bold;">
-                    <?php echo number_format($detail->titikUkur, 2); ?>
-                </span>
-            <?php else: ?>
-                <span style="font-size:11pt; color:#999;">-</span>
-            <?php endif; ?>
-        </td>
-        
-        <!-- 5 kolom pembacaan (rep01 sampai rep05) -->
-        <?php for ($col = 1; $col <= 5; $col++): 
-            $fieldName = 'rep0' . $col; // rep01, rep02, rep03, rep04, rep05
-            $value = $detail ? $detail->$fieldName : null;
-        ?>
-        <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
-            <?php if($value !== null): ?>
-                <span style="font-size:11pt;">
-                    <?php echo number_format($value, 2); ?>
-                </span>
-            <?php else: ?>
-                <span style="font-size:11pt; color:#999;">-</span>
-            <?php endif; ?>
-        </td>
-        <?php endfor; ?>
-        
-        <!-- Kolom resolusi -->
-        <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
-            <?php if($detail && $detail->resolusi !== null): ?>
-                <span style="font-size:11pt;">
-                    <?php echo number_format($detail->resolusi, 2); ?>
-                </span>
-            <?php else: ?>
-                <span style="font-size:11pt; color:#999;">-</span>
-            <?php endif; ?>
-        </td>
-    </tr>
-    <?php endfor; ?>
+    @for ($row = 1; $row <= $jumlah_baris; $row++)
+        @php
+            // Ambil data untuk baris ini dari collection
+            $detail = isset($detailCoatingThickness[$row-1]) ? $detailCoatingThickness[$row-1] : null;
+        @endphp
+        <tr style="height:35px;">
+            <!-- Kolom nominal (titikUkur) - TANPA number_format -->
+            <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
+                @if($detail && $detail->titikUkur !== null)
+                    <span style="font-size:11pt; font-weight:bold;">
+                        {{ $detail->titikUkur }}
+                    </span>
+                @else
+                    <span style="font-size:11pt; color:#999;">-</span>
+                @endif
+             </td>
+            
+            <!-- 5 kolom pembacaan (rep01 sampai rep05) - TANPA number_format -->
+            @for ($col = 1; $col <= 5; $col++)
+                @php
+                    $fieldName = 'rep0' . $col; // rep01, rep02, rep03, rep04, rep05
+                    $value = $detail ? $detail->$fieldName : null;
+                @endphp
+                <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
+                    @if($value !== null)
+                        <span style="font-size:11pt;">
+                            {{ $value }}
+                        </span>
+                    @else
+                        <span style="font-size:11pt; color:#999;">-</span>
+                    @endif
+                 </td>
+            @endfor
+            
+            <!-- Kolom resolusi - TANPA number_format -->
+            <td style="border:1px solid #000000; text-align:center; vertical-align:middle;">
+                @if($detail && $detail->resolusi !== null)
+                    <span style="font-size:11pt;">
+                        {{ $detail->resolusi }}
+                    </span>
+                @else
+                    <span style="font-size:11pt; color:#999;">-</span>
+                @endif
+             </td>
+        </tr>
+    @endfor
 </table>
 
             <p style="margin-top:0.35pt; font-size:9pt">&nbsp;</p>
@@ -875,9 +879,9 @@ if (!empty($standardText)) {
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

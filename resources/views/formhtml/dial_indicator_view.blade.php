@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,293 +8,296 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-    /* Pastikan semua text berwarna hitam */
-    .form-kalibrasi-container,
-    .form-kalibrasi-container *:not(input):not(select):not(textarea):not(button) {
-        color: #000000 !important;
-    }
-    
-    /* Input fields readonly styling */
-    .kalibrasi-input {
-        color: #000000 !important;
-        border: 1px solid #ced4da !important;
-        padding: 6px 10px;
-        border-radius: 4px;
-        width: 100%;
-        background-color: #f8f9fa;
-    }
-    
-    .kalibrasi-input:read-only {
-        background-color: #e9ecef;
-        cursor: not-allowed;
-    }
-
-    /* Styling khusus untuk input suhu dan RH */
-    .kondisi-input {
-        border: 1px solid #000 !important;
-        text-align: center;
-        width: 100%;
-        padding: 4px;
-        background-color: #f8f9fa;
-    }
-
-    /* CHECKBOX STYLING */
-    .form-check-input[type="checkbox"]:checked,
-    .alat-standar-checkbox[type="checkbox"]:checked {
-        background-color: #0d6efd !important;
-        border-color: #0d6efd !important;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-    }
-
-    .form-check-input[type="checkbox"]:checked:disabled,
-    .alat-standar-checkbox[type="checkbox"]:checked:disabled {
-        background-color: #0d6efd !important;
-        border-color: #0d6efd !important;
-        opacity: 1 !important;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
-    }
-
-    .form-check-input[type="checkbox"]:disabled,
-    .alat-standar-checkbox[type="checkbox"]:disabled {
-        background-color: #f8f9fa !important;
-        border-color: #6c757d !important;
-        opacity: 1 !important;
-    }
-
-    /* Checkmark putih untuk checkbox */
-    .form-check-input[type="checkbox"]:checked,
-    .alat-standar-checkbox[type="checkbox"]:checked {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
-    }
-
-    .form-check-input[type="checkbox"]:checked:disabled,
-    .alat-standar-checkbox[type="checkbox"]:checked:disabled {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
-    }
-
-    /* RADIO BUTTON STYLING - FIXED */
-    .form-check-input[type="radio"]:checked {
-        background-color: #0d6efd !important;
-        border-color: #0d6efd !important;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e") !important;
-    }
-
-    .form-check-input[type="radio"]:checked:disabled {
-        background-color: #0d6efd !important;
-        border-color: #0d6efd !important;
-        opacity: 1 !important;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e") !important;
-    }
-
-    .form-check-input[type="radio"]:disabled {
-        background-color: #f8f9fa !important;
-        border-color: #6c757d !important;
-        opacity: 1 !important;
-    }
-
-    /* Custom radio button styling untuk yang tanpa class form-check-input */
-    input[type="radio"]:checked {
-        background-color: #0d6efd !important;
-        border-color: #0d6efd !important;
-    }
-
-    input[type="radio"]:checked:disabled {
-        background-color: #0d6efd !important;
-        border-color: #0d6efd !important;
-        opacity: 1 !important;
-    }
-
-    input[type="radio"]:disabled {
-        background-color: #f8f9fa !important;
-        border-color: #6c757d !important;
-        opacity: 1 !important;
-    }
-
-    /* Styling khusus untuk checkbox alat standar */
-    .alat-standar-checkbox {
-        width: 18px;
-        height: 18px;
-        margin: 0;
-        cursor: not-allowed;
-    }
-
-    /* Pastikan checkbox dan radio memiliki ukuran yang konsisten */
-    .form-check-input[type="checkbox"],
-    .alat-standar-checkbox[type="checkbox"] {
-        border-radius: 0.25em;
-    }
-
-    .form-check-input[type="radio"],
-    input[type="radio"] {
-        border-radius: 50%;
-    }
-
-    /* Header styling */
-    .kalibrasi-header-table {
-        width: 100%;
-        margin-bottom: 20px;
-        border-collapse: collapse;
-    }
-
-    .kalibrasi-header-table td {
-        padding: 5px;
-        vertical-align: top;
-    }
-
-    /* Main form styling */
-    .kalibrasi-main-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
-
-    .kalibrasi-main-table td {
-        padding: 8px;
-        vertical-align: middle;
-        border: 1px solid #dee2e6;
-    }
-
-    /* Data kalibrasi table styling */
-    .kalibrasi-data-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
-
-    .kalibrasi-data-table td {
-        padding: 0;
-        border: 2px solid #000;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .kalibrasi-data-table input {
-        border: none;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        font-size: 10pt;
-        color: #000;
-        padding: 2px;
-        background: transparent;
-    }
-
-    /* Section headers */
-    .kalibrasi-section-header {
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 15px;
-        text-align: center;
-        padding-bottom: 5px;
-        border-bottom: 2px solid #000;
-    }
-
-    .data-kalibrasi-header {
-        font-weight: bold;
-        font-size: 18px;
-        margin: 25px 0 15px;
-        text-align: center;
-        padding: 8px;
-        background-color: #f0f0f0;
-        border: 1px solid #000;
-    }
-
-    /* Button styling dengan gradien biru */
-    .btn-primary {
-        background: linear-gradient(135deg, #3b82f6, #1e40af);
-        border: none;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        transition: all 0.3s ease;
-        color: white;
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        background: linear-gradient(135deg, #1e40af, #1e3a8a);
-        color: white;
-    }
-
-    .btn-secondary {
-        background: linear-gradient(135deg, #6b7280, #4b5563);
-        border: none;
-        box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
-        transition: all 0.3s ease;
-        color: white;
-    }
-
-    .btn-secondary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
-        background: linear-gradient(135deg, #4b5563, #374151);
-        color: white;
-    }
-
-    /* Styling untuk bagian "Data telah diisi dengan lengkap dan jelas!" */
-    .data-complete-section {
-        text-align: center;
-        padding: 20px 0;
-        margin: 20px 0;
-        border-top: 2px solid #000;
-        border-bottom: 2px solid #000;
-    }
-
-    .data-complete-text {
-        font-weight: bold;
-        font-size: 18px;
-        color: #000;
-    }
-
-    /* Styling untuk tabel alat standar */
-    .alat-standar-section {
-        margin: 20px 0;
-    }
-
-    .alat-standar-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .alat-standar-table td {
-        border: 1px solid #000;
-        padding: 8px;
-        vertical-align: middle;
-    }
-
-    /* Print styling */
-    @media print {
-        .btn {
-            display: none !important;
+        /* Pastikan semua text berwarna hitam */
+        .form-kalibrasi-container,
+        .form-kalibrasi-container *:not(input):not(select):not(textarea):not(button) {
+            color: #000000 !important;
         }
-        
-        body {
-            background: white !important;
-        }
-        
-        .container {
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-    }
 
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .kalibrasi-main-table td {
+        /* Input fields readonly styling */
+        .kalibrasi-input {
+            color: #000000 !important;
+            border: 1px solid #ced4da !important;
+            padding: 6px 10px;
+            border-radius: 4px;
+            width: 100%;
+            background-color: #f8f9fa;
+        }
+
+        .kalibrasi-input:read-only {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        /* Styling khusus untuk input suhu dan RH */
+        .kondisi-input {
+            border: 1px solid #000 !important;
+            text-align: center;
+            width: 100%;
             padding: 4px;
+            background-color: #f8f9fa;
         }
-        
-        .data-kalibrasi-header {
+
+
+
+        /* CHECKBOX STYLING */
+        .form-check-input[type="checkbox"]:checked,
+        .alat-standar-checkbox[type="checkbox"]:checked {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .form-check-input[type="checkbox"]:checked:disabled,
+        .alat-standar-checkbox[type="checkbox"]:checked:disabled {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            opacity: 1 !important;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+        }
+
+        .form-check-input[type="checkbox"]:disabled,
+        .alat-standar-checkbox[type="checkbox"]:disabled {
+            background-color: #f8f9fa !important;
+            border-color: #6c757d !important;
+            opacity: 1 !important;
+        }
+
+        /* Checkmark putih untuk checkbox */
+        .form-check-input[type="checkbox"]:checked,
+        .alat-standar-checkbox[type="checkbox"]:checked {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
+        }
+
+        .form-check-input[type="checkbox"]:checked:disabled,
+        .alat-standar-checkbox[type="checkbox"]:checked:disabled {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
+        }
+
+        /* RADIO BUTTON STYLING - FIXED */
+        .form-check-input[type="radio"]:checked {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e") !important;
+        }
+
+        .form-check-input[type="radio"]:checked:disabled {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            opacity: 1 !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e") !important;
+        }
+
+        .form-check-input[type="radio"]:disabled {
+            background-color: #f8f9fa !important;
+            border-color: #6c757d !important;
+            opacity: 1 !important;
+        }
+
+        /* Custom radio button styling untuk yang tanpa class form-check-input */
+        input[type="radio"]:checked {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+        }
+
+        input[type="radio"]:checked:disabled {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            opacity: 1 !important;
+        }
+
+        input[type="radio"]:disabled {
+            background-color: #f8f9fa !important;
+            border-color: #6c757d !important;
+            opacity: 1 !important;
+        }
+
+        /* Styling khusus untuk checkbox alat standar */
+        .alat-standar-checkbox {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: not-allowed;
+        }
+
+        /* Pastikan checkbox dan radio memiliki ukuran yang konsisten */
+        .form-check-input[type="checkbox"],
+        .alat-standar-checkbox[type="checkbox"] {
+            border-radius: 0.25em;
+        }
+
+        .form-check-input[type="radio"],
+        input[type="radio"] {
+            border-radius: 50%;
+        }
+
+        /* Header styling */
+        .kalibrasi-header-table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        .kalibrasi-header-table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        /* Main form styling */
+        .kalibrasi-main-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .kalibrasi-main-table td {
+            padding: 8px;
+            vertical-align: middle;
+            border: 1px solid #dee2e6;
+        }
+
+        /* Data kalibrasi table styling */
+        .kalibrasi-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .kalibrasi-data-table td {
+            padding: 0;
+            border: 2px solid #000;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .kalibrasi-data-table input {
+            border: none;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 10pt;
+            color: #000;
+            padding: 2px;
+            background: transparent;
+        }
+
+        /* Section headers */
+        .kalibrasi-section-header {
+            font-weight: bold;
             font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #000;
         }
-        
-        .btn-lg {
-            padding: 10px 20px !important;
-            font-size: 14px !important;
+
+        .data-kalibrasi-header {
+            font-weight: bold;
+            font-size: 18px;
+            margin: 25px 0 15px;
+            text-align: center;
+            padding: 8px;
+            background-color: #f0f0f0;
+            border: 1px solid #000;
         }
-    }
-</style>
+
+        /* Button styling dengan gradien biru */
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border: none;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            border: none;
+            box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+            background: linear-gradient(135deg, #4b5563, #374151);
+            color: white;
+        }
+
+        /* Styling untuk bagian "Data telah diisi dengan lengkap dan jelas!" */
+        .data-complete-section {
+            text-align: center;
+            padding: 20px 0;
+            margin: 20px 0;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .data-complete-text {
+            font-weight: bold;
+            font-size: 18px;
+            color: #000;
+        }
+
+        /* Styling untuk tabel alat standar */
+        .alat-standar-section {
+            margin: 20px 0;
+        }
+
+        .alat-standar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .alat-standar-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            vertical-align: middle;
+        }
+
+        /* Print styling */
+        @media print {
+            .btn {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+            }
+
+            .container {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .kalibrasi-main-table td {
+                padding: 4px;
+            }
+
+            .data-kalibrasi-header {
+                font-size: 16px;
+            }
+
+            .btn-lg {
+                padding: 10px 20px !important;
+                font-size: 14px !important;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="container my-4">
         <div class="form-kalibrasi-container">
@@ -303,13 +307,13 @@
                         <p style="margin: 0; font-size: 14px; color: #000000;">PAS-FLK04</p>
                     </td>
                     <td rowspan="5" style="text-align: center; vertical-align: middle; padding: 10px 0;">
-                      <div style="display: inline-block; text-align: center;">
-                          <div style="margin-bottom: 15px;">
-                              <img src="/logo/logo_pas_basic.png" alt="Logo PT. PAS" style="width: 107px; height: 54px; display: block; margin: 0 auto;">
-                          </div>
-                          <p style="font-weight: bold; margin: 0; font-size: 15px; color: #000000;">PT. PANANJUNG ANUGRAH SOLUTION</p>
-                      </div>
-                  </td>
+                        <div style="display: inline-block; text-align: center;">
+                            <div style="margin-bottom: 15px;">
+                                <img src="/logo/logo_pas_basic.png" alt="Logo PT. PAS" style="width: 107px; height: 54px; display: block; margin: 0 auto;">
+                            </div>
+                            <p style="font-weight: bold; margin: 0; font-size: 15px; color: #000000;">PT. PANANJUNG ANUGRAH SOLUTION</p>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -404,8 +408,8 @@
                         <p style="margin: 0; color: #000000;">Tanggal Alat Masuk</p>
                     </td>
                     <td colspan="3">
-                        <input type="text" class="kalibrasi-input" 
-                               value="{{ \Carbon\Carbon::parse($calibration->tanggalMasuk)->format('d/m/Y') }}" readonly>
+                        <input type="text" class="kalibrasi-input"
+                            value="{{ \Carbon\Carbon::parse($calibration->tanggalMasuk)->format('d/m/Y') }}" readonly>
                     </td>
                 </tr>
                 <tr>
@@ -414,8 +418,8 @@
                     </td>
                     <td colspan="3">
                         <div class="d-flex align-items-center">
-                            <input type="text" class="kalibrasi-input me-3" 
-                                   value="{{ \Carbon\Carbon::parse($calibration->tanggalKalibrasi)->format('d/m/Y') }}" readonly style="width: 45%;">
+                            <input type="text" class="kalibrasi-input me-3"
+                                value="{{ \Carbon\Carbon::parse($calibration->tanggalKalibrasi)->format('d/m/Y') }}" readonly style="width: 45%;">
                             <span class="me-3" style="color: #000000;">Jenis Pembacaan:</span>
                             <input type="text" class="kalibrasi-input" value="{{ $calibration->jenisPembacaan }}" readonly style="width: 45%;">
                         </div>
@@ -430,13 +434,13 @@
                     <td colspan="3">
                         <div class="d-flex">
                             <div class="form-check me-5">
-                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }} disabled>
+                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab.PT PAS" id="lab"
+                                    {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="insitu" id="insitu" 
-                                       {{ $calibration->tempatKalibrasi == 'insitu' ? 'checked' : '' }} disabled>
+                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="insitu" id="insitu"
+                                    {{ $calibration->tempatKalibrasi == 'insitu' ? 'checked' : '' }} disabled>
                                 <label class="form-check-label" for="insitu" style="color: #000000;">Insitu</label>
                             </div>
                         </div>
@@ -450,454 +454,473 @@
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
                     </td>
                 </tr>
+
+                <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
+                    </td>
+                </tr>
             </table>
 
             <!-- Fungsi Komponen Lainnya & Kondisi Kalibrasi -->
             <div class="row mt-4">
-    <!-- Fungsi Komponen Lainnya -->
-    <div class="col-md-6 mb-4">
-        <div class="kalibrasi-section-header" style="color: #000000;">Fungsi Komponen Lainnya</div>
-        
-        <!-- Radio Button Section - Text di atas, radio di bawah -->
-        <div class="d-flex justify-content-center align-items-center mb-4" style="gap: 60px;">
-            <div class="text-center">
-                <span class="fw-bold d-block mb-2" style="color: #000000; font-size: 14px;">Ok</span>
-                <input type="radio" name="kondisiAlat" value="ok" class="form-check-input" 
-                    style="width: 18px; height: 18px; display: block; margin: 0 auto;"
-                    {{ $calibration->kondisiAlat == 'ok' ? 'checked' : '' }} disabled>
-            </div>
-            <div class="text-center">
-                <span class="fw-bold d-block mb-2" style="color: #000000; font-size: 14px;">Rusak</span>
-                <input type="radio" name="kondisiAlat" value="rusak" class="form-check-input"
-                    style="width: 18px; height: 18px; display: block; margin: 0 auto;"
-                    {{ $calibration->kondisiAlat == 'rusak' ? 'checked' : '' }} disabled>
-            </div>
-        </div>
-        
-        <!-- Keterangan Section -->
-        <div class="d-flex align-items-center">
-            <span class="fw-bold me-3" style="color: #000000; min-width: 100px;">Keterangan :</span>
-            <div style="flex: 1;">
-                <input type="text" class="kalibrasi-input" value="{{ $calibration->keterangan ?? '-' }}" readonly 
-                       style="border: none; border-bottom: 2px solid #000; border-radius: 0; padding: 4px 0; background: transparent; width: 100%;">
-            </div>
-        </div>
-    </div>
-    
-    <!-- Kondisi Kalibrasi -->
-    <div class="col-md-6 mb-4">
-        <div class="kalibrasi-section-header" style="color: #000000;">Kondisi Kalibrasi</div>
-        
-        <table class="table table-bordered">
-            <tr>
-                <td class="table-secondary fw-bold" style="width: 30%; color: #000000;"></td>
-                <td class="table-secondary fw-bold text-center" style="color: #000000;">Awal</td>
-                <td class="table-secondary fw-bold text-center" style="color: #000000;">Tengah</td>
-                <td class="table-secondary fw-bold text-center" style="color: #000000;">Akhir</td>
-            </tr>
-            <tr>
-                <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
-                <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition1 ?? '-' }}" readonly></td>
-                <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition2 ?? '-' }}" readonly></td>
-                <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition3 ?? '-' }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
-                <td><input type="text" class="kondisi-input" value="{{ $calibration->RH_condition1 ?? '-' }}" readonly></td>
-                <td><input type="text" class="kondisi-input" value="{{ $calibration->RH_condition2 ?? '-' }}" readonly></td>
-                <td><input type="text" class="kondisi-input" value="{{ $calibration->RH_condition3 ?? '-' }}" readonly></td>
-            </tr>
-        </table>
-    </div>
-</div>
+                <!-- Fungsi Komponen Lainnya -->
+                <div class="col-md-6 mb-4">
+                    <div class="kalibrasi-section-header" style="color: #000000;">Fungsi Komponen Lainnya</div>
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Kalibrasi - PT. PANANJUNG ANUGRAH SOLUTION</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-    /* ... (CSS styles tetap sama seperti sebelumnya) ... */
-    </style>
-</head>
-<body>
-    <div class="container my-4">
-        <div class="form-kalibrasi-container">
-            <!-- ... (Header dan Main Form Section tetap sama) ... -->
+                    <!-- Radio Button Section - Text di atas, radio di bawah -->
+                    <div class="d-flex justify-content-center align-items-center mb-4" style="gap: 60px;">
+                        <div class="text-center">
+                            <span class="fw-bold d-block mb-2" style="color: #000000; font-size: 14px;">Ok</span>
+                            <input type="radio" name="kondisiAlat" value="ok" class="form-check-input"
+                                style="width: 18px; height: 18px; display: block; margin: 0 auto;"
+                                {{ $calibration->kondisiAlat == 'ok' ? 'checked' : '' }} disabled>
+                        </div>
+                        <div class="text-center">
+                            <span class="fw-bold d-block mb-2" style="color: #000000; font-size: 14px;">Rusak</span>
+                            <input type="radio" name="kondisiAlat" value="rusak" class="form-check-input"
+                                style="width: 18px; height: 18px; display: block; margin: 0 auto;"
+                                {{ $calibration->kondisiAlat == 'rusak' ? 'checked' : '' }} disabled>
+                        </div>
+                    </div>
 
-      <!-- Data Kalibrasi Section -->
-<div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
+                    <!-- Keterangan Section -->
+                    <div class="d-flex align-items-center">
+                        <span class="fw-bold me-3" style="color: #000000; min-width: 100px;">Keterangan :</span>
+                        <div style="flex: 1;">
+                            <input type="text" class="kalibrasi-input" value="{{ $calibration->keterangan ?? '-' }}" readonly
+                                style="border: none; border-bottom: 2px solid #000; border-radius: 0; padding: 4px 0; background: transparent; width: 100%;">
+                        </div>
+                    </div>
+                </div>
 
-<div class="d-flex justify-content-between gap-4">
-    @php
-        $is001 = ($calibration->resolusi ?? '') === '0.001';
-        $detailData = $calibration->detailDialIndicators ?? collect();
-        
-        // Tentukan judul berdasarkan resolusi
-        $judulKiri = $is001 ? '0 - 0.19 mm' : '0 - 1.9 mm';
-        $judulKanan = $is001 ? '0.20 - 1.00 mm' : '2 - 50 mm';
-        
-        // Pisahkan data berdasarkan index
-        $dataKiri = [];
-        $dataKanan = [];
-        
-        foreach ($detailData as $index => $detail) {
-            if ($index < 20) {
-                $dataKiri[] = $detail;
-            } else {
-                $dataKanan[] = $detail;
-            }
-        }
-        
-        // Untuk memastikan ada cukup baris, tambahkan data kosong jika kurang
-        while (count($dataKiri) < 20) {
-            $dataKiri[] = null;
-        }
-        while (count($dataKanan) < 19) {
-            $dataKanan[] = null;
-        }
-    @endphp
+                <!-- Kondisi Kalibrasi -->
+                <div class="col-md-6 mb-4">
+                    <div class="kalibrasi-section-header" style="color: #000000;">Kondisi Kalibrasi</div>
 
-    <!-- Tabel Kiri -->
-    <div style="flex:1;">
-        <div class="text-center mb-2">
-         
-        </div>
-        <table class="kalibrasi-data-table">
-            <tr style="background:#d9d9d9;">
-                <td style="border:2px solid #000;padding:8px;text-align:center;width:40%;">
-                    <strong>Penunjukan Alat (mm)</strong>
-                </td>
-                <td colspan="2" style="border:2px solid #000;padding:8px;text-align:center;width:60%;">
-                    <strong>Pembacaan Standard (mm)</strong>
-                </td>
-            </tr>
-            <tr style="background:#e8e8e8;">
-                <td></td>
-                <td style="border:2px solid #000;padding:8px;text-align:center;">
-                    <strong>Naik</strong>
-                </td>
-                <td style="border:2px solid #000;padding:8px;text-align:center;">
-                    <strong>Turun</strong>
-                </td>
-            </tr>
-            @foreach($dataKiri as $detail)
-                <tr>
-                    <td style="height:32px; background-color: #f8f9fa;">
-                        <input type="text" 
-                               value="{{ $detail->titikUkur ?? '' }}" 
-                               readonly 
-                               style="width:100%;height:100%;border:none;text-align:center;background:transparent;font-weight:bold;">
-                    </td>
-                    <td style="height:32px;">
-                        <input type="text" 
-                               value="{{ $detail->ulanganNaik ?? '' }}" 
-                               readonly 
-                               style="width:100%;height:100%;border:none;text-align:center;background:transparent;">
-                    </td>
-                    <td style="height:32px;">
-                        <input type="text" 
-                               value="{{ $detail->ulanganTurun ?? '' }}" 
-                               readonly 
-                               style="width:100%;height:100%;border:none;text-align:center;background:transparent;">
-                    </td>
-                </tr>
-            @endforeach
-        </table>
-    </div>
-
-    <!-- Tabel Kanan -->
-    <div style="flex:1;">
-        <div class="text-center mb-2">
-            
-        </div>
-        <table class="kalibrasi-data-table">
-            <tr style="background:#d9d9d9;">
-                <td style="border:2px solid #000;padding:8px;text-align:center;width:40%;">
-                    <strong>Penunjukan Alat (mm)</strong>
-                </td>
-                <td colspan="2" style="border:2px solid #000;padding:8px;text-align:center;width:60%;">
-                    <strong>Pembacaan Standard (mm)</strong>
-                </td>
-            </tr>
-            <tr style="background:#e8e8e8;">
-                <td></td>
-                <td style="border:2px solid #000;padding:8px;text-align:center;">
-                    <strong>Naik</strong>
-                </td>
-                <td style="border:2px solid #000;padding:8px;text-align:center;">
-                    <strong>Turun</strong>
-                </td>
-            </tr>
-            @foreach($dataKanan as $detail)
-                <tr>
-                    <td style="height:32px; background-color: #f8f9fa;">
-                        <input type="text" 
-                               value="{{ $detail->titikUkur ?? '' }}" 
-                               readonly 
-                               style="width:100%;height:100%;border:none;text-align:center;background:transparent;font-weight:bold;">
-                    </td>
-                    <td style="height:32px;">
-                        <input type="text" 
-                               value="{{ $detail->ulanganNaik ?? '' }}" 
-                               readonly 
-                               style="width:100%;height:100%;border:none;text-align:center;background:transparent;">
-                    </td>
-                    <td style="height:32px;">
-                        <input type="text" 
-                               value="{{ $detail->ulanganTurun ?? '' }}" 
-                               readonly 
-                               style="width:100%;height:100%;border:none;text-align:center;background:transparent;">
-                    </td>
-                </tr>
-            @endforeach
-        </table>
-    </div>
-</div>
-               
-
-            <!-- Repeatability Section -->
-           <p class="medium-text" style="margin-top:5.1pt; margin-left:10.2pt; margin-bottom:1.05pt; font-size: 10pt;">
-            <span class="letter-spacing-neg-01">Repeatability</span>
-            <span class="letter-spacing-06"></span>
-            <span class="letter-spacing-neg-05">:</span>
-            <span style="margin-left:10px;">
-                @php
-                    $repeatabilityValue = $calibration->addDialIndicator->repeatability ?? null;
-                    $displayValue = !empty($repeatabilityValue) ? $repeatabilityValue : '-';
-                @endphp
-                <input type="text" value="{{ $displayValue }}" readonly
-                    style="border:none; border-bottom:1px solid #000; width:80px; text-align:center; font-size:10pt; background:transparent;">
-               
-            </span>
-        </p>
-
-            <table class="repeatability-table" style="width: 100%; border-collapse: collapse;">
-                <!-- Baris 1 -->
-                <tr style="height: 20pt;">
-                    <td style="width: 49.05pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan01 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                    <td style="width: 51.2pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan02 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                    <td style="width: 51.2pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan03 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                    <td style="width: 57.05pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan04 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                    <td style="width: 57.05pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan05 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                </tr>
-                
-                <!-- Baris 2 -->
-                <tr style="height: 20pt;">
-                    <td style="width: 49.05pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan06 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                    <td style="width: 51.2pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan07 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                    <td style="width: 57.1pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan08 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                    <td style="width: 57.05pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan09 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                    <td style="width: 57.05pt; border: 1px solid #000;">
-                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan10 ?? '' }}" readonly 
-                               style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
-                    </td>
-                </tr>
-
-                <!-- ALAT STANDAR – MENAMPILKAN DATA YANG DISIMPAN -->
-                    <tr style="height:18pt;">
-                        <td colspan="2" rowspan="3" style="width:101.25pt;border:1px solid #000;vertical-align:top;">
-                            <p style="margin-top:8pt;font-size:10pt;">&nbsp;</p>
-                            <p style="margin-left:28.05pt;font-size:10pt;">
-                                <span>Alat</span><span style="letter-spacing:-0.1pt;"> Standar</span>
-                            </p>
-                        </td>
-
-                        <!-- Baris 1: Selalu ada Dial Gauge Tester 0~25mm -->
-                        <td style="width:3.62pt;border:1px solid #000;text-align:center;vertical-align:middle;">
-                            @php
-                                // Ambil data dari database
-                                $standardValue = $calibration->headDialIndicator->standard ?? '';
-                                
-                                // Cek apakah mengandung "Dial Gauge Tester 0~25 mm" atau "dial_gauge_tester_0_25mm"
-                                $isDialGaugeTester = str_contains($standardValue, 'dial_gauge_tester_0_25mm') || 
-                                                    str_contains($standardValue, 'Dial Gauge Tester 0~25 mm');
-                            @endphp
-                            <input type="checkbox" class="alat-standar-checkbox" 
-                                {{ $isDialGaugeTester ? 'checked' : '' }} disabled>
-                        </td>
-                        <td colspan="3" style="width:151.93pt;border:1px solid #000;vertical-align:middle;">
-                            <p style="margin:3pt 0 0 10.4pt;font-size:9.5pt;">Dial Gauge Tester 0~25 mm</p>
-                        </td>
-                        <td style="width:115.15pt;border:1px solid #000;vertical-align:top;">
-                            <p style="margin:1.8pt 0 0 29.55pt;font-size:10pt;">
-                                <span>Dikalibrasi</span><span style="letter-spacing:-0.2pt;"> oleh</span>
-                            </p>
-                        </td>
-                        <td style="width:113.9pt;border:1px solid #000;vertical-align:top;">
-                            <p style="margin:1.8pt 0 0 30.9pt;font-size:10pt;">
-                                <span>Diperiksa</span><span style="letter-spacing:-0.2pt;"> oleh</span>
-                            </p>
-                        </td>
-                    </tr>
-
-                    <!-- Baris 2: Alat Standar Kedua - SELALU ADA SESUAI RESOLUSI -->
-                    <tr style="height:18pt;">
-                        <td style="width:3.62pt;border:1px solid #000;text-align:center;vertical-align:middle;">
-                            @php
-                                // Cek apakah mengandung alat standar kedua (SELALU CHECKED karena wajib ada)
-                                $standardValue = $calibration->headDialIndicator->standard ?? '';
-                                
-                                // Cek apakah alat standar kedua sesuai dengan skala/resolusi
-                                $skala = $calibration->skala ?? '0.01'; // default 0.01
-                                $is001 = $skala === '0.001';
-                                
-                                if ($is001) {
-                                    // Untuk resolusi 0.001, alat kedua adalah Dial Calibration Tester 0~1 mm
-                                    $isChecked = str_contains($standardValue, 'dial_calibration_tester_0_1mm') || 
-                                                str_contains($standardValue, 'Dial Calibration Tester 0~1 mm');
-                                } else {
-                                    // Untuk resolusi 0.01, alat kedua adalah Electronic Gauge Tester 0~50 mm
-                                    $isChecked = str_contains($standardValue, 'electronic_gauge_tester_0_50mm') || 
-                                                str_contains($standardValue, 'Electronic Gauge Tester 0~50 mm');
-                                }
-                            @endphp
-                            <input type="checkbox" class="alat-standar-checkbox" 
-                                {{ $isChecked ? 'checked' : '' }} disabled>
-                        </td>
-                        <td colspan="3" style="width:151.93pt;border:1px solid #000;vertical-align:middle;">
-                            <p style="margin:3pt 0 0 10.4pt;font-size:9.5pt;">
-                                @php
-                                    // Tentukan teks yang akan ditampilkan SESUAI SKALA/RESOLUSI
-                                    $skala = $calibration->skala ?? '0.01';
-                                    $is001 = $skala === '0.001';
-                                    
-                                    // SELALU TAMPILKAN SESUAI RESOLUSI
-                                    if ($is001) {
-                                        echo 'Dial Calibration Tester 0~1 mm';
-                                    } else {
-                                        echo 'Electronic Gauge Tester 0~50 mm';
-                                    }
-                                @endphp
-                            </p>
-                        </td>
-                        <td rowspan="3" style="width:115.15pt;border:1px solid #000;vertical-align:top;">
-                            <p style="margin-top:8pt;font-size:10pt;">&nbsp;</p>
-                            <p style="margin-left:1.6pt;font-size:10pt;"><span>TTD :</span></p>
-                            <p style="margin-top:2.3pt;font-size:10pt;">&nbsp;</p>
-                            <p style="margin-left:1.6pt;line-height:11pt;">
-                                <span style="font-size:10pt;">Nama :</span>
-                                <input type="text" value="{{ $calibration->calibratedBy ?? '-' }}" readonly 
-                                    style="width:62%;border:none;border-bottom:1px solid #000;margin-left:6px;font-size:9pt;background:transparent;">
-                            </p>
-                        </td>
-                        <td rowspan="3" style="width:113.9pt;border:1px solid #000;vertical-align:top;">
-                            <p style="margin-top:8pt;font-size:10pt;">&nbsp;</p>
-                            <p style="margin-left:1.65pt;font-size:10pt;"><span>TTD :</span></p>
-                            <p style="margin-top:2.3pt;font-size:10pt;">&nbsp;</p>
-                            <p style="margin-left:1.65pt;line-height:11pt;">
-                                <span style="font-size:10pt;">Nama :</span>
-                                <input type="text" value="{{ $calibration->verifiedBy ?? '-' }}" readonly 
-                                    style="width:62%;border:none;border-bottom:1px solid #000;margin-left:6px;font-size:9pt;background:transparent;">
-                            </p>
-                        </td>
-                    </tr>
-
-                    <!-- Baris 3: Alat Standar Lainnya (HANYA JIKA ADA) -->
-                    <tr style="height:15pt;">
-                        <td style="width:3.62pt;border:1px solid #000;text-align:center;vertical-align:middle;">
-                            @php
-                                // Cek apakah ada alat standar lainnya
-                                $standardValue = $calibration->headDialIndicator->standard ?? '';
-                                
-                                // Hapus alat standar yang sudah diketahui dari string
-                                $remainingText = $standardValue;
-                                $knownTools = [
-                                    'dial_gauge_tester_0_25mm',
-                                    'Dial Gauge Tester 0~25 mm',
-                                    'dial_calibration_tester_0_1mm', 
-                                    'Dial Calibration Tester 0~1 mm',
-                                    'electronic_gauge_tester_0_50mm',
-                                    'Electronic Gauge Tester 0~50 mm'
-                                ];
-                                
-                                foreach ($knownTools as $tool) {
-                                    $remainingText = str_replace($tool, '', $remainingText);
-                                }
-                                
-                                // Bersihkan koma dan spasi berlebih
-                                $remainingText = trim($remainingText, ', ');
-                                
-                                $isChecked = !empty($remainingText);
-                            @endphp
-                            <input type="checkbox" class="alat-standar-checkbox" 
-                                {{ $isChecked ? 'checked' : '' }} disabled>
-                        </td>
-                        <td colspan="3" style="width:151.93pt;border:1px solid #000;vertical-align:middle;">
-                            <p style="margin:0.5pt 0 0 10.4pt;">
-                                @php
-                                    // Tampilkan sisa teks (alat standar lainnya)
-                                    echo '<input type="text" value="' . htmlspecialchars($remainingText) . '" readonly 
-                                        style="width:95%;border:none;font-size:9pt;padding:2px;background:transparent;">';
-                                @endphp
-                            </p>
-                        </td>
-                    </tr>
-
-                    <!-- Baris 6: Metode Kalibrasi -->
-                    <tr style="height: 22pt;">
-                        <td colspan="2" style="width: 101.25pt; border: 1px solid #000;">
-                            <p style="margin-top: 5.75pt; margin-left: 19.75pt; font-size: 10pt;">
-                                <span>Metode</span>
-                                <span class="letter-spacing-neg-05"></span>
-                                <span class="letter-spacing-neg-01">Kalibrasi</span>
-                            </p>
-                        </td>
-                        <td colspan="5" style="width: 173.2pt; border: 1px solid #000;">
-                            <p style="margin-top: 0.8pt; margin-left: 8.95pt; line-height: 11pt; font-size: 9.5pt;">
-                                <span>PAS-IK1102-03 (JIS B 7503:2017 (JMA/JSA); SNSU PK.P-03:2020).</span>
-                            </p>
-                        </td>
-                    </tr>
-            </table>
-
-         
-
-            <!-- Action Buttons Section -->
-            <div class="row mt-5">
-                <div class="col-12 text-center">
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-arrow-left me-2"></i>Kembali
-                    </a>
-                    
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="table-secondary fw-bold" style="width: 30%; color: #000000;"></td>
+                            <td class="table-secondary fw-bold text-center" style="color: #000000;">Awal</td>
+                            <td class="table-secondary fw-bold text-center" style="color: #000000;">Tengah</td>
+                            <td class="table-secondary fw-bold text-center" style="color: #000000;">Akhir</td>
+                        </tr>
+                        <tr>
+                            <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
+                            <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition1 ?? '-' }}" readonly></td>
+                            <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition2 ?? '-' }}" readonly></td>
+                            <td><input type="text" class="kondisi-input" value="{{ $calibration->RT_condition3 ?? '-' }}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
+                            <td><input type="text" class="kondisi-input" value="{{ $calibration->RH_condition1 ?? '-' }}" readonly></td>
+                            <td><input type="text" class="kondisi-input" value="{{ $calibration->RH_condition2 ?? '-' }}" readonly></td>
+                            <td><input type="text" class="kondisi-input" value="{{ $calibration->RH_condition3 ?? '-' }}" readonly></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+            <!DOCTYPE html>
+            <html lang="id">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>View Kalibrasi - PT. PANANJUNG ANUGRAH SOLUTION</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <style>
+                    /* ... (CSS styles tetap sama seperti sebelumnya) ... */
+                </style>
+            </head>
+
+            <body>
+                <div class="container my-4">
+                    <div class="form-kalibrasi-container">
+                        <!-- ... (Header dan Main Form Section tetap sama) ... -->
+
+                        <!-- Data Kalibrasi Section -->
+                        <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
+
+                        <div class="d-flex justify-content-between gap-4">
+                            @php
+                            $is001 = ($calibration->resolusi ?? '') === '0.001';
+                            $detailData = $calibration->detailDialIndicators ?? collect();
+
+                            // Tentukan judul berdasarkan resolusi
+                            $judulKiri = $is001 ? '0 - 0.19 mm' : '0 - 1.9 mm';
+                            $judulKanan = $is001 ? '0.20 - 1.00 mm' : '2 - 50 mm';
+
+                            // Pisahkan data berdasarkan index
+                            $dataKiri = [];
+                            $dataKanan = [];
+
+                            foreach ($detailData as $index => $detail) {
+                            if ($index < 20) {
+                                $dataKiri[]=$detail;
+                                } else {
+                                $dataKanan[]=$detail;
+                                }
+                                }
+
+                                // Untuk memastikan ada cukup baris, tambahkan data kosong jika kurang
+                                while (count($dataKiri) < 20) {
+                                $dataKiri[]=null;
+                                }
+                                while (count($dataKanan) < 19) {
+                                $dataKanan[]=null;
+                                }
+                                @endphp
+
+                                <!-- Tabel Kiri -->
+                                <div style="flex:1;">
+                                    <div class="text-center mb-2">
+
+                                    </div>
+                                    <table class="kalibrasi-data-table">
+                                        <tr style="background:#d9d9d9;">
+                                            <td style="border:2px solid #000;padding:8px;text-align:center;width:40%;">
+                                                <strong>Penunjukan Alat</strong>
+                                            </td>
+                                            <td colspan="2" style="border:2px solid #000;padding:8px;text-align:center;width:60%;">
+                                                <strong>Pembacaan Standard</strong>
+                                            </td>
+                                        </tr>
+                                        <tr style="background:#e8e8e8;">
+                                            <td style="border:2px solid #000;padding:8px;text-align:center;">
+                                                <!-- Display satuan dalam view mode -->
+                                                <div style="position:relative;display:inline-block;width:100px;">
+                                                    <!-- Parentheses tetap -->
+                                                    <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11pt;">(</span>
+
+                                                    <!-- Display satuan (bukan input) -->
+                                                    <div style="width: 80px; 
+                                   text-align: center; 
+                                   font-size: 11pt;
+                                   font-weight: normal;
+                                   padding: 2px 20px;
+                                   display: inline-block;">
+                                                        @php
+                                                        $satuan = $calibration->headDialIndicator->satuan_alat_kiri ?? '';
+                                                        // Jika kosong, tampilkan placeholder
+                                                        $displaySatuan = !empty(trim($satuan)) ? $satuan : '';
+                                                        @endphp
+                                                        {{ $displaySatuan }}
+                                                    </div>
+
+                                                    <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11pt;">)</span>
+                                                </div>
+                                            </td>
+                                            <td style="border:2px solid #000;padding:8px;text-align:center;">
+                                                <strong>Naik</strong>
+                                            </td>
+                                            <td style="border:2px solid #000;padding:8px;text-align:center;">
+                                                <strong>Turun</strong>
+                                            </td>
+                                        </tr>
+                                        @foreach($dataKiri as $detail)
+                                        <tr>
+                                            <td style="height:32px; background-color: #f8f9fa;">
+                                                <input type="text"
+                                                    value="{{ $detail->titikUkur ?? '' }}"
+                                                    readonly
+                                                    style="width:100%;height:100%;border:none;text-align:center;background:transparent;font-weight:bold;">
+                                            </td>
+                                            <td style="height:32px;">
+                                                <input type="text"
+                                                    value="{{ $detail->ulanganNaik ?? '' }}"
+                                                    readonly
+                                                    style="width:100%;height:100%;border:none;text-align:center;background:transparent;">
+                                            </td>
+                                            <td style="height:32px;">
+                                                <input type="text"
+                                                    value="{{ $detail->ulanganTurun ?? '' }}"
+                                                    readonly
+                                                    style="width:100%;height:100%;border:none;text-align:center;background:transparent;">
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+
+                                <!-- Tabel Kanan -->
+                                <div style="flex:1;">
+                                    <div class="text-center mb-2">
+
+                                    </div>
+                                    <table class="kalibrasi-data-table">
+                                        <tr style="background:#d9d9d9;">
+                                            <td style="border:2px solid #000;padding:8px;text-align:center;width:40%;">
+                                                <strong>Penunjukan Alat</strong>
+                                            </td>
+                                            <td colspan="2" style="border:2px solid #000;padding:8px;text-align:center;width:60%;">
+                                                <strong>Pembacaan Standard</strong>
+                                            </td>
+                                        </tr>
+                                        <tr style="background:#e8e8e8;">
+                                            <td style="border:2px solid #000;padding:8px;text-align:center;">
+                                                <!-- Display satuan dalam view mode -->
+                                                <div style="position:relative;display:inline-block;width:100px;">
+                                                    <!-- Parentheses tetap -->
+                                                    <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11pt;">(</span>
+
+                                                    <!-- Display satuan (bukan input) -->
+                                                    <div style="width: 80px; 
+                                   text-align: center; 
+                                   font-size: 11pt;
+                                   font-weight: normal;
+                                   padding: 2px 20px;
+                                   display: inline-block;">
+                                                        @php
+                                                        $satuan = $calibration->headDialIndicator->satuan_alat_kanan ?? ' ';
+                                                        // Jika kosong, tampilkan placeholder
+                                                        $displaySatuan = !empty(trim($satuan)) ? $satuan : ' ';
+                                                        @endphp
+                                                        {{ $displaySatuan }}
+                                                    </div>
+
+                                                    <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11pt;">)</span>
+                                                </div>
+                                            </td>
+                                            <td style="border:2px solid #000;padding:8px;text-align:center;">
+                                                <strong>Naik</strong>
+                                            </td>
+                                            <td style="border:2px solid #000;padding:8px;text-align:center;">
+                                                <strong>Turun</strong>
+                                            </td>
+                                        </tr>
+                                        @foreach($dataKanan as $detail)
+                                        <tr>
+                                            <td style="height:32px; background-color: #f8f9fa;">
+                                                <input type="text"
+                                                    value="{{ $detail->titikUkur ?? '' }}"
+                                                    readonly
+                                                    style="width:100%;height:100%;border:none;text-align:center;background:transparent;font-weight:bold;">
+                                            </td>
+                                            <td style="height:32px;">
+                                                <input type="text"
+                                                    value="{{ $detail->ulanganNaik ?? '' }}"
+                                                    readonly
+                                                    style="width:100%;height:100%;border:none;text-align:center;background:transparent;">
+                                            </td>
+                                            <td style="height:32px;">
+                                                <input type="text"
+                                                    value="{{ $detail->ulanganTurun ?? '' }}"
+                                                    readonly
+                                                    style="width:100%;height:100%;border:none;text-align:center;background:transparent;">
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+                        </div>
+
+
+                        <!-- Repeatability Section -->
+                        <p class="medium-text" style="margin-top:5.1pt; margin-left:10.2pt; margin-bottom:1.05pt; font-size: 10pt;">
+                            <span class="letter-spacing-neg-01">Repeatability</span>
+                            <span class="letter-spacing-06"></span>
+                            <span class="letter-spacing-neg-05">:</span>
+                            <span style="margin-left:10px;">
+                                @php
+                                $repeatabilityValue = $calibration->addDialIndicator->repeatability ?? null;
+                                $displayValue = !empty($repeatabilityValue) ? $repeatabilityValue : '-';
+                                @endphp
+                                <input type="text" value="{{ $displayValue }}" readonly
+                                    style="border:none; border-bottom:1px solid #000; width:80px; text-align:center; font-size:10pt; background:transparent;">
+
+                            </span>
+                        </p>
+
+                        <div class="table-responsive">
+                            <table class="repeatability-table" style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                                <!-- Baris 1 -->
+                                <tr style="height: 20pt;">
+                                    <td style="width: 49.05pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan01 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                    <td style="width: 51.2pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan02 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                    <td style="width: 51.2pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan03 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                    <td style="width: 57.05pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan04 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                    <td style="width: 57.05pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan05 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                </tr>
+
+                                <!-- Baris 2 -->
+                                <tr style="height: 20pt;">
+                                    <td style="width: 49.05pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan06 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                    <td style="width: 51.2pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan07 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                    <td style="width: 57.1pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan08 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                    <td style="width: 57.05pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan09 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                    <td style="width: 57.05pt; border: 1px solid #000;">
+                                        <input type="text" value="{{ $calibration->addDialIndicator->ulangan10 ?? '' }}" readonly
+                                            style="width: 100%; height: 100%; border: none; text-align: center; font-size: 10pt; background: transparent;">
+                                    </td>
+                                </tr>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Table 2: Alat Standar, TTD, & Metode Kalibrasi -->
+                        <div class="table-responsive mt-3">
+                            <table class="repeatability-table" style="width: 100%; border-collapse: collapse; min-width: 800px;">
+                                <!-- Baris 1: Alat Standar 1 -->
+                                <tr style="height: 22pt;">
+                                    <td rowspan="3" style="width: 120px; border: 1px solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 10pt; background-color: #f8f9fa;">
+                                        Alat Standar
+                                    </td>
+                                    <td style="width: 40px; border: 1px solid #000; text-align: center; vertical-align: middle;">
+                                        @php
+                                        $standardArray = [];
+                                        if (!empty($calibration->headDialIndicator->standard)) {
+                                            $standardArray = explode(',', $calibration->headDialIndicator->standard);
+                                            $standardArray = array_map('trim', $standardArray);
+                                        }
+                                        $isChecked1 = false;
+                                        foreach ($standardArray as $alat) {
+                                            if (str_contains(strtolower($alat), 'dial gauge tester 0~25 mm') || str_contains(strtolower($alat), 'dial_gauge_tester_0_25mm')) {
+                                                $isChecked1 = true; break;
+                                            }
+                                        }
+                                        @endphp
+                                        <div style="display: flex; justify-content: center; align-items: center; height: 100%; min-height: 30px;">
+                                            <input type="checkbox" class="alat-standar-checkbox" style="transform:scale(1.1);" {{ $isChecked1 ? 'checked' : '' }} disabled>
+                                        </div>
+                                    </td>
+                                    <td style="width: 280px; border: 1px solid #000; vertical-align: middle; padding: 8px;">
+                                        <p style="margin: 0; font-size: 9.5pt;">Dial Gauge Tester 0~25 mm</p>
+                                    </td>
+                                    <td rowspan="3" style="width: 180px; border: 1px solid #000; vertical-align: top; padding: 8px;">
+                                        <p style="margin: 0 0 8px 0; font-size: 10pt; text-align: center; font-weight: bold; border-bottom: 1px solid #ddd; padding-bottom: 4px;">Dikalibrasi oleh</p>
+                                        <p style="margin: 0; font-size: 10pt;">TTD :</p>
+                                        <div style="height: 45px;"></div>
+                                        <div style="display:flex; align-items:center;">
+                                            <span style="font-size: 10pt; white-space: nowrap;">Nama :</span>
+                                            <input type="text" value="{{ $calibration->calibratedBy ?? '-' }}" readonly style="flex:1; border: none; border-bottom: 1px solid #000; margin-left: 6px; font-size: 9.5pt; background: transparent;">
+                                        </div>
+                                    </td>
+                                    <td rowspan="3" style="width: 180px; border: 1px solid #000; vertical-align: top; padding: 8px;">
+                                        <p style="margin: 0 0 8px 0; font-size: 10pt; text-align: center; font-weight: bold; border-bottom: 1px solid #ddd; padding-bottom: 4px;">Diperiksa oleh</p>
+                                        <p style="margin: 0; font-size: 10pt;">TTD :</p>
+                                        <div style="height: 45px;"></div>
+                                        <div style="display:flex; align-items:center;">
+                                            <span style="font-size: 10pt; white-space: nowrap;">Nama :</span>
+                                            <input type="text" value="{{ $calibration->verifiedBy ?? '-' }}" readonly style="flex:1; border: none; border-bottom: 1px solid #000; margin-left: 6px; font-size: 9.5pt; background: transparent;">
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Baris 2: Alat Standar 2 -->
+                                <tr style="height: 22pt;">
+                                    <td style="border: 1px solid #000; text-align: center; vertical-align: middle;">
+                                        @php
+                                        $skala = $calibration->skala ?? '0.01';
+                                        $is001 = $skala === '0.001';
+                                        $isChecked2 = false;
+                                        if ($is001) {
+                                            foreach ($standardArray as $alat) {
+                                                if (str_contains(strtolower($alat), 'dial calibration tester 0~1 mm') || str_contains(strtolower($alat), 'dial_calibration_tester_0_1mm')) {
+                                                    $isChecked2 = true; break;
+                                                }
+                                            }
+                                        } else {
+                                            foreach ($standardArray as $alat) {
+                                                if (str_contains(strtolower($alat), 'electronic gauge tester 0~50 mm') || str_contains(strtolower($alat), 'electronic_gauge_tester_0_50mm')) {
+                                                    $isChecked2 = true; break;
+                                                }
+                                            }
+                                        }
+                                        @endphp
+                                        <div style="display: flex; justify-content: center; align-items: center; height: 100%; min-height: 30px;">
+                                            <input type="checkbox" class="alat-standar-checkbox" style="transform:scale(1.1);" {{ $isChecked2 ? 'checked' : '' }} disabled>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid #000; vertical-align: middle; padding: 8px;">
+                                        <p style="margin: 0; font-size: 9.5pt;">
+                                            {{ $is001 ? 'Dial Calibration Tester 0~1 mm' : 'Electronic Gauge Tester 0~50 mm' }}
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <!-- Baris 3: Alat Standar Lainnya -->
+                                <tr style="height: 22pt;">
+                                    <td style="border: 1px solid #000; text-align: center; vertical-align: middle;">
+                                        @php
+                                        $filteredArray = array_filter($standardArray, function($alat) {
+                                            $lowerAlat = strtolower($alat);
+                                            $knownTools = ['dial gauge tester 0~25 mm', 'dial_gauge_tester_0_25mm', 'dial calibration tester 0~1 mm', 'dial_calibration_tester_0_1mm', 'electronic gauge tester 0~50 mm', 'electronic_gauge_tester_0_50mm'];
+                                            foreach ($knownTools as $tool) {
+                                                if (str_contains($lowerAlat, $tool)) return false;
+                                            }
+                                            return true;
+                                        });
+                                        $isChecked3 = !empty($filteredArray);
+                                        $alatStandarLainnya = $isChecked3 ? implode(', ', $filteredArray) : '';
+                                        @endphp
+                                        <div style="display: flex; justify-content: center; align-items: center; height: 100%; min-height: 30px;">
+                                            <input type="checkbox" class="alat-standar-checkbox custom-checkbox" style="transform:scale(1.1);" {{ $isChecked3 ? 'checked' : '' }} disabled>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid #000; vertical-align: middle; padding: 8px;">
+                                        <input type="text" value="{{ $alatStandarLainnya }}" readonly placeholder="........................................." style="width:95%; border:none; border-bottom: 1px dashed #999; font-size:9.5pt; padding:2px; background:transparent;">
+                                    </td>
+                                </tr>
+
+                                <!-- Baris 4: Metode Kalibrasi -->
+                                <tr style="height: 25pt;">
+                                    <td colspan="2" style="border: 1px solid #000; vertical-align: middle; text-align: center; font-weight: bold; font-size: 10pt; background-color: #f8f9fa;">
+                                        Metode Kalibrasi
+                                    </td>
+                                    <td colspan="3" style="border: 1px solid #000; vertical-align: middle; padding: 8px;">
+                                        <p style="margin: 0; font-size: 9.5pt;">
+                                            PAS-IK1102-03 (JIS B 7503:2017 (JMA/JSA); SNSU PK.P-03:2020)
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+
+                        <!-- Action Buttons Section -->
+                        <div class="row mt-5">
+                            <div class="col-12 text-center">
+                                <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                                </a>
+
+                                <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                                <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                                <!--</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>

@@ -450,6 +450,15 @@
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
                     </td>
                 </tr>
+                
+                  <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
+                    </td>
+                </tr>
             </table>
 
             <!-- Fungsi Komponen Lainnya & Kondisi Kalibrasi -->
@@ -532,8 +541,26 @@
         </div>
     </div>
     
-    <!-- Spacer -->
-    <span style="width:359.85pt; font-family:Arial; display:inline-block; -aw-tabstop-align:left; -aw-tabstop-pos:359.9pt">&#xa0;</span>
+    <!-- Gambar Canvas Penempatan Sensor (Tengah) -->
+    <div style="display: inline-block; vertical-align: top; text-align: center; margin: 0 10px; min-width: 200px; max-width: 260px;">
+        <strong style="font-family: Arial; font-size: 9pt; color: #000000;">Penempatan Sensor:</strong>
+        @php
+            $kanvasGambar = $calibration->headEnclosure->keterangan_gambar ?? null;
+        @endphp
+        @if($kanvasGambar && file_exists(public_path($kanvasGambar)))
+            <div style="border: 2px solid #000; background: #fff; margin-top: 4px;">
+                <img src="/{{ $kanvasGambar }}" alt="Penempatan Sensor" style="max-width: 100%; height: auto; display: block;">
+            </div>
+        @elseif($kanvasGambar && str_starts_with($kanvasGambar, 'data:image'))
+            <div style="border: 2px solid #000; background: #fff; margin-top: 4px;">
+                <img src="{{ $kanvasGambar }}" alt="Penempatan Sensor" style="max-width: 100%; height: auto; display: block;">
+            </div>
+        @else
+            <div style="border: 2px solid #ccc; background: #f9f9f9; margin-top: 4px; height: 200px; display: flex; align-items: center; justify-content: center;">
+                <span style="font-family: Arial; font-size: 8pt; color: #aaa; font-style: italic;">Tidak ada gambar</span>
+            </div>
+        @endif
+    </div>
     
     <!-- Gambar Kanan -->
     <div style="display: inline-block; vertical-align: top; text-align: center; margin-left: 20px;">
@@ -603,8 +630,8 @@ if ($addEnclosuresData->isNotEmpty()) {
         $tsettingValue = null;
         if (isset($add->TSetting)) {
             $tsettingValue = $add->TSetting;
-        } elseif (isset($add->tsetting)) {
-            $tsettingValue = $add->tsetting;
+        } elseif (isset($add->Tsetting)) {
+            $tsettingValue = $add->Tsetting;
         } elseif (isset($add['TSetting'])) {
             $tsettingValue = $add['TSetting'];
         } elseif (isset($add['tsetting'])) {
@@ -703,7 +730,7 @@ if ($repetition < 1) {
         if ($currentTsetting !== null && $currentTsetting !== '' && !empty(trim($currentTsetting))) {
             // Jika berupa angka, tambahkan simbol derajat
             if (is_numeric($currentTsetting)) {
-                $displayValue = htmlspecialchars($currentTsetting) . '°C';
+                $displayValue = htmlspecialchars($currentTsetting);
             } else {
                 $displayValue = htmlspecialchars($currentTsetting);
             }
@@ -973,9 +1000,9 @@ if ($repetition < 1) {
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

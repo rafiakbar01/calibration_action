@@ -23,12 +23,12 @@ class DetailTaperGauge extends Model
     ];
 
     protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'ulangan01' => 'decimal:5',
-        'ulangan02' => 'decimal:5',
-        'ulangan03' => 'decimal:5',
-        'ulangan04' => 'decimal:5',
-        'ulangan05' => 'decimal:5',
+        'titikUkur' => 'string',
+        'ulangan01' => 'string',
+        'ulangan02' => 'string',
+        'ulangan03' => 'string',
+        'ulangan04' => 'string',
+        'ulangan05' => 'string',
 
     ];
 

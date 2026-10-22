@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Kalibrasi - PT. PANANJUNG ANUGRAH SOLUTION</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    /* Pastikan semua text berwarna hitam */
+    .form-kalibrasi-container,
+    .form-kalibrasi-container *:not(input):not(select):not(textarea):not(button) {
+        color: #000000 !important;
+    }
+    
+    /* Input fields readonly styling */
+    .kalibrasi-input {
+        color: #000000 !important;
+        border: 1px solid #ced4da !important;
+        padding: 6px 10px;
+        border-radius: 4px;
+        width: 100%;
+        background-color: #f8f9fa;
+    }
+    
+    .kalibrasi-input:read-only {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    /* Styling khusus untuk input suhu dan RH */
+    .kondisi-input {
+        border: 1px solid #000 !important;
+        text-align: center;
+        width: 100%;
+        padding: 4px;
+        background-color: #f8f9fa;
+    }
+
+    /* CHECKBOX STYLING */
+    .form-check-input[type="checkbox"]:checked,
+    .alat-standar-checkbox[type="checkbox"]:checked {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .form-check-input[type="checkbox"]:checked:disabled,
+    .alat-standar-checkbox[type="checkbox"]:checked:disabled {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        opacity: 1 !important;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+    }
+
+    .form-check-input[type="checkbox"]:disabled,
+    .alat-standar-checkbox[type="checkbox"]:disabled {
+        background-color: #f8f9fa !important;
+        border-color: #6c757d !important;
+        opacity: 1 !important;
+    }
+
+    /* Checkmark putih untuk checkbox */
+    .form-check-input[type="checkbox"]:checked,
+    .alat-standar-checkbox[type="checkbox"]:checked {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
+    }
+
+    .form-check-input[type="checkbox"]:checked:disabled,
+    .alat-standar-checkbox[type="checkbox"]:checked:disabled {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
+    }
+
+    /* RADIO BUTTON STYLING - FIXED */
+    .form-check-input[type="radio"]:checked {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e") !important;
+    }
+
+    .form-check-input[type="radio"]:checked:disabled {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        opacity: 1 !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e") !important;
+    }
+
+    .form-check-input[type="radio"]:disabled {
+        background-color: #f8f9fa !important;
+        border-color: #6c757d !important;
+        opacity: 1 !important;
+    }
+
+    /* Custom radio button styling untuk yang tanpa class form-check-input */
+    input[type="radio"]:checked {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+
+    input[type="radio"]:checked:disabled {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        opacity: 1 !important;
+    }
+
+    input[type="radio"]:disabled {
+        background-color: #f8f9fa !important;
+        border-color: #6c757d !important;
+        opacity: 1 !important;
+    }
+
+    /* Styling khusus untuk checkbox alat standar */
+    .alat-standar-checkbox {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        cursor: not-allowed;
+    }
+
+    /* Pastikan checkbox dan radio memiliki ukuran yang konsisten */
+    .form-check-input[type="checkbox"],
+    .alat-standar-checkbox[type="checkbox"] {
+        border-radius: 0.25em;
+    }
+
+    .form-check-input[type="radio"],
+    input[type="radio"] {
+        border-radius: 50%;
+    }
+
+    /* Header styling */
+    .kalibrasi-header-table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+
+    .kalibrasi-header-table td {
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    /* Main form styling */
+    .kalibrasi-main-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .kalibrasi-main-table td {
+        padding: 8px;
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+    }
+
+    /* Data kalibrasi table styling */
+    .kalibrasi-data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .kalibrasi-data-table td {
+        padding: 0;
+        border: 2px solid #000;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .kalibrasi-data-table input {
+        border: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 10pt;
+        color: #000;
+        padding: 2px;
+        background: transparent;
+    }
+
+    /* Section headers */
+    .kalibrasi-section-header {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 15px;
+        text-align: center;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #000;
+    }
+
+    .data-kalibrasi-header {
+        font-weight: bold;
+        font-size: 18px;
+        margin: 25px 0 15px;
+        text-align: center;
+        padding: 8px;
+        background-color: #f0f0f0;
+        border: 1px solid #000;
+    }
+
+    /* Button styling dengan gradien biru */
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        border: none;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #6b7280, #4b5563);
+        border: none;
+        box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+        background: linear-gradient(135deg, #4b5563, #374151);
+        color: white;
+    }
+
+    /* Styling untuk bagian "Data telah diisi dengan lengkap dan jelas!" */
+    .data-complete-section {
+        text-align: center;
+        padding: 20px 0;
+        margin: 20px 0;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+    }
+
+    .data-complete-text {
+        font-weight: bold;
+        font-size: 18px;
+        color: #000;
+    }
+
+    /* Styling untuk tabel alat standar */
+    .alat-standar-section {
+        margin: 20px 0;
+    }
+
+    .alat-standar-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .alat-standar-table td {
+        border: 1px solid #000;
+        padding: 8px;
+        vertical-align: middle;
+    }
+
+    /* Print styling */
+    @media print {
+        .btn {
+            display: none !important;
+        }
+        
+        body {
+            background: white !important;
+        }
+        
+        .container {
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .kalibrasi-main-table td {
+            padding: 4px;
+        }
+        
+        .data-kalibrasi-header {
+            font-size: 16px;
+        }
+        
+        .btn-lg {
+            padding: 10px 20px !important;
+            font-size: 14px !important;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container my-4">
+        <div class="form-kalibrasi-container">
+            <table class="kalibrasi-header-table">
+                <tr>
+                    <td colspan="2">
+                        <p style="margin: 0; font-size: 14px; color: #000000;">PAS-FLK43B</p>
+                    </td>
+                    <td rowspan="5" style="text-align: center; vertical-align: middle; padding: 10px 0;">
+                      <div style="display: inline-block; text-align: center;">
+                          <div style="margin-bottom: 15px;">
+                              <img src="/logo/logo_pas_basic.png" alt="Logo PT. PAS" style="width: 107px; height: 54px; display: block; margin: 0 auto;">
+                          </div>
+                          <p style="font-weight: bold; margin: 0; font-size: 15px; color: #000000;">PT. PANANJUNG ANUGRAH SOLUTION</p>
+                      </div>
+                  </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p style="margin: 0; font-size: 14px; color: #000000;">LEMBAR KERJA KALIBRASI</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p style="margin: 0; font-weight: bold; font-size: 14px; color: #000000;">VISCOSITY CUP</p>
+                    </td> 
+                </tr>
+                <tr>
+                    <td colspan="2" style="height: 10px;"></td>
+                </tr>
+                <tr>
+                    <td style="width: 25%;">
+                        <p style="margin: 0; font-size: 14px; color: #000000;">No. Sertifikat</p>
+                    </td>
+                    <td style="width: 45%;">
+                        <p style="margin: 0; font-size: 14px; color: #000000; font-weight: bold;">{{ $calibration->headViscoCup->certificate_id ?? 'N/A' }}</p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Main Form Section - Readonly -->
+            <table class="kalibrasi-main-table">
+                <!-- Nama Alat -->
+               <tr>
+        <td style="width: 20%;">
+            <p style="margin: 0; color: #000000;">Nama Alat</p>
+        </td>
+        <td colspan="3">
+            <input type="text" name="namaAlat" class="kalibrasi-input" 
+                   value="{{ old('namaAlat', $calibration->namaAlat) }}">
+        </td>
+    </tr>
+
+               <!-- Merek & Kode Alat -->
+    <tr>
+        <td><p style="margin: 0; color: #000000;">Merek</p></td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <input type="text" class="kalibrasi-input me-3"
+                       name="brandAlat"
+                       value="{{ old('brandAlat', $calibration->brandAlat) }}" style="width:60%;">
+
+                <span class="me-3" style="color:#000;">Kode Alat :</span>
+
+                <input type="text" class="kalibrasi-input"
+                       name="kodeAlat"
+                       value="{{ old('kodeAlat', $calibration->kodeAlat) }}" style="width:30%;">
+            </div>
+        </td>
+    </tr>
+
+    <!-- Type / No. Seri -->
+    <tr>
+        <td><p style="margin: 0; color:#000;">Type / No. Seri</p></td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <input type="text" class="kalibrasi-input me-3"
+                       name="typeAlat"
+                       value="{{ old('typeAlat', $calibration->typeAlat) }}" style="width:45%;">
+
+                <span class="me-3" style="color:#000;">/</span>
+
+                <input type="text" class="kalibrasi-input"
+                       name="NoSeri"
+                       value="{{ old('NoSeri', $calibration->NoSeri) }}" style="width:45%;">
+            </div>
+        </td>
+    </tr>
+
+    <!-- Kapasitas / Resolusi -->
+    <tr>
+        <td><p style="margin:0;color:#000;">Kapasitas / Resolusi</p></td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <input type="text" class="kalibrasi-input me-3"
+                       name="kapasitas"
+                       value="{{ old('kapasitas', $calibration->kapasitas) }}" style="width:45%;">
+
+                <span class="me-3" style="color:#000;">/</span>
+
+                <input type="text" class="kalibrasi-input"
+                       name="resolusi"
+                       value="{{ old('resolusi', $calibration->resolusi) }}" style="width:45%;">
+            </div>
+        </td>
+    </tr>
+
+    <!-- Nama Pemilik -->
+    <tr>
+        <td><p style="margin:0;color:#000;">Nama Pemilik</p></td>
+        <td colspan="3">
+            <input type="text" class="kalibrasi-input"
+                   name="pemilikAlat"
+                   value="{{ old('pemilikAlat', $calibration->pemilikAlat) }}">
+        </td>
+    </tr>
+
+    <!-- Tanggal -->
+    <tr>
+                        <td>
+                            <p style="margin: 0; color: #000000;" class="required-field">Tanggal Alat Masuk</p>
+                        </td>
+                        <td colspan="3">
+                            <input type="date" class="kalibrasi-input" name="tanggalMasuk" 
+                                   value="{{ old('tanggalMasuk', \Carbon\Carbon::parse($calibration->tanggalMasuk)->format('Y-m-d')) }}" >
+                        </td>
+                    </tr>
+    <tr>
+        <td><p style="margin:0;color:#000;">Tanggal Kalibrasi</p></td>
+        <td colspan="3">
+            <div class="d-flex align-items-center">
+                <input type="date" class="kalibrasi-input me-3"
+                       name="tanggalKalibrasi"
+                       value="{{ old('tanggalKalibrasi', $calibration->tanggalKalibrasi) }}" style="width:45%;">
+
+                <span class="me-3" style="color:#000;">Jenis Pembacaan:</span>
+
+                <input type="text" class="kalibrasi-input"
+                       name="jenisPembacaan"
+                       value="{{ old('jenisPembacaan', $calibration->jenisPembacaan) }}" style="width:45%;">
+            </div>
+        </td>
+    </tr>
+
+    <!-- Tempat Kalibrasi -->
+    <tr>
+        <td><p style="margin:0;color:#000;">Tempat Kalibrasi</p></td>
+        <td colspan="3">
+            <div class="d-flex">
+                <div class="form-check me-5">
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab.PT PAS"
+                        {{ old('tempatKalibrasi',$calibration->tempatKalibrasi)=='lab.PT PAS'?'checked':'' }}>
+                    <label class="form-check-label" style="color:#000;">Lab. PT.PAS</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="insitu"
+                        {{ old('tempatKalibrasi',$calibration->tempatKalibrasi)=='insitu'?'checked':'' }}>
+                    <label class="form-check-label" style="color:#000;">Insitu</label>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <!-- Lokasi PT -->
+    <tr>
+        <td><p style="margin:0;color:#000;">Lokasi PT</p></td>
+        <td colspan="3">
+            <input type="text" class="kalibrasi-input"
+                   name="lokasiPT"
+                   value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
+        </td>
+    </tr>
+
+</table>
+
+           <!-- Fungsi Komponen Lainnya & Kondisi Kalibrasi -->
+<div class="row mt-4">
+
+    <!-- Fungsi Komponen Lainnya -->
+    <div class="col-md-6 mb-4">
+        <div class="kalibrasi-section-header" style="color:#000;">Fungsi Komponen Lainnya</div>
+
+        <!-- Radio -->
+        <div class="d-flex justify-content-center align-items-center mb-4" style="gap:60px;">
+            <div class="text-center">
+                <span class="fw-bold d-block mb-2" style="font-size:14px;">Ok</span>
+                <input type="radio" name="kondisiAlat" value="ok"
+                    class="form-check-input"
+                    style="width:18px;height:18px;display:block;margin:0 auto;"
+                    {{ $calibration->kondisiAlat == 'ok' ? 'checked' : '' }}>
+            </div>
+            <div class="text-center">
+                <span class="fw-bold d-block mb-2" style="font-size:14px;">Rusak</span>
+                <input type="radio" name="kondisiAlat" value="rusak"
+                    class="form-check-input"
+                    style="width:18px;height:18px;display:block;margin:0 auto;"
+                    {{ $calibration->kondisiAlat == 'rusak' ? 'checked' : '' }}>
+            </div>
+        </div>
+
+        <!-- Keterangan -->
+        <div class="d-flex align-items-center">
+            <span class="fw-bold me-3" style="min-width:100px;">Keterangan :</span>
+            <div style="flex:1;">
+                <input type="text"
+                    name="keterangan"
+                    class="kalibrasi-input"
+                    value="{{ $calibration->keterangan }}"
+                    style="border:none;border-bottom:2px solid #000;border-radius:0;padding:4px 0;background:transparent;width:100%;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Kondisi Kalibrasi -->
+    <div class="col-md-6 mb-4">
+        <div class="kalibrasi-section-header" style="color:#000;">Kondisi Kalibrasi</div>
+
+        <table class="table table-bordered">
+            <tr>
+                <td class="table-secondary fw-bold" style="width:30%;"></td>
+                <td class="table-secondary fw-bold text-center">Awal</td>
+                <td class="table-secondary fw-bold text-center">Tengah</td>
+                <td class="table-secondary fw-bold text-center">Akhir</td>
+            </tr>
+
+            <tr>
+                <td class="bg-light fw-bold">Suhu (°C)</td>
+                <td><input type="text" name="RT_condition1" class="kondisi-input" value="{{ $calibration->RT_condition1 }}"></td>
+                <td><input type="text" name="RT_condition2" class="kondisi-input" value="{{ $calibration->RT_condition2 }}"></td>
+                <td><input type="text" name="RT_condition3" class="kondisi-input" value="{{ $calibration->RT_condition3 }}"></td>
+            </tr>
+
+            <tr>
+                <td class="bg-light fw-bold">RH (%)</td>
+                <td><input type="text" name="RH_condition1" class="kondisi-input" value="{{ $calibration->RH_condition1 }}"></td>
+                <td><input type="text" name="RH_condition2" class="kondisi-input" value="{{ $calibration->RH_condition2 }}"></td>
+                <td><input type="text" name="RH_condition3" class="kondisi-input" value="{{ $calibration->RH_condition3 }}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<!-- View untuk menampilkan data ViscoCup -->
+<table class="kalibrasi-simple">
+    <tr>
+        <td class="bold" style="width:90px;">
+            Type :
+        </td>
+        
+        <?php
+        // Ambil data langsung dari relationship
+        $addViscoCup = $calibration->addViscoCup ?? null;
+        $selectedTypes = [];
+        $othersSelected = false;
+        $othersValue = '';
+        $kodeNomor = '';
+        
+        if ($addViscoCup) {
+            // Pisahkan type yang dipilih
+            if (!empty($addViscoCup->type)) {
+                $selectedTypes = explode(', ', $addViscoCup->type);
+            }
+            $othersValue = $addViscoCup->others ?? '';
+            $kodeNomor = $addViscoCup->KodeNomor ?? '';
+            
+            // Cek jika Others dipilih
+            $othersSelected = in_array('Others', array_map('trim', $selectedTypes));
+        }
+        
+        // Tentukan style untuk radio button yang checked
+        $zahnChecked = in_array('ZAHN Cup', $selectedTypes);
+        $fordChecked = in_array('FORD Cup', $selectedTypes);
+        $nk2Checked = in_array('NK-2', $selectedTypes);
+        ?>
+        
+       <td style="width:150px;">
+    <label>
+        <input type="checkbox" class="form-check-input" name="type_cup" value="ZAHN Cup" 
+               <?php echo ($zahnChecked ? 'checked' : ''); ?>
+               style="width: 18px; height: 18px;">
+        <span class="bold">ZAHN Cup</span>
+    </label>
+</td>
+
+<td style="width:150px;">
+    <label>
+        <input type="checkbox" class="form-check-input" name="type_cup" value="FORD Cup" 
+               <?php echo ($fordChecked ? 'checked' : ''); ?>
+               style="width: 18px; height: 18px;">
+        <span class="bold">FORD Cup</span>
+    </label>
+</td>
+
+<td style="width:130px;">
+    <label>
+        <input type="checkbox" class="form-check-input" name="type_cup" value="NK-2" 
+               <?php echo ($nk2Checked ? 'checked' : ''); ?>
+               style="width: 18px; height: 18px;">
+        <span class="bold">NK-2</span>
+    </label>
+</td>
+
+        <td>
+            <div style="display: inline-block; margin-right: 15px; vertical-align: top;">
+                <label>
+                    <input type="checkbox" class="form-check-input" name="others" value="Others" 
+                        <?php echo ($othersSelected ? 'checked' : ''); ?>
+                        style="width: 18px; height: 18px;">
+                    <span class="bold">Others :</span>
+                </label>
+               <input type="text" name="type_other" class="input-line"
+       style="width: 100px; margin-left: 5px; border: 1px solid #ccc; padding: 4px;"
+       value="<?php echo htmlspecialchars($othersValue); ?>">
+            </div>
+
+            <div style="display: inline-block; vertical-align: top;">
+                <span class="bold">Kode Nomor :</span>
+                <?php 
+                for ($i = 1; $i <= 5; $i++): 
+                    // Bandingkan sebagai string karena di database disimpan sebagai string
+                    $kodeChecked = ((string)$kodeNomor === (string)$i);
+                ?>
+                    <label style="margin-right: 5px; display: inline-block;">
+                        <input type="radio" name="kode_nomor" value="<?php echo $i; ?>" 
+       <?php echo ($kodeChecked ? 'checked' : ''); ?>
+       style="width: 18px; height: 18px; margin-right: 3px;">
+                        <span style="display: inline-block;"><?php echo $i; ?></span>
+                    </label>
+                <?php endfor; ?>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<!-- CSS untuk styling radio button tanpa Bootstrap -->
+<style>
+/* Custom radio button styling tanpa class Bootstrap */
+input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+input[type="radio"]:checked {
+    /* Warna biru untuk yang checked */
+    accent-color: #0d6efd;
+}
+
+input[type="radio"]:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Pastikan label dan span visible */
+label {
+    display: inline-flex !important;
+    align-items: center !important;
+    margin-right: 5px !important;
+}
+
+span {
+    display: inline-block !important;
+    visibility: visible !important;
+}
+</style>
+
+
+
+
+
+
+
+            <p style="margin-top:0.35pt; font-size:9pt">&nbsp;</p>
+
+<style>
+/* KHUSUS tabel data kalibrasi */
+.kalibrasi-simple {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #000;
+    font-size: 10pt;
+}
+
+.kalibrasi-simple td {
+    border: 1px solid #000;
+    padding: 6px 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.kalibrasi-simple .bold {
+    font-weight: bold;
+}
+
+/* Input agar menyatu dengan tabel */
+.kalibrasi-simple input {
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 10pt;
+    padding: 3px 0;
+    background: transparent;
+}
+
+/* Opsional: efek saat diketik */
+.kalibrasi-simple input:focus {
+    background-color: #f5f5f5;
+}
+</style>
+
+<table class="kalibrasi-simple">
+    <thead>
+        <tr>
+            <td rowspan="2" class="bold">
+                Kode dan Nilai Standard<br>
+                (cP | cSt)
+            </td>
+            <td colspan="5" class="bold">
+                Pembacaan Stopwatch (detik)
+            </td>
+            <td rowspan="2" class="bold">
+                Suhu CRM<br>(°C)
+            </td>
+        </tr>
+        <tr>
+            <?php for($j = 1; $j <= 5; $j++): ?>
+            <td class="bold"><?php echo $j; ?></td>
+            <?php endfor; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        $details = $calibration->detailViscoCups ?? [];
+        ?>
+        
+        <?php for($i = 1; $i <= 3; $i++): ?>
+        <?php $detail = $details[$i-1] ?? null; ?>
+        <tr>
+            <td><input type="text" name="kode_nilai_<?php echo $i; ?>" value="<?php echo htmlspecialchars($detail->nilaiStandar ?? ''); ?>"></td>
+            <?php for($j = 1; $j <= 5; $j++): ?>
+            <td><input type="text" name="stopwatch_<?php echo $i; ?>_<?php echo $j; ?>" value="<?php echo htmlspecialchars($detail->{'ulangan'.$j} ?? ''); ?>"></td>
+            <?php endfor; ?>
+            <td><input type="text" name="suhu_<?php echo $i; ?>" value="<?php echo htmlspecialchars($detail->suhuCRM ?? ''); ?>"></td>
+        </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
+
+
+           <!-- Full width -->
+            <p class="BodyText" style="margin-top:0.4pt; font-size:2.5pt">
+                <img src="{{ asset('logo/foto_tabel_viscocup.png') }}" 
+                    width="100%" 
+                    height="auto" 
+                    alt="Tabel Viscocup" 
+                    style="-aw-left-pos:30.5pt; -aw-rel-hpos:page; -aw-rel-vpos:paragraph; -aw-top-pos:4.5pt; -aw-wrap-type:topbottom;" />
+            </p>
+
+         
+
+            <!-- Catatan Penting Section -->
+<div class="mb-4">
+    <label for="catatan_penting" class="form-label fw-bold" style="color: #000000; font-size: 15px;">
+        Catatan Penting
+    </label>
+    <textarea name="catatan_penting" id="catatan_penting" class="form-control" rows="3" 
+          style="color: #000000; border: 1px solid #ced4da; border-radius: 4px;">
+<?php echo htmlspecialchars($calibration->headViscoCup->catatan ?? ''); ?>
+</textarea>
+</div>
+
+<table style="width: 100%; border-collapse: collapse; border: 1pt solid #000; font-family: Arial, sans-serif;">
+    <!-- Header Judul -->
+    <tr style="height: 40pt;">
+        <td colspan="5" style="border-bottom: 1pt solid #000; text-align: center; vertical-align: middle; background-color: #f5f5f5;">
+            <span style="font-size: 18pt; font-weight: bold;">
+                Isilah lembar data kalibrasi dengan lengkap dan jelas!
+            </span>
+        </td>
+    </tr>
+
+    <!-- Header Kolom -->
+    <tr style="height: 35pt;">
+        <td rowspan="4" style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 12pt; background-color: #f0f0f0;">
+            Standard
+        </td>
+        <td colspan="2" style="width: 40%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; background-color: #f8f8f8;">
+            Digital Pressure Calibrator :
+        </td>
+        <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold; background-color: #f0f0f0;">
+            Dikalibrasi oleh
+        </td>
+        <td style="width: 20%; border: 1pt solid #000; text-align: center; vertical-align: middle; font-size: 12pt; font-weight: bold; background-color: #f0f0f0;">
+            Diperiksa oleh
+        </td>
+    </tr>
+
+           <?php
+        // Ambil data alat standar dan type yang dipilih
+        $standardValue = $calibration->headViscoCup->standard ?? '';
+        
+        // Inisialisasi semua variabel sebagai false
+        $viscosityChecked = false;
+        $stopwatchChecked = false;
+        $thermometerChecked = false;
+        
+        $viscosityN35 = false;
+        $viscosityS60 = false;
+        $viscosityD1000 = false;
+        
+        $stopwatchWF002 = false;
+        $stopwatchWF003 = false;
+        
+        $thermometerTES = false;
+        $thermometerTFA = false;
+        
+        // Parsing data standard (format: "AlatStandar TYPE, AlatStandar TYPE, ...")
+        if (!empty($standardValue)) {
+            // Pisahkan berdasarkan koma untuk multiple alat standar
+            $standardParts = explode(',', $standardValue);
+            
+            foreach ($standardParts as $part) {
+                $part = trim($part);
+                
+                // Cek Viscosity Standard Paragon
+                if (strpos($part, 'Viscosity Standard Paragon') !== false) {
+                    $viscosityChecked = true;
+                    
+                    // Cek type viscosity yang dipilih
+                    if (strpos($part, 'N35') !== false) {
+                        $viscosityN35 = true;
+                    }
+                    if (strpos($part, 'S60') !== false) {
+                        $viscosityS60 = true;
+                    }
+                    if (strpos($part, 'D1000') !== false) {
+                        $viscosityD1000 = true;
+                    }
+                }
+                
+                // Cek Digital Stopwatch
+                if (strpos($part, 'Digital Stopwatch') !== false) {
+                    $stopwatchChecked = true;
+                    
+                    // Cek type stopwatch yang dipilih
+                    if (strpos($part, 'WF.002') !== false) {
+                        $stopwatchWF002 = true;
+                    }
+                    if (strpos($part, 'WF.003') !== false) {
+                        $stopwatchWF003 = true;
+                    }
+                }
+                
+                // Cek Thermometer
+                if (strpos($part, 'Thermometer') !== false) {
+                    $thermometerChecked = true;
+                    
+                    // Cek type thermometer yang dipilih
+                    if (strpos($part, 'TES') !== false) {
+                        $thermometerTES = true;
+                    }
+                    if (strpos($part, 'TFA') !== false) {
+                        $thermometerTFA = true;
+                    }
+                }
+            }
+        }
+    ?>
+
+    <!-- Viscosity -->
+    <tr style="height: 60pt;">
+        <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
+           <input type="checkbox" name="alat_standar[]" value="Viscosity Standard Paragon"
+               <?php echo ($viscosityChecked ? 'checked' : ''); ?>
+               style="width: 18pt; height: 18pt; cursor: pointer; accent-color: #000;">
+        </td>
+        <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
+            Viscosity Standard Paragon :
+            <div style="margin-top:6pt;">
+                <label>
+                    <input type="radio" name="viscosity_type" value="N35"
+                        <?php echo ($viscosityN35 ? 'checked' : ''); ?>
+                        style="accent-color:#000; width:14px; height:14px; cursor:pointer;">
+                    N35
+                </label>
+                &nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="viscosity_type" value="S60"
+                        <?php echo ($viscosityS60 ? 'checked' : ''); ?>
+                        style="accent-color:#000; width:14px; height:14px; cursor:pointer;">
+                    S60
+                </label>
+                &nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="viscosity_type" value="D1000"
+                        <?php echo ($viscosityD1000 ? 'checked' : ''); ?>
+                        style="accent-color:#000; width:14px; height:14px; cursor:pointer;">
+                    D1000
+                </label>
+            </div>
+        </td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
+    </tr>
+
+    <!-- Stopwatch -->
+    <tr style="height: 60pt;">
+        <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
+            <input type="checkbox" name="alat_standar[]" value="Digital Stopwatch"
+                   <?php echo ($stopwatchChecked ? 'checked' : ''); ?>
+                   style="width: 18pt; height: 18pt; cursor: pointer; accent-color:#000;">
+        </td>
+        <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
+            Digital Stopwatch :
+            <div style="margin-top:6pt;">
+                <label>
+                    <input type="radio" name="stopwatch_type" value="WF.002" 
+                        <?php echo ($stopwatchWF002 ? 'checked' : ''); ?>
+                        style="accent-color:#000; cursor:pointer;"> 
+                    WF.002
+                </label>
+                &nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="stopwatch_type" value="WF.003" 
+                        <?php echo ($stopwatchWF003 ? 'checked' : ''); ?>
+                        style="accent-color:#000; cursor:pointer;"> 
+                    WF.003
+                </label>
+            </div>
+        </td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;"></td>
+    </tr>
+
+    <!-- Thermometer -->
+    <tr style="height: 60pt;">
+        <td style="border: 1pt solid #000; text-align: center; vertical-align: middle;">
+            <input type="checkbox" name="alat_standar[]" value="Thermometer"
+                   <?php echo ($thermometerChecked ? 'checked' : ''); ?>
+                   style="width: 18pt; height: 18pt; cursor: pointer; accent-color:#000;">
+        </td>
+        <td style="border: 1pt solid #000; padding-left: 15pt; font-size: 11pt;">
+            Thermometer :
+            <div style="margin-top:6pt;">
+                <label>
+                    <input type="radio" name="thermometer_type" value="TES" 
+                        <?php echo ($thermometerTES ? 'checked' : ''); ?>
+                        style="accent-color:#000; cursor:pointer;"> 
+                    TES
+                </label>
+                &nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="thermometer_type" value="TFA" 
+                        <?php echo ($thermometerTFA ? 'checked' : ''); ?>
+                        style="accent-color:#000; cursor:pointer;"> 
+                    TFA
+                </label>
+            </div>
+        </td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;">
+            TTD :
+        </td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-top: none; border-bottom: none;">
+            TTD :
+        </td>
+    </tr>
+
+    <!-- Metode -->
+    <tr style="height: 60pt;">
+        <td style="border: 1pt solid #000; text-align: center; vertical-align: middle; font-weight: bold; font-size: 12pt; background-color: #f0f0f0;">
+            Metode Kalibrasi
+        </td>
+        <td colspan="2" style="border: 1pt solid #000; text-align: center; font-size: 11pt;">
+            PAS-IK1102-43B
+        </td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none;">
+            Nama :
+            <input type="text" name="calibratedBy"
+                   value="<?php echo htmlspecialchars($calibration->calibratedBy ?? ''); ?>"
+                   style="width:100%; border:none; border-bottom:2px solid #000; background:transparent;">
+        </td>
+        <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none;">
+            Nama :
+            <input type="text" name="verifiedBy"
+                   value="<?php echo htmlspecialchars($calibration->verifiedBy ?? ''); ?>"
+                   style="width:100%; border:none; border-bottom:2px solid #000; background:transparent;">
+        </td>
+    </tr>
+</table>
+
+                <!-- Action Buttons Section -->
+                <div class="row mt-5">
+                    <div class="col-12 text-center">
+                        <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                            <i class="fas fa-times me-2"></i>Batal
+                        </a>
+                        
+                        <button type="submit" class="btn btn-success btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
+                            <i class="fas fa-save me-2"></i>Simpan Perubahan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
+        // Form validation
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
+            let isValid = true;
+            let errorMessage = '';
+            
+            // Check required fields
+            const requiredFields = document.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#dc3545';
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            // Check radio buttons for kondisi alat
+            const kondisiAlat = document.querySelector('input[name="kondisiAlat"]:checked');
+            if (!kondisiAlat) {
+                isValid = false;
+                errorMessage += 'Pilih kondisi alat (Ok/Rusak)\n';
+            }
+            
+            // Check tempat kalibrasi
+            const tempatKalibrasi = document.querySelector('input[name="tempatKalibrasi"]:checked');
+            if (!tempatKalibrasi) {
+                isValid = false;
+                errorMessage += 'Pilih tempat kalibrasi\n';
+            }
+            
+            // Validate date order
+            const tanggalMasuk = document.querySelector('input[name="tanggalMasuk"]').value;
+            const tanggalKalibrasi = document.querySelector('input[name="tanggalKalibrasi"]').value;
+            
+            if (tanggalMasuk && tanggalKalibrasi) {
+                if (new Date(tanggalMasuk) > new Date(tanggalKalibrasi)) {
+                    isValid = false;
+                    errorMessage += 'Tanggal alat masuk tidak boleh lebih baru dari tanggal kalibrasi\n';
+                }
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Mohon lengkapi semua data yang diperlukan:\n' + errorMessage);
+            }
+        });
+        
+        // Add input validation for numeric fields
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value < 0 && this.getAttribute('min') === null) {
+                    this.value = Math.abs(this.value);
+                }
+            });
+        });
+        
+        // Auto format date display
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.addEventListener('change', function() {
+                if (this.value) {
+                    // Format untuk display (opsional)
+                    const date = new Date(this.value);
+                    const formattedDate = date.toLocaleDateString('id-ID', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                    // Anda bisa menambahkan display format di sini jika diperlukan
+                }
+            });
+        });
+    </script>
+
+   <script>
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
+        console.log('🎯 Edit form submission started...');
+        
+        // Debug form data
+        const formData = new FormData(this);
+        console.log('📦 Form data collected for update');
+        
+        // Log titikUkur array
+        const titikUkurInputs = document.querySelectorAll('input[name="titikUkur[]"]');
+        console.log('🔢 titikUkur inputs count:', titikUkurInputs.length);
+        titikUkurInputs.forEach((input, index) => {
+            console.log(`📝 titikUkur[${index}]:`, input.value);
+        });
+        
+        // Log alat standar checkboxes
+        const alatStandarCheckboxes = document.querySelectorAll('.alat-standar-checkbox:checked');
+        console.log('✅ Checked alat standar:', alatStandarCheckboxes.length);
+        alatStandarCheckboxes.forEach((checkbox, index) => {
+            console.log(`🔧 Alat standar ${index + 1}:`, checkbox.value);
+        });
+        
+        // Log kondisi alat radio
+        const kondisiAlatSelected = document.querySelector('input[name="kondisiAlat"]:checked');
+        console.log('🎚️ Kondisi alat selected:', kondisiAlatSelected ? kondisiAlatSelected.value : 'none');
+        
+        // Log tempat kalibrasi radio
+        const tempatKalibrasiSelected = document.querySelector('input[name="tempatKalibrasi"]:checked');
+        console.log('📍 Tempat kalibrasi selected:', tempatKalibrasiSelected ? tempatKalibrasiSelected.value : 'none');
+        
+        // HANYA BASIC VALIDATION untuk edit form (tidak ada required)
+        let isValid = true;
+        let warningMessages = [];
+        
+        // 1. Validasi tanggal (jika diisi)
+        const tanggalMasuk = document.querySelector('input[name="tanggalMasuk"]').value;
+        const tanggalKalibrasi = document.querySelector('input[name="tanggalKalibrasi"]').value;
+        
+        if (tanggalMasuk && tanggalKalibrasi) {
+            if (new Date(tanggalMasuk) > new Date(tanggalKalibrasi)) {
+                warningMessages.push('Tanggal alat masuk tidak boleh lebih baru dari tanggal kalibrasi');
+                console.warn('⚠️ Date validation warning: masuk > kalibrasi');
+            }
+        }
+        
+        // 2. Validasi numeric fields (jika diisi)
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            if (input.value && isNaN(parseFloat(input.value))) {
+                input.style.borderColor = '#ffc107';
+                warningMessages.push(`${input.name} harus berupa angka`);
+                console.warn(`⚠️ ${input.name} is not a valid number`);
+            } else {
+                input.style.borderColor = '';
+            }
+        });
+        
+       
+        
+        // 4. Validasi alat standar (minimal satu dipilih)
+        if (alatStandarCheckboxes.length === 0) {
+            const alatStandarSection = document.querySelector('.alat-standar-table');
+            if (alatStandarSection) {
+                alatStandarSection.style.border = '2px solid #ffc107';
+                warningMessages.push('Pilih minimal satu alat standar');
+                console.warn('⚠️ No alat standar selected');
+            }
+        } else {
+            const alatStandarSection = document.querySelector('.alat-standar-table');
+            if (alatStandarSection) alatStandarSection.style.border = '';
+        }
+        
+        // 5. Validasi kondisi alat (harus dipilih)
+        if (!kondisiAlatSelected) {
+            const kondisiSection = document.querySelector('.kalibrasi-section-header');
+            if (kondisiSection) {
+                kondisiSection.style.color = '#ffc107';
+                warningMessages.push('Pilih kondisi alat (Ok/Rusak)');
+                console.warn('⚠️ No kondisi alat selected');
+            }
+        } else {
+            const kondisiSection = document.querySelector('.kalibrasi-section-header');
+            if (kondisiSection) kondisiSection.style.color = '';
+        }
+        
+        // 6. Validasi tempat kalibrasi (harus dipilih)
+        if (!tempatKalibrasiSelected) {
+            const tempatSection = document.querySelector('input[name="tempatKalibrasi"]').closest('tr');
+            if (tempatSection) {
+                tempatSection.style.backgroundColor = '#fff8e1';
+                warningMessages.push('Pilih tempat kalibrasi');
+                console.warn('⚠️ No tempat kalibrasi selected');
+            }
+        }
+        
+        // Tampilkan warning jika ada, tapi masih bisa submit
+        if (warningMessages.length > 0) {
+            const shouldProceed = confirm(
+                '⚠️ Peringatan:\n' + 
+                warningMessages.join('\n') + 
+                '\n\nApakah Anda yakin ingin melanjutkan?'
+            );
+            
+            if (!shouldProceed) {
+                e.preventDefault();
+                console.log('⛔ User cancelled submission due to warnings');
+                return false;
+            }
+        }
+        
+        console.log('🚀 Form validation passed, submitting...');
+        
+        // Add loading indicator
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan Perubahan...';
+            submitBtn.disabled = true;
+            
+            // Reset button setelah 10 detik jika ada error
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 10000);
+        }
+        
+        // Log data yang akan dikirim (optional debugging)
+        console.log('📤 Data to be submitted:');
+        for (let [key, value] of formData.entries()) {
+            // Jangan log password atau sensitive data
+            if (!key.includes('password') && !key.includes('token')) {
+                console.log(`${key}:`, value);
+            }
+        }
+        
+        // Optional: Send analytics/log to server
+        try {
+            fetch('/api/log-form-edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    action: 'edit_form_submit',
+                    calibration_id: {{ $calibration->id }},
+                    form_type: 'inside_micrometer',
+                    timestamp: new Date().toISOString(),
+                    field_count: formData.entries().length
+                })
+            }).catch(err => console.log('Analytics log failed:', err));
+        } catch (analyticsError) {
+            console.log('Analytics error:', analyticsError);
+        }
+        
+        return true;
+    });
+    
+    // Additional debug on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 Edit form loaded for Inside Micrometer ID:', {{ $calibration->id }});
+        console.log('🏷️ Certificate ID:', '{{ $calibration->headInsideMicrometer->certificate_id ?? "N/A" }}');
+        console.log('🔢 Detail records count:', {{ $calibration->detailInsideMicrometers->count() }});
+        
+        // Log current alat standar
+        const currentStandards = '{{ $calibration->headInsideMicrometer->standard ?? "" }}';
+        console.log('📋 Current alat standar:', currentStandards);
+        
+        // Log current form values
+        console.log('📝 Current form values:');
+        document.querySelectorAll('.kalibrasi-input').forEach((input, index) => {
+            if (index < 5) { // Hanya log 5 pertama
+                console.log(`${input.name}:`, input.value);
+            }
+        });
+        
+        // Auto-hide validation messages after 5 seconds
+        setTimeout(() => {
+            document.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+            document.querySelectorAll('.invalid-feedback').forEach(el => {
+                el.style.display = 'none';
+            });
+        }, 5000);
+        
+        // Real-time validation for numeric fields
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value && isNaN(parseFloat(this.value))) {
+                    this.classList.add('is-invalid');
+                    this.title = 'Harus berupa angka';
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.title = '';
+                }
+            });
+        });
+        
+        // Real-time validation for date fields
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const tanggalMasuk = document.querySelector('input[name="tanggalMasuk"]').value;
+                const tanggalKalibrasi = document.querySelector('input[name="tanggalKalibrasi"]').value;
+                
+                if (tanggalMasuk && tanggalKalibrasi && new Date(tanggalMasuk) > new Date(tanggalKalibrasi)) {
+                    this.classList.add('is-invalid');
+                    this.title = 'Tanggal tidak valid';
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.title = '';
+                }
+            });
+        });
+        
+        // Highlight required-ish fields (bukan required tapi penting)
+        const importantFields = [
+            'namaAlat', 'brandAlat', 'NoSeri', 'kapasitas', 'resolusi',
+            'pemilikAlat', 'tanggalMasuk', 'tanggalKalibrasi'
+        ];
+        
+        importantFields.forEach(fieldName => {
+            const field = document.querySelector(`[name="${fieldName}"]`);
+            if (field && !field.value.trim()) {
+                field.style.backgroundColor = '#fff8e1';
+                field.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        this.style.backgroundColor = '';
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

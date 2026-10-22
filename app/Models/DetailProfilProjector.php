@@ -30,17 +30,17 @@ class DetailProfilProjector extends Model
     ];
 
     protected $casts = [
-        'titikUkur'=>'decimal:5',
-        'X1'=>'decimal:5',
-        'X2'=>'decimal:5',
-        'X3'=>'decimal:5',
-        'X4'=>'decimal:5',
-        'X5'=>'decimal:5',
-        'Y1'=>'decimal:5',
-        'Y2'=>'decimal:5',
-        'Y3'=>'decimal:5',
-        'Y4'=>'decimal:5',
-        'Y5'=>'decimal:5'
+        'titikUkur'=>'string',
+        'X1'=>'string',
+        'X2'=>'string',
+        'X3'=>'string',
+        'X4'=>'string',
+        'X5'=>'string',
+        'Y1'=>'string',
+        'Y2'=>'string',
+        'Y3'=>'string',
+        'Y4'=>'string',
+        'Y5'=>'string'
         
     ];
 

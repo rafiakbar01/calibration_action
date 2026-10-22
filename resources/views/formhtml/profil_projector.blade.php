@@ -188,19 +188,36 @@
                 <!-- Main Form Section -->
                 <table class="kalibrasi-main-table">
                     <!-- Nama Alat -->
-                    <tr>
-                        <td style="width: 20%;">
-                            <p style="margin: 0; color: #000000;">Nama Alat</p>
-                        </td>
-                        <td colspan="3">
-                            <select name="nama_alat" class="kalibrasi-input"   onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
-                                <option value="">-- Pilih Jenis Alat --</option>
-                                <option value="Profil Projector">Profil Projector</option>
-                                <option value="Microscope">Microscope</option>
-                            </select>
-                        </td>
-                    </tr>
-
+                     <tr>
+                           <td style="width: 20%;">
+                                <p style="margin: 0; color: #000000;">Nama Alat</p>
+                            </td>
+                            <td colspan="3">
+                                <!-- Hidden input untuk form type -->
+                                 
+                                
+                                <select name="nama_alat" id="nama_alat_select" class="kalibrasi-input" onchange="updateFormType(this.value)" required style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;">
+                                    <option value="">-- Pilih Alat --</option>
+                                    <option value="Profil Projector">Profil Projector</option>
+                                    <option value="MANUAL_INPUT">-- Input Nama Alat --</option>
+                                </select>
+                                
+                                <!-- Input Manual - HIDANG AWALNYA -->
+                                <div id="manualInputContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" name="nama_alat_manual" id="nama_alat_manual"
+                                           placeholder="Ketik nama alat"
+                                           style="background-color: #f5f5f5; color: #333; border: 1px solid #ced4da; padding: 6px 10px; border-radius: 4px; width: 100%;"
+                                           oninput="syncNamaAlat()">
+                                </div>
+                                
+                                <!-- Hidden input untuk menyimpan nama alat final -->
+                                <input type="hidden" name="nama_alat_final" id="nama_alat_final" value="">
+                                
+                                <!-- Hidden input untuk display (opsional) -->
+                                <input type="hidden" name="nama_alat_display" id="nama_alat_display" value="">
+                            </td>
+                        </tr>
+                   
                     <!-- Merek & Kode Alat -->
                     <tr>
                         <td>
@@ -306,7 +323,7 @@
                             <p style="margin: 0; color: #000000;">Lokasi PT</p>
                         </td>
                         <td colspan="3">
-                            <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT"required>
+                            <input type="text" name="lokasi_pt" class="kalibrasi-input" placeholder="Masukkan Lokasi PT" >
                         </td>
                     </tr>
                 </table>
@@ -349,15 +366,15 @@
                                 </tr>
                               <tr>
                                     <td class="bg-light fw-bold" style="color: #000000;">Suhu (°C)</td>
-                                    <td><input type="number" name="suhu_awal" class="kondisi-input" required></td>
-                                    <td><input type="number" name="suhu_tengah" class="kondisi-input" required></td>
-                                    <td><input type="number" name="suhu_akhir" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="suhu_awal" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="suhu_tengah" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="suhu_akhir" class="kondisi-input" required></td>
                                 </tr>
                                 <tr>
                                     <td class="bg-light fw-bold" style="color: #000000;">RH (%)</td>
-                                    <td><input type="number" name="rh_awal" class="kondisi-input" required></td>
-                                    <td><input type="number" name="rh_tengah" class="kondisi-input" required></td>
-                                    <td><input type="number" name="rh_akhir" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="rh_awal" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="rh_tengah" class="kondisi-input" required></td>
+                                    <td><input type="number" step="any" name="rh_akhir" class="kondisi-input" required></td>
                                 </tr>
                             </table>
                         </div>
@@ -461,69 +478,77 @@
     <tr class="header-utama">
         <td class="titik-ukur-header">
             <p style="margin:3pt;">Titik Ukur</p>
-        </td>
+         </td>
         <td colspan="5" class="pembacaan-header">
-          <p style="margin:3pt;">
+            <p style="margin:3pt;">
                 Pembacaan Alat X (
-                <select name="satuan_alat_x" class="form-select form-select-sm border-0 bg-transparent d-inline-block" 
-                        style="width: 60px; border: none; appearance: none; -webkit-appearance: none; -moz-appearance: none; padding: 0 5px; height: 22px;">
-                    <option value="">-</option>
-                    <option value="MM" selected>MM</option>
-                </select>
+                <input type="text" 
+                       name="satuan_alat_x" 
+                       class="form-control form-control-sm d-inline-block" 
+                       value="MM"
+                       style="width: 60px; border: 1px solid #ccc; border-radius: 3px; padding: 2px 5px; height: 26px; text-align: center;">
                 )
             </p>
-        </td>
+         </td>
         <td colspan="5" class="pembacaan-header">
-           <p style="margin:3pt;">
-            Pembacaan Alat Y (
-            <select name="satuan_alat_y" class="form-select form-select-sm border-0 bg-transparent d-inline-block" 
-                    style="width: 60px; border: none; appearance: none; -webkit-appearance: none; -moz-appearance: none; padding: 0 5px; height: 22px;">
-                <option value="">-</option>
-                <option value="MM" selected>MM</option>
-            </select>
-            )
-        </p>
-        </td>
-    </tr>
+            <p style="margin:3pt;">
+                Pembacaan Alat Y (
+                <input type="text" 
+                       name="satuan_alat_y" 
+                       class="form-control form-control-sm d-inline-block" 
+                       value="MM"
+                       style="width: 60px; border: 1px solid #ccc; border-radius: 3px; padding: 2px 5px; height: 26px; text-align: center;">
+                )
+            </p>
+         </td>
+     </tr>
     
     <!-- SUB HEADER -->
     <tr class="sub-header">
         <td class="titik-ukur-satuan">
             <p style="margin:3pt;">
                 ( 
-                <select name="satuan_titik_ukur" class="form-select form-select-sm border-0 bg-transparent d-inline-block" 
-                        style="width: 60px; border: none; appearance: none; -webkit-appearance: none; -moz-appearance: none; padding: 0 5px; height: 22px;">
-                    <option value="">-</option>
-                    <option value="MM" selected>MM</option>
-                </select>
-                    )
-                </p>
-            </td>
+                <input type="text" 
+                       name="satuan_titik_ukur" 
+                       class="form-control form-control-sm d-inline-block" 
+                       value="MM"
+                       style="width: 60px; border: 1px solid #ccc; border-radius: 3px; padding: 2px 5px; height: 26px; text-align: center;">
+                )
+            </p>
+         </td>
         <!-- Alat X -->
-        <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
         <!-- Alat Y -->
-        <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td>
-    </tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+     </tr>
     
     <!-- DATA ROWS (20 baris) -->
     <?php for ($i = 1; $i <= 20; $i++): ?>
     <tr class="data-row">
-        <td><input type="number" name="titik_ukur_<?php echo $i; ?>" class="input-titik-ukur"></td>
+        <td><input type="text" name="titik_ukur_<?php echo $i; ?>" class="input-titik-ukur"></td>
         
         <!-- Alat X -->
-        <td><input type="number" step="any" name="x_<?php echo $i; ?>_1" class="input-pembacaan"></td>
-        <td><input type="number" step="any" name="x_<?php echo $i; ?>_2" class="input-pembacaan"></td>
-        <td><input type="number" step="any" name="x_<?php echo $i; ?>_3" class="input-pembacaan"></td>
-        <td><input type="number" step="any" name="x_<?php echo $i; ?>_4" class="input-pembacaan"></td>
-        <td><input type="number" step="any" name="x_<?php echo $i; ?>_5" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="x_<?php echo $i; ?>_1" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="x_<?php echo $i; ?>_2" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="x_<?php echo $i; ?>_3" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="x_<?php echo $i; ?>_4" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="x_<?php echo $i; ?>_5" class="input-pembacaan"></td>
         
         <!-- Alat Y -->
-        <td><input type="number" step="any" name="y_<?php echo $i; ?>_1" class="input-pembacaan"></td>
-        <td><input type="number" step="any" name="y_<?php echo $i; ?>_2" class="input-pembacaan"></td>
-        <td><input type="number" step="any" name="y_<?php echo $i; ?>_3" class="input-pembacaan"></td>
-        <td><input type="number" step="any" name="y_<?php echo $i; ?>_4" class="input-pembacaan"></td>
-        <td><input type="number" step="any" name="y_<?php echo $i; ?>_5" class="input-pembacaan"></td>
-    </tr>
+        <td><input type="text" step="any" name="y_<?php echo $i; ?>_1" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="y_<?php echo $i; ?>_2" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="y_<?php echo $i; ?>_3" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="y_<?php echo $i; ?>_4" class="input-pembacaan"></td>
+        <td><input type="text" step="any" name="y_<?php echo $i; ?>_5" class="input-pembacaan"></td>
+     </tr>
     <?php endfor; ?>
 </table>
 
@@ -601,7 +626,7 @@
             Nama : 
             <input type="text" name="calibrated_by" 
                    style="width: 75%; border: none; border-bottom: 2px solid #000; font-size: 11pt; padding: 5px 0; background: transparent;" 
-                   placeholder="Nama">
+                   placeholder="Nama"  value="{{ auth()->user()->nama ?? 'System' }}"  readonly>
         </td>
         <td style="border-left: 1pt solid #000; border-right: 1pt solid #000; border-bottom: 1pt solid #000; border-top: none; padding: 10pt; vertical-align: middle; font-size: 11pt;">
             Nama : 
@@ -622,9 +647,9 @@
                             <i class="fas fa-save me-2"></i>Simpan Data Kalibrasi
                         </button>
                         
-                        <button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                            <i class="fas fa-redo me-2"></i>Reset Form
-                        </button>
+                        <!--<button type="reset" class="btn btn-secondary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                        <!--    <i class="fas fa-redo me-2"></i>Reset Form-->
+                        <!--</button>-->
                     </div>
                 </div>
 
@@ -633,30 +658,13 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
     <script>
-         function updateFormType(selectedAlat) {
-        // Normalize input (case-insensitive)
-        const alat = selectedAlat.toLowerCase().trim();
-        
-        // SEMUA alat menggunakan form_type 'enclosure'
-        const formTypeMap = {
-            'profil projector': 'profil_projector',
-            'microscope': 'profil_projector', 
-            // Tidak perlu 'enclosure' karena tidak ada di dropdown
-        };
-        
-        // Update hidden input
-        const formTypeInput = document.getElementById('form_type_input');
-        if (formTypeMap[alat]) {
-            formTypeInput.value = formTypeMap[alat];
-            console.log('✅ Form type set to: enclosure for alat:', selectedAlat);
-        } else {
-            formTypeInput.value = '';
-            console.warn('⚠️ No form type mapping for:', selectedAlat);
-        }
-    }
-    </script>
-    <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.number-only').forEach(function(input) {

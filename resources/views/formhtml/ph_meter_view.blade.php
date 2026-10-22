@@ -374,34 +374,34 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
+<!--                <tr>-->
+<!--    <td>-->
+<!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+<!--    </td>-->
+<!--    <td colspan="3">-->
+<!--        <div class="d-flex align-items-center">-->
             <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
+<!--            <div class="me-3" style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
             
-            <span class="me-3" style="color: #000000;">-</span>
+<!--            <span class="me-3" style="color: #000000;">-</span>-->
             
             <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+<!--            <div style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </td>-->
+<!--</tr>-->
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -555,65 +555,65 @@
     <!-- Header Row 1 -->
     <tr style="height:14.2pt">
         <td rowspan="2" style="width:150pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; background-color:#d9d9d9; text-align:center;">
-        <p class="TableParagraph" style="margin-top:9.2pt; margin-left:0; margin-right:0; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Nilai</span>
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.25pt"></span>
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Buffer</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:9.2pt; margin-left:0; margin-right:0; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Nilai</span>
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.25pt"></span>
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Buffer</span>
+            </p>
         </td>
         <td colspan="5" style="width:450pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; background-color:#d9d9d9">
-        <p class="TableParagraph" style="margin-top:1.65pt; margin-left:1.65pt; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Pembacaan</span>
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.3pt"></span>
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.2pt">Alat</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:1.65pt; margin-left:1.65pt; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Pembacaan</span>
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.3pt"></span>
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.2pt">Alat</span>
+            </p>
         </td>
         <td rowspan="2" style="width:120pt; border-right-style:solid; border-right-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; background-color:#d9d9d9; text-align:center;">
-        <p class="TableParagraph" style="margin-top:9.2pt; margin-left:0; margin-right:0; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Resolusi</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:9.2pt; margin-left:0; margin-right:0; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Resolusi</span>
+            </p>
         </td>
         <td style="width:120pt; border-left-style:solid; border-left-width:1pt; vertical-align:top; background-color:#d9d9d9">
-        <p class="TableParagraph" style="margin-top:1.65pt; margin-right:0.1pt; margin-left:1.65pt; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold">Suhu</span>
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.55pt"></span>
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Buffer</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:1.65pt; margin-right:0.1pt; margin-left:1.65pt; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold">Suhu</span>
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.55pt"></span>
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.1pt">Buffer</span>
+            </p>
         </td>
     </tr>
     
     <!-- Header Row 2 -->
     <tr style="height:14.2pt">
         <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:top; background-color:#d9d9d9">
-        <p class="TableParagraph" style="margin-top:2.15pt; margin-left:1.65pt; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">1</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:2.15pt; margin-left:1.65pt; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">1</span>
+            </p>
         </td>
         <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:top; background-color:#d9d9d9">
-        <p class="TableParagraph" style="margin-top:2.15pt; margin-left:1.65pt; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">2</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:2.15pt; margin-left:1.65pt; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">2</span>
+            </p>
         </td>
         <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:top; background-color:#d9d9d9">
-        <p class="TableParagraph" style="margin-top:2.15pt; margin-right:0.05pt; margin-left:1.65pt; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">3</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:2.15pt; margin-right:0.05pt; margin-left:1.65pt; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">3</span>
+            </p>
         </td>
         <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:top; background-color:#d9d9d9">
-        <p class="TableParagraph" style="margin-top:2.15pt; margin-left:1.65pt; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">4</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:2.15pt; margin-left:1.65pt; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">4</span>
+            </p>
         </td>
         <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:top; background-color:#d9d9d9">
-        <p class="TableParagraph" style="margin-top:2.15pt; margin-left:1.65pt; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">5</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:2.15pt; margin-left:1.65pt; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.5pt">5</span>
+            </p>
         </td>
         <td style="width:120pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:top; background-color:#d9d9d9">
-        <p class="TableParagraph" style="margin-top:1pt; margin-left:1.65pt; text-align:center; font-size:10pt">
-            <span style="font-family:Arial; font-size:5.5pt; font-weight:bold; letter-spacing:-0.25pt">o</span>
-            <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.25pt; vertical-align:-3.5pt">C</span>
-        </p>
+            <p class="TableParagraph" style="margin-top:1pt; margin-left:1.65pt; text-align:center; font-size:10pt">
+                <span style="font-family:Arial; font-size:5.5pt; font-weight:bold; letter-spacing:-0.25pt">o</span>
+                <span style="font-family:Arial; font-weight:bold; letter-spacing:-0.25pt; vertical-align:-3.5pt">C</span>
+            </p>
         </td>
     </tr>
     
@@ -629,42 +629,42 @@
         <tr style="height:60pt">
             <td style="width:150pt; border-top-style:solid; border-top-width:1pt; border-right-style:solid; border-right-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
                 <div style="width:100%; height:50px; text-align:center; font-size:16pt; display:flex; align-items:center; justify-content:center;">
-                    {{ $detail ? number_format($detail->nilaiBuffer, 2) : '' }}
+                    {{ $detail ? $detail->nilaiBuffer : '' }}
                 </div>
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
                 <div style="width:100%; height:50px; text-align:center; font-size:16pt; display:flex; align-items:center; justify-content:center;">
-                    {{ $detail ? number_format($detail->rep01, 3) : '' }}
+                    {{ $detail ? $detail->rep01 : '' }}
                 </div>
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
                 <div style="width:100%; height:50px; text-align:center; font-size:16pt; display:flex; align-items:center; justify-content:center;">
-                    {{ $detail ? number_format($detail->rep02, 3) : '' }}
+                    {{ $detail ? $detail->rep02 : '' }}
                 </div>
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
                 <div style="width:100%; height:50px; text-align:center; font-size:16pt; display:flex; align-items:center; justify-content:center;">
-                    {{ $detail ? number_format($detail->rep03, 3) : '' }}
+                    {{ $detail ? $detail->rep03 : '' }}
                 </div>
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
                 <div style="width:100%; height:50px; text-align:center; font-size:16pt; display:flex; align-items:center; justify-content:center;">
-                    {{ $detail ? number_format($detail->rep04, 3) : '' }}
+                    {{ $detail ? $detail->rep04 : '' }}
                 </div>
             </td>
             <td style="width:90pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
                 <div style="width:100%; height:50px; text-align:center; font-size:16pt; display:flex; align-items:center; justify-content:center;">
-                    {{ $detail ? number_format($detail->rep05, 3) : '' }}
+                    {{ $detail ? $detail->rep05 : '' }}
                 </div>
             </td>
             <td style="width:120pt; border-style:solid; border-width:1pt; vertical-align:middle; text-align:center; padding:10px">
                 <div style="width:100%; height:50px; text-align:center; font-size:16pt; display:flex; align-items:center; justify-content:center;">
-                    {{ $detail ? number_format($detail->Resolusi, 3) : '' }}
+                    {{ $detail ? $detail->Resolusi : '' }}
                 </div>
             </td>
             <td style="width:120pt; border-top-style:solid; border-top-width:1pt; border-left-style:solid; border-left-width:1pt; border-bottom-style:solid; border-bottom-width:1pt; vertical-align:middle; text-align:center; padding:10px">
                 <div style="width:100%; height:50px; text-align:center; font-size:16pt; display:flex; align-items:center; justify-content:center;">
-                    {{ $detail ? number_format($detail->TBuffer, 1) : '' }}
+                    {{ $detail ? $detail->Tbuffer : '' }}
                 </div>
             </td>
         </tr>
@@ -794,9 +794,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

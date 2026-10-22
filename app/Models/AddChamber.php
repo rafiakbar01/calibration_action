@@ -23,6 +23,7 @@ class AddChamber extends Model
         'repetition_number',
         'Tsetting',
         'Interval',
+        'form_index'
     ];
 
     /**

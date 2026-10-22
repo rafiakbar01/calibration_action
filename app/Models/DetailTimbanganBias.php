@@ -19,14 +19,14 @@ class DetailTimbanganBias extends Model
         'STD'
     ];
 
-    protected $casts = [
-        'titikUkur'=>'decimal:5',
-        'Lm1'=>'decimal:5',
-        'Lz1'=>'decimal:5',
-        'Rm1'=>'decimal:5',
-        'Rz1'=>'decimal:5',
-        'STD'=>'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur'=>'decimal:5',
+    //     'Lm1'=>'decimal:5',
+    //     'Lz1'=>'decimal:5',
+    //     'Rm1'=>'decimal:5',
+    //     'Rz1'=>'decimal:5',
+    //     'STD'=>'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

@@ -36,21 +36,21 @@ class DetailVolumetrik extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'masssaKosong01' => 'decimal:5',
-        'masssaKosong02' => 'decimal:5',
-        'masssaKosong03' => 'decimal:5',
-        'massaIsi01' => 'decimal:5',
-        'massaIsi02' => 'decimal:5',
-        'massaIsi03'  => 'decimal:5',
-        'T_airSuling01'  => 'decimal:5',
-        'T_airSuling02'  => 'decimal:5',
-        'T_airSuling03'  => 'decimal:5',
-        'P_Udara01'  => 'decimal:5',
-        'P_Udara02'  => 'decimal:5',
-        'P_Udara03'  => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'masssaKosong01' => 'decimal:5',
+    //     'masssaKosong02' => 'decimal:5',
+    //     'masssaKosong03' => 'decimal:5',
+    //     'massaIsi01' => 'decimal:5',
+    //     'massaIsi02' => 'decimal:5',
+    //     'massaIsi03'  => 'decimal:5',
+    //     'T_airSuling01'  => 'decimal:5',
+    //     'T_airSuling02'  => 'decimal:5',
+    //     'T_airSuling03'  => 'decimal:5',
+    //     'P_Udara01'  => 'decimal:5',
+    //     'P_Udara02'  => 'decimal:5',
+    //     'P_Udara03'  => 'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

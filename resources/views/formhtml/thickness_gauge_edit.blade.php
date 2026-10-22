@@ -379,24 +379,24 @@
     </tr>
 
     <!-- Rentang Ukur -->
-    <tr>
-        <td>
-            <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-        </td>
-        <td colspan="3">
-            <div class="d-flex align-items-center">
-                <div class="me-3" style="width:45%;">
-                    <input type="text" name="rangeMin" class="kalibrasi-input"
-                           value="{{ old('rangeMin', $calibration->rangeMin ?? 0) }}">
-                </div>
-                <span class="me-3">-</span>
-                <div style="width:45%;">
-                    <input type="text" name="rangeMax" class="kalibrasi-input"
-                           value="{{ old('rangeMax', $calibration->rangeMax ?? 0) }}">
-                </div>
-            </div>
-        </td>
-    </tr>
+    <!--<tr>-->
+    <!--    <td>-->
+    <!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+    <!--    </td>-->
+    <!--    <td colspan="3">-->
+    <!--        <div class="d-flex align-items-center">-->
+    <!--            <div class="me-3" style="width:45%;">-->
+    <!--                <input type="text" name="rangeMin" class="kalibrasi-input"-->
+    <!--                       value="{{ old('rangeMin', $calibration->rangeMin ?? 0) }}">-->
+    <!--            </div>-->
+    <!--            <span class="me-3">-</span>-->
+    <!--            <div style="width:45%;">-->
+    <!--                <input type="text" name="rangeMax" class="kalibrasi-input"-->
+    <!--                       value="{{ old('rangeMax', $calibration->rangeMax ?? 0) }}">-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </td>-->
+    <!--</tr>-->
 
     <!-- Kapasitas / Resolusi -->
     <tr>
@@ -449,8 +449,8 @@
         <td colspan="3">
             <div class="d-flex">
                 <div class="form-check me-5">
-                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab"
-                        {{ $calibration->tempatKalibrasi == 'lab' ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="tempatKalibrasi" value="lab.PT PAS"
+                        {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }}>
                     <label class="form-check-label">Lab. PT.PAS</label>
                 </div>
                 <div class="form-check">
@@ -468,6 +468,14 @@
         <td colspan="3">
             <input type="text" name="lokasiPT" class="kalibrasi-input"
                    value="{{ old('lokasiPT', $calibration->lokasiPT) }}">
+        </td>
+    </tr>
+    
+     <tr>
+        <td><p style="margin:0;">Kode TH</p></td>
+        <td colspan="3">
+            <input type="text" name="kode_th" class="kalibrasi-input"
+                   value="{{ old('kode_th', $calibration->kode_th) }}">
         </td>
     </tr>
 </table>
@@ -556,8 +564,22 @@
         </td>
     </tr>
     <tr style="background: #e8e8e8;">
-        <td>
-            <span style="font-weight: bold; color: #000000;">Unit (mm)</span>
+        <td style="border: 2px solid #000000; text-align: center; vertical-align: middle; padding: 2px;">
+            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                <span style="font-weight: bold; color: #000000; font-size: 9.5pt; margin-right: 5px;">
+                    Unit (
+                </span>
+                <input 
+                    type="text" 
+                    name="satuan_unit" 
+                    value="{{ $calibration->headThicknessGauge->satuan_unit ?? 'mm' }}"
+                    style="width: 60px; text-align: center; font-size: 9.5pt; padding: 2px; border: 1px solid #666;"
+                    maxlength="10"
+                />
+                <span style="font-weight: bold; color: #000000; font-size: 9.5pt; margin-left: 5px;">
+                    )
+                </span>
+            </div>
         </td>
         <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">1</span></td>
         <td style="width: 16%;"><span style="font-weight: bold; color: #000000;">2</span></td>
@@ -682,15 +704,15 @@
         <td style="border:1px solid #000; vertical-align:top;">
             TTD:<br><br><br>
             Nama: <input type="text"
-       name="calibratedBy"
-       value="{{ old('calibratedBy', $calibration->calibratedBy ?? '') }}"
+       name="verifiedBy"
+       value="{{ old('verifiedBy', $calibration->verifiedBy ?? '') }}"
        style="
             border:none;
             background:transparent;
             outline:none;
             font-size:inherit;
             color:inherit;
-       ">
+       " readonly>
 
         </td>
     </tr>
@@ -714,8 +736,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+var tempFormDataStore = window.tempFormDataStore;
+var isRestoring = window.isRestoring;
+var tabSubmitStatus = window.tabSubmitStatus;
+var currentActiveTabId = '1';
+
         // Form validation
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm')?.addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
             
@@ -788,7 +815,7 @@
     </script>
 
    <script>
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('editForm')?.addEventListener('submit', function(e) {
         console.log('🎯 Edit form submission started...');
         
         // Debug form data

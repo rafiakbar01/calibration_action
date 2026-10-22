@@ -64,13 +64,46 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
         ],
-        
 
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => env('LOG_DAILY_DAYS', 14),
+            'replace_placeholders' => true,
+        ],
+
+        // TAMBAHKAN CHANNEL CALIBRATION DI SINI
+        'calibration' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/calibration.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => env('LOG_DAILY_DAYS', 30),
+            'replace_placeholders' => true,
+        ],
+
+        // OPSI LAIN untuk calibration (pilih salah satu):
+        // 'calibration' => [
+        //     'driver' => 'single',
+        //     'path' => storage_path('logs/calibration.log'),
+        //     'level' => env('LOG_LEVEL', 'info'),
+        //     'replace_placeholders' => true,
+        // ],
+        
+        // Atau buat log per alat (opsional):
+        'calibration_inside_micrometer' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/calibration/inside_micrometer.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => 30,
+            'replace_placeholders' => true,
+        ],
+        
+        'calibration_outside_micrometer' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/calibration/outside_micrometer.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => 30,
             'replace_placeholders' => true,
         ],
 

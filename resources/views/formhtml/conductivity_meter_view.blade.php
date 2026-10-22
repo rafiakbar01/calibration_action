@@ -295,8 +295,28 @@
 </style>
 </head>
 <body>
+    @php
+        $jumlahForm = $calibration->jumlah_form ?? 1;
+        $jumlahForm = max(1, (int)$jumlahForm);
+    @endphp
+
     <div class="container my-4">
-        <div class="form-kalibrasi-container">
+        @for($formIndex = 1; $formIndex <= $jumlahForm; $formIndex++)
+            @php
+                $headData = $calibration->{'headConductivityMeterForm' . $formIndex} ?? \App\Models\HeadConductivityMeter::where('calibration_id', $calibration->id)->where('form_index', $formIndex)->first() ?? $calibration->headConductivityMeter;
+                $details = $calibration->detailConductivityMeters->where('form_index', $formIndex)->sortBy('id')->values();
+                if ($details->count() == 0 && $formIndex == 1) {
+                    $details = \App\Models\DetailConductivityMeter::where('calibration_id', $calibration->id)->orderBy('id')->get();
+                }
+            @endphp
+
+            @if($jumlahForm > 1)
+            <div style="background: linear-gradient(135deg,#1e40af,#3b82f6); color:#fff; padding:10px 20px; margin: 16px 0 0; border-radius:8px 8px 0 0; font-weight:bold; font-size:16px;">
+                <i class="fas fa-file-alt" style="margin-right:8px;"></i>Form Conductivity Meter ke-{{ $formIndex }}
+            </div>
+            @endif
+
+            <div class="form-kalibrasi-container" style="@if($jumlahForm > 1) border: 2px solid #3b82f6; border-radius: 0 0 8px 8px; padding: 20px; margin-bottom: 30px; @endif">
             <table class="kalibrasi-header-table">
                 <tr>
                     <td colspan="2">
@@ -329,7 +349,7 @@
                         <p style="margin: 0; font-size: 14px; color: #000000;">No. Sertifikat</p>
                     </td>
                     <td style="width: 45%;">
-                        <p style="margin: 0; font-size: 14px; color: #000000; font-weight: bold;">{{ $calibration->headConductivityMeter->certificate_id ?? 'N/A' }}</p>
+                        <p style="margin: 0; font-size: 14px; color: #000000; font-weight: bold;">{{ $headData->certificate_id ?? $calibration->certificate_id ?? 'N/A' }}</p>
                     </td>
                 </tr>
             </table>
@@ -374,34 +394,34 @@
                     </td>
                 </tr>
 
-                <tr>
-    <td>
-        <p style="margin: 0; color: #000000;">Rentang Ukur</p>
-    </td>
-    <td colspan="3">
-        <div class="d-flex align-items-center">
+<!--                <tr>-->
+<!--    <td>-->
+<!--        <p style="margin: 0; color: #000000;">Rentang Ukur</p>-->
+<!--    </td>-->
+<!--    <td colspan="3">-->
+<!--        <div class="d-flex align-items-center">-->
             <!-- Tampilkan nilai Min -->
-            <div class="me-3" style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
+<!--            <div class="me-3" style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMin) ? $calibration->rangeMin : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
             
-            <span class="me-3" style="color: #000000;">-</span>
+<!--            <span class="me-3" style="color: #000000;">-</span>-->
             
             <!-- Tampilkan nilai Max -->
-            <div style="width: 45%;">
-                <input type="text" 
-                       class="kalibrasi-input" 
-                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" 
-                       readonly 
-                       style="width: 100%;">
-            </div>
-        </div>
-    </td>
-</tr>
+<!--            <div style="width: 45%;">-->
+<!--                <input type="text" -->
+<!--                       class="kalibrasi-input" -->
+<!--                       value="{{ isset($calibration->rangeMax) ? $calibration->rangeMax : '0' }}" -->
+<!--                       readonly -->
+<!--                       style="width: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </td>-->
+<!--</tr>-->
 
                 <!-- Kapasitas / Resolusi -->
                 <tr>
@@ -410,9 +430,9 @@
                     </td>
                     <td colspan="3">
                         <div class="d-flex align-items-center">
-                            <input type="text" class="kalibrasi-input me-3" value="{{ $calibration->kapasitas }}" readonly style="width: 45%;">
+                            <input type="text" class="kalibrasi-input me-3" value="{{ $headData->kapasitas ?? $calibration->kapasitas }}" readonly style="width: 45%;">
                             <span class="me-3" style="color: #000000;">/</span>
-                            <input type="text" class="kalibrasi-input" value="{{ $calibration->resolusi }}" readonly style="width: 45%;">
+                            <input type="text" class="kalibrasi-input" value="{{ $headData->resolusi ?? $calibration->resolusi }}" readonly style="width: 45%;">
                         </div>
                     </td>
                 </tr>
@@ -445,7 +465,7 @@
                         <div class="d-flex align-items-center">
                             <input type="text" class="kalibrasi-input me-3" 
                                value="{{ \Carbon\Carbon::parse($calibration->tanggalKalibrasi)->format('d/m/Y') }}"
-                                readonly style="width: 45%;">
+                            readonly style="width: 45%;">
                             <span class="me-3" style="color: #000000;">Jenis Pembacaan:</span>
                             <input type="text" class="kalibrasi-input" 
                                 value="{{ $calibration->jenisPembacaan }}" 
@@ -460,16 +480,20 @@
                         <p style="margin: 0; color: #000000;">Tempat Kalibrasi</p>
                     </td>
                     <td colspan="3">
+                        @php
+                            $valTempatView = $headData->tempat_kalibrasi ?? $calibration->tempatKalibrasi ?? 'lab.PT PAS';
+                            if (empty($valTempatView)) { $valTempatView = 'lab.PT PAS'; }
+                        @endphp
                         <div class="d-flex">
                             <div class="form-check me-5">
-                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="lab.PT PAS" id="lab" 
-                                       {{ $calibration->tempatKalibrasi == 'lab.PT PAS' ? 'checked' : '' }} disabled>
-                                <label class="form-check-label" for="lab" style="color: #000000;">Lab. PT.PAS</label>
+                                <input class="form-check-input" type="radio" name="tempat_kalibrasi_{{ $formIndex }}" value="lab.PT PAS" id="lab_{{ $formIndex }}" 
+                                       {{ $valTempatView == 'lab.PT PAS' ? 'checked' : '' }} disabled>
+                                <label class="form-check-label" for="lab_{{ $formIndex }}" style="color: #000000;">Lab. PT.PAS</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="tempat_kalibrasi" value="insitu" id="insitu" 
-                                       {{ $calibration->tempatKalibrasi == 'insitu' ? 'checked' : '' }} disabled>
-                                <label class="form-check-label" for="insitu" style="color: #000000;">Insitu</label>
+                                <input class="form-check-input" type="radio" name="tempat_kalibrasi_{{ $formIndex }}" value="insitu" id="insitu_{{ $formIndex }}" 
+                                       {{ $valTempatView == 'insitu' ? 'checked' : '' }} disabled>
+                                <label class="form-check-label" for="insitu_{{ $formIndex }}" style="color: #000000;">Insitu</label>
                             </div>
                         </div>
                     </td>
@@ -482,6 +506,14 @@
                         <input type="text" class="kalibrasi-input" value="{{ $calibration->lokasiPT }}" readonly>
                     </td>
                 </tr>
+                  <tr>
+                    <td>
+                        <p style="margin: 0; color: #000000;">Kode TH</p>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="kalibrasi-input" value="{{ $calibration->kode_th }}" readonly>
+                    </td>
+                </tr>
             </table>
 
             <!-- Fungsi Komponen Lainnya & Kondisi Kalibrasi -->
@@ -490,27 +522,30 @@
     <div class="col-md-6 mb-4">
         <div class="kalibrasi-section-header" style="color: #000000;">Fungsi Komponen Lainnya</div>
         
+        @php
+            $valKondisiView = $headData->kondisiAlat ?? $headData->kondisi_fungsi_komponen ?? $calibration->kondisiAlat ?? 'ok';
+            if (empty($valKondisiView)) { $valKondisiView = 'ok'; }
+        @endphp
         <!-- Radio Button Section - Text di atas, radio di bawah -->
         <div class="d-flex justify-content-center align-items-center mb-4" style="gap: 60px;">
             <div class="text-center">
                 <span class="fw-bold d-block mb-2" style="color: #000000; font-size: 14px;">Ok</span>
-                <input type="radio" name="kondisiAlat" value="ok" class="form-check-input" 
+                <input type="radio" name="kondisiAlat_{{ $formIndex }}" value="ok" class="form-check-input" 
                     style="width: 18px; height: 18px; display: block; margin: 0 auto;"
-                    {{ $calibration->kondisiAlat == 'ok' ? 'checked' : '' }} disabled>
+                    {{ $valKondisiView == 'ok' ? 'checked' : '' }} disabled>
             </div>
             <div class="text-center">
                 <span class="fw-bold d-block mb-2" style="color: #000000; font-size: 14px;">Rusak</span>
-                <input type="radio" name="kondisiAlat" value="rusak" class="form-check-input"
+                <input type="radio" name="kondisiAlat_{{ $formIndex }}" value="rusak" class="form-check-input"
                     style="width: 18px; height: 18px; display: block; margin: 0 auto;"
-                    {{ $calibration->kondisiAlat == 'rusak' ? 'checked' : '' }} disabled>
+                    {{ $valKondisiView == 'rusak' ? 'checked' : '' }} disabled>
             </div>
         </div>
-        
         <!-- Keterangan Section -->
         <div class="d-flex align-items-center">
             <span class="fw-bold me-3" style="color: #000000; min-width: 100px;">Keterangan :</span>
             <div style="flex: 1;">
-                <input type="text" class="kalibrasi-input" value="{{ $calibration->keterangan ?? '-' }}" readonly 
+                <input type="text" class="kalibrasi-input" value="{{ $headData->keterangan_fungsi_komponen ?? $headData->keterangan ?? $calibration->keterangan ?? '-' }}" readonly 
                        style="border: none; border-bottom: 2px solid #000; border-radius: 0; padding: 4px 0; background: transparent; width: 100%;">
             </div>
         </div>
@@ -547,79 +582,54 @@
     <!-- Data Kalibrasi Section -->
                 <div class="data-kalibrasi-header" style="color: #000000;">DATA KALIBRASI</div>
 
-         <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:3.48pt; border:1pt solid #000000; -aw-border-insideh:1pt solid #000000; -aw-border-insidev:1pt solid #000000; border-collapse:collapse; font-size:12pt; width:100%;">
+       <table cellspacing="0" cellpadding="0" class="TableNormal" style="margin-left:3.48pt; border:1pt solid #000000; -aw-border-insideh:1pt solid #000000; -aw-border-insidev:1pt solid #000000; border-collapse:collapse; font-size:12pt; width:100%;">
     <!-- Header Row 1 -->
     <tr style="height:20pt">
-    <td style="width:150pt; border-right:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">Nilai CRM</span>
-    </td>
-    <td colspan="5" style="width:400pt; border:1pt solid #000000; border-bottom:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">Pembacaan Alat</span>
-    </td>
-    <td rowspan="2" style="width:130pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">Resolusi</span>
-    </td>
-    <td style="width:130pt; border-left:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">Suhu CRM</span>
-    </td>
+        <td style="width:150pt; border-right:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">Nilai CRM</span>
+        </td>
+        <td colspan="5" style="width:400pt; border:1pt solid #000000; border-bottom:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">Pembacaan Alat</span>
+        </td>
+        <td rowspan="2" style="width:130pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">Resolusi</span>
+        </td>
+        <td style="width:130pt; border-left:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">Suhu CRM</span>
+        </td>
     </tr>
     
     <!-- Header Row 2 -->
     <tr style="height:20pt">
-    <td style="width:150pt; border-right:1pt solid #000000; border-bottom:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:10pt"></span>
-    </td>
-    <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">1</span>
-    </td>
-    <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">2</span>
-    </td>
-    <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">3</span>
-    </td>
-    <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">4</span>
-    </td>
-    <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt">5</span>
-    </td>
-    <td style="width:130pt; border-left:1pt solid #000000; border-bottom:1pt solid #000000; vertical-align:middle; text-align:center">
-        <span style="font-family:Arial; font-weight:bold; font-size:11pt"><sup>o</sup>C</span>
-    </td>
+        <td style="width:150pt; border-right:1pt solid #000000; border-bottom:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:10pt"></span>
+        </td>
+        <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">1</span>
+        </td>
+        <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">2</span>
+        </td>
+        <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">3</span>
+        </td>
+        <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">4</span>
+        </td>
+        <td style="width:80pt; border:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt">5</span>
+        </td>
+        <td style="width:130pt; border-left:1pt solid #000000; border-bottom:1pt solid #000000; vertical-align:middle; text-align:center">
+            <span style="font-family:Arial; font-weight:bold; font-size:11pt"><sup>o</sup>C</span>
+        </td>
     </tr>
     
-    <!-- Data Rows - Loop untuk 6 baris dari database -->
-    @php
-        // Debug: Tampilkan informasi calibration
-        // dd($calibration->toArray());
-        
-        // Ambil data detailConductivityMeter dari calibration
-        $details = $calibration->detailConductivityMeter ?? collect();
-        
-        // Debug: Cek data yang diambil
-        // dd($details->toArray());
-        
-        // Tampilkan count untuk debug
-        // echo "<!-- Details count: " . $details->count() . " -->";
-        
-        // Jika tidak ada data, coba query langsung
-        if($details->count() == 0) {
-            // Coba query langsung ke database
-            $details = \App\Models\DetailConductivityMeter::where('calibration_id', $calibration->id)->get();
-            // echo "<!-- Direct query count: " . $details->count() . " -->";
-        }
-    @endphp
+    {{-- Details already loaded above per formIndex --}}
     
     @for ($row = 1; $row <= 6; $row++)
         @php
             // Ambil data untuk baris ke-i
-            // Cara 1: Ambil berdasarkan index
             $detail = $details->get($row-1);
-            
-            // Cara alternatif: Cari berdasarkan urutan (jika ada field urutan)
-            // $detail = $details->firstWhere('urutan', $row);
-            
             $isLastRow = ($row == 6);
             
             // Style untuk sel pertama (Nilai CRM)
@@ -656,59 +666,58 @@
             }
             $lastCellStyle .= " vertical-align:middle; text-align:center;";
             
-            // Style untuk value
+            // Style untuk value - tanpa formatting number
             $valueStyle = "width:100%; height:60px; border:none; font-family:'Times New Roman'; font-size:14pt; text-align:center; box-sizing:border-box; background:transparent; outline:none; padding:5px; display:flex; align-items:center; justify-content:center;";
         @endphp
         
         <tr style="height:60pt">
-            <!-- Kolom 1: Nilai CRM -->
+            <!-- Kolom 1: Nilai CRM - TAMPILKAN APA ADANYA -->
             <td style="{{ $firstCellStyle }}">
                 @if($detail && !is_null($detail->nilaiCRM))
-                <div style="{{ $valueStyle }}">
-                    {{ number_format((float)$detail->nilaiCRM, 2) }}
-                </div>
+                    <div style="{{ $valueStyle }}">
+                        {{ $detail->nilaiCRM }}
+                    </div>
                 @else
-                <div style="{{ $valueStyle }}">&nbsp;</div>
+                    <div style="{{ $valueStyle }}">&nbsp;</div>
                 @endif
             </td>
             
-         <!-- Kolom 2-6: Pembacaan Alat 1-5 -->
-        @for($col = 1; $col <= 5; $col++)
-            @php
-                // Format 2 digit: rep01, rep02, rep03, rep04, rep05
-                $fieldName = 'rep' . sprintf('%02d', $col); // Hasil: rep01, rep02, dll
-                $value = $detail ? $detail->$fieldName : null;
-            @endphp
-            <td style="{{ $middleCellStyle }}">
-                @if(!is_null($value))
-                <div style="{{ $valueStyle }}">
-                    {{ number_format((float)$value, 2) }}
-                </div>
-                @else
-                <div style="{{ $valueStyle }}">&nbsp;</div>
-                @endif
-            </td>
-        @endfor
+            <!-- Kolom 2-6: Pembacaan Alat 1-5 - TAMPILKAN APA ADANYA -->
+            @for($col = 1; $col <= 5; $col++)
+                @php
+                    $fieldName = 'rep' . sprintf('%02d', $col);
+                    $value = $detail ? $detail->$fieldName : null;
+                @endphp
+                <td style="{{ $middleCellStyle }}">
+                    @if(!is_null($value))
+                        <div style="{{ $valueStyle }}">
+                            {{ $value }}
+                        </div>
+                    @else
+                        <div style="{{ $valueStyle }}">&nbsp;</div>
+                    @endif
+                </td>
+            @endfor
             
-            <!-- Kolom 7: Resolusi -->
+            <!-- Kolom 7: Resolusi - TAMPILKAN APA ADANYA -->
             <td style="{{ $resolusiStyle }}">
                 @if($detail && !is_null($detail->Resolusi))
-                <div style="{{ $valueStyle }}">
-                    {{ number_format((float)$detail->Resolusi, 3) }}
-                </div>
+                    <div style="{{ $valueStyle }}">
+                        {{ $detail->Resolusi }}
+                    </div>
                 @else
-                <div style="{{ $valueStyle }}">&nbsp;</div>
+                    <div style="{{ $valueStyle }}">&nbsp;</div>
                 @endif
             </td>
             
-            <!-- Kolom 8: Suhu CRM -->
+            <!-- Kolom 8: Suhu CRM - TAMPILKAN APA ADANYA -->
             <td style="{{ $lastCellStyle }}">
                 @if($detail && !is_null($detail->suhuCRM))
-                <div style="{{ $valueStyle }}">
-                    {{ number_format((float)$detail->suhuCRM, 1) }}
-                </div>
+                    <div style="{{ $valueStyle }}">
+                        {{ $detail->suhuCRM }}
+                    </div>
                 @else
-                <div style="{{ $valueStyle }}">&nbsp;</div>
+                    <div style="{{ $valueStyle }}">&nbsp;</div>
                 @endif
             </td>
         </tr>
@@ -843,23 +852,26 @@
           <span style="letter-spacing:-0.1pt">Standar</span>
         </p>
       </td>
-      <td colspan="6" style="width:224.7pt; border-style:solid; border-width:0.75pt; vertical-align:top; -aw-border-bottom:0.38pt thin-thick-medium-gap #000000">
-        <p class="TableParagraph" style="margin-top:2.2pt; margin-left:1.45pt; font-size:9.5pt">
-          @php
+     <td colspan="6" style="width:224.7pt; border-style:solid; border-width:0.75pt; vertical-align:top; -aw-border-bottom:0.38pt thin-thick-medium-gap #000000">
+    <p class="TableParagraph" style="margin-top:2.2pt; margin-left:1.45pt; font-size:9.5pt">
+        @php
             // Ambil data dari headConductivityMeter
             $headData = $calibration->headConductivityMeter ?? null;
             
-            // Parse alat standar dari field 'standard'
-            $alatStandar = '';
-            if ($headData && $headData->standard) {
-                $alatStandar = $headData->standard;
-            } else {
-                $alatStandar = 'CRM, Thermoscientific.';
-            }
-          @endphp
-          <span>{{ $alatStandar }}</span>
-        </p>
-      </td>
+            // Tampilkan hanya CRM, Thermoscientific saja (tanpa TES/TFA)
+            $alatStandar = 'CRM, Thermoscientific';
+            
+            // Jika ingin mengambil dari database tapi dipisah, bisa juga:
+            // if ($headData && $headData->standard) {
+            //     // Ambil hanya bagian CRM, Thermoscientific saja (sebelum koma TES/TFA)
+            //     $standard = $headData->standard;
+            //     $parts = explode(',', $standard);
+            //     $alatStandar = trim($parts[0] . ',' . ($parts[1] ?? ''));
+            // }
+        @endphp
+        <span>{{ $alatStandar }}</span>
+    </p>
+</td>
       <td style="width:85.3pt; border-style:solid; border-width:0.75pt; vertical-align:top">
         <p class="TableParagraph" style="margin-top:2.1pt; margin-left:13.75pt; font-size:9.5pt">
           <span>Dikalibrasi</span>
@@ -988,8 +1000,10 @@
       </td>
     </tr>
 </table>
+</div>
+@endfor
 
-<
+
 
             <!-- Action Buttons Section -->
             <div class="row mt-5">
@@ -998,9 +1012,9 @@
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                     
-                    <button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i>Cetak
-                    </button>
+                    <!--<button onclick="window.print()" class="btn btn-primary btn-lg ms-3" style="padding: 12px 40px; font-size: 16px; font-weight: bold; border-radius: 8px;">-->
+                    <!--    <i class="fas fa-print me-2"></i>Cetak-->
+                    <!--</button>-->
                 </div>
             </div>
         </div>

@@ -38,23 +38,23 @@ class DetailGaugeBlock extends Model
     /**
      * Casting tipe data
      */
-    protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'NoSeri' => 'decimal:5',
-        'STD' => 'decimal:5',
-        'C1M' => 'decimal:5',
-        'C2M' => 'decimal:5',
-        'C1UL' => 'decimal:5',
-        'C2UL' => 'decimal:5',
-        'C1LL' => 'decimal:5',
-        'C2LL' => 'decimal:5',
-        'C1UR' => 'decimal:5',
-        'C2UR' => 'decimal:5',
-        'C1LR' => 'decimal:5',
-        'C2LR' => 'decimal:5',
-        'C1C' => 'decimal:5',
-        'C2C' => 'decimal:5',
-    ];
+    // protected $casts = [
+    //     'titikUkur' => 'decimal:5',
+    //     'NoSeri' => 'decimal:5',
+    //     'STD' => 'decimal:5',
+    //     'C1M' => 'decimal:5',
+    //     'C2M' => 'decimal:5',
+    //     'C1UL' => 'decimal:5',
+    //     'C2UL' => 'decimal:5',
+    //     'C1LL' => 'decimal:5',
+    //     'C2LL' => 'decimal:5',
+    //     'C1UR' => 'decimal:5',
+    //     'C2UR' => 'decimal:5',
+    //     'C1LR' => 'decimal:5',
+    //     'C2LR' => 'decimal:5',
+    //     'C1C' => 'decimal:5',
+    //     'C2C' => 'decimal:5',
+    // ];
 
 
     // ✅ Relation langsung ke Calibration

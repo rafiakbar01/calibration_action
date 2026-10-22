@@ -25,13 +25,13 @@ class DetailPinGauge extends Model
     ];
 
     protected $casts = [
-        'titikUkur' => 'decimal:5',
-        'ulangan1'  => 'decimal:5',
-        'ulangan2'  => 'decimal:5',
-        'ulangan3'  => 'decimal:5',
-        'ulangan4'  => 'decimal:5',
-        'ulangan5'  => 'decimal:5',
-        'ulangan6'  => 'decimal:5',
+        'titikUkur' => 'string',
+        'ulangan1'  => 'string',
+        'ulangan2'  => 'string',
+        'ulangan3'  => 'string',
+        'ulangan4'  => 'string',
+        'ulangan5'  => 'string',
+        'ulangan6'  => 'string',
     ];
 
 
